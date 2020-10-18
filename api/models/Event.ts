@@ -1,8 +1,8 @@
 import { Model, Modifiers } from "objection";
 
-export default class User extends Model {
+export default class Event extends Model {
   static get tableName() {
-    return "users";
+    return "events";
   }
 
   static get idColumn() {
