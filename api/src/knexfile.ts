@@ -3,7 +3,7 @@
 var pg = require("pg");
 pg.defaults.ssl = { rejectUnauthorized: false };
 
-module.exports = {
+const config = {
   development: {
     client: "sqlite3",
     connection: {
@@ -45,3 +45,5 @@ module.exports = {
     },
   },
 };
+
+export default config;

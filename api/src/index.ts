@@ -1,6 +1,8 @@
 import express from "express";
 import usersRouter from "./routes/users";
+import initializeDb from "./initializeDb";
 
+initializeDb();
 const app = express();
 
 app.use("/users", usersRouter);

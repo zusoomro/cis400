@@ -1,14 +1,10 @@
 import { Model } from "objection";
 import Knex from "knex";
+import knexConfig from "./knexfile";
 
-const knex = Knex({
-  client: "postgres",
-  connection: {
-    host: "",
-    user: "",
-    password: "",
-    database: "",
-  },
-});
+const initializeDb = () => {
+  const knex = Knex(knexConfig.development);
+  Model.knex(knex);
+};
 
-Model.knex(knex);
+export default initializeDb;
