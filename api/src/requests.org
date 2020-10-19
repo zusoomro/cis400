@@ -1,0 +1,64 @@
+
+* TODOS
+** TODO Create environment variable for database
+** TODO Create environment variable for JWT salt
+
+* Auth
+
+** Register
+
+#+begin_src restclient
+POST http://localhost:8000/users
+Content-Type: application/json
+{
+    "email": "zulfiqar.soomro@ecountabl.co",
+    "password": "examplePassword"
+}
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "errors": [
+    {
+      "msg": "User already exists"
+    }
+  ]
+}
+// POST http://localhost:8000/users
+// HTTP/1.1 400 Bad Request
+// X-Powered-By: Express
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 42
+// ETag: W/"2a-VBiGuTvIunFL9XlHdXrotU2H1qA"
+// Date: Mon, 19 Oct 2020 03:13:54 GMT
+// Connection: keep-alive
+// Request duration: 0.030943s
+#+END_SRC
+
+** Login
+
+#+begin_src restclient
+POST http://localhost:8000/users/login
+Content-Type: application/json
+{
+    "email": "zulfiqar.soomro@ecountabl.co",
+    "password": "examplePassword"
+}
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1fSwiaWF0IjoxNjAzMDc3MzM1LCJleHAiOjE2MDMwNzgyMzV9.wQ56trtEHBtarcv2ClYU0ms4Zti9wpE_1GDbwlUI4zo"
+}
+// POST http://localhost:8000/users/login
+// HTTP/1.1 200 OK
+// X-Powered-By: Express
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 161
+// ETag: W/"a1-CTqjhuvbfHDGeDnVgmDHNMll95I"
+// Date: Mon, 19 Oct 2020 03:15:35 GMT
+// Connection: keep-alive
+// Request duration: 0.067611s
+#+END_SRC

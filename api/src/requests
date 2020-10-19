@@ -1,3 +1,0 @@
-#+begin_src restclient
-POST http://localhost:8000/users
-#+end_src
