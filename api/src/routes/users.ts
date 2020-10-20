@@ -16,6 +16,9 @@ usersRouter.post("/", async (req, res) => {
   const existingUser = await User.query().where("email", email);
 
   if (existingUser.length) {
+    console.error(
+      `Error at POST /users: User with email '${email}' already exists`
+    );
     res.status(400).json({ errors: [{ msg: "User already exists" }] });
   }
 
@@ -27,6 +30,8 @@ usersRouter.post("/", async (req, res) => {
     email,
     password: hashedPassword,
   });
+
+  console.log(`Creating user with email '${email}'`);
 
   jwt.sign(
     {
