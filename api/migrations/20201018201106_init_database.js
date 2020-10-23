@@ -8,6 +8,7 @@ exports.up = function (knex) {
     .createTable("pods", (table) => {
       table.increments("id").primary();
       table.string("name");
+      //table.integer("ownerId").unsigned().references("id").inTable("users");
     })
     .createTable("events", (table) => {
       table.increments("id").primary();

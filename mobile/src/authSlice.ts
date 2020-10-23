@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const apiUrl = "http://localhost:8000";
 
 const initialState = {
-  authenticated: false,
+  authenticated: true,
   token: "",
   user: {},
   loading: true,
