@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Formik } from "formik";
-import { register } from "./authReducer";
+import { register } from "./authSlice";
 import { useDispatch } from "react-redux";
 
 const Register: React.FC<{}> = () => {
@@ -39,6 +39,7 @@ const Register: React.FC<{}> = () => {
               value={values.password}
               placeholder="password"
               style={styles.input}
+              secureTextEntry
             />
             <Button onPress={handleSubmit} title="Submit" />
           </View>
@@ -48,7 +49,7 @@ const Register: React.FC<{}> = () => {
   );
 };
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     display: "flex",
     flex: 1,
