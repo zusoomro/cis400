@@ -2,6 +2,7 @@ import { Model, Modifiers } from "objection";
 
 export default class Event extends Model {
   id!: number;
+  name!: string;
   ownerId!: number;
   address!: string;
   startTime!: Date;
