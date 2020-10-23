@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import EventsNavigator from "./events/EventsNavigator";
 import PodsNavigator from "./pods/PodsNavigator";
-import Settings from "./settings";
+import Settings from "./Settings";
 import Login from "./Login";
 import Register from "./Register";
 import { useSelector } from "react-redux";
