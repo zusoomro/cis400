@@ -1,6 +1,13 @@
 import { Model, Modifiers } from "objection";
 
 export default class Event extends Model {
+  id!: number;
+  ownerId!: number;
+  address!: string;
+  startTime!: Date;
+  endTime!: Date;
+  notes!: string;
+  
   static get tableName() {
     return "events";
   }
