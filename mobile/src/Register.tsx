@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Formik } from "formik";
-import { register } from "./authReducer";
+import { register } from "./authSlice";
 import { useDispatch } from "react-redux";
 
 const Register: React.FC<{}> = () => {

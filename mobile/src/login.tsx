@@ -3,7 +3,7 @@ import { styles } from "./Register";
 import { View, Text, TextInput, Button, SafeAreaView } from "react-native";
 import { Formik } from "formik";
 import { useDispatch } from "react-redux";
-import { login } from "./authReducer";
+import { login } from "./authSlice";
 
 const Login: React.FC<{}> = () => {
   const dispatch = useDispatch();
