@@ -1,6 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import * as SecureStore from "expo-secure-store";
 
-const apiUrl = "http://localhost:8000";
+let apiUrl: string;
+
+if (__DEV__) {
+  apiUrl = "http://localhost:8000";
+} else {
+  apiUrl = "http://wigo-api.herokuapp.com";
+}
 
 const initialState = {
   authenticated: true,
@@ -9,6 +16,34 @@ const initialState = {
   loading: true,
   error: {},
 };
+
+export const loadUser = createAsyncThunk("auth/loadUser", async (data, api) => {
+  try {
+    const res = await fetch(apiUrl + "/users/loadUser", {
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    });
+
+    return await res.json();
+  } catch (ex) {
+    console.log(`error loading user`, ex);
+    return api.rejectWithValue(ex.message);
+  }
+});
+
+export const loadToken = createAsyncThunk(
+  "users/loadToken",
+  async (data, api) => {
+    const token = await SecureStore.getItemAsync("wigo-auth-token");
+
+    if (token) {
+      return token;
+    } else {
+      throw new Error("The token was not found");
+    }
+  }
+);
 
 export const login = createAsyncThunk("auth/login", async (data, api) => {
   try {
@@ -22,7 +57,7 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
 
     const json = await res.json();
 
-    console.log("json", json);
+    await SecureStore.setItemAsync("wigo-auth-token", json.token);
 
     return json;
   } catch (ex) {
@@ -43,7 +78,7 @@ export const register = createAsyncThunk("auth/register", async (data, api) => {
 
     const json = await res.json();
 
-    console.log("json", json);
+    await SecureStore.setItemAsync("wigo-auth-token", json.token);
 
     return json;
   } catch (ex) {
@@ -64,6 +99,12 @@ const authSlice = createSlice({
     [login.pending]: (state, action) => {
       state.loading = true;
     },
+    [loadUser.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [loadToken.pending]: (state, action) => {
+      state.loading = true;
+    },
 
     // Fulfilled
     [register.fulfilled]: (state, action) => {
@@ -78,6 +119,15 @@ const authSlice = createSlice({
       state.authenticated = true;
       state.loading = false;
     },
+    [loadUser.fulfilled]: (state, action) => {
+      state.user = action.payload.user;
+      state.authenticated = true;
+      state.loading = false;
+    },
+    [loadToken.fulfilled]: (state, action) => {
+      state.token = action.payload;
+      state.loading = false;
+    },
 
     // Rejected
     [register.rejected]: (state, action) => {
@@ -89,6 +139,10 @@ const authSlice = createSlice({
       state.authenticated = false;
       state.loading = false;
       state.error = action.payload;
+    },
+    [loadToken.rejected]: (state, action) => {
+      state.token = "";
+      state.loading = false;
     },
   },
 });
