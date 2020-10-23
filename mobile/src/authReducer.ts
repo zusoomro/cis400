@@ -10,7 +10,28 @@ const initialState = {
   error: {},
 };
 
-export const register = createAsyncThunk("auth/signUp", async (data, api) => {
+export const login = createAsyncThunk("auth/login", async (data, api) => {
+  try {
+    const res = await fetch(apiUrl + "/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const json = await res.json();
+
+    console.log("json", json);
+
+    return json;
+  } catch (ex) {
+    console.log(`error creating new user`, ex);
+    return api.rejectWithValue(ex.message);
+  }
+});
+
+export const register = createAsyncThunk("auth/register", async (data, api) => {
   try {
     const res = await fetch(apiUrl + "/users", {
       method: "POST",
@@ -20,11 +41,11 @@ export const register = createAsyncThunk("auth/signUp", async (data, api) => {
       body: JSON.stringify(data),
     });
 
-    const token = await res.json();
+    const json = await res.json();
 
-    console.log("token", token);
+    console.log("json", json);
 
-    return token;
+    return json;
   } catch (ex) {
     console.log(`error creating new user`, ex);
     return api.rejectWithValue(ex.message);
@@ -40,16 +61,31 @@ const authSlice = createSlice({
     [register.pending]: (state, action) => {
       state.loading = true;
     },
+    [login.pending]: (state, action) => {
+      state.loading = true;
+    },
 
     // Fulfilled
     [register.fulfilled]: (state, action) => {
       state.token = action.payload.token;
+      state.user = action.payload.user;
+      state.authenticated = true;
+      state.loading = false;
+    },
+    [login.fulfilled]: (state, action) => {
+      state.token = action.payload.token;
+      state.user = action.payload.user;
       state.authenticated = true;
       state.loading = false;
     },
 
     // Rejected
     [register.rejected]: (state, action) => {
+      state.authenticated = false;
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [login.rejected]: (state, action) => {
       state.authenticated = false;
       state.loading = false;
       state.error = action.payload;

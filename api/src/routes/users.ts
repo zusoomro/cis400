@@ -43,7 +43,7 @@ usersRouter.post("/", async (req, res) => {
     { expiresIn: 360000 },
     (err, token) => {
       if (err) throw err;
-      res.json({ token });
+      res.json({ token, user });
     }
   );
 });
@@ -80,7 +80,7 @@ usersRouter.post("/login", async (req, res) => {
 
     jwt.sign(payload, "dummySecret", { expiresIn: 900 }, (err, token) => {
       if (err) throw err;
-      res.json({ token });
+      res.json({ token, user });
     });
   } catch (err) {
     console.error(err);

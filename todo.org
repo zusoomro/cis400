@@ -1,0 +1,6 @@
+#+TITLE: Todo
+
+* <2020-10-22 Thu> Zulfi - Registration and auth
+** TODO Write authentication middleware
+** TODO Attach header on client side
+** TODO Modify routes to return user
