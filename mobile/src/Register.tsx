@@ -39,6 +39,7 @@ const Register: React.FC<{}> = () => {
               value={values.password}
               placeholder="password"
               style={styles.input}
+              secureTextEntry
             />
             <Button onPress={handleSubmit} title="Submit" />
           </View>
