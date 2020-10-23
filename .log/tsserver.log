@@ -1,0 +1,1003 @@
+Info 0    [18:14:59.356] Starting TS Server
+Info 1    [18:14:59.358] Version: 4.0.3
+Info 2    [18:14:59.359] Arguments: /Users/zusoomro/.nvm/versions/node/v10.21.0/bin/node /Users/zusoomro/code/cis400/api/node_modules/.bin/tsserver --logFile /Users/zusoomro/code/cis400/.log/tsserver.log --logVerbosity info --cancellationPipeName /private/var/folders/rl/fdyxxd493bs_y1_mszc1z_2c0000gn/T/399b5e3a1e6c59c0fcd2858af9e21864/tscancellation*
+Info 3    [18:14:59.359] Platform: darwin NodeVersion: 10 CaseSensitive: false
+Info 4    [18:14:59.359] ServerMode: undefined syntaxOnly: false hasUnknownServerMode: undefined
+Info 5    [18:14:59.371] Search path: /Users/zusoomro/code/cis400/api/src
+Info 6    [18:14:59.372] For info: /Users/zusoomro/code/cis400/api/src/index.ts :: Config file name: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 7    [18:14:59.372] Opened configuration file /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 8    [18:14:59.390] Config: /Users/zusoomro/code/cis400/api/tsconfig.json : {
+ "rootNames": [
+  "/Users/zusoomro/code/cis400/api/src/authMiddleware.ts",
+  "/Users/zusoomro/code/cis400/api/src/index.ts",
+  "/Users/zusoomro/code/cis400/api/src/initializeDb.ts",
+  "/Users/zusoomro/code/cis400/api/src/routes/pods.ts",
+  "/Users/zusoomro/code/cis400/api/src/routes/users.ts"
+ ],
+ "options": {
+  "sourceMap": true,
+  "target": 2,
+  "module": 1,
+  "outDir": "/Users/zusoomro/code/cis400/api/dist",
+  "baseUrl": "/Users/zusoomro/code/cis400/api/src",
+  "strict": true,
+  "esModuleInterop": true,
+  "configFilePath": "/Users/zusoomro/code/cis400/api/tsconfig.json"
+ }
+}
+Info 9    [18:14:59.428] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 10   [18:15:0.646] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 1 structureChanged: true Elapsed: 1218ms
+Info 11   [18:15:0.647] Project '/Users/zusoomro/code/cis400/api/tsconfig.json' (Configured)
+Info 12   [18:15:0.647] 	Files (113)
+
+Info 13   [18:15:0.647] -----------------------------------------------
+Info 14   [18:15:0.672] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject1*
+Info 15   [18:15:0.973] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject1* Version: 1 structureChanged: true Elapsed: 301ms
+Info 16   [18:15:0.973] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
+Info 17   [18:15:0.973] 	Files (71)
+
+Info 18   [18:15:0.973] -----------------------------------------------
+Info 19   [18:15:2.12] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 20   [18:15:2.25] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 2 structureChanged: false Elapsed: 12ms
+Info 21   [18:15:2.25] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 22   [18:15:2.963] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 23   [18:15:2.972] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 3 structureChanged: false Elapsed: 9ms
+Info 24   [18:15:2.973] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 25   [18:15:4.45] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 26   [18:15:4.56] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 4 structureChanged: false Elapsed: 10ms
+Info 27   [18:15:4.56] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 28   [18:15:7.344] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 29   [18:15:7.354] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 5 structureChanged: false Elapsed: 10ms
+Info 30   [18:15:7.354] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 31   [18:15:8.310] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 32   [18:15:8.319] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 6 structureChanged: false Elapsed: 9ms
+Info 33   [18:15:8.319] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 34   [18:15:10.859] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 35   [18:15:10.871] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 7 structureChanged: false Elapsed: 11ms
+Info 36   [18:15:10.871] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 37   [18:15:11.721] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 38   [18:15:11.733] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 8 structureChanged: false Elapsed: 12ms
+Info 39   [18:15:11.733] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 40   [18:15:12.403] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 41   [18:15:12.414] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 9 structureChanged: false Elapsed: 11ms
+Info 42   [18:15:12.414] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 43   [18:15:12.462] getCompletionData: Get current token: 0
+Info 44   [18:15:12.462] getCompletionData: Is inside comment: 0
+Info 45   [18:15:12.462] getCompletionData: Get previous token 1: 0
+Info 46   [18:15:12.462] getCompletionData: Get previous token 2: 0
+Info 47   [18:15:12.462] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 48   [18:15:12.467] getSymbolsFromOtherSourceFileExports: Recomputing list
+Info 49   [18:15:12.491] forEachExternalModuleToImportFrom: filtered out 18 modules by package.json contents
+Info 50   [18:15:12.503] forEachExternalModuleToImportFrom: filtered out 67 modules by package.json contents
+Info 51   [18:15:12.503] forEachExternalModuleToImportFrom autoImportProvider: 12
+Info 52   [18:15:12.503] getSymbolsFromOtherSourceFileExports: 36
+Info 53   [18:15:12.509] getCompletionData: Semantic work: 47
+Info 54   [18:15:12.530] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 18
+Info 55   [18:15:19.321] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 56   [18:15:19.329] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 10 structureChanged: false Elapsed: 8ms
+Info 57   [18:15:19.329] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 58   [18:15:19.406] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 59   [18:15:19.414] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 11 structureChanged: false Elapsed: 8ms
+Info 60   [18:15:19.414] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 61   [18:15:19.681] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 62   [18:15:19.688] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 12 structureChanged: false Elapsed: 7ms
+Info 63   [18:15:19.688] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 64   [18:15:19.736] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 65   [18:15:19.744] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 13 structureChanged: false Elapsed: 8ms
+Info 66   [18:15:19.744] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 67   [18:15:19.907] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 68   [18:15:19.916] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 14 structureChanged: false Elapsed: 9ms
+Info 69   [18:15:19.916] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 70   [18:15:21.88] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 71   [18:15:21.96] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 15 structureChanged: false Elapsed: 7ms
+Info 72   [18:15:21.96] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 73   [18:15:21.359] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 74   [18:15:21.370] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 16 structureChanged: false Elapsed: 11ms
+Info 75   [18:15:21.370] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 76   [18:15:21.462] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 77   [18:15:21.472] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 17 structureChanged: false Elapsed: 10ms
+Info 78   [18:15:21.472] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 79   [18:15:27.959] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 80   [18:15:27.971] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 18 structureChanged: false Elapsed: 12ms
+Info 81   [18:15:27.971] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 82   [18:15:28.32] getCompletionData: Get current token: 0
+Info 83   [18:15:28.32] getCompletionData: Is inside comment: 0
+Info 84   [18:15:28.32] getCompletionData: Get previous token 1: 0
+Info 85   [18:15:28.32] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 86   [18:15:28.34] getCompletionData: Semantic work: 2
+Info 87   [18:15:28.35] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 1
+Info 88   [18:15:28.510] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 89   [18:15:28.519] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 19 structureChanged: false Elapsed: 9ms
+Info 90   [18:15:28.519] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 91   [18:15:29.647] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 92   [18:15:29.662] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 20 structureChanged: false Elapsed: 15ms
+Info 93   [18:15:29.662] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 94   [18:15:30.116] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 95   [18:15:30.126] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 21 structureChanged: false Elapsed: 10ms
+Info 96   [18:15:30.127] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 97   [18:15:30.721] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 98   [18:15:30.727] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 22 structureChanged: false Elapsed: 6ms
+Info 99   [18:15:30.727] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 100  [18:15:30.972] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 101  [18:15:30.981] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 23 structureChanged: false Elapsed: 9ms
+Info 102  [18:15:30.981] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 103  [18:15:31.36] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 104  [18:15:31.50] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 24 structureChanged: false Elapsed: 14ms
+Info 105  [18:15:31.50] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 106  [18:15:31.310] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 107  [18:15:31.322] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 25 structureChanged: false Elapsed: 12ms
+Info 108  [18:15:31.322] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 109  [18:15:31.393] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 110  [18:15:31.404] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 26 structureChanged: false Elapsed: 11ms
+Info 111  [18:15:31.404] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 112  [18:15:31.464] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 113  [18:15:31.477] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 27 structureChanged: false Elapsed: 13ms
+Info 114  [18:15:31.477] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 115  [18:15:31.605] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 116  [18:15:31.614] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 28 structureChanged: false Elapsed: 9ms
+Info 117  [18:15:31.614] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 118  [18:15:32.75] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 119  [18:15:32.84] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 29 structureChanged: false Elapsed: 9ms
+Info 120  [18:15:32.84] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 121  [18:15:32.355] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 122  [18:15:32.365] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 30 structureChanged: false Elapsed: 10ms
+Info 123  [18:15:32.365] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 124  [18:15:32.439] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 125  [18:15:32.447] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 31 structureChanged: false Elapsed: 8ms
+Info 126  [18:15:32.447] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 127  [18:15:32.554] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 128  [18:15:32.567] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 32 structureChanged: false Elapsed: 13ms
+Info 129  [18:15:32.567] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 130  [18:15:32.718] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 131  [18:15:32.730] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 33 structureChanged: false Elapsed: 12ms
+Info 132  [18:15:32.730] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 133  [18:15:32.834] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 134  [18:15:32.842] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 34 structureChanged: false Elapsed: 8ms
+Info 135  [18:15:32.842] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 136  [18:15:32.986] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 137  [18:15:32.994] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 35 structureChanged: false Elapsed: 8ms
+Info 138  [18:15:32.994] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 139  [18:15:33.86] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 140  [18:15:33.97] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 36 structureChanged: false Elapsed: 10ms
+Info 141  [18:15:33.97] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 142  [18:15:33.162] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 143  [18:15:33.170] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 37 structureChanged: false Elapsed: 8ms
+Info 144  [18:15:33.171] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 145  [18:15:33.256] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 146  [18:15:33.265] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 38 structureChanged: false Elapsed: 9ms
+Info 147  [18:15:33.265] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 148  [18:15:33.399] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 149  [18:15:33.410] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 39 structureChanged: false Elapsed: 11ms
+Info 150  [18:15:33.410] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 151  [18:15:34.57] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 152  [18:15:34.66] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 40 structureChanged: false Elapsed: 9ms
+Info 153  [18:15:34.67] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 154  [18:15:34.598] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 155  [18:15:34.610] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 41 structureChanged: false Elapsed: 12ms
+Info 156  [18:15:34.610] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 157  [18:15:34.860] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 158  [18:15:34.867] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 42 structureChanged: false Elapsed: 7ms
+Info 159  [18:15:34.867] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 160  [18:15:34.915] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 161  [18:15:34.925] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 43 structureChanged: false Elapsed: 10ms
+Info 162  [18:15:34.925] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 163  [18:15:34.982] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 164  [18:15:34.993] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 44 structureChanged: false Elapsed: 10ms
+Info 165  [18:15:34.993] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 166  [18:15:35.37] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 167  [18:15:35.47] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 45 structureChanged: false Elapsed: 10ms
+Info 168  [18:15:35.47] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 169  [18:15:35.92] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 170  [18:15:35.100] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 46 structureChanged: false Elapsed: 8ms
+Info 171  [18:15:35.100] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 172  [18:15:37.312] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 173  [18:15:37.318] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 47 structureChanged: false Elapsed: 6ms
+Info 174  [18:15:37.318] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 175  [18:15:37.449] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 176  [18:15:37.458] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 48 structureChanged: false Elapsed: 9ms
+Info 177  [18:15:37.459] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 178  [18:15:39.71] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 179  [18:15:39.79] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 49 structureChanged: false Elapsed: 8ms
+Info 180  [18:15:39.79] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 181  [18:15:39.163] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 182  [18:15:39.175] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 50 structureChanged: false Elapsed: 12ms
+Info 183  [18:15:39.175] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 184  [18:15:39.241] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 185  [18:15:39.250] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 51 structureChanged: false Elapsed: 9ms
+Info 186  [18:15:39.250] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 187  [18:15:39.380] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 188  [18:15:39.386] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 52 structureChanged: false Elapsed: 6ms
+Info 189  [18:15:39.386] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 190  [18:15:39.635] getCompletionData: Get current token: 0
+Info 191  [18:15:39.635] getCompletionData: Is inside comment: 0
+Info 192  [18:15:39.635] getCompletionData: Get previous token 1: 0
+Info 193  [18:15:39.635] getCompletionData: Get previous token 2: 0
+Info 194  [18:15:39.635] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 195  [18:15:39.640] getSymbolsFromOtherSourceFileExports: Using cached list
+Info 196  [18:15:39.646] getCompletionData: Semantic work: 11
+Info 197  [18:15:39.655] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 9
+Info 198  [18:16:33.845] Search path: /Users/zusoomro/code/cis400/api
+Info 199  [18:16:33.845] For info: /Users/zusoomro/code/cis400/api/knexfile.ts :: Config file name: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 200  [18:16:59.789] Search path: /Users/zusoomro/code/cis400/api/src
+Info 201  [18:16:59.789] For info: /Users/zusoomro/code/cis400/api/src/initializeDb.ts :: Config file name: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 202  [18:17:4.854] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 203  [18:17:4.868] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 53 structureChanged: false Elapsed: 14ms
+Info 204  [18:17:4.868] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 205  [18:17:8.575] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 206  [18:17:8.585] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 54 structureChanged: false Elapsed: 10ms
+Info 207  [18:17:8.585] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 208  [18:17:11.488] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 209  [18:17:11.495] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 55 structureChanged: false Elapsed: 7ms
+Info 210  [18:17:11.495] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 211  [18:18:44.439] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 212  [18:18:44.448] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 56 structureChanged: false Elapsed: 8ms
+Info 213  [18:18:44.448] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 214  [18:18:46.910] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 215  [18:18:46.923] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 57 structureChanged: false Elapsed: 13ms
+Info 216  [18:18:46.923] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 217  [18:18:47.78] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 218  [18:18:47.86] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 58 structureChanged: false Elapsed: 8ms
+Info 219  [18:18:47.86] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 220  [18:18:47.513] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 221  [18:18:47.523] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 59 structureChanged: false Elapsed: 10ms
+Info 222  [18:18:47.523] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 223  [18:18:47.939] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 224  [18:18:47.945] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 60 structureChanged: false Elapsed: 6ms
+Info 225  [18:18:47.945] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 226  [18:18:48.53] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 227  [18:18:48.62] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 61 structureChanged: false Elapsed: 9ms
+Info 228  [18:18:48.62] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 229  [18:18:48.971] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 230  [18:18:48.978] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 62 structureChanged: false Elapsed: 7ms
+Info 231  [18:18:48.978] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 232  [18:18:49.53] getCompletionData: Get current token: 0
+Info 233  [18:18:49.53] getCompletionData: Is inside comment: 0
+Info 234  [18:18:49.53] getCompletionData: Get previous token 1: 0
+Info 235  [18:18:49.53] getCompletionData: Get previous token 2: 0
+Info 236  [18:18:49.53] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 237  [18:18:49.56] getSymbolsFromOtherSourceFileExports: Recomputing list
+Info 238  [18:18:49.71] forEachExternalModuleToImportFrom: filtered out 18 modules by package.json contents
+Info 239  [18:18:49.81] forEachExternalModuleToImportFrom: filtered out 67 modules by package.json contents
+Info 240  [18:18:49.81] forEachExternalModuleToImportFrom autoImportProvider: 10
+Info 241  [18:18:49.81] getSymbolsFromOtherSourceFileExports: 25
+Info 242  [18:18:49.89] getCompletionData: Semantic work: 36
+Info 243  [18:18:49.129] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 40
+Info 244  [18:18:51.34] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 245  [18:18:51.41] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 63 structureChanged: false Elapsed: 7ms
+Info 246  [18:18:51.41] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 247  [18:18:51.429] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 248  [18:18:51.440] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 64 structureChanged: false Elapsed: 11ms
+Info 249  [18:18:51.440] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 250  [18:18:51.517] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 251  [18:18:51.523] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 65 structureChanged: false Elapsed: 6ms
+Info 252  [18:18:51.523] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 253  [18:18:51.776] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 254  [18:18:51.786] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 66 structureChanged: false Elapsed: 10ms
+Info 255  [18:18:51.786] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 256  [18:18:51.867] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 257  [18:18:51.873] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 67 structureChanged: false Elapsed: 6ms
+Info 258  [18:18:51.873] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 259  [18:18:52.640] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 260  [18:18:52.648] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 68 structureChanged: false Elapsed: 8ms
+Info 261  [18:18:52.648] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 262  [18:18:52.731] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 263  [18:18:52.739] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 69 structureChanged: false Elapsed: 8ms
+Info 264  [18:18:52.739] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 265  [18:18:53.155] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 266  [18:18:53.162] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 70 structureChanged: false Elapsed: 7ms
+Info 267  [18:18:53.162] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 268  [18:19:9.854] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 269  [18:19:9.865] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 71 structureChanged: false Elapsed: 10ms
+Info 270  [18:19:9.865] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 271  [18:19:10.446] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 272  [18:19:10.457] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 72 structureChanged: false Elapsed: 11ms
+Info 273  [18:19:10.457] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 274  [18:19:10.580] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 275  [18:19:10.590] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 73 structureChanged: false Elapsed: 10ms
+Info 276  [18:19:10.590] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 277  [18:19:11.1] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 278  [18:19:11.9] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 74 structureChanged: false Elapsed: 8ms
+Info 279  [18:19:11.9] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 280  [18:19:11.382] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 281  [18:19:11.393] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 75 structureChanged: false Elapsed: 11ms
+Info 282  [18:19:11.393] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 283  [18:19:14.397] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 284  [18:19:14.404] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 76 structureChanged: false Elapsed: 7ms
+Info 285  [18:19:14.404] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 286  [18:19:14.474] getCompletionData: Get current token: 0
+Info 287  [18:19:14.474] getCompletionData: Is inside comment: 0
+Info 288  [18:19:14.474] getCompletionData: Get previous token 1: 0
+Info 289  [18:19:14.474] getCompletionData: Get previous token 2: 0
+Info 290  [18:19:14.474] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 291  [18:19:14.480] getSymbolsFromOtherSourceFileExports: Using cached list
+Info 292  [18:19:14.486] getCompletionData: Semantic work: 12
+Info 293  [18:19:14.502] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 6
+Info 294  [18:19:15.25] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 295  [18:19:15.35] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 77 structureChanged: false Elapsed: 10ms
+Info 296  [18:19:15.35] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 297  [18:19:15.626] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 298  [18:19:15.634] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 78 structureChanged: false Elapsed: 8ms
+Info 299  [18:19:15.634] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 300  [18:19:16.888] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 301  [18:19:16.896] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 79 structureChanged: false Elapsed: 8ms
+Info 302  [18:19:16.896] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 303  [18:19:16.972] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 304  [18:19:16.978] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 80 structureChanged: false Elapsed: 6ms
+Info 305  [18:19:16.978] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 306  [18:19:17.170] getCompletionData: Get current token: 0
+Info 307  [18:19:17.170] getCompletionData: Is inside comment: 0
+Info 308  [18:19:17.170] getCompletionData: Get previous token 1: 0
+Info 309  [18:19:17.170] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 310  [18:19:17.172] getCompletionData: Semantic work: 1
+Info 311  [18:19:17.172] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 312  [18:19:18.574] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 313  [18:19:18.581] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 81 structureChanged: false Elapsed: 7ms
+Info 314  [18:19:18.581] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 315  [18:19:18.981] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 316  [18:19:18.988] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 82 structureChanged: false Elapsed: 7ms
+Info 317  [18:19:18.988] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 318  [18:19:21.179] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 319  [18:19:21.188] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 83 structureChanged: false Elapsed: 9ms
+Info 320  [18:19:21.189] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 321  [18:19:21.256] getCompletionData: Get current token: 0
+Info 322  [18:19:21.256] getCompletionData: Is inside comment: 0
+Info 323  [18:19:21.256] getCompletionData: Get previous token 1: 0
+Info 324  [18:19:21.256] getCompletionData: Get previous token 2: 0
+Info 325  [18:19:21.256] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 326  [18:19:21.257] getCompletionData: Semantic work: 1
+Info 327  [18:19:21.259] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 2
+Info 328  [18:19:21.645] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 329  [18:19:21.656] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 84 structureChanged: false Elapsed: 11ms
+Info 330  [18:19:21.656] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 331  [18:19:21.735] getCompletionData: Get current token: 0
+Info 332  [18:19:21.735] getCompletionData: Is inside comment: 0
+Info 333  [18:19:21.735] getCompletionData: Get previous token 1: 0
+Info 334  [18:19:21.735] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 335  [18:19:21.736] getCompletionData: Semantic work: 1
+Info 336  [18:19:21.736] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 337  [18:19:22.626] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 338  [18:19:22.649] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 85 structureChanged: false Elapsed: 22ms
+Info 339  [18:19:22.649] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 340  [18:19:22.724] getCompletionData: Get current token: 0
+Info 341  [18:19:22.724] getCompletionData: Is inside comment: 0
+Info 342  [18:19:22.724] getCompletionData: Get previous token 1: 0
+Info 343  [18:19:22.724] getCompletionData: Get previous token 2: 0
+Info 344  [18:19:22.725] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 345  [18:19:22.725] getCompletionData: Semantic work: 0
+Info 346  [18:19:22.725] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 347  [18:19:23.361] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 348  [18:19:23.365] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 86 structureChanged: false Elapsed: 4ms
+Info 349  [18:19:23.365] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 350  [18:19:23.422] getCompletionData: Get current token: 1
+Info 351  [18:19:23.422] getCompletionData: Is inside comment: 0
+Info 352  [18:19:23.422] getCompletionData: Get previous token 1: 0
+Info 353  [18:19:23.422] getCompletionData: Get previous token 2: 0
+Info 354  [18:19:23.422] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 355  [18:19:23.423] getCompletionData: Semantic work: 1
+Info 356  [18:19:23.423] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 357  [18:19:24.67] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 358  [18:19:24.74] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 87 structureChanged: false Elapsed: 7ms
+Info 359  [18:19:24.74] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 360  [18:19:25.349] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 361  [18:19:25.356] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 88 structureChanged: false Elapsed: 7ms
+Info 362  [18:19:25.356] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 363  [18:19:26.413] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 364  [18:19:26.420] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 89 structureChanged: false Elapsed: 7ms
+Info 365  [18:19:26.420] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 366  [18:19:26.486] getCompletionData: Get current token: 0
+Info 367  [18:19:26.486] getCompletionData: Is inside comment: 0
+Info 368  [18:19:26.486] getCompletionData: Get previous token 1: 0
+Info 369  [18:19:26.486] getCompletionData: Get previous token 2: 0
+Info 370  [18:19:26.486] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 371  [18:19:26.491] getSymbolsFromOtherSourceFileExports: Using cached list
+Info 372  [18:19:26.496] getCompletionData: Semantic work: 10
+Info 373  [18:19:26.502] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 5
+Info 374  [18:19:27.370] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 375  [18:19:27.377] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 90 structureChanged: false Elapsed: 7ms
+Info 376  [18:19:27.377] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 377  [18:19:27.443] getCompletionData: Get current token: 0
+Info 378  [18:19:27.444] getCompletionData: Is inside comment: 0
+Info 379  [18:19:27.444] getCompletionData: Get previous token 1: 0
+Info 380  [18:19:27.444] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 381  [18:19:27.445] getCompletionData: Semantic work: 1
+Info 382  [18:19:27.445] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 383  [18:19:27.446] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 384  [18:19:27.451] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 91 structureChanged: false Elapsed: 5ms
+Info 385  [18:19:27.451] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 386  [18:19:28.860] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 387  [18:19:28.867] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 92 structureChanged: false Elapsed: 7ms
+Info 388  [18:19:28.867] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 389  [18:19:28.933] getCompletionData: Get current token: 0
+Info 390  [18:19:28.933] getCompletionData: Is inside comment: 0
+Info 391  [18:19:28.933] getCompletionData: Get previous token 1: 0
+Info 392  [18:19:28.933] getCompletionData: Get previous token 2: 0
+Info 393  [18:19:28.933] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 394  [18:19:28.935] getCompletionData: Semantic work: 2
+Info 395  [18:19:28.935] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 396  [18:19:29.756] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 397  [18:19:29.773] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 93 structureChanged: false Elapsed: 17ms
+Info 398  [18:19:29.773] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 399  [18:19:56.968] Search path: /Users/zusoomro/code/cis400/api
+Info 400  [18:19:56.968] For info: /Users/zusoomro/code/cis400/api/knexfile.ts :: Config file name: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 401  [18:33:32.219] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 402  [18:33:32.231] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 94 structureChanged: false Elapsed: 11ms
+Info 403  [18:33:32.231] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 404  [18:33:32.968] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 405  [18:33:32.977] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 95 structureChanged: false Elapsed: 9ms
+Info 406  [18:33:32.977] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 407  [18:33:34.399] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 408  [18:33:34.408] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 96 structureChanged: false Elapsed: 9ms
+Info 409  [18:33:34.408] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 410  [18:33:35.24] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 411  [18:33:35.37] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 97 structureChanged: false Elapsed: 12ms
+Info 412  [18:33:35.37] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 413  [18:33:36.735] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 414  [18:33:36.742] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 98 structureChanged: false Elapsed: 7ms
+Info 415  [18:33:36.743] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 416  [18:33:36.743] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 417  [18:33:36.748] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 99 structureChanged: false Elapsed: 5ms
+Info 418  [18:33:36.748] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 419  [18:33:37.69] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 420  [18:33:37.78] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 100 structureChanged: false Elapsed: 9ms
+Info 421  [18:33:37.78] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 422  [18:33:37.153] getCompletionData: Get current token: 0
+Info 423  [18:33:37.153] getCompletionData: Is inside comment: 0
+Info 424  [18:33:37.153] getCompletionData: Get previous token 1: 0
+Info 425  [18:33:37.153] getCompletionData: Get previous token 2: 0
+Info 426  [18:33:37.153] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 427  [18:33:37.157] getSymbolsFromOtherSourceFileExports: Recomputing list
+Info 428  [18:33:37.171] forEachExternalModuleToImportFrom: filtered out 18 modules by package.json contents
+Info 429  [18:33:37.181] forEachExternalModuleToImportFrom: filtered out 67 modules by package.json contents
+Info 430  [18:33:37.181] forEachExternalModuleToImportFrom autoImportProvider: 10
+Info 431  [18:33:37.181] getSymbolsFromOtherSourceFileExports: 24
+Info 432  [18:33:37.186] getCompletionData: Semantic work: 33
+Info 433  [18:33:37.191] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 5
+Info 434  [18:33:37.872] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 435  [18:33:37.880] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 101 structureChanged: false Elapsed: 8ms
+Info 436  [18:33:37.880] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 437  [18:33:38.290] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 438  [18:33:38.300] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 102 structureChanged: false Elapsed: 9ms
+Info 439  [18:33:38.300] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 440  [18:33:38.381] getCompletionData: Get current token: 0
+Info 441  [18:33:38.381] getCompletionData: Is inside comment: 0
+Info 442  [18:33:38.381] getCompletionData: Get previous token 1: 0
+Info 443  [18:33:38.381] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 444  [18:33:38.382] getCompletionData: Semantic work: 1
+Info 445  [18:33:38.384] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 2
+Info 446  [18:33:38.891] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 447  [18:33:38.899] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 103 structureChanged: false Elapsed: 8ms
+Info 448  [18:33:38.899] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 449  [18:33:38.977] getCompletionData: Get current token: 0
+Info 450  [18:33:38.977] getCompletionData: Is inside comment: 0
+Info 451  [18:33:38.977] getCompletionData: Get previous token 1: 0
+Info 452  [18:33:38.977] getCompletionData: Get previous token 2: 0
+Info 453  [18:33:38.977] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 454  [18:33:38.978] getCompletionData: Semantic work: 1
+Info 455  [18:33:38.979] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 1
+Info 456  [18:33:39.246] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 457  [18:33:39.252] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 104 structureChanged: false Elapsed: 6ms
+Info 458  [18:33:39.252] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 459  [18:33:39.325] getCompletionData: Get current token: 0
+Info 460  [18:33:39.325] getCompletionData: Is inside comment: 0
+Info 461  [18:33:39.325] getCompletionData: Get previous token 1: 0
+Info 462  [18:33:39.325] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 463  [18:33:39.326] getCompletionData: Semantic work: 1
+Info 464  [18:33:42.804] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 465  [18:33:42.812] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 105 structureChanged: false Elapsed: 7ms
+Info 466  [18:33:42.812] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 467  [18:33:43.415] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 468  [18:33:43.422] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 106 structureChanged: false Elapsed: 7ms
+Info 469  [18:33:43.422] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 470  [18:33:43.504] getCompletionData: Get current token: 0
+Info 471  [18:33:43.504] getCompletionData: Is inside comment: 0
+Info 472  [18:33:43.504] getCompletionData: Get previous token 1: 0
+Info 473  [18:33:43.504] getCompletionData: Get previous token 2: 0
+Info 474  [18:33:43.504] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 475  [18:33:43.507] getCompletionData: Semantic work: 3
+Info 476  [18:33:43.510] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 3
+Info 477  [18:33:46.383] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 478  [18:33:46.393] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 107 structureChanged: false Elapsed: 9ms
+Info 479  [18:33:46.393] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 480  [18:33:46.441] getCompletionData: Get current token: 0
+Info 481  [18:33:46.441] getCompletionData: Is inside comment: 0
+Info 482  [18:33:46.441] getCompletionData: Get previous token 1: 0
+Info 483  [18:33:46.441] getCompletionData: Get previous token 2: 0
+Info 484  [18:33:46.442] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 485  [18:33:46.443] getCompletionData: Semantic work: 1
+Info 486  [18:33:46.445] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 2
+Info 487  [18:33:46.993] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 488  [18:33:47.0] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 108 structureChanged: false Elapsed: 7ms
+Info 489  [18:33:47.0] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 490  [18:33:47.113] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 491  [18:33:47.119] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 109 structureChanged: false Elapsed: 6ms
+Info 492  [18:33:47.119] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 493  [18:33:47.325] getCompletionData: Get current token: 0
+Info 494  [18:33:47.325] getCompletionData: Is inside comment: 0
+Info 495  [18:33:47.325] getCompletionData: Get previous token 1: 0
+Info 496  [18:33:47.325] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 497  [18:33:47.328] getCompletionData: Semantic work: 3
+Info 498  [18:33:47.329] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 499  [18:33:48.285] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 500  [18:33:48.292] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 110 structureChanged: false Elapsed: 7ms
+Info 501  [18:33:48.292] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 502  [18:33:48.442] getCompletionData: Get current token: 0
+Info 503  [18:33:48.442] getCompletionData: Is inside comment: 0
+Info 504  [18:33:48.442] getCompletionData: Get previous token 1: 0
+Info 505  [18:33:48.442] getCompletionData: Get previous token 2: 0
+Info 506  [18:33:48.442] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 507  [18:33:48.443] getCompletionData: Semantic work: 1
+Info 508  [18:33:48.443] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 509  [18:33:48.550] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 510  [18:33:48.558] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 111 structureChanged: false Elapsed: 7ms
+Info 511  [18:33:48.558] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 512  [18:33:48.630] getCompletionData: Get current token: 0
+Info 513  [18:33:48.631] getCompletionData: Is inside comment: 0
+Info 514  [18:33:48.631] getCompletionData: Get previous token 1: 0
+Info 515  [18:33:48.631] getCompletionData: Get previous token 2: 0
+Info 516  [18:33:48.631] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 517  [18:33:48.632] getCompletionData: Semantic work: 1
+Info 518  [18:33:48.632] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 519  [18:33:49.495] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 520  [18:33:49.502] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 112 structureChanged: false Elapsed: 6ms
+Info 521  [18:33:49.502] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 522  [18:33:49.503] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 523  [18:33:49.508] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 113 structureChanged: false Elapsed: 5ms
+Info 524  [18:33:49.508] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 525  [18:33:49.850] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 526  [18:33:49.858] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 114 structureChanged: false Elapsed: 8ms
+Info 527  [18:33:49.858] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 528  [18:33:49.933] getCompletionData: Get current token: 0
+Info 529  [18:33:49.934] getCompletionData: Is inside comment: 1
+Info 530  [18:33:49.934] getCompletionData: Get previous token 1: 0
+Info 531  [18:33:49.934] getCompletionData: Get previous token 2: 0
+Info 532  [18:33:49.934] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 533  [18:33:49.935] getCompletionData: Semantic work: 1
+Info 534  [18:33:49.935] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 535  [18:33:50.500] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 536  [18:33:50.507] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 115 structureChanged: false Elapsed: 7ms
+Info 537  [18:33:50.507] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 538  [18:33:50.585] getCompletionData: Get current token: 0
+Info 539  [18:33:50.585] getCompletionData: Is inside comment: 0
+Info 540  [18:33:50.585] getCompletionData: Get previous token 1: 0
+Info 541  [18:33:50.585] getCompletionData: Get previous token 2: 0
+Info 542  [18:33:50.585] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 543  [18:33:50.586] getCompletionData: Semantic work: 1
+Info 544  [18:33:50.586] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 545  [18:33:51.955] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 546  [18:33:51.968] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 116 structureChanged: false Elapsed: 13ms
+Info 547  [18:33:51.968] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 548  [18:39:25.570] Search path: /Users/zusoomro/code/cis400/api/migrations
+Info 549  [18:39:25.571] For info: /Users/zusoomro/code/cis400/api/migrations/20201018201106_init_database.js :: Config file name: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 550  [18:39:25.573] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 551  [18:39:26.493] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 1 structureChanged: true Elapsed: 920ms
+Info 552  [18:39:26.493] Project '/dev/null/inferredProject1*' (Inferred)
+Info 553  [18:39:26.493] 	Files (140)
+
+Info 554  [18:39:26.493] -----------------------------------------------
+Info 555  [18:39:26.523] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject2*
+Info 556  [18:39:26.924] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject2* Version: 1 structureChanged: true Elapsed: 401ms
+Info 557  [18:39:26.924] Project '/dev/null/autoImportProviderProject2*' (AutoImportProvider)
+Info 558  [18:39:26.924] 	Files (130)
+
+Info 559  [18:39:26.924] -----------------------------------------------
+Info 560  [18:39:26.987] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 561  [18:39:26.988] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 2 structureChanged: false Elapsed: 1ms
+Info 562  [18:39:29.487] Before ensureProjectForOpenFiles:
+Info 563  [18:39:29.488] After ensureProjectForOpenFiles:
+Info 564  [18:39:29.488] got projects updated in background, updating diagnostics for /Users/zusoomro/code/cis400/api/src/index.ts,/Users/zusoomro/code/cis400/api/src/initializeDb.ts,/Users/zusoomro/code/cis400/api/knexfile.ts,/Users/zusoomro/code/cis400/api/migrations/20201018201106_init_database.js
+Info 565  [18:48:7.731] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 566  [18:48:7.795] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 3 structureChanged: false Elapsed: 63ms
+Info 567  [18:48:7.795] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 568  [18:48:7.796] getCompletionData: Get current token: 0
+Info 569  [18:48:7.796] getCompletionData: Is inside comment: 0
+Info 570  [18:48:7.796] getCompletionData: Get previous token 1: 0
+Info 571  [18:48:7.796] getCompletionData: Get previous token 2: 0
+Info 572  [18:48:7.796] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 573  [18:48:7.798] getCompletionData: Semantic work: 2
+Info 574  [18:48:7.798] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 575  [18:48:8.119] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 576  [18:48:8.161] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 4 structureChanged: false Elapsed: 42ms
+Info 577  [18:48:8.161] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 578  [18:48:8.162] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 579  [18:48:8.202] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 5 structureChanged: false Elapsed: 40ms
+Info 580  [18:48:8.202] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 581  [18:48:9.156] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 582  [18:48:9.184] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 6 structureChanged: false Elapsed: 27ms
+Info 583  [18:48:9.184] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 584  [18:48:9.256] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 585  [18:48:9.283] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 7 structureChanged: false Elapsed: 27ms
+Info 586  [18:48:9.283] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 587  [18:48:9.807] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 588  [18:48:9.836] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 8 structureChanged: false Elapsed: 29ms
+Info 589  [18:48:9.836] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 590  [18:48:10.208] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 591  [18:48:10.232] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 9 structureChanged: false Elapsed: 24ms
+Info 592  [18:48:10.232] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 593  [18:48:10.258] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 594  [18:48:10.289] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 10 structureChanged: false Elapsed: 31ms
+Info 595  [18:48:10.289] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 596  [18:48:10.829] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 597  [18:48:10.856] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 11 structureChanged: false Elapsed: 26ms
+Info 598  [18:48:10.856] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 599  [18:48:10.879] getCompletionData: Get current token: 0
+Info 600  [18:48:10.879] getCompletionData: Is inside comment: 0
+Info 601  [18:48:10.879] getCompletionData: Get previous token 1: 0
+Info 602  [18:48:10.879] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 603  [18:48:10.884] getSymbolsFromOtherSourceFileExports: Recomputing list
+Info 604  [18:48:10.897] forEachExternalModuleToImportFrom: filtered out 10 modules by package.json contents
+Info 605  [18:48:10.919] forEachExternalModuleToImportFrom: filtered out 76 modules by package.json contents
+Info 606  [18:48:10.919] forEachExternalModuleToImportFrom autoImportProvider: 22
+Info 607  [18:48:10.920] getSymbolsFromOtherSourceFileExports: 36
+Info 608  [18:48:10.925] getCompletionData: Semantic work: 46
+Info 609  [18:48:10.964] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 38
+Info 610  [18:48:11.430] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 611  [18:48:11.455] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 12 structureChanged: false Elapsed: 25ms
+Info 612  [18:48:11.456] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 613  [18:48:11.815] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 614  [18:48:11.838] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 13 structureChanged: false Elapsed: 22ms
+Info 615  [18:48:11.838] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 616  [18:48:11.873] getCompletionData: Get current token: 0
+Info 617  [18:48:11.873] getCompletionData: Is inside comment: 0
+Info 618  [18:48:11.873] getCompletionData: Get previous token 1: 0
+Info 619  [18:48:11.873] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 620  [18:48:11.876] getCompletionData: Semantic work: 3
+Info 621  [18:48:11.891] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 622  [18:49:46.487] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 623  [18:49:46.550] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 14 structureChanged: false Elapsed: 63ms
+Info 624  [18:49:46.550] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 625  [18:53:35.897] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 626  [18:53:35.936] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 15 structureChanged: false Elapsed: 38ms
+Info 627  [18:53:35.936] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 628  [18:54:0.144] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 629  [18:54:0.184] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 16 structureChanged: false Elapsed: 39ms
+Info 630  [18:54:0.184] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 631  [18:54:1.583] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 632  [18:54:1.619] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 17 structureChanged: false Elapsed: 35ms
+Info 633  [18:54:1.619] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 634  [18:59:55.11] Search path: /Users/zusoomro/code/cis400/api/migrations
+Info 635  [18:59:55.11] For info: /Users/zusoomro/code/cis400/api/migrations/20201018225503_password.ts :: Config file name: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 636  [18:59:55.12] Starting updateGraphWorker: Project: /dev/null/inferredProject2*
+Info 637  [18:59:55.639] Finishing updateGraphWorker: Project: /dev/null/inferredProject2* Version: 1 structureChanged: true Elapsed: 627ms
+Info 638  [18:59:55.639] Project '/dev/null/inferredProject2*' (Inferred)
+Info 639  [18:59:55.639] 	Files (101)
+
+Info 640  [18:59:55.639] -----------------------------------------------
+Info 641  [18:59:55.669] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject3*
+Info 642  [18:59:56.71] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject3* Version: 1 structureChanged: true Elapsed: 402ms
+Info 643  [18:59:56.71] Project '/dev/null/autoImportProviderProject3*' (AutoImportProvider)
+Info 644  [18:59:56.71] 	Files (130)
+
+Info 645  [18:59:56.71] -----------------------------------------------
+Info 646  [19:5:13.569] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 647  [19:5:13.615] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 18 structureChanged: false Elapsed: 45ms
+Info 648  [19:5:13.615] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 649  [19:5:20.293] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 650  [19:5:20.328] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 19 structureChanged: false Elapsed: 35ms
+Info 651  [19:5:20.328] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 652  [19:5:20.353] getCompletionData: Get current token: 0
+Info 653  [19:5:20.353] getCompletionData: Is inside comment: 0
+Info 654  [19:5:20.353] getCompletionData: Get previous token 1: 0
+Info 655  [19:5:20.353] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 656  [19:5:20.362] getCompletionData: Semantic work: 9
+Info 657  [19:5:20.365] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 658  [19:5:21.722] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 659  [19:5:21.751] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 20 structureChanged: false Elapsed: 29ms
+Info 660  [19:5:21.752] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 661  [19:5:22.170] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 662  [19:5:22.201] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 21 structureChanged: false Elapsed: 31ms
+Info 663  [19:5:22.201] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 664  [19:5:22.772] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 665  [19:5:22.807] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 22 structureChanged: false Elapsed: 34ms
+Info 666  [19:5:22.807] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 667  [19:5:24.740] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 668  [19:5:24.772] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 23 structureChanged: false Elapsed: 32ms
+Info 669  [19:5:24.772] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 670  [19:5:24.838] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 671  [19:5:24.875] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 24 structureChanged: false Elapsed: 37ms
+Info 672  [19:5:24.875] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 673  [19:5:24.929] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 674  [19:5:25.27] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 25 structureChanged: false Elapsed: 98ms
+Info 675  [19:5:25.27] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 676  [19:5:25.37] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 677  [19:5:25.147] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 26 structureChanged: false Elapsed: 110ms
+Info 678  [19:5:25.147] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 679  [19:5:25.150] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 680  [19:5:25.171] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 27 structureChanged: false Elapsed: 21ms
+Info 681  [19:5:25.171] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 682  [19:5:25.462] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 683  [19:5:25.482] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 28 structureChanged: false Elapsed: 20ms
+Info 684  [19:5:25.482] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 685  [19:5:25.714] getCompletionData: Get current token: 0
+Info 686  [19:5:25.714] getCompletionData: Is inside comment: 0
+Info 687  [19:5:25.715] getCompletionData: Get previous token 1: 1
+Info 688  [19:5:25.715] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 689  [19:5:25.722] getSymbolsFromOtherSourceFileExports: Using cached list
+Info 690  [19:5:25.730] getCompletionData: Semantic work: 15
+Info 691  [19:5:25.750] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 20
+Info 692  [19:5:27.969] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 693  [19:5:27.998] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 29 structureChanged: false Elapsed: 29ms
+Info 694  [19:5:27.999] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 695  [19:5:28.42] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 696  [19:5:28.77] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 30 structureChanged: false Elapsed: 35ms
+Info 697  [19:5:28.77] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 698  [19:5:28.284] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 699  [19:5:28.329] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 31 structureChanged: false Elapsed: 45ms
+Info 700  [19:5:28.329] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 701  [19:5:28.347] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 702  [19:5:28.369] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 32 structureChanged: false Elapsed: 22ms
+Info 703  [19:5:28.369] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 704  [19:5:28.443] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 705  [19:5:28.476] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 33 structureChanged: false Elapsed: 33ms
+Info 706  [19:5:28.476] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 707  [19:5:31.517] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 708  [19:5:31.543] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 34 structureChanged: false Elapsed: 26ms
+Info 709  [19:5:31.543] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 710  [19:5:31.763] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 711  [19:5:31.793] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 35 structureChanged: false Elapsed: 30ms
+Info 712  [19:5:31.793] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 713  [19:5:31.871] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 714  [19:5:31.897] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 36 structureChanged: false Elapsed: 26ms
+Info 715  [19:5:31.897] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 716  [19:5:32.120] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 717  [19:5:32.153] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 37 structureChanged: false Elapsed: 33ms
+Info 718  [19:5:32.153] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 719  [19:5:32.944] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 720  [19:5:32.969] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 38 structureChanged: false Elapsed: 25ms
+Info 721  [19:5:32.969] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 722  [19:5:39.86] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 723  [19:5:39.108] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 39 structureChanged: false Elapsed: 22ms
+Info 724  [19:5:39.108] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 725  [19:5:41.198] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 726  [19:5:41.226] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 40 structureChanged: false Elapsed: 28ms
+Info 727  [19:5:41.226] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 728  [19:5:42.644] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 729  [19:5:42.667] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 41 structureChanged: false Elapsed: 23ms
+Info 730  [19:5:42.667] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 731  [19:5:43.677] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 732  [19:5:43.705] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 42 structureChanged: false Elapsed: 27ms
+Info 733  [19:5:43.705] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 734  [19:6:18.804] Search path: /Users/zusoomro/code/cis400/api/migrations
+Info 735  [19:6:18.805] For info: /Users/zusoomro/code/cis400/api/migrations/20201022200133_pods_ownerid.ts :: Config file name: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 736  [19:6:18.806] Starting updateGraphWorker: Project: /dev/null/inferredProject3*
+Info 737  [19:6:18.871] Finishing updateGraphWorker: Project: /dev/null/inferredProject3* Version: 1 structureChanged: true Elapsed: 65ms
+Info 738  [19:6:18.871] Project '/dev/null/inferredProject3*' (Inferred)
+Info 739  [19:6:18.871] 	Files (101)
+
+Info 740  [19:6:18.871] -----------------------------------------------
+Info 741  [19:6:18.914] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject4*
+Info 742  [19:6:19.31] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject4* Version: 1 structureChanged: true Elapsed: 117ms
+Info 743  [19:6:19.31] Project '/dev/null/autoImportProviderProject4*' (AutoImportProvider)
+Info 744  [19:6:19.31] 	Files (130)
+
+Info 745  [19:6:19.31] -----------------------------------------------
+Info 746  [19:7:18.678] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 747  [19:7:18.744] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 43 structureChanged: false Elapsed: 66ms
+Info 748  [19:7:18.744] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 749  [19:11:0.419] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 750  [19:11:0.458] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 44 structureChanged: false Elapsed: 39ms
+Info 751  [19:11:0.458] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 752  [19:11:4.338] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 753  [19:11:4.366] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 45 structureChanged: false Elapsed: 27ms
+Info 754  [19:11:4.366] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 755  [19:11:8.402] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 756  [19:11:8.425] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 46 structureChanged: false Elapsed: 23ms
+Info 757  [19:11:8.426] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 758  [19:12:2.242] Search path: /Users/zusoomro/code/cis400/api/migrations
+Info 759  [19:12:2.242] For info: /Users/zusoomro/code/cis400/api/migrations/20201022195341_add_ownerid.ts :: Config file name: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 760  [19:12:2.242] Starting updateGraphWorker: Project: /dev/null/inferredProject4*
+Info 761  [19:12:2.326] Finishing updateGraphWorker: Project: /dev/null/inferredProject4* Version: 1 structureChanged: true Elapsed: 84ms
+Info 762  [19:12:2.326] Project '/dev/null/inferredProject4*' (Inferred)
+Info 763  [19:12:2.326] 	Files (101)
+
+Info 764  [19:12:2.326] -----------------------------------------------
+Info 765  [19:12:2.361] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject5*
+Info 766  [19:12:2.476] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject5* Version: 1 structureChanged: true Elapsed: 115ms
+Info 767  [19:12:2.476] Project '/dev/null/autoImportProviderProject5*' (AutoImportProvider)
+Info 768  [19:12:2.476] 	Files (130)
+
+Info 769  [19:12:2.476] -----------------------------------------------
+Info 770  [19:16:23.196] Search path: /Users/zusoomro/code/cis400/api/migrations
+Info 771  [19:16:23.196] For info: /Users/zusoomro/code/cis400/api/migrations/20201022195341_add_ownerid.ts :: Config file name: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 772  [19:16:23.196] Starting updateGraphWorker: Project: /dev/null/inferredProject4*
+Info 773  [19:16:23.197] Finishing updateGraphWorker: Project: /dev/null/inferredProject4* Version: 2 structureChanged: false Elapsed: 1ms
+Info 774  [19:16:23.197] Project '/dev/null/inferredProject4*' (Inferred)
+Info 775  [19:16:23.197] 	Files (101)
+
+Info 776  [19:16:23.197] -----------------------------------------------
+Info 777  [19:16:23.197] Project '/dev/null/autoImportProviderProject5*' (AutoImportProvider)
+Info 778  [19:16:23.197] 	Files (130)
+
+Info 779  [19:16:23.197] -----------------------------------------------
+Info 780  [19:16:25.248] Starting updateGraphWorker: Project: /dev/null/inferredProject4*
+Info 781  [19:16:25.300] Finishing updateGraphWorker: Project: /dev/null/inferredProject4* Version: 3 structureChanged: true Elapsed: 52ms
+Info 782  [19:16:25.300] Different program with same set of files:: oldProgram.structureIsReused:: 1
+Info 783  [19:16:41.814] Starting updateGraphWorker: Project: /dev/null/inferredProject4*
+Info 784  [19:16:41.824] Finishing updateGraphWorker: Project: /dev/null/inferredProject4* Version: 4 structureChanged: false Elapsed: 9ms
+Info 785  [19:16:41.824] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 786  [19:16:44.175] Starting updateGraphWorker: Project: /dev/null/inferredProject4*
+Info 787  [19:16:44.201] Finishing updateGraphWorker: Project: /dev/null/inferredProject4* Version: 5 structureChanged: true Elapsed: 26ms
+Info 788  [19:16:44.201] Different program with same set of files:: oldProgram.structureIsReused:: 1
+Info 789  [19:16:44.908] Starting updateGraphWorker: Project: /dev/null/inferredProject4*
+Info 790  [19:16:44.924] Finishing updateGraphWorker: Project: /dev/null/inferredProject4* Version: 6 structureChanged: false Elapsed: 15ms
+Info 791  [19:16:44.924] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 792  [19:19:39.816] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 793  [19:19:39.830] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 117 structureChanged: false Elapsed: 14ms
+Info 794  [19:19:39.830] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 795  [19:19:41.158] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 796  [19:19:41.167] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 118 structureChanged: false Elapsed: 8ms
+Info 797  [19:19:41.168] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 798  [19:19:41.264] getCompletionData: Get current token: 0
+Info 799  [19:19:41.264] getCompletionData: Is inside comment: 0
+Info 800  [19:19:41.264] getCompletionData: Get previous token 1: 0
+Info 801  [19:19:41.264] getCompletionData: Get previous token 2: 0
+Info 802  [19:19:41.264] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 803  [19:19:41.268] getSymbolsFromOtherSourceFileExports: Recomputing list
+Info 804  [19:19:41.287] forEachExternalModuleToImportFrom: filtered out 18 modules by package.json contents
+Info 805  [19:19:41.296] forEachExternalModuleToImportFrom: filtered out 67 modules by package.json contents
+Info 806  [19:19:41.296] forEachExternalModuleToImportFrom autoImportProvider: 9
+Info 807  [19:19:41.296] getSymbolsFromOtherSourceFileExports: 28
+Info 808  [19:19:41.300] getCompletionData: Semantic work: 36
+Info 809  [19:19:41.304] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 3
+Info 810  [19:19:41.609] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 811  [19:19:41.621] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 119 structureChanged: false Elapsed: 12ms
+Info 812  [19:19:41.621] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 813  [19:19:41.621] getCompletionData: Get current token: 0
+Info 814  [19:19:41.621] getCompletionData: Is inside comment: 0
+Info 815  [19:19:41.621] getCompletionData: Get previous token 1: 0
+Info 816  [19:19:41.621] getCompletionData: Get previous token 2: 0
+Info 817  [19:19:41.621] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 818  [19:19:41.630] getSymbolsFromOtherSourceFileExports: Using cached list
+Info 819  [19:19:41.634] getCompletionData: Semantic work: 13
+Info 820  [19:19:41.642] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 7
+Info 821  [19:19:41.807] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 822  [19:19:41.816] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 120 structureChanged: false Elapsed: 9ms
+Info 823  [19:19:41.816] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 824  [19:19:41.816] getCompletionData: Get current token: 0
+Info 825  [19:19:41.816] getCompletionData: Is inside comment: 0
+Info 826  [19:19:41.816] getCompletionData: Get previous token 1: 0
+Info 827  [19:19:41.816] getCompletionData: Get previous token 2: 0
+Info 828  [19:19:41.816] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 829  [19:19:41.821] getSymbolsFromOtherSourceFileExports: Using cached list
+Info 830  [19:19:41.824] getCompletionData: Semantic work: 8
+Info 831  [19:19:41.831] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 5
+Info 832  [19:19:42.672] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 833  [19:19:42.680] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 121 structureChanged: false Elapsed: 8ms
+Info 834  [19:19:42.680] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 835  [19:19:55.920] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 836  [19:19:55.928] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 122 structureChanged: false Elapsed: 8ms
+Info 837  [19:19:55.928] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 838  [19:19:56.24] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 839  [19:19:56.33] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 123 structureChanged: false Elapsed: 9ms
+Info 840  [19:19:56.33] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 841  [19:19:56.524] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 842  [19:19:56.529] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 124 structureChanged: false Elapsed: 5ms
+Info 843  [19:19:56.530] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 844  [19:19:57.515] forEachExternalModuleToImportFrom: filtered out 18 modules by package.json contents
+Info 845  [19:19:57.520] forEachExternalModuleToImportFrom: filtered out 67 modules by package.json contents
+Info 846  [19:19:57.520] forEachExternalModuleToImportFrom autoImportProvider: 5
+Info 847  [19:19:57.810] forEachExternalModuleToImportFrom: filtered out 18 modules by package.json contents
+Info 848  [19:19:57.815] forEachExternalModuleToImportFrom: filtered out 67 modules by package.json contents
+Info 849  [19:19:57.815] forEachExternalModuleToImportFrom autoImportProvider: 5
+Info 850  [19:19:57.821] forEachExternalModuleToImportFrom: filtered out 18 modules by package.json contents
+Info 851  [19:19:57.831] forEachExternalModuleToImportFrom: filtered out 67 modules by package.json contents
+Info 852  [19:19:57.831] forEachExternalModuleToImportFrom autoImportProvider: 10
+Info 853  [19:19:59.457] forEachExternalModuleToImportFrom: filtered out 18 modules by package.json contents
+Info 854  [19:19:59.463] forEachExternalModuleToImportFrom: filtered out 67 modules by package.json contents
+Info 855  [19:19:59.463] forEachExternalModuleToImportFrom autoImportProvider: 6
+Info 856  [19:20:0.36] forEachExternalModuleToImportFrom: filtered out 18 modules by package.json contents
+Info 857  [19:20:0.40] forEachExternalModuleToImportFrom: filtered out 67 modules by package.json contents
+Info 858  [19:20:0.40] forEachExternalModuleToImportFrom autoImportProvider: 4
+Info 859  [19:20:0.340] forEachExternalModuleToImportFrom: filtered out 18 modules by package.json contents
+Info 860  [19:20:0.347] forEachExternalModuleToImportFrom: filtered out 67 modules by package.json contents
+Info 861  [19:20:0.347] forEachExternalModuleToImportFrom autoImportProvider: 7
+Info 862  [19:20:1.137] forEachExternalModuleToImportFrom: filtered out 18 modules by package.json contents
+Info 863  [19:20:1.143] forEachExternalModuleToImportFrom: filtered out 67 modules by package.json contents
+Info 864  [19:20:1.143] forEachExternalModuleToImportFrom autoImportProvider: 6
+Info 865  [19:20:3.545] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 866  [19:20:3.554] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 125 structureChanged: false Elapsed: 9ms
+Info 867  [19:20:3.554] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 868  [19:20:39.994] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 869  [19:20:40.2] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 126 structureChanged: false Elapsed: 8ms
+Info 870  [19:20:40.2] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 871  [19:20:40.115] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 872  [19:20:40.121] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 127 structureChanged: false Elapsed: 6ms
+Info 873  [19:20:40.121] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 874  [19:20:40.997] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 875  [19:20:41.5] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 128 structureChanged: false Elapsed: 8ms
+Info 876  [19:20:41.5] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 877  [19:20:41.89] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 878  [19:20:41.98] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 129 structureChanged: false Elapsed: 8ms
+Info 879  [19:20:41.98] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 880  [19:20:41.698] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 881  [19:20:41.705] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 130 structureChanged: false Elapsed: 7ms
+Info 882  [19:20:41.705] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 883  [19:20:41.785] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 884  [19:20:41.791] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 131 structureChanged: false Elapsed: 6ms
+Info 885  [19:20:41.791] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 886  [19:20:42.603] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 887  [19:20:42.613] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 132 structureChanged: false Elapsed: 10ms
+Info 888  [19:20:42.613] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 889  [19:20:42.702] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 890  [19:20:42.707] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 133 structureChanged: false Elapsed: 5ms
+Info 891  [19:20:42.707] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 892  [19:20:42.928] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 893  [19:20:42.940] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 134 structureChanged: false Elapsed: 11ms
+Info 894  [19:20:42.940] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 895  [19:20:43.8] getCompletionData: Get current token: 0
+Info 896  [19:20:43.8] getCompletionData: Is inside comment: 0
+Info 897  [19:20:43.8] getCompletionData: Get previous token 1: 0
+Info 898  [19:20:43.8] getCompletionData: Get previous token 2: 0
+Info 899  [19:20:43.8] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 900  [19:20:43.8] getCompletionData: Semantic work: 0
+Info 901  [19:20:43.10] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 2
+Info 902  [19:20:43.673] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 903  [19:20:43.685] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 135 structureChanged: false Elapsed: 12ms
+Info 904  [19:20:43.685] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 905  [19:20:43.751] getCompletionData: Get current token: 0
+Info 906  [19:20:43.751] getCompletionData: Is inside comment: 0
+Info 907  [19:20:43.751] getCompletionData: Get previous token 1: 0
+Info 908  [19:20:43.751] getCompletionData: Get previous token 2: 0
+Info 909  [19:20:43.751] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 910  [19:20:43.752] getCompletionData: Semantic work: 0
+Info 911  [19:20:43.752] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 912  [19:20:44.923] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 913  [19:20:44.931] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 136 structureChanged: false Elapsed: 8ms
+Info 914  [19:20:44.931] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 915  [19:20:45.12] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 916  [19:20:45.18] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 137 structureChanged: false Elapsed: 6ms
+Info 917  [19:20:45.18] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 918  [19:20:45.313] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 919  [19:20:45.325] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 138 structureChanged: false Elapsed: 12ms
+Info 920  [19:20:45.325] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 921  [19:20:45.390] getCompletionData: Get current token: 0
+Info 922  [19:20:45.390] getCompletionData: Is inside comment: 0
+Info 923  [19:20:45.390] getCompletionData: Get previous token 1: 0
+Info 924  [19:20:45.390] getCompletionData: Get previous token 2: 0
+Info 925  [19:20:45.391] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 926  [19:20:45.391] getCompletionData: Semantic work: 0
+Info 927  [19:20:45.391] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 928  [19:20:46.97] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 929  [19:20:46.104] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 139 structureChanged: false Elapsed: 7ms
+Info 930  [19:20:46.104] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 931  [19:20:46.177] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 932  [19:20:46.182] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 140 structureChanged: false Elapsed: 5ms
+Info 933  [19:20:46.182] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 934  [19:20:47.161] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 935  [19:20:47.168] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 141 structureChanged: false Elapsed: 7ms
+Info 936  [19:20:47.168] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 937  [19:20:47.236] getCompletionData: Get current token: 0
+Info 938  [19:20:47.236] getCompletionData: Is inside comment: 0
+Info 939  [19:20:47.236] getCompletionData: Get previous token 1: 0
+Info 940  [19:20:47.236] getCompletionData: Get previous token 2: 0
+Info 941  [19:20:47.236] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 942  [19:20:47.237] getCompletionData: Semantic work: 1
+Info 943  [19:20:47.237] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 944  [19:20:49.805] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 945  [19:20:49.811] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 142 structureChanged: false Elapsed: 6ms
+Info 946  [19:20:49.811] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 947  [19:20:50.685] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 948  [19:20:50.694] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 143 structureChanged: false Elapsed: 9ms
+Info 949  [19:20:50.694] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 950  [19:20:50.739] getCompletionData: Get current token: 0
+Info 951  [19:20:50.739] getCompletionData: Is inside comment: 0
+Info 952  [19:20:50.739] getCompletionData: Get previous token 1: 0
+Info 953  [19:20:50.740] getCompletionData: Get previous token 2: 1
+Info 954  [19:20:50.740] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 955  [19:20:50.744] getSymbolsFromOtherSourceFileExports: Using cached list
+Info 956  [19:20:50.750] getCompletionData: Semantic work: 10
+Info 957  [19:20:50.753] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 3
+Info 958  [19:20:51.451] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 959  [19:20:51.458] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 144 structureChanged: false Elapsed: 7ms
+Info 960  [19:20:51.458] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 961  [19:20:51.945] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 962  [19:20:51.952] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 145 structureChanged: false Elapsed: 7ms
+Info 963  [19:20:51.952] Different program with same set of files:: oldProgram.structureIsReused:: 2
+Info 964  [19:20:52.22] getCompletionData: Get current token: 0
+Info 965  [19:20:52.22] getCompletionData: Is inside comment: 0
+Info 966  [19:20:52.22] getCompletionData: Get previous token 1: 0
+Info 967  [19:20:52.22] getCompletionsAtPosition: isCompletionListBlocker: 0
+Info 968  [19:20:52.23] getCompletionData: Semantic work: 1
+Info 969  [19:20:52.24] getCompletionsAtPosition: getCompletionEntriesFromSymbols: 0
+Info 970  [19:20:53.302] Starting updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json
+Info 971  [19:20:53.316] Finishing updateGraphWorker: Project: /Users/zusoomro/code/cis400/api/tsconfig.json Version: 146 structureChanged: false Elapsed: 14ms
+Info 972  [19:20:53.316] Different program with same set of files:: oldProgram.structureIsReused:: 2
