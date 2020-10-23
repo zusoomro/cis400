@@ -42,8 +42,10 @@ const EventsNavigator: React.FC<{}> = () => {
           startTime: "", 
           endTime: "", 
           notes: "" }}
-        onSubmit={(values) => {
-          createEvent(values);
+          // ASYNC IS AT BEGINNING OF THE FUNCTION 
+          // await needs to go before async function call 
+        onSubmit={async(values) => {
+          await createEvent(values);
           console.log(values);
         }}
       >
