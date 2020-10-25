@@ -41,7 +41,11 @@ const Register: React.FC<{}> = () => {
               style={styles.input}
               secureTextEntry
             />
-            <Button onPress={handleSubmit} title="Submit" />
+            <Button
+              accessibilityLabel="Submit"
+              onPress={handleSubmit}
+              title="Submit"
+            />
           </View>
         )}
       </Formik>
