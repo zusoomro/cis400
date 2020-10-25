@@ -9,8 +9,13 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 
+interface Props {
+  navigation: {
+    navigate: (screen : string) => void;
+  }
+}
 
-const CreatePod: React.FC<{}> = () => { 
+const CreatePod: React.FC<Props> = ({navigation}) => { 
   return (
   <SafeAreaView style={styles.container}>
     <Formik
@@ -18,6 +23,7 @@ const CreatePod: React.FC<{}> = () => {
         onSubmit={(values) => {
           console.log(values);
           createPodOnSubmit(values);
+          navigation.navigate('PodsHomeScreen')
         }}
       >
         {({handleChange, handleBlur, handleSubmit, values }) => (
@@ -52,14 +58,13 @@ const createPodOnSubmit = async (values) => {
     const pod = await res.json();
 
     console.log("pod", pod);
-
     return pod;
   } catch (error) {
     console.log(`error creating pod`, error);
     return null;
   }
+  
 };
-
 
 const styles = StyleSheet.create({
   container: {

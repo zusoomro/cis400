@@ -21,11 +21,12 @@ podsRouter.post("/", async (req, res) => {
     console.log('Created pod: ', pod);
 });
 
+// currently the only members of a pod are an owner which is why we search
+// for based on owner id here -- this will obviously change once we add members
 podsRouter.get("/:ownerId", async (req, res) => {
-    console.log('/pods/ownerId');
     const inputOwnerId = req.params.ownerId;
-    console.log('inputOwnerId', inputOwnerId);
     const podForUser = await Pod.query().where("ownerId", inputOwnerId);
+    console.log(podForUser);
     res.json(podForUser);
 });
 
