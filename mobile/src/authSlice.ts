@@ -8,6 +8,7 @@ if (__DEV__) {
 } else {
   apiUrl = "http://wigo-api.herokuapp.com";
 }
+console.log(apiUrl);
 
 const initialState = {
   authenticated: true,
@@ -55,6 +56,8 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
       body: JSON.stringify(data),
     });
 
+    console.log("res", res);
+
     const json = await res.json();
 
     await SecureStore.setItemAsync("wigo-auth-token", json.token);
@@ -79,6 +82,8 @@ export const register = createAsyncThunk("auth/register", async (data, api) => {
     const json = await res.json();
 
     await SecureStore.setItemAsync("wigo-auth-token", json.token);
+
+    console.log("json", json);
 
     return json;
   } catch (ex) {
@@ -108,6 +113,7 @@ const authSlice = createSlice({
 
     // Fulfilled
     [register.fulfilled]: (state, action) => {
+      console.log("updating store");
       state.token = action.payload.token;
       state.user = action.payload.user;
       state.authenticated = true;
