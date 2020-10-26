@@ -6,11 +6,12 @@ import {
   Platform,
   StyleSheet,
 } from "react-native";
+import moment from "moment";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const DatePicker: React.FC<{}> = ({ ...props }) => {
   // Used for user interaction with datepicker
-  const [date, setDate] = useState(props.date);
+  const [date, setDate] = useState(props.date); 
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
 
@@ -44,10 +45,10 @@ const DatePicker: React.FC<{}> = ({ ...props }) => {
       <View style={styles.dateTimeRow}>
         {/* // Date  */}
         <Text onPress={showDatepicker}>
-          {dayNumToString(date.getDay())}, {monthNumToString(date.getMonth())} {date.getDate()}
+          {moment(date).format("ddd, MMM D")}
         </Text>
         {/* // Time  */}
-        <Text onPress={showTimepicker}>   {date.toLocaleTimeString('en-US')}</Text>
+        <Text onPress={showTimepicker}> {moment(date).format(" h:mmA")}</Text>
       </View>
 
       {show && (
@@ -64,58 +65,6 @@ const DatePicker: React.FC<{}> = ({ ...props }) => {
       )}
     </View>
   );
-};
-
-const dayNumToString = (day: number) => {
-  switch (day) {
-    case 0:
-      return "Sunday";
-    case 1:
-      return "Monday";
-    case 2:
-      return "Tuesday";
-    case 3:
-      return "Wednesday";
-    case 4:
-      return "Thursday";
-    case 5:
-      return "Friday";
-    case 6:
-      return "Saturday";
-    default:
-      console.log("Error: inputted invalid day to dayNumToString");
-  }
-};
-
-const monthNumToString = (month: number) => {
-  switch (month) {
-    case 0:
-      return "Jan";
-    case 1:
-      return "Feb";
-    case 2:
-      return "Mar";
-    case 3:
-      return "Apr";
-    case 4:
-      return "May";
-    case 5:
-      return "Jun";
-    case 6:
-      return "Jul";
-    case 7:
-      return "Aug";
-    case 8:
-      return "Sep";
-    case 9:
-      return "Oct";
-    case 10:
-      return "Nov";
-    case 11:
-      return "Dec";
-    default:
-      console.log("Error: inputted invalid month to monthNumToString");
-  }
 };
 
 

@@ -14,12 +14,12 @@ eventRouter.post("/", async (req, res) => {
   const { name, ownerId, address, startTime, endTime, notes } = req.body;
 
   const event = await Event.query().insert({
-    ownerId: ownerId,
-    name: name,
-    address: address,
+    ownerId,
+    name,
+    address,
     start_time: startTime,
     end_time: endTime,
-    notes: notes,
+    notes,
   });
 
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
