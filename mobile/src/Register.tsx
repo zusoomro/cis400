@@ -10,7 +10,7 @@ import {
 import { Formik } from "formik";
 import { register } from "./authSlice";
 import { useDispatch } from "react-redux";
-import sharedStyles from "./styles";
+import sharedStyles from "./sharedStyles";
 
 const Register: React.FC<{}> = () => {
   const dispatch = useDispatch();
