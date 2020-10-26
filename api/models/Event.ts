@@ -8,7 +8,7 @@ export default class Event extends Model {
   start_time!: Date;
   end_time!: Date;
   notes!: string;
-  
+
   static get tableName() {
     return "events";
   }

@@ -17,7 +17,7 @@ eventRouter.post("/", async (req, res) => {
     ownerId: ownerId,
     name: name,
     address: address,
-    start_time: startTime, 
+    start_time: startTime,
     end_time: endTime,
     notes: notes,
   });
