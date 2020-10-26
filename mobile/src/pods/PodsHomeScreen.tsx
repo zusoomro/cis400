@@ -8,11 +8,10 @@ import { useFocusEffect } from '@react-navigation/native';
 const PodsHomeScreen = ({ navigation }) => {
   const currUserId = 5; // will change when Zulfi sets local state
 
-  const [pod, setPod] = useState(null);
-
   // podNameForUser will store the pod of the current user 
   const [podNameForUser, setPodNameForUser] = useState("");
-  
+  const [pod, setPod] = useState(null);
+
   interface Pod {
     id: number;
     ownerId: number;
