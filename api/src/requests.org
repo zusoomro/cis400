@@ -19,21 +19,22 @@ Content-Type: application/json
 #+RESULTS:
 #+BEGIN_SRC js
 {
-  "errors": [
-    {
-      "msg": "User already exists"
-    }
-  ]
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0fSwiaWF0IjoxNjAzNzI1MjIxLCJleHAiOjE2MDQwODUyMjF9.RLEvpRkAIuecm0SXFtVe-Jw058sQGERf7cW_x2BlDko",
+  "user": {
+    "email": "zulfiqar.soomro@ecountabl.co",
+    "password": "$2b$10$OdX5XaVqva1nPREGsNcxLO9g9AVTE1NqDSJoBmVyBy49206dttJcy",
+    "id": 4
+  }
 }
 // POST http://localhost:8000/users
-// HTTP/1.1 400 Bad Request
+// HTTP/1.1 200 OK
 // X-Powered-By: Express
 // Content-Type: application/json; charset=utf-8
-// Content-Length: 42
-// ETag: W/"2a-VBiGuTvIunFL9XlHdXrotU2H1qA"
-// Date: Mon, 19 Oct 2020 03:13:54 GMT
+// Content-Length: 290
+// ETag: W/"122-b+Pyur7NtA/+zeUipJ+NrcPUq+A"
+// Date: Mon, 26 Oct 2020 15:13:41 GMT
 // Connection: keep-alive
-// Request duration: 0.030943s
+// Request duration: 0.134611s
 #+END_SRC
 
 ** Login
@@ -61,4 +62,35 @@ Content-Type: application/json
 // Date: Mon, 19 Oct 2020 03:15:35 GMT
 // Connection: keep-alive
 // Request duration: 0.067611s
+#+END_SRC
+
+** Load User
+
+#+begin_src restclient
+GET http://localhost:8000/users/loadUser
+Content-Type: application/json
+x-auth-token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0fSwiaWF0IjoxNjAzNzI1MjIxLCJleHAiOjE2MDQwODUyMjF9.RLEvpRkAIuecm0SXFtVe-Jw058sQGERf7cW_x2BlDko
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "user": [
+    {
+      "id": 4,
+      "email": "zulfiqar.soomro@ecountabl.co",
+      "podId": null,
+      "password": "$2b$10$OdX5XaVqva1nPREGsNcxLO9g9AVTE1NqDSJoBmVyBy49206dttJcy"
+    }
+  ]
+}
+// GET http://localhost:8000/users/loadUser
+// HTTP/1.1 200 OK
+// X-Powered-By: Express
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 145
+// ETag: W/"91-MTlQ9VUhYH1v8lFQDi061hTlG8M"
+// Date: Mon, 26 Oct 2020 15:15:25 GMT
+// Connection: keep-alive
+// Request duration: 0.009105s
 #+END_SRC

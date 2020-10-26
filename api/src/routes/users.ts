@@ -98,12 +98,12 @@ usersRouter.get(
   [auth],
   async (req: express.Request, res: express.Response) => {
     try {
-      const user = await User.query().where("id", (req as AuthRequest).user.id);
-
-      console.log("request.user", (req as AuthRequest).user);
-      console.log("user", user);
-
-      res.json({ user });
+      const userList = await User.query().where(
+        "id",
+        (req as AuthRequest).user.id
+      );
+      const firstUser = userList[0];
+      res.json({ user: firstUser });
     } catch (err) {
       console.error(err);
       res.status(500).send("Server Error");
