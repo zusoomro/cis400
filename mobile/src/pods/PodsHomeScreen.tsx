@@ -20,8 +20,10 @@ const PodsHomeScreen = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
+      console.log('calling http://localhost:8000/pods/currUsersPod');
       fetch(
-        `http://localhost:8000/pods/${currUserId}`,
+        //`http://localhost:8000/pods/${currUserId}`,
+        'http://localhost:8000/pods/currUsersPod',
         {
           method: "GET", 
         }
