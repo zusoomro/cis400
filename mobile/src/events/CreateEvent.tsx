@@ -1,8 +1,8 @@
-import { Formik, useField, useFormikContext } from "formik";
+import { Formik } from "formik";
 import React, {useState} from "react";
+import {useSelector } from "react-redux";
 import {
   View,
-  Text,
   TextInput,
   Button,
   SafeAreaView,
@@ -13,6 +13,7 @@ import DatePicker from "./DatePicker";
 const apiUrl = "http://localhost:8000";
 
 const CreateEvent: React.FC<{}> = () => {
+  const currentUser = useSelector(state => state.auth.user);
   // Start time = current time 
   const [startTime, setStartTime] = useState(new Date());
   // End time = current time + 1 hour 
@@ -24,6 +25,7 @@ const CreateEvent: React.FC<{}> = () => {
         initialValues= {{
           name: "",
           address: "", 
+          ownerId: currentUser.id,
           startTime: startTime, 
           endTime: endTime, 
           notes: "" }}
@@ -71,11 +73,10 @@ const CreateEvent: React.FC<{}> = () => {
 
 const createEventOnSubmit = async (values): Promise<Event|null> => {
     console.log('createEventOnSubmit');
-    const ownerId = 1; // THIS WILL BE THE CURRENT USER ID
   
     // Create event to be put in database 
     const data = {
-      ownerId: ownerId, 
+      ownerId: values.ownerId, 
       name: values.name,
       address: values.address,
       startTime: values.startTime,
@@ -83,7 +84,7 @@ const createEventOnSubmit = async (values): Promise<Event|null> => {
       notes: values.notes,
     };
 
-    console.log(data);
+    console.log("Data for POST request", data);
   
     try {
       const res = await fetch("http://localhost:8000/events", {
@@ -95,7 +96,7 @@ const createEventOnSubmit = async (values): Promise<Event|null> => {
       });
       
       const event = await res.json();
-      console.log("event", event);
+      console.log("event after post request", event);
       return event;
     } catch (error) {
       console.log(`error creating new event`, error);
