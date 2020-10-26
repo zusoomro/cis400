@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useFocusEffect } from '@react-navigation/native';
+import * as SecureStore from "expo-secure-store";
 
 const PodsHomeScreen = ({ navigation }) => {
   const currUserId = 5; // will change when Zulfi sets local state
@@ -20,32 +21,39 @@ const PodsHomeScreen = ({ navigation }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log('calling http://localhost:8000/pods/currUsersPod');
-      fetch(
-        //`http://localhost:8000/pods/${currUserId}`,
-        'http://localhost:8000/pods/currUsersPod',
-        {
-          method: "GET", 
-        }
-      )
-        .then(
-          (res) => {
-            return res.json();
-          },
-          (err) => {
-            console.log(err);
+      return async () => {
+        fetch(
+          //`http://localhost:8000/pods/${currUserId}`,
+          'http://localhost:8000/pods/currUsersPod',
+          {
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+              "x-auth-token": (await SecureStore.getItemAsync("wigo-auth-token"))!,
+            },
           }
         ).then(
-          (res) => {
-            if (res[0]) {
-              setPod(res[0]);
-              setPodNameForUser(res[0].name);
-            } else {
-              setPodNameForUser("");
+            (res) => {
+              console.log(res);
+              return res.json();
+            },
+            (err) => {
+              console.log(err);
             }
-          }
-        );
-    }, [currUserId])
+          ).then(
+            (res) => {
+              console.log(res);
+              if (res[0]) {
+                setPod(res[0]);
+                setPodNameForUser(res[0].name);
+              } else {
+                setPodNameForUser("");
+              }
+            }
+          );
+      }
+      
+      
+    }, [])
   );
 
   return (
@@ -65,6 +73,29 @@ const PodsHomeScreen = ({ navigation }) => {
       </SafeAreaView>
   )
 };
+
+// const fetcher = async () => {
+//   console.log('calling http://localhost:8000/pods/currUsersPod');
+//   fetch(
+//     //`http://localhost:8000/pods/${currUserId}`,
+//     'http://localhost:8000/pods/currUsersPod',
+//     {
+//       method: "GET",
+//       headers: {
+//         "Content-Type": "application/json;charset=utf-8",
+//         "x-auth-token": (await SecureStore.getItemAsync("wigo-auth-token"))!,
+//       },
+//     }
+//   ).then(
+//       (res) => {
+//         console.log('res', res);
+//         return res.json();
+//       },
+//       (err) => {
+//         console.log(err);
+//       }
+//     );
+// };
 
 const styles = StyleSheet.create({
     container: {
