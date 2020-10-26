@@ -23,6 +23,7 @@ export const loadUser = createAsyncThunk("auth/loadUser", async (data, api) => {
     const res = await fetch(apiUrl + "/users/loadUser", {
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": await SecureStore.getItemAsync("wigo-auth-token"),
       },
     });
 
@@ -32,6 +33,18 @@ export const loadUser = createAsyncThunk("auth/loadUser", async (data, api) => {
     return api.rejectWithValue(ex.message);
   }
 });
+
+export const logOut = createAsyncThunk(
+  "auth/logout",
+  async (data, api): Promise<string> => {
+    try {
+      await SecureStore.deleteItemAsync("ecountabl-token");
+      return {};
+    } catch (ex) {
+      console.error(`error in logout`, ex);
+    }
+  }
+);
 
 export const loadToken = createAsyncThunk(
   "users/loadToken",
@@ -110,6 +123,9 @@ const authSlice = createSlice({
     [loadToken.pending]: (state, action) => {
       state.loading = true;
     },
+    [logOut.pending]: (state, action) => {
+      state.loading = true;
+    },
 
     // Fulfilled
     [register.fulfilled]: (state, action) => {
@@ -132,6 +148,12 @@ const authSlice = createSlice({
     },
     [loadToken.fulfilled]: (state, action) => {
       state.token = action.payload;
+      state.loading = false;
+    },
+    [logOut.fulfilled]: (state, action) => {
+      state.token = "";
+      state.user = {};
+      state.authenticated = false;
       state.loading = false;
     },
 
