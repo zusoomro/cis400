@@ -1,6 +1,7 @@
 import express from "express";
 import usersRouter from "./routes/users";
 import podsRouter from "./routes/pods";
+import eventsRouter from "./routes/events";
 import initializeDb from "./initializeDb";
 
 initializeDb();
@@ -11,6 +12,8 @@ app.use(express.json());
 app.use("/users", usersRouter);
 
 app.use("/pods", podsRouter);
+
+app.use("/events", eventsRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

@@ -1,12 +1,24 @@
 import React from "react";
-import { View, Text } from "react-native";
+import Schedule from "./Schedule";
+import { SafeAreaView, View, Text, StyleSheet } from "react-native";
 
 const EventsNavigator = () => {
   return (
-    <View>
-      <Text>Events Navigator</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View>
+        <Schedule></Schedule>
+      </View>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    display: "flex",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default EventsNavigator;
