@@ -13,13 +13,12 @@ eventRouter.post("/", async (req, res) => {
   console.log("Calling eventRouter.post");
   const { name, address, startTime, endTime, notes } = req.body;
 
-// events doNT HAVE NAMES YET
   const event = await Event.query().insert({
     ownerId: 1,
     name: name,
     address: address,
-    startTime: startTime, 
-    endTime: endTime,
+    start_time: startTime, 
+    end_time: endTime,
     notes: notes,
   });
 

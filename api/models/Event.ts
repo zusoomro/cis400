@@ -5,8 +5,8 @@ export default class Event extends Model {
   name!: string;
   ownerId!: number;
   address!: string;
-  startTime!: Date;
-  endTime!: Date;
+  start_time!: Date;
+  end_time!: Date;
   notes!: string;
   
   static get tableName() {

@@ -1,5 +1,5 @@
 import { Formik, useField, useFormikContext } from "formik";
-import React from "react";
+import React, {useState} from "react";
 import {
   View,
   Text,
@@ -8,20 +8,24 @@ import {
   SafeAreaView,
   StyleSheet,
 } from "react-native";
-import { useDispatch } from "react-redux";
-import CalendarPicker from "react-native-calendar-picker";
+import DatePicker from "./DatePicker";
 
 const apiUrl = "http://localhost:8000";
 
 const CreateEvent: React.FC<{}> = () => {
+  // Start time = current time 
+  const [startTime, setStartTime] = useState(new Date());
+  // End time = current time + 1 hour 
+  const [endTime, setEndTime] = useState(new Date(Date.now() + 60*60*1000));
+
   return (
     <SafeAreaView style={styles.container}>
       <Formik
         initialValues= {{
           name: "",
           address: "", 
-          startTime: "", 
-          endTime: "", 
+          startTime: startTime, 
+          endTime: endTime, 
           notes: "" }}
         onSubmit={(values) => {
             console.log(values);
@@ -44,20 +48,11 @@ const CreateEvent: React.FC<{}> = () => {
             placeholder="address"
             style={styles.input}
           />
-          <TextInput
-            onChangeText={handleChange("startTime")}
-            onBlur={handleBlur("startTime")}
-            value={values.startTime}
-            placeholder="start time"
-            style={styles.input}
-          /> 
-          <TextInput
-            onChangeText={handleChange("endTime")}
-            onBlur={handleBlur("endTime")}
-            value={values.endTime}
-            placeholder="end time"
-            style={styles.input}
-          /> 
+          {/* Start Time input */}
+          <DatePicker name="startTime" date={startTime}> </DatePicker>
+          {/* End Time input */}
+          <DatePicker name="endTime" date={endTime}> </DatePicker> 
+          
           <TextInput
             onChangeText={handleChange("notes")}
             onBlur={handleBlur("notes")}
@@ -78,15 +73,17 @@ const createEventOnSubmit = async (values): Promise<Event|null> => {
     console.log('createEventOnSubmit');
     const ownerId = 1; // THIS WILL BE THE CURRENT USER ID
   
-    // TODO: NEED TO ADD EVENT NAME TO DATATABLE 
+    // Create event to be put in database 
     const data = {
       ownerId: ownerId, 
       name: values.name,
       address: values.address,
-      start_time: new Date(),
-      end_time: new Date(),
+      startTime: values.startTime,
+      endTime: values.endTime,
       notes: values.notes,
     };
+
+    console.log(data);
   
     try {
       const res = await fetch("http://localhost:8000/events", {
@@ -129,6 +126,5 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
 });
-
 
 export default CreateEvent;
