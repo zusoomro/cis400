@@ -45,7 +45,8 @@ const CreatePod: React.FC<Props> = ({navigation}) => {
 
 const createPodOnSubmit = async (values) => {
   console.log('createPodOnSubmit');
-  const ownerId = 1; // THIS WILL BE THE CURRENT USRR ID
+  // When zulfi pushes his code, we will extra owner from the user token
+  const ownerId = 1; 
   const data = {ownerId: ownerId, name: values.podname};
   try {
     const res = await fetch("http://localhost:8000/pods", {
