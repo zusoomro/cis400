@@ -1,6 +1,7 @@
 import React from "react";
 import { SafeAreaView, StyleSheet} from "react-native";
 import CreateEvent from "./CreateEvent";
+import sharedStyles from "../sharedStyles";
 
 const EventsNavigator: React.FC<{}> = () => {
   // const dispatch = useDispatch();

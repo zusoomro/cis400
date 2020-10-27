@@ -1,11 +1,13 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
-interface AuthRequest extends Request {
-  user?: Object;
+export interface AuthRequest extends Request {
+  user: {
+    id: string;
+  };
 }
 
-const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
+const auth = (req: Request, res: Response, next: NextFunction) => {
   const token = req.header("x-auth-token");
 
   // check if it exists
@@ -19,10 +21,10 @@ const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
       user: { id: string };
     };
 
-    req.user = decoded.user;
+    (req as AuthRequest).user = decoded.user;
     next();
   } catch (err) {
-    res.status(401).json({ msg: "Invalid token." });
+    return res.status(401).json({ msg: "Invalid token." });
   }
 };
 

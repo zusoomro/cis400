@@ -3,7 +3,6 @@ exports.up = function (knex) {
     .createTable("users", (table) => {
       table.increments("id").primary();
       table.string("email");
-      table.integer("podId").unsigned().references("id").inTable("pods");
     })
     .createTable("pods", (table) => {
       table.increments("id").primary();
@@ -17,6 +16,9 @@ exports.up = function (knex) {
       table.datetime("start_time");
       table.datetime("end_time");
       table.string("notes");
+    })
+    .table("users", (table) => {
+      table.integer("podId").unsigned().references("id").inTable("pods");
     });
 };
 
