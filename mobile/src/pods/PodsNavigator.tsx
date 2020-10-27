@@ -1,22 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, StyleSheet, Button, TextInput } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  Button,
+  TextInput,
+} from "react-native";
 import CreatePod from "./CreatePod";
 import { Formik } from "formik";
-
 
 const PodsNavigator = () => {
   const currUserId = 2; // will change when Zulfi sets local state
 
-  // podNameForUser will store the pod of the current user 
+  // podNameForUser will store the pod of the current user
   const [podNameForUser, setPodNameForUser] = useState("");
   useEffect(() => {
     fetch(
       // TO-DO: Figure this out
-  
+
       //`http://localhost:8000/pods/'${currUserId}'`,
       `http://localhost:8000/pods/5`,
       {
-        method: "GET", 
+        method: "GET",
       }
     )
       .then(
@@ -26,15 +32,14 @@ const PodsNavigator = () => {
         (err) => {
           console.log(err);
         }
-      ).then(
-        (res) => {
-          if (res[0]) {
-            setPodNameForUser(res[0].name);
-          } else {
-            setPodNameForUser("");
-          }
+      )
+      .then((res) => {
+        if (res[0]) {
+          setPodNameForUser(res[0].name);
+        } else {
+          setPodNameForUser("");
         }
-      );
+      });
   });
 
   // TO-DO: delete this. Figure out how to render the CreatePod component on button click
@@ -53,14 +58,16 @@ const PodsNavigator = () => {
             {podNameForUser ? (
               <Text>Pod Name: {podNameForUser}</Text>
             ) : (
-              <Button title="Create New Pod" onPress={() => {
-                console.log('Create button was pressed');
-                setCreatePodClicked(true);
-                return;
-              }}>
-              </Button>
+              <Button
+                title="Create New Pod"
+                onPress={() => {
+                  console.log("Create button was pressed");
+                  setCreatePodClicked(true);
+                  return;
+                }}
+              ></Button>
             )}
-            </View>
+          </View>
         )}
       </View>
     </SafeAreaView>
@@ -75,6 +82,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
 
 export default PodsNavigator;
