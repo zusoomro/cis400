@@ -2,7 +2,7 @@ import { Formik } from "formik";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {
-  View,
+  ScrollView,
   TextInput,
   Button,
   SafeAreaView,
@@ -36,7 +36,7 @@ const CreateEvent: React.FC<{}> = () => {
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <View>
+          <ScrollView>
             <TextInput
               onChangeText={handleChange("name")}
               onBlur={handleBlur("name")}
@@ -64,7 +64,7 @@ const CreateEvent: React.FC<{}> = () => {
               style={styles.input}
             />
             <Button onPress={handleSubmit} title="Save" />
-          </View>
+          </ScrollView>
         )}
       </Formik>
 
