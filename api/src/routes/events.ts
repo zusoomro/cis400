@@ -11,28 +11,18 @@ eventRouter.get("/", async (req, res) => {
 
 eventRouter.post("/", async (req, res) => {
   console.log("Calling eventRouter.post");
-  console.log("req.body", req.body);
-  const { name, address, startTime, endTime, notes, ownerId } = req.body;
+  const { name, ownerId, address, startTime, endTime, notes } = req.body;
 
   const event = await Event.query().insert({
     ownerId,
+    name,
     address,
     start_time: startTime,
     end_time: endTime,
     notes,
   });
+
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
-
-  res.status(200).send("hello");
-});
-
-eventRouter.get("/:ownerId", async (req, res) => {
-  console.log("/events/ownerId");
-  const inputOwnerId = req.params.ownerId;
-  console.log("inputOwnerId: ", inputOwnerId);
-  const eventsForUser = await Event.query().where("ownerId", inputOwnerId);
-  console.log(eventsForUser);
-  res.json(eventsForUser);
 });
 
 export default eventRouter;

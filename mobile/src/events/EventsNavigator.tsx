@@ -1,13 +1,13 @@
 import React from "react";
-import Schedule from "./Schedule";
-import { SafeAreaView, View, Text, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet} from "react-native";
+import CreateEvent from "./CreateEvent";
+import sharedStyles from "../sharedStyles";
 
-const EventsNavigator = () => {
+const EventsNavigator: React.FC<{}> = () => {
+  // const dispatch = useDispatch();
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Schedule></Schedule>
-      </View>
+      <CreateEvent/>
     </SafeAreaView>
   );
 };
@@ -20,5 +20,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
 
 export default EventsNavigator;
