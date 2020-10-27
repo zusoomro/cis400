@@ -11,7 +11,7 @@
 POST http://localhost:8000/users
 Content-Type: application/json
 {
-    "email": "zulfiqar.soomro@ecountabl.co",
+    "email": "zulfiqar.soomro@gmail.co",
     "password": "examplePassword"
 }
 #+end_src
@@ -19,22 +19,38 @@ Content-Type: application/json
 #+RESULTS:
 #+BEGIN_SRC js
 {
+<<<<<<< HEAD
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2fSwiaWF0IjoxNjAzNzUzMTg5LCJleHAiOjE2MDQxMTMxODl9.LSkwpl2qT3PCS98hqinzVyKepLlCFa1z_SQTYVZUFXs",
+  "user": {
+    "email": "zulfiqar.soomro@gmail.co",
+    "password": "$2b$10$zTLHxLMfTxGwjmzim82ud.knbC5aeqPHp7qgKB66FQvtQEsLGTIWi",
+    "id": 6
+=======
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0fSwiaWF0IjoxNjAzNzI1MjIxLCJleHAiOjE2MDQwODUyMjF9.RLEvpRkAIuecm0SXFtVe-Jw058sQGERf7cW_x2BlDko",
   "user": {
     "email": "zulfiqar.soomro@ecountabl.co",
     "password": "$2b$10$OdX5XaVqva1nPREGsNcxLO9g9AVTE1NqDSJoBmVyBy49206dttJcy",
     "id": 4
+>>>>>>> 4fc5b53effa7f40421edc603e4ec313de539ebe8
   }
 }
 // POST http://localhost:8000/users
 // HTTP/1.1 200 OK
 // X-Powered-By: Express
 // Content-Type: application/json; charset=utf-8
+<<<<<<< HEAD
+// Content-Length: 286
+// ETag: W/"11e-XVcWn8rwZtCEN3APx1dm1TZ8Gfs"
+// Date: Mon, 26 Oct 2020 22:59:49 GMT
+// Connection: keep-alive
+// Request duration: 0.218048s
+=======
 // Content-Length: 290
 // ETag: W/"122-b+Pyur7NtA/+zeUipJ+NrcPUq+A"
 // Date: Mon, 26 Oct 2020 15:13:41 GMT
 // Connection: keep-alive
 // Request duration: 0.134611s
+>>>>>>> 4fc5b53effa7f40421edc603e4ec313de539ebe8
 #+END_SRC
 
 ** Login
@@ -43,7 +59,7 @@ Content-Type: application/json
 POST http://localhost:8000/users/login
 Content-Type: application/json
 {
-    "email": "zulfiqar.soomro@ecountabl.co",
+    "email": "zulfiqar.soomro@gmail.co",
     "password": "examplePassword"
 }
 #+end_src

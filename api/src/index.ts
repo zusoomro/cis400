@@ -6,7 +6,7 @@ import eventRouter from "./routes/events";
 import initializeDb from "./initializeDb";
 
 initializeDb();
-const app = express();
+export const app = express();
 
 app.use(express.json());
 
