@@ -11,7 +11,7 @@
 POST http://localhost:8000/users
 Content-Type: application/json
 {
-    "email": "zulfiqar.soomro@ecountabl.co",
+    "email": "zulfiqar.soomro@gmail.co",
     "password": "examplePassword"
 }
 #+end_src
@@ -19,21 +19,22 @@ Content-Type: application/json
 #+RESULTS:
 #+BEGIN_SRC js
 {
-  "errors": [
-    {
-      "msg": "User already exists"
-    }
-  ]
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2fSwiaWF0IjoxNjAzNzUzMTg5LCJleHAiOjE2MDQxMTMxODl9.LSkwpl2qT3PCS98hqinzVyKepLlCFa1z_SQTYVZUFXs",
+  "user": {
+    "email": "zulfiqar.soomro@gmail.co",
+    "password": "$2b$10$zTLHxLMfTxGwjmzim82ud.knbC5aeqPHp7qgKB66FQvtQEsLGTIWi",
+    "id": 6
+  }
 }
 // POST http://localhost:8000/users
-// HTTP/1.1 400 Bad Request
+// HTTP/1.1 200 OK
 // X-Powered-By: Express
 // Content-Type: application/json; charset=utf-8
-// Content-Length: 42
-// ETag: W/"2a-VBiGuTvIunFL9XlHdXrotU2H1qA"
-// Date: Mon, 19 Oct 2020 03:13:54 GMT
+// Content-Length: 286
+// ETag: W/"11e-XVcWn8rwZtCEN3APx1dm1TZ8Gfs"
+// Date: Mon, 26 Oct 2020 22:59:49 GMT
 // Connection: keep-alive
-// Request duration: 0.030943s
+// Request duration: 0.218048s
 #+END_SRC
 
 ** Login
@@ -42,7 +43,7 @@ Content-Type: application/json
 POST http://localhost:8000/users/login
 Content-Type: application/json
 {
-    "email": "zulfiqar.soomro@ecountabl.co",
+    "email": "zulfiqar.soomro@gmail.co",
     "password": "examplePassword"
 }
 #+end_src
