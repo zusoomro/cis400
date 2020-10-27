@@ -14,7 +14,6 @@ import * as SecureStore from "expo-secure-store";
 const apiUrl = "http://localhost:8000";
 
 const CreateEvent: React.FC<{}> = () => {
-  const userId = useSelector(state => state.auth.user.id);
   // Start time = current time 
   const [startTime, setStartTime] = useState(new Date());
   // End time = current time + 1 hour
