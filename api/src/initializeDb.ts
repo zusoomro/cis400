@@ -3,7 +3,11 @@ import Knex from "knex";
 import knexConfig from "../knexfile";
 
 const initializeDb = () => {
-  const knex = Knex(knexConfig.development);
+  const environment = process.env.ENVIRONMENT
+    ? knexConfig.production
+    : knexConfig.development;
+
+  const knex = Knex(environment);
   Model.knex(knex);
 };
 

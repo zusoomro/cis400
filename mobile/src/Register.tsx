@@ -10,12 +10,13 @@ import {
 import { Formik } from "formik";
 import { register } from "./authSlice";
 import { useDispatch } from "react-redux";
+import sharedStyles from "./sharedStyles";
 
 const Register: React.FC<{}> = () => {
   const dispatch = useDispatch();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={sharedStyles.container}>
       <Formik
         initialValues={{ email: "", password: "" }}
         onSubmit={(values) => {
@@ -31,17 +32,21 @@ const Register: React.FC<{}> = () => {
               onBlur={handleBlur("email")}
               value={values.email}
               placeholder="email"
-              style={styles.input}
+              style={sharedStyles.input}
             />
             <TextInput
               onChangeText={handleChange("password")}
               onBlur={handleBlur("password")}
               value={values.password}
               placeholder="password"
-              style={styles.input}
+              style={sharedStyles.input}
               secureTextEntry
             />
-            <Button onPress={handleSubmit} title="Submit" />
+            <Button
+              accessibilityLabel="Submit"
+              onPress={handleSubmit}
+              title="Submit"
+            />
           </View>
         )}
       </Formik>
