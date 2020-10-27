@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 export interface AuthRequest extends Request {
   user: {
-    id: string;
+    id: number;
   };
 }
 
@@ -18,7 +18,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
   // Verify token
   try {
     const decoded = jwt.verify(token, "dummySecret") as {
-      user: { id: string };
+      user: { id: number };
     };
 
     (req as AuthRequest).user = decoded.user;
