@@ -9,11 +9,11 @@ import {
   StyleSheet,
 } from "react-native";
 import DatePicker from "./DatePicker";
+import * as SecureStore from "expo-secure-store";
 
 const apiUrl = "http://localhost:8000";
 
-const CreateEvent: React.FC<{}> = ({ navigation }) => {
-  const userId = useSelector(state => state.auth.user.id);
+const CreateEvent: React.FC<{}> = () => {
   // Start time = current time 
   const [startTime, setStartTime] = useState(new Date());
   // End time = current time + 1 hour 
@@ -78,7 +78,6 @@ const createEventOnSubmit = async (values): Promise<Event | null> => {
 
   // Create event to be put in database 
   const data = {
-    ownerId: values.ownerId,
     name: values.name,
     address: values.address,
     startTime: values.startTime,
@@ -93,6 +92,7 @@ const createEventOnSubmit = async (values): Promise<Event | null> => {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": await SecureStore.getItemAsync("wigo-auth-token"),
       },
       body: JSON.stringify(data),
     });
