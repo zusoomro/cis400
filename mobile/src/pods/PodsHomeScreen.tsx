@@ -32,12 +32,14 @@ const PodsHomeScreen = ({ navigation, route }) => {
           'http://localhost:8000/pods/currUsersPod',
           {
             headers: {
+              "Content-Type": "application/json;charset=utf-8",
               "x-auth-token": authToken!,
             },
           }
         );
         
-        let returnedPod : Pod = await res.pod;
+        const json = await res.json();
+        const returnedPod = json.pod;
         if (returnedPod) {
           setPod(returnedPod);
         }

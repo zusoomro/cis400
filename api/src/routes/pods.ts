@@ -27,16 +27,16 @@ podsRouter.post("/",
         res.send(pod);
 });
 
+// currently the only member of the pod is the owner which is why we query for 'where("ownerId", userId)'
+// this will change once we add members to a pod.
 podsRouter.get(
     "/currUsersPod", 
     [auth], async (req: express.Request, res: express.Response) => {
-        console.log('in route /pods/currUsersPod');
         try {
             const userId = (req as AuthRequest).user.id;
-            console.log('curr user id', userId);
             const podsList = await Pod.query().where("ownerId", userId);
             const firstPodForUser = podsList[0];
-            console.log('return pod', firstPodForUser);
+            console.log('pod', firstPodForUser);
             res.json({ pod: firstPodForUser });
         } catch (err) {
             console.error(err);
@@ -44,10 +44,5 @@ podsRouter.get(
           }
     }
 );
-
-// podsRouter.get("/delete", async (req, res) => {
-//     console.log('delete');
-//     const numDeleted = await Pod.query().deleteById(15);
-// });
 
 export default podsRouter;
