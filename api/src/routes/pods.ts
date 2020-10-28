@@ -6,9 +6,9 @@ import auth, { AuthRequest } from "../authMiddleware";
 let podsRouter = express.Router();
 
 podsRouter.get("/", async (req, res) => {
-    const response = await Pod.query();
-    console.log(response);
-    res.json(response);
+  const response = await Pod.query();
+  console.log(response);
+  res.json(response);
 });
 
 podsRouter.post("/", 
