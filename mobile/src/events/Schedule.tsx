@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import { Button, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import { Card } from "react-native-elements";
+
+const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <Schedule />
+      <Button
+        title="Create Event"
+        onPress={() => {
+          console.log("Create New Event button clicked");
+          navigation.navigate("CreateEvent");
+          return;
+        }}></Button>
+    </SafeAreaView>
+  )
+};
 
 const Schedule: React.FC<{}> = () => {
   const currUserId = 2;
@@ -41,7 +56,7 @@ const Schedule: React.FC<{}> = () => {
       }).catch((error) => {
         console.log("Error getting schedule", error);
         return null;
-      }); 
+      });
   }, []);
 
   let dd = String(today.getDate()).padStart(2, "0");
@@ -82,28 +97,28 @@ const Event: React.FC<{
     ownerId,
   },
 }) => {
-  return (
-    <SafeAreaView>
-      <Card>
-        <Card.Title>{name}</Card.Title>
-        <Text style={styles.sub}>
-          When:{" "}
-          {new Date(start_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}{" "}
+    return (
+      <SafeAreaView>
+        <Card>
+          <Card.Title>{name}</Card.Title>
+          <Text style={styles.sub}>
+            When:{" "}
+            {new Date(start_time).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}{" "}
           -{" "}
-          {new Date(end_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </Text>
-        <Text style={styles.sub}>Where: {address}</Text>
-        <Text style={styles.sub}>Notes: {notes}</Text>
-      </Card>
-    </SafeAreaView>
-  );
-};
+            {new Date(end_time).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </Text>
+          <Text style={styles.sub}>Where: {address}</Text>
+          <Text style={styles.sub}>Notes: {notes}</Text>
+        </Card>
+      </SafeAreaView>
+    );
+  };
 
 const styles = StyleSheet.create({
   container: {
@@ -140,7 +155,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Schedule;
+export default ScheduleHomePage;
 
 // const sampleEvents = [
 //   {
