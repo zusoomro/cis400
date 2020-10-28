@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
-import { useSelector } from "react-redux";
+import { Button, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import { Card } from "react-native-elements";
 import * as SecureStore from "expo-secure-store";
 
@@ -20,11 +13,13 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
           console.log("Create New Event button clicked");
           navigation.navigate("CreateEvent");
           return;
-        }}
-      ></Button>
+        }}></Button>
     </SafeAreaView>
-  );
+  )
 };
+
+const Schedule: React.FC<{}> = () => {
+  const currUserId = 2;
 
 const Schedule: React.FC<{}> = () => {
   const [eventsForUser, setEventsForUser] = useState([]);
@@ -91,28 +86,28 @@ const Event: React.FC<{
     ownerId,
   },
 }) => {
-  return (
-    <SafeAreaView>
-      <Card>
-        <Card.Title>{name}</Card.Title>
-        <Text style={styles.sub}>
-          When:{" "}
-          {new Date(start_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}{" "}
+    return (
+      <SafeAreaView>
+        <Card>
+          <Card.Title>{name}</Card.Title>
+          <Text style={styles.sub}>
+            When:{" "}
+            {new Date(start_time).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}{" "}
           -{" "}
-          {new Date(end_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </Text>
-        <Text style={styles.sub}>Where: {address}</Text>
-        <Text style={styles.sub}>Notes: {notes}</Text>
-      </Card>
-    </SafeAreaView>
-  );
-};
+            {new Date(end_time).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </Text>
+          <Text style={styles.sub}>Where: {address}</Text>
+          <Text style={styles.sub}>Notes: {notes}</Text>
+        </Card>
+      </SafeAreaView>
+    );
+  };
 
 const styles = StyleSheet.create({
   container: {
@@ -150,3 +145,51 @@ const styles = StyleSheet.create({
 });
 
 export default ScheduleHomePage;
+
+// const sampleEvents = [
+//   {
+//     start_time: new Date("2020-03-26T09:30:00"),
+//     end_time: new Date("2020-03-26T10:00:00"),
+//     name: "Event 1",
+//     id: 1,
+//     ownerId: 1,
+//     address: "my butt",
+//     notes: "booty",
+//   },
+//   {
+//     start_time: new Date("2020-03-26T11:00:00"),
+//     end_time: new Date("2020-03-26T13:00:00"),
+//     name: "Event 2",
+//     id: 2,
+//     ownerId: 1,
+//     address: "ur butt",
+//     notes: "boooty",
+//   },
+//   {
+//     start_time: new Date("2020-03-26T15:00:00"),
+//     end_time: new Date("2020-03-26T16:30:00"),
+//     name: "Event 3",
+//     id: 3,
+//     ownerId: 1,
+//     address: "his butt",
+//     notes: "booooty",
+//   },
+//   {
+//     start_time: new Date("2020-03-26T18:00:00"),
+//     end_time: new Date("2020-03-26T19:00:00"),
+//     name: "Event 4",
+//     id: 4,
+//     ownerId: 1,
+//     address: "her butt",
+//     notes: "booooty",
+//   },
+//   {
+//     start_time: new Date("2020-03-26T22:00:00"),
+//     end_time: new Date("2020-03-26T23:30:00"),
+//     name: "Event 5",
+//     id: 5,
+//     ownerId: 1,
+//     address: "ur MOMs butt",
+//     notes: "boooooty",
+//   },
+// ];
