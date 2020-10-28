@@ -11,26 +11,21 @@ podsRouter.get("/", async (req, res) => {
     res.json(response);
 });
 
-podsRouter.post("/", async (req, res) => {
-    console.log(req.body);
-    const { ownerId, name } = req.body;
-    
-    const pod = await Pod.query().insert({
-        ownerId: ownerId,
-        name: name,
-    });
-    console.log('Created pod: ', pod);
+podsRouter.post("/", 
+    [auth], 
+    async (req: express.Request, res: express.Response) => {
+        console.log(req.body);
+        const { user } = (req as AuthRequest);
+        const currUser = (req as AuthRequest).user.id;
+        const name : string = req.body.name;
+        
+        const pod = await Pod.query().insert({
+            ownerId: currUser,
+            name: name,
+        });
+        console.log('Created pod: ', pod);
+        res.send(pod);
 });
-
-// currently the only members of a pod are an owner which is why we search
-// for based on owner id here -- this will obviously change once we add members
-// podsRouter.get("/:ownerId", async (req, res) => {
-//     console.log('in route /pods/:ownerid');
-//     const inputOwnerId = req.params.ownerId;
-//     const podForUser = await Pod.query().where("ownerId", inputOwnerId);
-//     console.log(podForUser);
-//     res.json(podForUser);
-// });
 
 podsRouter.get(
     "/currUsersPod", 
@@ -39,9 +34,10 @@ podsRouter.get(
         try {
             const userId = (req as AuthRequest).user.id;
             console.log('curr user id', userId);
-            const podForUser = await Pod.query().where("ownerId", userId);
-            console.log("pod for current user:", podForUser);
-            res.json({podForUser});
+            const podsList = await Pod.query().where("ownerId", userId);
+            const firstPodForUser = podsList[0];
+            console.log('return pod', firstPodForUser);
+            res.json({ pod: firstPodForUser });
         } catch (err) {
             console.error(err);
             res.status(500).send("Server Error");

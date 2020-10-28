@@ -9,6 +9,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
 const PodsNavigator = () => {
+
+  interface Pod {
+    id: number;
+    ownerId: number;
+    name: string;
+  }
+  const [pod, setPod] = useState(null);
+
   return (
     <Stack.Navigator>
       <Stack.Screen name="PodsHomeScreen" component={PodsHomeScreen}/>

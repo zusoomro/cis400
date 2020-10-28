@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,22 +8,34 @@ import {
   Button
 } from "react-native";
 import { Formik } from "formik";
+import * as SecureStore from "expo-secure-store";
+
+interface Pod {
+  id: number;
+  ownerId: number;
+  name: string;
+}
 
 interface Props {
   navigation: {
-    navigate: (screen : string) => void;
+    navigate: (screen : string, data: {pod: Pod}) => void;
   }
 }
 
-const CreatePod: React.FC<Props> = ({navigation}) => { 
+const CreatePod: React.FC<Props> = ({navigation, route}) => { 
+
+  const [pod, setPod] = useState<Pod>();
   return (
   <SafeAreaView style={styles.container}>
     <Formik
         initialValues={{ podname: ""}}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
           console.log(values);
-          createPodOnSubmit(values);
-          navigation.navigate('PodsHomeScreen')
+          const res : Pod = await createPodOnSubmit(values);
+          if (res) {
+            setPod(res);
+          }
+          navigation.navigate('PodsHomeScreen', {pod : res})
         }}
       >
         {({handleChange, handleBlur, handleSubmit, values }) => (
@@ -53,11 +65,11 @@ const createPodOnSubmit = async (values) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": (await SecureStore.getItemAsync("wigo-auth-token"))!,
       },
       body: JSON.stringify(data),
     });
     const pod = await res.json();
-
     console.log("pod", pod);
     return pod;
   } catch (error) {
