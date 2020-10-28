@@ -38,7 +38,10 @@ const Schedule: React.FC<{}> = () => {
         } else {
           setEventsForUser([]);
         }
-      });
+      }).catch((error) => {
+        console.log("Error getting schedule", error);
+        return null;
+      }); 
   }, []);
 
   let dd = String(today.getDate()).padStart(2, "0");

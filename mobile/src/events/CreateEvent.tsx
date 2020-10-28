@@ -12,7 +12,7 @@ import DatePicker from "./DatePicker";
 
 const apiUrl = "http://localhost:8000";
 
-const CreateEvent: React.FC<{}> = () => {
+const CreateEvent: React.FC<{}> = ({ navigation }) => {
   const userId = useSelector(state => state.auth.user.id);
   // Start time = current time 
   const [startTime, setStartTime] = useState(new Date());
@@ -33,6 +33,7 @@ const CreateEvent: React.FC<{}> = () => {
         onSubmit={(values) => {
           console.log(values);
           createEventOnSubmit(values);
+          navigation.navigate("ScheduleHomePage");
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -108,7 +109,7 @@ const createEventOnSubmit = async (values): Promise<Event | null> => {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
   },
