@@ -25,6 +25,7 @@ const CreateEvent: React.FC<{}> = () => {
         initialValues={{
           name: "",
           address: "",
+          ownerId: userId,
           startTime: startTime,
           endTime: endTime,
           notes: ""

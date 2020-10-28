@@ -28,6 +28,8 @@
     "nodemon": "^2.0.5",
     "objection": "^2.2.3",
     "pg": "^8.4.1",
+    "react-native-elements": "^3.0.0-alpha.1",
+    "react-native-weekly-calendar": "^0.2.0",
     "sqlite3": "^5.0.0",
     "supertest": "^5.0.0",
     "ts-jest": "^26.4.2",
