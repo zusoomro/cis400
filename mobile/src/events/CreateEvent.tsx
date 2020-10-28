@@ -2,7 +2,7 @@ import { Formik } from "formik";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {
-  View,
+  ScrollView,
   TextInput,
   Button,
   SafeAreaView,
@@ -13,7 +13,7 @@ import DatePicker from "./DatePicker";
 const apiUrl = "http://localhost:8000";
 
 const CreateEvent: React.FC<{}> = () => {
-  const currentUser = useSelector(state => state.auth.user);
+  const userId = useSelector(state => state.auth.user.id);
   // Start time = current time 
   const [startTime, setStartTime] = useState(new Date());
   // End time = current time + 1 hour 
@@ -25,7 +25,7 @@ const CreateEvent: React.FC<{}> = () => {
         initialValues={{
           name: "",
           address: "",
-          ownerId: currentUser.id,
+          ownerId: userId,
           startTime: startTime,
           endTime: endTime,
           notes: ""
@@ -36,7 +36,7 @@ const CreateEvent: React.FC<{}> = () => {
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <View>
+          <ScrollView>
             <TextInput
               onChangeText={handleChange("name")}
               onBlur={handleBlur("name")}
@@ -64,7 +64,7 @@ const CreateEvent: React.FC<{}> = () => {
               style={styles.input}
             />
             <Button onPress={handleSubmit} title="Save" />
-          </View>
+          </ScrollView>
         )}
       </Formik>
 
