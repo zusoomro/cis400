@@ -171,6 +171,7 @@ const authSlice = createSlice({
     [loadToken.rejected]: (state, action) => {
       state.token = "";
       state.loading = false;
+      state.error = action.payload;
     },
   },
 });
