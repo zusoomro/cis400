@@ -14,9 +14,9 @@ import * as SecureStore from "expo-secure-store";
 const apiUrl = "http://localhost:8000";
 
 const CreateEvent: React.FC<{}> = () => {
-  // Start time = current time 
+  // Start time = current time
   const [startTime, setStartTime] = useState(new Date());
-  // End time = current time + 1 hour 
+  // End time = current time + 1 hour
   const [endTime, setEndTime] = useState(new Date(Date.now() + 60 * 60 * 1000));
 
   return (
@@ -27,7 +27,7 @@ const CreateEvent: React.FC<{}> = () => {
           address: "",
           startTime: startTime,
           endTime: endTime,
-          notes: ""
+          notes: "",
         }}
         onSubmit={(values) => {
           console.log(values);
@@ -51,9 +51,13 @@ const CreateEvent: React.FC<{}> = () => {
               style={styles.input}
             />
             {/* Start Time input */}
-            <DatePicker name="startTime" date={startTime}> </DatePicker>
+            <DatePicker name="startTime" date={startTime}>
+              {" "}
+            </DatePicker>
             {/* End Time input */}
-            <DatePicker name="endTime" date={endTime}> </DatePicker>
+            <DatePicker name="endTime" date={endTime}>
+              {" "}
+            </DatePicker>
 
             <TextInput
               onChangeText={handleChange("notes")}
@@ -66,15 +70,14 @@ const CreateEvent: React.FC<{}> = () => {
           </ScrollView>
         )}
       </Formik>
-
     </SafeAreaView>
   );
 };
 
 const createEventOnSubmit = async (values): Promise<Event | null> => {
-  console.log('createEventOnSubmit');
+  console.log("createEventOnSubmit");
 
-  // Create event to be put in database 
+  // Create event to be put in database
   const data = {
     name: values.name,
     address: values.address,
@@ -102,7 +105,7 @@ const createEventOnSubmit = async (values): Promise<Event | null> => {
     console.log(`error creating new event`, error);
     return null;
   }
-}
+};
 
 const styles = StyleSheet.create({
   container: {
