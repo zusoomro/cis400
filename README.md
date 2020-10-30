@@ -7,4 +7,4 @@
 
 ### Resolving yarn lock merge conflicts
 
-Refer to (this)[https://github.com/yarnpkg/yarn/issues/1776#issuecomment-269539948] discussion.
+Refer to [this](https://github.com/yarnpkg/yarn/issues/1776#issuecomment-269539948) discussion.
