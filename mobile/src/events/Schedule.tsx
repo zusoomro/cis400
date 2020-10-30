@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import { useSelector } from "react-redux";
 import { Card } from "react-native-elements";
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
@@ -18,7 +19,7 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
 };
 
 const Schedule: React.FC<{}> = () => {
-  const currUserId = 2;
+  const currUserId = useSelector((state) => state.auth.user.id);
 
   // eventsForUser will store the array if events of the current user
   const [eventsForUser, setEventsForUser] = useState([]);
