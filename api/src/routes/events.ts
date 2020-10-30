@@ -27,4 +27,12 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
 });
 
+eventRouter.get("/:ownerId", async (req, res) => {
+  console.log("/events/ownerId");
+  const inputOwnerId = req.params.ownerId;
+  console.log("inputOwnerId", inputOwnerId);
+  const eventsForUser = await Event.query().where("ownerId", inputOwnerId);
+  res.json(eventsForUser);
+});
+
 export default eventRouter;

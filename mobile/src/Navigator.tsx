@@ -1,7 +1,7 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import EventsNavigator from "./events/EventsNavigator";
+import ScheduleNavigator from "./events/ScheduleNavigator";
 import PodsNavigator from "./pods/PodsNavigator";
 import Settings from "./Settings";
 import Login from "./Login";
@@ -16,14 +16,14 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator
-      initialRouteName="Events"
+      initialRouteName="Schedule"
       tabBarOptions={{ labelStyle: { marginTop: -10 } }}
     >
       {authenticated ? (
         <React.Fragment>
           <Tab.Screen
-            name="Events"
-            component={EventsNavigator}
+            name="Schedule"
+            component={ScheduleNavigator}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-calendar" color={color} size={size} />
