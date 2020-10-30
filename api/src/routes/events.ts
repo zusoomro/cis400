@@ -5,7 +5,6 @@ import auth, { AuthRequest } from "../authMiddleware";
 let eventRouter = express.Router();
 
 eventRouter.post("/", [auth], async (req: Request, res: Response) => {
-  console.log("Calling eventRouter.post");
   const { name, address, startTime, endTime, repeat, notes } = req.body;
 
   const id = (req as AuthRequest).user.id;
@@ -20,6 +19,24 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   });
 
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
+});
+
+eventRouter.put("/", [auth], async (req: Request, res: Response) => {
+  const { name, address, startTime, endTime, notes } = req.body;
+  const eventId = req.body.id;
+
+  console.log("eventid", eventId);
+
+  const id = (req as AuthRequest).user.id;
+  const event = await Event.query()
+    .update({
+      name,
+      address,
+      start_time: startTime,
+      end_time: endTime,
+      notes,
+    })
+    .where("id", eventId);
 });
 
 eventRouter.get(

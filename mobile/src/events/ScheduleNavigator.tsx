@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import CreateEvent from "./CreateEvent";
 import ScheduleHomePage from "./Schedule";
+import ModifyEvent from "./ModifyEvent";
 
 const ScheduleNavigator: React.FC<{}> = () => {
   const Stack = createStackNavigator();
@@ -19,6 +20,11 @@ const ScheduleNavigator: React.FC<{}> = () => {
         name="CreateEvent"
         component={CreateEvent}
         options={{ title: "Create Event" }}
+      />
+      <Stack.Screen
+        name="ModifyEvent"
+        component={ModifyEvent}
+        options={{ title: "Modify Event" }}
       />
     </Stack.Navigator>
   );
