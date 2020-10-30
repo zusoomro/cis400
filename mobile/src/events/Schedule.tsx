@@ -35,7 +35,7 @@ const Schedule: React.FC<{}> = () => {
       try {
         const authToken = await SecureStore.getItemAsync("wigo-auth-token");
         const res = await fetch(
-          'http://localhost:8000/events/currUsersEvents',
+          'http://localhost:8000/events',
           {
             headers: {
               "Content-Type": "application/json;charset=utf-8",
