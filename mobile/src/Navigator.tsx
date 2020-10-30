@@ -12,7 +12,6 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   const authenticated = useSelector((state) => state.auth.token);
-
   console.log("authenticated", authenticated);
 
   return (

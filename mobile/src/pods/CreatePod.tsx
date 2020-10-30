@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,34 @@ import {
   Button
 } from "react-native";
 import { Formik } from "formik";
+import * as SecureStore from "expo-secure-store";
 
+interface Pod {
+  id: number;
+  ownerId: number;
+  name: string;
+}
 
-const CreatePod: React.FC<{}> = () => { 
+interface Props {
+  navigation: {
+    navigate: (screen : string, data: {pod: Pod}) => void;
+  }
+}
+
+const CreatePod: React.FC<Props> = ({navigation, route}) => { 
+
+  const [pod, setPod] = useState<Pod>();
   return (
   <SafeAreaView style={styles.container}>
     <Formik
         initialValues={{ podname: ""}}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
           console.log(values);
-          createPodOnSubmit(values);
+          const res : Pod = await createPodOnSubmit(values);
+          if (res) {
+            setPod(res);
+          }
+          navigation.navigate('PodsHomeScreen', {pod : res})
         }}
       >
         {({handleChange, handleBlur, handleSubmit, values }) => (
@@ -39,27 +57,25 @@ const CreatePod: React.FC<{}> = () => {
 
 const createPodOnSubmit = async (values) => {
   console.log('createPodOnSubmit');
-  const ownerId = 1; // THIS WILL BE THE CURRENT USRR ID
-  const data = {ownerId: ownerId, name: values.podname};
+  const data = {name: values.podname};
   try {
     const res = await fetch("http://localhost:8000/pods", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": (await SecureStore.getItemAsync("wigo-auth-token"))!,
       },
       body: JSON.stringify(data),
     });
     const pod = await res.json();
-
     console.log("pod", pod);
-
     return pod;
   } catch (error) {
     console.log(`error creating pod`, error);
     return null;
   }
+  
 };
-
 
 const styles = StyleSheet.create({
   container: {

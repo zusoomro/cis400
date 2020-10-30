@@ -1,5 +1,6 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import Event from "../../models/Event";
+import auth, { AuthRequest } from "../authMiddleware"
 
 let eventRouter = express.Router();
 
@@ -9,12 +10,13 @@ eventRouter.get("/", async (req, res) => {
   res.json(response);
 });
 
-eventRouter.post("/", async (req, res) => {
+eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   console.log("Calling eventRouter.post");
-  const { name, ownerId, address, startTime, endTime, notes } = req.body;
+  const { name, address, startTime, endTime, notes } = req.body;
 
+  const id = (req as AuthRequest).user.id;
   const event = await Event.query().insert({
-    ownerId,
+    ownerId: id,
     name,
     address,
     start_time: startTime,
