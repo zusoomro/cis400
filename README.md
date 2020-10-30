@@ -10,11 +10,19 @@
 
 Refer to [this](https://github.com/yarnpkg/yarn/issues/1776#issuecomment-269539948) discussion.
 
+## Formatting
+
 ### How to format everything if you aren't passing a format check
 
 In /api: `yarn run formatAll`
 
 In /mobile: `yarn run formatAll`
+
+### How to check if your formatting will pass the checks
+
+In /api: `yarn run checkFormatting`
+
+In /mobile: `yarn run checkFormatting`
 
 ### Routes
 

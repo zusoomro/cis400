@@ -110,3 +110,96 @@ x-auth-token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0fSwiaWF0
 // Connection: keep-alive
 // Request duration: 0.009105s
 #+END_SRC
+
+* Events
+
+#+begin_src restclient
+GET http://localhost:8000/events/all
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+[
+  {
+    "id": 1,
+    "ownerId": 9,
+    "address": "Sdgfsdgfdsg",
+    "start_time": "2020-10-30T12:40:26.626Z",
+    "end_time": "2020-10-30T13:40:26.626Z",
+    "notes": "Gfdsgfdsgdsf",
+    "name": "Fsagfdgdsfgfsd"
+  },
+  {
+    "id": 2,
+    "ownerId": 9,
+    "address": "Fdsfdsafd",
+    "start_time": "2020-10-30T12:41:46.337Z",
+    "end_time": "2020-10-30T13:41:46.337Z",
+    "notes": "Fdsafdsa",
+    "name": "Fdsafdsa"
+  },
+  {
+    "id": 3,
+    "ownerId": 9,
+    "address": "Fdsafdsaf",
+    "start_time": "2020-10-30T12:42:02.692Z",
+    "end_time": "2020-10-30T13:42:02.692Z",
+    "notes": "Safdafsafd",
+    "name": "Fdsafdsa"
+  },
+  {
+    "id": 4,
+    "ownerId": 9,
+    "address": "Asdfasfd",
+    "start_time": "2020-10-30T12:43:09.405Z",
+    "end_time": "2020-10-30T13:43:09.405Z",
+    "notes": "Fdsafdsafsad",
+    "name": "Fdsafsa"
+  },
+  {
+    "id": 5,
+    "ownerId": 10,
+    "address": "Event",
+    "start_time": "2020-10-30T14:15:50.983Z",
+    "end_time": "2020-10-30T15:15:50.983Z",
+    "notes": "Event",
+    "name": "Event"
+  },
+  {
+    "id": 6,
+    "ownerId": 11,
+    "address": "Fdasfda",
+    "start_time": "2020-10-30T14:20:57.492Z",
+    "end_time": "2020-10-30T15:20:57.492Z",
+    "notes": "Asdfsaafsasd",
+    "name": "Wigo"
+  },
+  {
+    "id": 7,
+    "ownerId": 12,
+    "address": "Asdf",
+    "start_time": "2020-10-30T16:10:12.108Z",
+    "end_time": "2020-10-30T17:10:12.108Z",
+    "notes": "Asdf",
+    "name": "Fdsa"
+  },
+  {
+    "id": 8,
+    "ownerId": 12,
+    "address": "Asdfadf",
+    "start_time": "2020-10-30T16:10:33.259Z",
+    "end_time": "2020-10-30T17:10:33.259Z",
+    "notes": "Asdfadf",
+    "name": "Fdsafdsa"
+  }
+]
+// GET http://localhost:8000/events/all
+// HTTP/1.1 200 OK
+// X-Powered-By: Express
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 1257
+// ETag: W/"4e9-w2AzrvS19Y2+yKxJaOldd4go86k"
+// Date: Fri, 30 Oct 2020 16:12:59 GMT
+// Connection: keep-alive
+// Request duration: 0.021478s
+#+END_SRC

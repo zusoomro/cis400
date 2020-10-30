@@ -7,7 +7,8 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "test": "jest",
-    "formatAll": "prettier --write \"*/**/*.{ts,tsx}\""
+    "formatAll": "prettier --write \"*/**/*.{ts,tsx}\"",
+    "checkFormatting": "yarn run prettier -c \"*/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "3.0.0",
