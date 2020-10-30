@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import Event from "../../models/Event";
-import auth, { AuthRequest } from "../authMiddleware"
+import auth, { AuthRequest } from "../authMiddleware";
 
 let eventRouter = express.Router();
 

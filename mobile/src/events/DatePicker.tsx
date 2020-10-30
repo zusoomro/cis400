@@ -1,28 +1,23 @@
 import { useField, useFormikContext } from "formik";
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Platform,
-  StyleSheet,
-} from "react-native";
+import { View, Text, Platform, StyleSheet } from "react-native";
 import moment from "moment";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const DatePicker: React.FC<{}> = ({ ...props }) => {
   // Used for user interaction with datepicker
-  const [date, setDate] = useState(props.date); 
-  const [mode, setMode] = useState('date');
+  const [date, setDate] = useState(props.date);
+  const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
-  // Used with setting date value in formik 
+  // Used with setting date value in formik
   const { setFieldValue } = useFormikContext();
   const [field] = useField(props.name);
 
   const onChange = (event, selectedDate) => {
     // Set date on calendar UI
     setDate(selectedDate);
-    // Set date in form 
+    // Set date in form
     setFieldValue(props.name, selectedDate);
     console.log("Selected date", selectedDate);
   };
@@ -33,11 +28,11 @@ const DatePicker: React.FC<{}> = ({ ...props }) => {
   };
 
   const showDatepicker = () => {
-    showMode('date');
+    showMode("date");
   };
 
   const showTimepicker = () => {
-    showMode('time');
+    showMode("time");
   };
 
   return (
@@ -66,7 +61,6 @@ const DatePicker: React.FC<{}> = ({ ...props }) => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   dateTimeRow: {

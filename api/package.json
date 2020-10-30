@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node-dev src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "formatAll": "prettier --write \"*/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@types/bcrypt": "^3.0.0",
