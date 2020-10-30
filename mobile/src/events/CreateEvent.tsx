@@ -13,7 +13,7 @@ import * as SecureStore from "expo-secure-store";
 
 const apiUrl = "http://localhost:8000";
 
-const CreateEvent: React.FC<{}> = () => {
+const CreateEvent: React.FC<{}> = ({ navigation }) => {
   // Start time = current time
   const [startTime, setStartTime] = useState(new Date());
   // End time = current time + 1 hour
@@ -32,6 +32,7 @@ const CreateEvent: React.FC<{}> = () => {
         onSubmit={(values) => {
           console.log(values);
           createEventOnSubmit(values);
+          navigation.navigate("ScheduleHomePage");
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -110,7 +111,7 @@ const createEventOnSubmit = async (values): Promise<Event | null> => {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    flex: 1,
+    flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
   },

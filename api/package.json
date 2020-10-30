@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node-dev src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "formatAll": "prettier --write \"*/**/*.{ts,tsx}\""
   },
   "dependencies": {
     "@types/bcrypt": "^3.0.0",
@@ -28,6 +29,7 @@
     "nodemon": "^2.0.5",
     "objection": "^2.2.3",
     "pg": "^8.4.1",
+    "prettier": "^2.1.2",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-weekly-calendar": "^0.2.0",
     "sqlite3": "^5.0.0",

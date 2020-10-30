@@ -1,46 +1,61 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import {
+  Button,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
+import { useSelector } from "react-redux";
 import { Card } from "react-native-elements";
+import * as SecureStore from "expo-secure-store";
+
+const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <Schedule />
+      <Button
+        title="Create Event"
+        onPress={() => {
+          console.log("Create New Event button clicked");
+          navigation.navigate("CreateEvent");
+          return;
+        }}
+      ></Button>
+    </SafeAreaView>
+  );
+};
 
 const Schedule: React.FC<{}> = () => {
-  const currUserId = 2;
-
-  // eventsForUser will store the array if events of the current user
   const [eventsForUser, setEventsForUser] = useState([]);
   let today = new Date();
 
-  useEffect(() => {
-    fetch(
-      // add in API
-      `http://localhost:8000/events/${currUserId}`,
-      {
-        method: "GET",
+  React.useEffect(() => {
+    async function fetcher() {
+      try {
+        const authToken = await SecureStore.getItemAsync("wigo-auth-token");
+        const res = await fetch(
+          'http://localhost:8000/events',
+          {
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+              "x-auth-token": authToken!,
+            },
+          }
+        );
+        const json = await res.json();
+        const returnedEvents = json.events;
+        if (returnedEvents) {
+          setEventsForUser(returnedEvents);
+        }
+      } catch (err) {
+        console.log("ERROR: ", err)
+        console.log('error loading events for current user');
       }
-    )
-      .then(
-        (res) => {
-          return res.json();
-        },
-        (err) => {
-          console.log(err);
-        }
-      )
-      .then((res) => {
-        if (res) {
-          let newRes = [];
-          res.forEach((e) => {
-            if (new Date(e.start_time).getDate() === today.getDate()) {
-              newRes.push(e);
-            }
-          });
-          // sort events by start_time
-          setEventsForUser(newRes);
-        } else {
-          setEventsForUser([]);
-        }
-      });
-  }, []);
+    };
 
+    fetcher();
+  }, []);
   let dd = String(today.getDate()).padStart(2, "0");
   let mm = String(today.getMonth() + 1).padStart(2, "0");
   let yyyy = today.getFullYear();
@@ -137,52 +152,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Schedule;
-
-// const sampleEvents = [
-//   {
-//     start_time: new Date("2020-03-26T09:30:00"),
-//     end_time: new Date("2020-03-26T10:00:00"),
-//     name: "Event 1",
-//     id: 1,
-//     ownerId: 1,
-//     address: "my butt",
-//     notes: "booty",
-//   },
-//   {
-//     start_time: new Date("2020-03-26T11:00:00"),
-//     end_time: new Date("2020-03-26T13:00:00"),
-//     name: "Event 2",
-//     id: 2,
-//     ownerId: 1,
-//     address: "ur butt",
-//     notes: "boooty",
-//   },
-//   {
-//     start_time: new Date("2020-03-26T15:00:00"),
-//     end_time: new Date("2020-03-26T16:30:00"),
-//     name: "Event 3",
-//     id: 3,
-//     ownerId: 1,
-//     address: "his butt",
-//     notes: "booooty",
-//   },
-//   {
-//     start_time: new Date("2020-03-26T18:00:00"),
-//     end_time: new Date("2020-03-26T19:00:00"),
-//     name: "Event 4",
-//     id: 4,
-//     ownerId: 1,
-//     address: "her butt",
-//     notes: "booooty",
-//   },
-//   {
-//     start_time: new Date("2020-03-26T22:00:00"),
-//     end_time: new Date("2020-03-26T23:30:00"),
-//     name: "Event 5",
-//     id: 5,
-//     ownerId: 1,
-//     address: "ur MOMs butt",
-//     notes: "boooooty",
-//   },
-// ];
+export default ScheduleHomePage;
