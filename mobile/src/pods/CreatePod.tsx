@@ -38,8 +38,7 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
       <Formik
         initialValues={{ podname: "" }}
         onSubmit={async (values) => {
-          console.log(values);
-          const res: Pod = await createPodOnSubmit(values);
+          const res: Pod = await createPodOnSubmit(values, invitees);
           if (res) {
             setPod(res);
           }
@@ -59,7 +58,6 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
             <Button
               title="Invite Users to Pod"
               onPress={() => {
-                console.log("Invite Users button was pressed was pressed");
                 navigation.navigate("InviteUsers");
                 return;
               }}
@@ -72,9 +70,8 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
   );
 };
 
-const createPodOnSubmit = async (values) => {
-  console.log("createPodOnSubmit");
-  const data = { name: values.podname };
+const createPodOnSubmit = async (values, invitees) => {
+  const data = { name: values.podname, inviteeIds: invitees };
   try {
     const res = await fetch("http://localhost:8000/pods", {
       method: "POST",
@@ -85,7 +82,6 @@ const createPodOnSubmit = async (values) => {
       body: JSON.stringify(data),
     });
     const pod = await res.json();
-    console.log("pod", pod);
     return pod;
   } catch (error) {
     console.log(`error creating pod`, error);

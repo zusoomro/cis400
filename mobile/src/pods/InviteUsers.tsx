@@ -11,6 +11,7 @@ import {
   Button,
 } from "react-native";
 import { List, ListItem, SearchBar } from "react-native-elements";
+import { useSelector } from "react-redux";
 
 interface User {
   id: number;
@@ -21,6 +22,8 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
   const u: User[] = [];
   const [users, setUsers] = useState(u);
   const [invitees, setInvitees] = useState([]);
+
+  const currUserId = useSelector((state) => state.auth.user.id);
 
   React.useEffect(() => {
     async function fetcher() {
@@ -33,7 +36,8 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
         });
 
         const json = await res.json();
-        setUsers(json);
+        const result = json.filter((user) => user.id != currUserId);
+        setUsers(result);
       } catch (err) {
         console.log("error loading users");
       }
@@ -55,6 +59,8 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
           }
         }}
         title="Select"
+        //disabled={isDisabled}
+        disabled={invitees.includes(user.id)}
       ></Button>
     </View>
   );
@@ -63,7 +69,6 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
 
   const handleInviteUsers = () => {
     navigation.navigate("CreatePod", { invitees: invitees });
-    console.log("Invite Users button pressed: Send invites!!!");
   };
 
   return (
