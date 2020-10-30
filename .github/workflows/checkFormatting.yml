@@ -21,7 +21,7 @@ jobs:
     - name: Install modules
       run: yarn
     - name: Check formatting
-      run: yarn run checkFormatting"
+      run: yarn run checkFormatting
   api-formatting:
     runs-on: ubuntu-latest
     defaults:
@@ -32,4 +32,4 @@ jobs:
     - name: Install modules
       run: yarn
     - name: Check formatting
-      run: yarn run checkFormatting"
+      run: yarn run checkFormatting
