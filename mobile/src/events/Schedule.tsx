@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Button, Text, SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import {
+  Button,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
+import { useSelector } from "react-redux";
 import { Card } from "react-native-elements";
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
@@ -12,13 +19,18 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
           console.log("Create New Event button clicked");
           navigation.navigate("CreateEvent");
           return;
-        }}></Button>
+        }}
+      ></Button>
     </SafeAreaView>
-  )
+  );
 };
 
 const Schedule: React.FC<{}> = () => {
-  const currUserId = 2;
+  const currUser = useSelector((state) => state.auth.user);
+  let currUserId = undefined;
+  if (currUser) {
+    currUserId = currUser.id;
+  }
 
   // eventsForUser will store the array if events of the current user
   const [eventsForUser, setEventsForUser] = useState([]);
@@ -53,11 +65,12 @@ const Schedule: React.FC<{}> = () => {
         } else {
           setEventsForUser([]);
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log("Error getting schedule", error);
         return null;
       });
-  }, []);
+  }, [currUserId]);
 
   let dd = String(today.getDate()).padStart(2, "0");
   let mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -97,28 +110,28 @@ const Event: React.FC<{
     ownerId,
   },
 }) => {
-    return (
-      <SafeAreaView>
-        <Card>
-          <Card.Title>{name}</Card.Title>
-          <Text style={styles.sub}>
-            When:{" "}
-            {new Date(start_time).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}{" "}
+  return (
+    <SafeAreaView>
+      <Card>
+        <Card.Title>{name}</Card.Title>
+        <Text style={styles.sub}>
+          When:{" "}
+          {new Date(start_time).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}{" "}
           -{" "}
-            {new Date(end_time).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </Text>
-          <Text style={styles.sub}>Where: {address}</Text>
-          <Text style={styles.sub}>Notes: {notes}</Text>
-        </Card>
-      </SafeAreaView>
-    );
-  };
+          {new Date(end_time).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
+        </Text>
+        <Text style={styles.sub}>Where: {address}</Text>
+        <Text style={styles.sub}>Notes: {notes}</Text>
+      </Card>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
