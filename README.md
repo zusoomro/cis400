@@ -8,3 +8,18 @@
 ### Resolving yarn lock merge conflicts
 
 Refer to [this](https://github.com/yarnpkg/yarn/issues/1776#issuecomment-269539948) discussion.
+
+
+### Routes
+
+For all routes created, ensure autherization of user via authmiddleware. For Example:
+```ts
+{
+  eventRouter.post("/", [auth], async (req: Request, res: Response) => {
+    ....
+    // [auth] function puts the user id in the req, it can be accesses via:
+    const id = (req as AuthRequest).user.id;
+
+  }
+}
+```
