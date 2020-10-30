@@ -35,6 +35,6 @@ export default class Pod extends Model {
   //     //   }
   //     // }
   //   };
-    
+
   // }
 }

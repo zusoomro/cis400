@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   SafeAreaView,
   StyleSheet,
-  Button
+  Button,
 } from "react-native";
 import { Formik } from "formik";
 import * as SecureStore from "expo-secure-store";
@@ -18,27 +18,26 @@ interface Pod {
 
 interface Props {
   navigation: {
-    navigate: (screen : string, data: {pod: Pod}) => void;
-  }
+    navigate: (screen: string, data: { pod: Pod }) => void;
+  };
 }
 
-const CreatePod: React.FC<Props> = ({navigation, route}) => { 
-
+const CreatePod: React.FC<Props> = ({ navigation, route }) => {
   const [pod, setPod] = useState<Pod>();
   return (
-  <SafeAreaView style={styles.container}>
-    <Formik
-        initialValues={{ podname: ""}}
+    <SafeAreaView style={styles.container}>
+      <Formik
+        initialValues={{ podname: "" }}
         onSubmit={async (values) => {
           console.log(values);
-          const res : Pod = await createPodOnSubmit(values);
+          const res: Pod = await createPodOnSubmit(values);
           if (res) {
             setPod(res);
           }
-          navigation.navigate('PodsHomeScreen', {pod : res})
+          navigation.navigate("PodsHomeScreen", { pod: res });
         }}
       >
-        {({handleChange, handleBlur, handleSubmit, values }) => (
+        {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View>
             <Text style={styles.heading}>Create Pod</Text>
             <TextInput
@@ -52,12 +51,13 @@ const CreatePod: React.FC<Props> = ({navigation, route}) => {
           </View>
         )}
       </Formik>
-  </SafeAreaView>);
+    </SafeAreaView>
+  );
 };
 
 const createPodOnSubmit = async (values) => {
-  console.log('createPodOnSubmit');
-  const data = {name: values.podname};
+  console.log("createPodOnSubmit");
+  const data = { name: values.podname };
   try {
     const res = await fetch("http://localhost:8000/pods", {
       method: "POST",
@@ -74,7 +74,6 @@ const createPodOnSubmit = async (values) => {
     console.log(`error creating pod`, error);
     return null;
   }
-  
 };
 
 const styles = StyleSheet.create({
