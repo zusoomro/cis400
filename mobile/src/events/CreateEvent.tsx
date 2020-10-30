@@ -13,7 +13,7 @@ import * as SecureStore from "expo-secure-store";
 
 const apiUrl = "http://localhost:8000";
 
-const CreateEvent: React.FC<{}> = () => {
+const CreateEvent: React.FC<{}> = ({ navigation }) => {
   // Start time = current time 
   const [startTime, setStartTime] = useState(new Date());
   // End time = current time + 1 hour 
@@ -25,7 +25,6 @@ const CreateEvent: React.FC<{}> = () => {
         initialValues={{
           name: "",
           address: "",
-          ownerId: userId,
           startTime: startTime,
           endTime: endTime,
           notes: ""
