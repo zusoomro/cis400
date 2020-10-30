@@ -6,51 +6,61 @@ import {
   Button,
   SafeAreaView,
   StyleSheet,
+  Keyboard,
+  TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
 import { Formik } from "formik";
 import { register } from "./authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import sharedStyles from "./sharedStyles";
 
 const Register: React.FC<{}> = () => {
   const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.auth);
 
   return (
-    <SafeAreaView style={sharedStyles.container}>
-      <Formik
-        initialValues={{ email: "", password: "" }}
-        onSubmit={(values) => {
-          dispatch(register(values));
-          console.log(values);
-        }}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <View>
-            <Text style={styles.heading}>Register</Text>
-            <TextInput
-              onChangeText={handleChange("email")}
-              onBlur={handleBlur("email")}
-              value={values.email}
-              placeholder="email"
-              style={sharedStyles.input}
-            />
-            <TextInput
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-              value={values.password}
-              placeholder="password"
-              style={sharedStyles.input}
-              secureTextEntry
-            />
-            <Button
-              accessibilityLabel="Submit"
-              onPress={handleSubmit}
-              title="Submit"
-            />
-          </View>
-        )}
-      </Formik>
-    </SafeAreaView>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <SafeAreaView style={sharedStyles.container}>
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          onSubmit={(values) => {
+            dispatch(register(values));
+            console.log(values);
+          }}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values }) => (
+            <View>
+              <Text style={styles.heading}>Register</Text>
+              <TextInput
+                onChangeText={handleChange("email")}
+                onBlur={handleBlur("email")}
+                value={values.email}
+                placeholder="email"
+                style={sharedStyles.input}
+              />
+              <TextInput
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                value={values.password}
+                placeholder="password"
+                style={sharedStyles.input}
+                secureTextEntry
+              />
+              {loading ? (
+                <ActivityIndicator />
+              ) : (
+                <Button
+                  accessibilityLabel="Submit"
+                  onPress={handleSubmit}
+                  title="Submit"
+                />
+              )}
+            </View>
+          )}
+        </Formik>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
