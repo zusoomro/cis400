@@ -4,12 +4,6 @@ import auth, { AuthRequest } from "../authMiddleware"
 
 let eventRouter = express.Router();
 
-eventRouter.get("/", async (req, res) => {
-  const response = await Event.query();
-  console.log(response);
-  res.json(response);
-});
-
 eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   console.log("Calling eventRouter.post");
   const { name, address, startTime, endTime, notes } = req.body;
@@ -28,12 +22,11 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
 });
 
 eventRouter.get(
-  "/currUsersEvents", 
+  "/", 
   [auth], async (req: express.Request, res: express.Response) => {
       try {
           const userId = (req as AuthRequest).user.id;
           const eventsList = await Event.query().where("ownerId", userId);
-          console.log('events', eventsList);
           res.json({ events: eventsList });
       } catch (err) {
           console.error(err);

@@ -33,7 +33,6 @@ const Schedule: React.FC<{}> = () => {
   React.useEffect(() => {
     async function fetcher() {
       try {
-        console.log("hello in try of fetch");
         const authToken = await SecureStore.getItemAsync("wigo-auth-token");
         const res = await fetch(
           'http://localhost:8000/events/currUsersEvents',
@@ -44,10 +43,8 @@ const Schedule: React.FC<{}> = () => {
             },
           }
         );
-        
         const json = await res.json();
         const returnedEvents = json.events;
-        console.log("returned events: ", returnedEvents);
         if (returnedEvents) {
           setEventsForUser(returnedEvents);
         }
@@ -59,7 +56,6 @@ const Schedule: React.FC<{}> = () => {
 
     fetcher();
   }, []);
-
   let dd = String(today.getDate()).padStart(2, "0");
   let mm = String(today.getMonth() + 1).padStart(2, "0");
   let yyyy = today.getFullYear();
