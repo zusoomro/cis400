@@ -24,6 +24,15 @@ interface Props {
 
 const CreatePod: React.FC<Props> = ({ navigation, route }) => {
   const [pod, setPod] = useState<Pod>();
+  const [invitees, setInvitees] = useState([]);
+
+  React.useEffect(() => {
+    if (route.params?.invitees) {
+      const invites: Array<number> = route.params.invitees;
+      setInvitees(invites);
+    }
+  }, [route.params?.invitees]);
+
   return (
     <SafeAreaView style={styles.container}>
       <Formik
