@@ -11,6 +11,13 @@ const config = {
     },
   },
 
+  testing: {
+    client: "sqlite3",
+    connection: {
+      filename: "./testdb.sqlite",
+    },
+  },
+
   // staging: {
   //   client: "postgresql",
   //   connection: {

@@ -11,47 +11,33 @@
 POST http://localhost:8000/users
 Content-Type: application/json
 {
-    "email": "zulfiqar.soomro@gmail.co",
+    "email": "email@gmail.com",
     "password": "examplePassword"
 }
 #+end_src
 
 #+RESULTS:
-#+BEGIN_SRC js
+#+begin_example
+,#+BEGIN_SRC js
 {
-<<<<<<< HEAD
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2fSwiaWF0IjoxNjAzNzUzMTg5LCJleHAiOjE2MDQxMTMxODl9.LSkwpl2qT3PCS98hqinzVyKepLlCFa1z_SQTYVZUFXs",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxM30sImlhdCI6MTYwNDE1Nzk4MiwiZXhwIjoxNjA0NTE3OTgyfQ.ZtvoZIH6y0o4YJWtGEAe_fM8OgT7luwOMy0Id4eDQ94",
   "user": {
-    "email": "zulfiqar.soomro@gmail.co",
-    "password": "$2b$10$zTLHxLMfTxGwjmzim82ud.knbC5aeqPHp7qgKB66FQvtQEsLGTIWi",
-    "id": 6
-=======
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0fSwiaWF0IjoxNjAzNzI1MjIxLCJleHAiOjE2MDQwODUyMjF9.RLEvpRkAIuecm0SXFtVe-Jw058sQGERf7cW_x2BlDko",
-  "user": {
-    "email": "zulfiqar.soomro@ecountabl.co",
-    "password": "$2b$10$OdX5XaVqva1nPREGsNcxLO9g9AVTE1NqDSJoBmVyBy49206dttJcy",
-    "id": 4
->>>>>>> 4fc5b53effa7f40421edc603e4ec313de539ebe8
+    "email": "email@gmail.com",
+    "password": "$2b$10$Vdz90uFNOwtS3.Z8aKXCleSaQ7/KD/.OxFAY1OgTao0EWt3dVphRu",
+    "id": 13
   }
 }
 // POST http://localhost:8000/users
 // HTTP/1.1 200 OK
 // X-Powered-By: Express
 // Content-Type: application/json; charset=utf-8
-<<<<<<< HEAD
-// Content-Length: 286
-// ETag: W/"11e-XVcWn8rwZtCEN3APx1dm1TZ8Gfs"
-// Date: Mon, 26 Oct 2020 22:59:49 GMT
+// Content-Length: 280
+// ETag: W/"118-LLSyahNlJ0SP+6fypCiOeLlQaCU"
+// Date: Sat, 31 Oct 2020 15:26:22 GMT
 // Connection: keep-alive
-// Request duration: 0.218048s
-=======
-// Content-Length: 290
-// ETag: W/"122-b+Pyur7NtA/+zeUipJ+NrcPUq+A"
-// Date: Mon, 26 Oct 2020 15:13:41 GMT
-// Connection: keep-alive
-// Request duration: 0.134611s
->>>>>>> 4fc5b53effa7f40421edc603e4ec313de539ebe8
-#+END_SRC
+// Request duration: 0.218814s
+,#+END_SRC
+#+end_example
 
 ** Login
 

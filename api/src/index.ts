@@ -20,6 +20,18 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-const PORT = process.env.PORT || 8000;
+let PORT = 8000;
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+// Testing environment
+if (process.env.NODE_ENV && process.env.NODE_ENV == "test") {
+  PORT = 8001;
+}
+
+// Heroku production environment
+if (process.env.PORT) {
+  PORT = (process.env.PORT as unknown) as number;
+}
+
+export const server = app.listen(PORT, () =>
+  console.log(`Server started on port ${PORT}`)
+);
