@@ -9,6 +9,7 @@ const config = {
     connection: {
       filename: "./mydb.sqlite",
     },
+    useNullasDefault: true,
   },
 
   testing: {
@@ -16,23 +17,8 @@ const config = {
     connection: {
       filename: "./testdb.sqlite",
     },
+    useNullasDefault: true,
   },
-
-  // staging: {
-  //   client: "postgresql",
-  //   connection: {
-  //     database: "my_db",
-  //     user: "username",
-  //     password: "password",
-  //   },
-  //   pool: {
-  //     min: 2,
-  //     max: 10,
-  //   },
-  //   migrations: {
-  //     tableName: "knex_migrations",
-  //   },
-  // },
 
   production: {
     client: "postgres",
