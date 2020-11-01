@@ -35,7 +35,6 @@ podsRouter.post(
         inviterUserId: currUser,
         podId: pod.id,
       });
-      console.log("invite", invite);
     });
 
     console.log("Created pod: ", pod);

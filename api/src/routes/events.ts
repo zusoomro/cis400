@@ -22,16 +22,17 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
 });
 
 eventRouter.get(
-  "/", 
-  [auth], async (req: express.Request, res: express.Response) => {
-      try {
-          const userId = (req as AuthRequest).user.id;
-          const eventsList = await Event.query().where("ownerId", userId);
-          res.json({ events: eventsList });
-      } catch (err) {
-          console.error(err);
-          res.status(500).send("Server Error when getting events");
-        }
+  "/",
+  [auth],
+  async (req: express.Request, res: express.Response) => {
+    try {
+      const userId = (req as AuthRequest).user.id;
+      const eventsList = await Event.query().where("ownerId", userId);
+      res.json({ events: eventsList });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Server Error when getting events");
+    }
   }
 );
 

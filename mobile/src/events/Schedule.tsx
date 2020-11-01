@@ -34,25 +34,22 @@ const Schedule: React.FC<{}> = () => {
     async function fetcher() {
       try {
         const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-        const res = await fetch(
-          'http://localhost:8000/events',
-          {
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-              "x-auth-token": authToken!,
-            },
-          }
-        );
+        const res = await fetch("http://localhost:8000/events", {
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+            "x-auth-token": authToken!,
+          },
+        });
         const json = await res.json();
         const returnedEvents = json.events;
         if (returnedEvents) {
           setEventsForUser(returnedEvents);
         }
       } catch (err) {
-        console.log("ERROR: ", err)
-        console.log('error loading events for current user');
+        console.log("ERROR: ", err);
+        console.log("error loading events for current user");
       }
-    };
+    }
 
     fetcher();
   }, []);

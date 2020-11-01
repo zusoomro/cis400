@@ -46,7 +46,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
     fetcher();
   }, []);
 
-  const Item = ({ title, user }) => (
+  const UserRowItem = ({ title, user }) => (
     <View style={styles.item}>
       <Text style={styles.title}>{title}</Text>
       <Button
@@ -65,7 +65,9 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
     </View>
   );
 
-  const renderItem = ({ item }) => <Item title={item.email} user={item} />;
+  const renderItem = ({ item }) => (
+    <UserRowItem title={item.email} user={item} />
+  );
 
   const handleInviteUsers = () => {
     navigation.navigate("CreatePod", { invitees: invitees });
