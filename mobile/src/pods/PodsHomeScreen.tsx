@@ -6,6 +6,9 @@ import {
   StyleSheet,
   Button,
   TextInput,
+  Modal,
+  Alert,
+  TouchableHighlight,
 } from "react-native";
 import { Formik } from "formik";
 import { NavigationContainer } from "@react-navigation/native";
@@ -19,9 +22,18 @@ interface Pod {
   name: string;
 }
 
+interface Invite {
+  id: number;
+  inviterUserId: number;
+  inviteeUserId: number;
+  podId: number;
+}
+
 const PodsHomeScreen = ({ navigation, route }) => {
   // Holds pod of current user -- undefined if no user exists
   const [pod, setPod] = useState<Pod>();
+  const [invites, setInvites] = useState<Array<Invite>>();
+  const [modalVisible, setModalVisible] = useState(false);
 
   React.useEffect(() => {
     if (route.params?.pod) {
@@ -30,7 +42,7 @@ const PodsHomeScreen = ({ navigation, route }) => {
   }, [route.params?.pod]);
 
   React.useEffect(() => {
-    async function fetcher() {
+    async function fetchUsersPod() {
       try {
         const authToken = await SecureStore.getItemAsync("wigo-auth-token");
         const res = await fetch("http://localhost:8000/pods/currUsersPod", {
@@ -50,7 +62,33 @@ const PodsHomeScreen = ({ navigation, route }) => {
       }
     }
 
-    fetcher();
+    async function fetchUsersInvites() {
+      try {
+        const authToken = await SecureStore.getItemAsync("wigo-auth-token");
+        const res = await fetch(
+          "http://localhost:8000/invites/currUsersInvites",
+          {
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+              "x-auth-token": authToken!,
+            },
+          }
+        );
+
+        const json = await res.json();
+        const invitesList = json.invites;
+        console.log(await invitesList);
+        if (invitesList) {
+          setInvites(invitesList);
+          setModalVisible(true);
+        }
+      } catch (err) {
+        console.log("error loading invites for current user");
+      }
+    }
+
+    fetchUsersPod();
+    fetchUsersInvites();
   }, []);
 
   return (
@@ -67,6 +105,29 @@ const PodsHomeScreen = ({ navigation, route }) => {
         ) : (
           <Text>Pod Name: {pod.name} </Text>
         )}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Hello World!</Text>
+
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
       </View>
     </SafeAreaView>
   );
@@ -78,6 +139,42 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: "#F194FF",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
 
