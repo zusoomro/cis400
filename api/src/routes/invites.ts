@@ -25,4 +25,15 @@ invitesRouter.get(
   }
 );
 
+invitesRouter.post("/reject", async (req, res) => {
+  const { id } = req.body;
+  try {
+    const numDeleted = await PodInvites.query().deleteById(id);
+    res.send({ msg: "success" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+});
+
 export default invitesRouter;

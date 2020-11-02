@@ -77,8 +77,8 @@ const PodsHomeScreen = ({ navigation, route }) => {
 
         const json = await res.json();
         const invitesList = json.invites;
-        console.log(await invitesList);
-        if (invitesList) {
+        console.log("invites:", await invitesList);
+        if (invitesList.length) {
           setInvites(invitesList);
           setModalVisible(true);
         }
@@ -105,33 +105,66 @@ const PodsHomeScreen = ({ navigation, route }) => {
         ) : (
           <Text>Pod Name: {pod.name} </Text>
         )}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Hello World!</Text>
+        {modalVisible && (
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>
+                  You've been invites to Pod: {invites![0].podId}!
+                </Text>
+                <View style={styles.acceptRejectButtonContainer}>
+                  <TouchableHighlight onPress={handleAccptInvite}>
+                    <View style={styles.acceptButton}>
+                      <Text>Accept</Text>
+                    </View>
+                  </TouchableHighlight>
+                  <TouchableHighlight onPress={handleRejectInvite}>
+                    <View style={styles.rejectButton}>
+                      <Text>Reject</Text>
+                    </View>
+                  </TouchableHighlight>
+                </View>
 
-              <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <Text style={styles.textStyle}>Hide Modal</Text>
-              </TouchableHighlight>
+                <TouchableHighlight
+                  style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                  onPress={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <Text style={styles.textStyle}>Hide Modal</Text>
+                </TouchableHighlight>
+              </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        )}
       </View>
     </SafeAreaView>
   );
 };
+
+// function should
+// 1. accept invite and add user as a member of the pod
+// 2. remove invite from PodInvites table
+// 3. pop invite off the invites list
+// 4. Hide modal
+function handleAccptInvite() {
+  console.log("accept invite pressed");
+}
+
+// function should
+// 1. reject invite and delete invite in the database
+// 2. pop invite off the invities list
+// 3. hide modal
+function handleRejectInvite() {
+  console.log("reject invite pressed");
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -175,6 +208,22 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10,
+  },
+  acceptButton: {
+    backgroundColor: "#d63024",
+    padding: 10,
+  },
+  rejectButton: {
+    backgroundColor: "#27c20c",
+    padding: 10,
+  },
+  acceptRejectButtonContainer: {
+    flexDirection: "row",
   },
 });
 
