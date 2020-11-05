@@ -9,7 +9,7 @@ import {
 import moment from "moment";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-const DatePicker: React.FC<{}> = ({ ...props }) => {
+const DatePicker: React.FC<{name:string, date:Date}> = (props) => {
   // Used for user interaction with datepicker
   const [date, setDate] = useState(props.date); 
   const [mode, setMode] = useState('date');

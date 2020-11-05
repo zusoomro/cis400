@@ -7,9 +7,11 @@ import {
   Button,
   SafeAreaView,
   StyleSheet,
+  View,
 } from "react-native";
 import DatePicker from "./DatePicker";
 import * as SecureStore from "expo-secure-store";
+import LocationPicker from "./LocationPicker";
 
 const apiUrl = "http://localhost:8000";
 
@@ -20,55 +22,59 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
   const [endTime, setEndTime] = useState(new Date(Date.now() + 60 * 60 * 1000));
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Formik
-        initialValues={{
-          name: "",
-          address: "",
-          startTime: startTime,
-          endTime: endTime,
-          notes: ""
-        }}
-        onSubmit={(values) => {
-          console.log(values);
-          createEventOnSubmit(values);
-          navigation.navigate("ScheduleHomePage");
-        }}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <ScrollView>
-            <TextInput
-              onChangeText={handleChange("name")}
-              onBlur={handleBlur("name")}
-              value={values.name}
-              placeholder="event name"
-              style={styles.input}
-            />
-            <TextInput
-              onChangeText={handleChange("address")}
-              onBlur={handleBlur("address")}
-              value={values.address}
-              placeholder="address"
-              style={styles.input}
-            />
-            {/* Start Time input */}
-            <DatePicker name="startTime" date={startTime}> </DatePicker>
-            {/* End Time input */}
-            <DatePicker name="endTime" date={endTime}> </DatePicker>
+    <ScrollView keyboardShouldPersistTaps="handled">
+      <SafeAreaView style={styles.container}>
+        <Formik
+          initialValues={{
+            name: "",
+            formattedAddress: "",
+            lat: "",
+            lng: "",
+            startTime: startTime,
+            endTime: endTime,
+            notes: ""
+          }}
+          onSubmit={(values) => {
+            console.log(values);
+            createEventOnSubmit(values);
+            navigation.navigate("ScheduleHomePage");
+          }}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values }) => (
+            <View>
+              <TextInput
+                onChangeText={handleChange("name")}
+                onBlur={handleBlur("name")}
+                value={values.name}
+                placeholder="event name"
+                style={styles.input}
+              />
+              <TextInput
+                onChangeText={handleChange("address")}
+                onBlur={handleBlur("address")}
+                value={values.address}
+                placeholder="address"
+                style={styles.input}
+              />
+              <LocationPicker latFieldName="lat" lngFieldName="lng" formattedAddress="formattedAddress"/>
+              {/* Start Time input */}
+              <DatePicker name="startTime" date={startTime}> </DatePicker>
+              {/* End Time input */}
+              <DatePicker name="endTime" date={endTime}> </DatePicker>
 
-            <TextInput
-              onChangeText={handleChange("notes")}
-              onBlur={handleBlur("notes")}
-              value={values.notes}
-              placeholder="Add description"
-              style={styles.input}
-            />
-            <Button onPress={handleSubmit} title="Save" />
-          </ScrollView>
-        )}
-      </Formik>
-
-    </SafeAreaView>
+              <TextInput
+                onChangeText={handleChange("notes")}
+                onBlur={handleBlur("notes")}
+                value={values.notes}
+                placeholder="Add description"
+                style={styles.input}
+              />
+              <Button onPress={handleSubmit} title="Save" />
+            </View>
+          )}
+        </Formik>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -78,7 +84,6 @@ const createEventOnSubmit = async (values): Promise<Event | null> => {
   // Create event to be put in database 
   const data = {
     name: values.name,
-    address: values.address,
     startTime: values.startTime,
     endTime: values.endTime,
     notes: values.notes,
