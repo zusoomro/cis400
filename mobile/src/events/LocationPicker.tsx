@@ -32,7 +32,7 @@ const LocationPicker: React.FC<LocationProps> = (props) => {
 
     return (
         <GooglePlacesAutocomplete
-            placeholder='Search address'
+            placeholder='Add Location'
             currentLocation={true}
             fetchDetails={true} // Details in onPress should not be null
             query={{

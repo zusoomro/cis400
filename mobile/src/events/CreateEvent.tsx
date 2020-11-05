@@ -49,13 +49,6 @@ const CreateEvent: React.FC<{}> = () => {
                 placeholder="event name"
                 style={styles.input}
               />
-              <TextInput
-                onChangeText={handleChange("address")}
-                onBlur={handleBlur("address")}
-                value={values.address}
-                placeholder="address"
-                style={styles.input}
-              />
               <LocationPicker latFieldName="lat" lngFieldName="lng" formattedAddress="formattedAddress" />
               {/* Start Time input */}
               <DatePicker name="startTime" date={startTime}> </DatePicker>
