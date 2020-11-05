@@ -4,7 +4,9 @@ export default class Event extends Model {
   id!: number;
   name!: string;
   ownerId!: number;
-  address!: string;
+  formattedAddress!: string;
+  lat!: number;
+  lng!: number;
   start_time!: Date;
   end_time!: Date;
   notes!: string;

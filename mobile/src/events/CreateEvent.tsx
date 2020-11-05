@@ -56,7 +56,7 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
                 placeholder="address"
                 style={styles.input}
               />
-              <LocationPicker latFieldName="lat" lngFieldName="lng" formattedAddress="formattedAddress"/>
+              <LocationPicker latFieldName="lat" lngFieldName="lng" formattedAddress="formattedAddress" />
               {/* Start Time input */}
               <DatePicker name="startTime" date={startTime}> </DatePicker>
               {/* End Time input */}
@@ -84,6 +84,9 @@ const createEventOnSubmit = async (values): Promise<Event | null> => {
   // Create event to be put in database 
   const data = {
     name: values.name,
+    formattedAddress: values.formattedAddress,
+    lat: values.lat,
+    lng: values.lng,
     startTime: values.startTime,
     endTime: values.endTime,
     notes: values.notes,

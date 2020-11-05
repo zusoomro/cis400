@@ -12,13 +12,15 @@ eventRouter.get("/", async (req, res) => {
 
 eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   console.log("Calling eventRouter.post");
-  const { name, address, startTime, endTime, notes } = req.body;
+  const { name, formattedAddress, startTime, endTime, notes, lat, lng } = req.body;
 
   const id = (req as AuthRequest).user.id;
   const event = await Event.query().insert({
     ownerId: id,
     name,
-    address,
+    formattedAddress: formattedAddress,
+    lat,
+    lng,
     start_time: startTime,
     end_time: endTime,
     notes,
