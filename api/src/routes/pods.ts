@@ -1,6 +1,7 @@
 import express from "express";
 import { isConstructorDeclaration } from "typescript";
 import Pod from "../../models/Pod";
+import User from "../../models/User";
 import PodInvites from "../../models/PodInvites";
 import auth, { AuthRequest } from "../authMiddleware";
 
@@ -24,11 +25,18 @@ podsRouter.post(
 
     const inviteeIds: Array<number> = req.body.inviteeIds;
 
+    // add a pop to the pods database
     const pod = await Pod.query().insert({
       ownerId: currUser,
       name: name,
     });
 
+    // update the podId field for the current user
+    const numUpdated = await User.query().findById(currUser).patch({
+      podId: pod.id,
+    });
+
+    // send invites
     inviteeIds.forEach(async (id) => {
       const invite = await PodInvites.query().insert({
         inviteeUserId: id,
@@ -42,18 +50,21 @@ podsRouter.post(
   }
 );
 
-// currently the only member of the pod is the owner which is why we query for 'where("ownerId", userId)'
-// this will change once we add members to a pod.
 podsRouter.get(
   "/currUsersPod",
   [auth],
   async (req: express.Request, res: express.Response) => {
     try {
       const userId = (req as AuthRequest).user.id;
-      const podsList = await Pod.query().where("ownerId", userId);
-      const firstPodForUser = podsList[0];
-      console.log("pod", firstPodForUser);
-      res.json({ pod: firstPodForUser });
+      const user = await User.query().findById(userId);
+      const podId = user.podId;
+      let pod = undefined;
+      if (podId) {
+        pod = await Pod.query().findById(podId);
+        console.log("pod 1", pod);
+      }
+
+      res.json({ pod: pod });
     } catch (err) {
       console.error(err);
       res.status(500).send("Server Error");

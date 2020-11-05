@@ -15,6 +15,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useFocusEffect } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
+import InviteUsers from "./InviteUsers";
 
 interface Pod {
   id: number;
@@ -77,7 +78,6 @@ const PodsHomeScreen = ({ navigation, route }) => {
 
         const json = await res.json();
         const invitesList = json.invites;
-        console.log("invites:", await invitesList);
         if (invitesList.length) {
           setInvites(invitesList);
           setModalVisible(true);
@@ -90,6 +90,49 @@ const PodsHomeScreen = ({ navigation, route }) => {
     fetchUsersPod();
     fetchUsersInvites();
   }, []);
+
+  async function handleRejectInvite() {
+    const data = { id: invites![0].id };
+    try {
+      const res = await fetch("http://localhost:8000/invites/reject", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+      if (json.msg == "success") {
+        console.log("success rejecting invite");
+      }
+      setModalVisible(false);
+      setInvites(invites.pop());
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const handleAccptInvite = async () => {
+    const data = { podId: invites![0].podId, inviteId: invites![0].id };
+    try {
+      const res = await fetch("http://localhost:8000/invites/accept", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          "x-auth-token": (await SecureStore.getItemAsync("wigo-auth-token"))!,
+        },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+      if (json.pod) {
+        setPod(json.pod);
+      }
+      setModalVisible(false);
+      setInvites(invites.pop());
+    } catch (error) {
+      console.log(`error accepting invite`, error);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -154,17 +197,6 @@ const PodsHomeScreen = ({ navigation, route }) => {
 // 2. remove invite from PodInvites table
 // 3. pop invite off the invites list
 // 4. Hide modal
-function handleAccptInvite() {
-  console.log("accept invite pressed");
-}
-
-// function should
-// 1. reject invite and delete invite in the database
-// 2. pop invite off the invities list
-// 3. hide modal
-function handleRejectInvite() {
-  console.log("reject invite pressed");
-}
 
 const styles = StyleSheet.create({
   container: {
