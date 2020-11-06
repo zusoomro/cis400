@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  Button,
-  TextInput,
-} from "react-native";
+import { View, Text, SafeAreaView, StyleSheet, TextInput } from "react-native";
+import Button from "../shared/Button";
 import { Formik } from "formik";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -19,7 +13,7 @@ interface Pod {
   name: string;
 }
 
-const PodsHomeScreen = ({ navigation, route }) => {
+const PodsHomeScreen: React.FC = ({ navigation, route }) => {
   // Holds pod of current user -- undefined if no user exists
   const [pod, setPod] = useState<Pod>();
 
@@ -64,7 +58,7 @@ const PodsHomeScreen = ({ navigation, route }) => {
               navigation.navigate("CreatePod");
               return;
             }}
-          ></Button>
+          />
         ) : (
           <Text>Pod Name: {pod.name} </Text>
         )}

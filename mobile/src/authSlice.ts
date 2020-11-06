@@ -59,28 +59,36 @@ export const loadToken = createAsyncThunk(
   }
 );
 
-export const login = createAsyncThunk("auth/login", async (data, api) => {
-  try {
-    const res = await fetch(apiUrl + "/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-      },
-      body: JSON.stringify(data),
-    });
+interface LoginValues {
+  email: string;
+  password: string;
+}
 
-    console.log("res", res);
+export const login = createAsyncThunk(
+  "auth/login",
+  async (data: LoginValues, api) => {
+    try {
+      const res = await fetch(apiUrl + "/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify(data),
+      });
 
-    const json = await res.json();
+      console.log("res", res);
 
-    await SecureStore.setItemAsync("wigo-auth-token", json.token);
+      const json = await res.json();
 
-    return json;
-  } catch (ex) {
-    console.log(`error creating new user`, ex);
-    return api.rejectWithValue(ex.message);
+      await SecureStore.setItemAsync("wigo-auth-token", json.token);
+
+      return json;
+    } catch (ex) {
+      console.log(`error creating new user`, ex);
+      return api.rejectWithValue(ex.message);
+    }
   }
-});
+);
 
 export const register = createAsyncThunk("auth/register", async (data, api) => {
   try {

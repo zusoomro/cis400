@@ -13,10 +13,11 @@ import {
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "./authSlice";
+import { RootState } from "./configureStore";
 
-const Login: React.FC<{}> = () => {
+const Login: React.FC = () => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state: RootState) => state.auth);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
