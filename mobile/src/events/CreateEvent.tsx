@@ -34,7 +34,6 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
             notes: ""
           }}
           onSubmit={(values) => {
-            console.log(values);
             createEventOnSubmit(values);
             navigation.navigate("ScheduleHomePage");
           }}
@@ -71,8 +70,6 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
 };
 
 const createEventOnSubmit = async (values): Promise<Event | null> => {
-  console.log('createEventOnSubmit');
-
   // Create event to be put in database 
   const data = {
     name: values.name,

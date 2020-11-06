@@ -24,7 +24,6 @@ const LocationPicker: React.FC<LocationProps> = (props) => {
     const [formattedAddress] = useField(props.formattedAddress);
 
     const locationPicked = (data, details) => {
-        console.log("Selected Location")
         setFieldValue(props.formattedAddress, details?.formatted_address);
         setFieldValue(props.latFieldName, details?.geometry.location.lat);
         setFieldValue(props.lngFieldName, details?.geometry.location.lng);
