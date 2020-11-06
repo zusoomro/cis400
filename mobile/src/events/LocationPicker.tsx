@@ -1,7 +1,8 @@
 import React from "react";
 import { useField, useFormikContext } from "formik";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import google_maps_api_key from "../../google_maps_api_key";
+
+import { GOOGLE_MAPS_API_KEY, KEY } from "@env";
 
 export interface Place {
     formatted_address: string,
@@ -35,7 +36,7 @@ const LocationPicker: React.FC<LocationProps> = (props) => {
             currentLocation={true}
             fetchDetails={true} // Details in onPress should not be null
             query={{
-                key: google_maps_api_key,
+                key: GOOGLE_MAPS_API_KEY, 
                 language: 'en'
             }}
             onPress={locationPicked}
