@@ -4,7 +4,7 @@ import Pod from "../../models/Pod";
 import PodInvites from "../../models/PodInvites";
 import auth, { AuthRequest } from "../authMiddleware";
 
-let podsRouter = express.Router();
+const podsRouter = express.Router();
 
 podsRouter.get("/", async (req, res) => {
   const response = await Pod.query();
@@ -29,6 +29,8 @@ podsRouter.post(
       name: name,
     });
 
+    await pod.$relatedQuery("members").relate(user.id);
+
     inviteeIds.forEach(async (id) => {
       const invite = await PodInvites.query().insert({
         inviteeUserId: id,
@@ -50,7 +52,10 @@ podsRouter.get(
   async (req: express.Request, res: express.Response) => {
     try {
       const userId = (req as AuthRequest).user.id;
-      const podsList = await Pod.query().where("ownerId", userId);
+      const podsList = await Pod.query()
+        .joinRelated("members")
+        .where("members.id", userId)
+        .withGraphFetched("members");
       const firstPodForUser = podsList[0];
       console.log("pod", firstPodForUser);
       res.json({ pod: firstPodForUser });

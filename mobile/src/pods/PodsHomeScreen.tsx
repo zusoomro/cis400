@@ -12,6 +12,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useFocusEffect } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
+import SectionButton from "../shared/SectionButton";
 
 interface Pod {
   id: number;
@@ -63,9 +64,18 @@ const PodsHomeScreen = ({ navigation, route }) => {
               navigation.navigate("CreatePod");
               return;
             }}
-          ></Button>
+          />
         ) : (
-          <Text>Pod Name: {pod.name} </Text>
+          <React.Fragment>
+            <Text style={[styles.h1, { marginLeft: 10, marginTop: 20 }]}>
+              Your Pod
+            </Text>
+            <SectionButton
+              title="Manage Members"
+              onPress={() => console.log("Navigate to users page")}
+              style={{ marginTop: 10 }}
+            />
+          </React.Fragment>
         )}
       </View>
     </SafeAreaView>
@@ -73,11 +83,10 @@ const PodsHomeScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  container: {},
+  h1: {
+    fontSize: 32,
+    fontWeight: "300",
   },
 });
 

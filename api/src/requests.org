@@ -2,6 +2,7 @@
 * TODOS
 ** TODO Create environment variable for database
 ** TODO Create environment variable for JWT salt
+** TODO Refactor podids to pod object
 
 * Auth
 
@@ -17,41 +18,26 @@ Content-Type: application/json
 #+end_src
 
 #+RESULTS:
-#+BEGIN_SRC js
+#+begin_example
+,#+BEGIN_SRC js
 {
-<<<<<<< HEAD
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2fSwiaWF0IjoxNjAzNzUzMTg5LCJleHAiOjE2MDQxMTMxODl9.LSkwpl2qT3PCS98hqinzVyKepLlCFa1z_SQTYVZUFXs",
-  "user": {
-    "email": "zulfiqar.soomro@gmail.co",
-    "password": "$2b$10$zTLHxLMfTxGwjmzim82ud.knbC5aeqPHp7qgKB66FQvtQEsLGTIWi",
-    "id": 6
-=======
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0fSwiaWF0IjoxNjAzNzI1MjIxLCJleHAiOjE2MDQwODUyMjF9.RLEvpRkAIuecm0SXFtVe-Jw058sQGERf7cW_x2BlDko",
-  "user": {
-    "email": "zulfiqar.soomro@ecountabl.co",
-    "password": "$2b$10$OdX5XaVqva1nPREGsNcxLO9g9AVTE1NqDSJoBmVyBy49206dttJcy",
-    "id": 4
->>>>>>> 4fc5b53effa7f40421edc603e4ec313de539ebe8
-  }
+  "errors": [
+    {
+      "msg": "User already exists"
+    }
+  ]
 }
 // POST http://localhost:8000/users
-// HTTP/1.1 200 OK
+// HTTP/1.1 400 Bad Request
 // X-Powered-By: Express
 // Content-Type: application/json; charset=utf-8
-<<<<<<< HEAD
-// Content-Length: 286
-// ETag: W/"11e-XVcWn8rwZtCEN3APx1dm1TZ8Gfs"
-// Date: Mon, 26 Oct 2020 22:59:49 GMT
+// Content-Length: 42
+// ETag: W/"2a-VBiGuTvIunFL9XlHdXrotU2H1qA"
+// Date: Fri, 06 Nov 2020 16:05:29 GMT
 // Connection: keep-alive
-// Request duration: 0.218048s
-=======
-// Content-Length: 290
-// ETag: W/"122-b+Pyur7NtA/+zeUipJ+NrcPUq+A"
-// Date: Mon, 26 Oct 2020 15:13:41 GMT
-// Connection: keep-alive
-// Request duration: 0.134611s
->>>>>>> 4fc5b53effa7f40421edc603e4ec313de539ebe8
+// Request duration: 0.056206s
 #+END_SRC
+#+end_example
 
 ** Login
 
@@ -67,17 +53,23 @@ Content-Type: application/json
 #+RESULTS:
 #+BEGIN_SRC js
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1fSwiaWF0IjoxNjAzMDc3MzM1LCJleHAiOjE2MDMwNzgyMzV9.wQ56trtEHBtarcv2ClYU0ms4Zti9wpE_1GDbwlUI4zo"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2fSwiaWF0IjoxNjA0Njc4NzM0LCJleHAiOjE2MDQ2Nzk2MzR9.0cQGAS1pKFLvbJt5f9Vlbi26tzpNjslYgvIDJA4fH1U",
+  "user": {
+    "id": 6,
+    "email": "zulfiqar.soomro@gmail.co",
+    "podId": null,
+    "password": "$2b$10$zTLHxLMfTxGwjmzim82ud.knbC5aeqPHp7qgKB66FQvtQEsLGTIWi"
+  }
 }
 // POST http://localhost:8000/users/login
 // HTTP/1.1 200 OK
 // X-Powered-By: Express
 // Content-Type: application/json; charset=utf-8
-// Content-Length: 161
-// ETag: W/"a1-CTqjhuvbfHDGeDnVgmDHNMll95I"
-// Date: Mon, 19 Oct 2020 03:15:35 GMT
+// Content-Length: 299
+// ETag: W/"12b-yyhjOHqU1FrdJXzREQmaHYTdOys"
+// Date: Fri, 06 Nov 2020 16:05:34 GMT
 // Connection: keep-alive
-// Request duration: 0.067611s
+// Request duration: 0.064481s
 #+END_SRC
 
 ** Load User
