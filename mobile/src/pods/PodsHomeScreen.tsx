@@ -32,7 +32,7 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView>
       <View>
         {firstPod == null ? (
           <Button
@@ -49,7 +49,7 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
             </Text>
             <SectionButton
               title="Manage Members"
-              onPress={() => console.log("Navigate to users page")}
+              onPress={() => navigation.navigate("ManageMembers")}
               style={{ marginTop: 10 }}
             />
           </React.Fragment>

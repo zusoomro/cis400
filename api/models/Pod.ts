@@ -1,11 +1,11 @@
 import { Model, Modifiers } from "objection";
-import { prependOnceListener } from "process";
 import path from "path";
 
 export default class Pod extends Model {
   id!: number;
   name!: string;
   ownerId?: number;
+  members!: any[];
 
   static get tableName() {
     return "pods";
@@ -16,13 +16,10 @@ export default class Pod extends Model {
   }
 
   static get relationMappings() {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const User = require("./User");
-
     return {
       owner: {
         relation: Model.HasOneRelation,
-        modelClass: User,
+        modelClass: path.join(__dirname, "User"),
         join: {
           from: "owners.id",
           to: "users.id",
