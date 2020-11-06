@@ -7,12 +7,11 @@ import {
   Button,
   TextInput,
 } from "react-native";
-import { Formik } from "formik";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { useFocusEffect } from "@react-navigation/native";
-import * as SecureStore from "expo-secure-store";
+import { useDispatch, useSelector } from "react-redux";
+import { loadUserPods } from "./podSlice";
 import SectionButton from "../shared/SectionButton";
+import { RootState } from "../configureStore";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 interface Pod {
   id: number;
@@ -20,44 +19,22 @@ interface Pod {
   name: string;
 }
 
-const PodsHomeScreen = ({ navigation, route }) => {
-  // Holds pod of current user -- undefined if no user exists
-  const [pod, setPod] = useState<Pod>();
+interface Props {
+  navigation: StackNavigationProp<any>;
+}
+
+const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
+  const firstPod = useSelector((state: RootState) => state.pods.pods[0]);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    if (route.params?.pod) {
-      setPod(route.params.pod);
-    }
-  }, [route.params?.pod]);
-
-  React.useEffect(() => {
-    async function fetcher() {
-      try {
-        const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-        const res = await fetch("http://localhost:8000/pods/currUsersPod", {
-          headers: {
-            "Content-Type": "application/json;charset=utf-8",
-            "x-auth-token": authToken!,
-          },
-        });
-
-        const json = await res.json();
-        const returnedPod = json.pod;
-        if (returnedPod) {
-          setPod(returnedPod);
-        }
-      } catch (err) {
-        console.log("error loading pod for current user");
-      }
-    }
-
-    fetcher();
+    dispatch(loadUserPods());
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        {pod == null ? (
+        {firstPod == null ? (
           <Button
             title="Create New Pod"
             onPress={() => {
@@ -68,7 +45,7 @@ const PodsHomeScreen = ({ navigation, route }) => {
         ) : (
           <React.Fragment>
             <Text style={[styles.h1, { marginLeft: 10, marginTop: 20 }]}>
-              Your Pod
+              {firstPod?.name ? firstPod.name : "Your Pod"}
             </Text>
             <SectionButton
               title="Manage Members"
@@ -83,7 +60,6 @@ const PodsHomeScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
   h1: {
     fontSize: 32,
     fontWeight: "300",

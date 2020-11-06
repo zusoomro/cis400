@@ -56,9 +56,7 @@ podsRouter.get(
         .joinRelated("members")
         .where("members.id", userId)
         .withGraphFetched("members");
-      const firstPodForUser = podsList[0];
-      console.log("pod", firstPodForUser);
-      res.json({ pod: firstPodForUser });
+      res.json({ pod: podsList });
     } catch (err) {
       console.error(err);
       res.status(500).send("Server Error");
