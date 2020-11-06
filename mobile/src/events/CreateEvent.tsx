@@ -1,6 +1,5 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import {
   ScrollView,
   TextInput,
