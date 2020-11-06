@@ -1,6 +1,5 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import {
   ScrollView,
   TextInput,
@@ -8,10 +7,18 @@ import {
   SafeAreaView,
   StyleSheet,
 } from "react-native";
-import DatePicker from "./DatePicker";
+import DropDownPicker from 'react-native-dropdown-picker';
 import * as SecureStore from "expo-secure-store";
 
-const apiUrl = "http://localhost:8000";
+import DatePicker from "./DatePicker";
+
+const repetitionValues = [
+  { label: 'Does not repeat', value: "no_repeat"},
+  { label: 'Every day', value: "daily"},
+  { label: 'Every week', value: "weekly"},
+  { label: 'Every month', value: "monthly"},
+  { label: 'Every year', value: "yearly"},
+];
 
 const CreateEvent: React.FC<{}> = ({ navigation }) => {
   // Start time = current time
@@ -27,6 +34,7 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
           address: "",
           startTime: startTime,
           endTime: endTime,
+          repeat: repetitionValues[0].value,
           notes: "",
         }}
         onSubmit={(values) => {
@@ -35,7 +43,7 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
           navigation.navigate("ScheduleHomePage");
         }}
       >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
+        {({ handleChange, handleBlur, handleSubmit, values, setFieldValue }) => (
           <ScrollView>
             <TextInput
               onChangeText={handleChange("name")}
@@ -59,6 +67,14 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
             <DatePicker name="endTime" date={endTime}>
               {" "}
             </DatePicker>
+
+            <DropDownPicker items={repetitionValues}
+              defaultValue={values.repeat}
+              onChangeItem={item =>
+                setFieldValue("repeat", item.value)
+              }
+              containerStyle={{padding:15}}
+            />
 
             <TextInput
               onChangeText={handleChange("notes")}
@@ -84,6 +100,7 @@ const createEventOnSubmit = async (values): Promise<Event | null> => {
     address: values.address,
     startTime: values.startTime,
     endTime: values.endTime,
+    repeat: values.repeat,
     notes: values.notes,
   };
 
