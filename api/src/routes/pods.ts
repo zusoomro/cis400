@@ -1,6 +1,7 @@
 import express from "express";
 import { isConstructorDeclaration } from "typescript";
 import Pod from "../../models/Pod";
+import PodInvites from "../../models/PodInvites";
 import auth, { AuthRequest } from "../authMiddleware";
 
 let podsRouter = express.Router();
@@ -11,6 +12,7 @@ podsRouter.get("/", async (req, res) => {
   res.json(response);
 });
 
+// used to create a new pod
 podsRouter.post(
   "/",
   [auth],
@@ -20,10 +22,21 @@ podsRouter.post(
     const currUser = (req as AuthRequest).user.id;
     const name: string = req.body.name;
 
+    const inviteeIds: Array<number> = req.body.inviteeIds;
+
     const pod = await Pod.query().insert({
       ownerId: currUser,
       name: name,
     });
+
+    inviteeIds.forEach(async (id) => {
+      const invite = await PodInvites.query().insert({
+        inviteeUserId: id,
+        inviterUserId: currUser,
+        podId: pod.id,
+      });
+    });
+
     console.log("Created pod: ", pod);
     res.send(pod);
   }

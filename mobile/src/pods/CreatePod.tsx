@@ -24,13 +24,21 @@ interface Props {
 
 const CreatePod: React.FC<Props> = ({ navigation, route }) => {
   const [pod, setPod] = useState<Pod>();
+  const [invitees, setInvitees] = useState([]);
+
+  React.useEffect(() => {
+    if (route.params?.invitees) {
+      const invites: Array<number> = route.params.invitees;
+      setInvitees(invites);
+    }
+  }, [route.params?.invitees]);
+
   return (
     <SafeAreaView style={styles.container}>
       <Formik
         initialValues={{ podname: "" }}
         onSubmit={async (values) => {
-          console.log(values);
-          const res: Pod = await createPodOnSubmit(values);
+          const res: Pod = await createPodOnSubmit(values, invitees);
           if (res) {
             setPod(res);
           }
@@ -47,6 +55,13 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
               placeholder="Pod Name"
               style={styles.input}
             />
+            <Button
+              title="Invite Users to Pod"
+              onPress={() => {
+                navigation.navigate("InviteUsers");
+                return;
+              }}
+            ></Button>
             <Button onPress={handleSubmit} title="Submit" />
           </View>
         )}
@@ -55,9 +70,8 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
   );
 };
 
-const createPodOnSubmit = async (values) => {
-  console.log("createPodOnSubmit");
-  const data = { name: values.podname };
+const createPodOnSubmit = async (values, invitees) => {
+  const data = { name: values.podname, inviteeIds: invitees };
   try {
     const res = await fetch("http://localhost:8000/pods", {
       method: "POST",
@@ -68,7 +82,6 @@ const createPodOnSubmit = async (values) => {
       body: JSON.stringify(data),
     });
     const pod = await res.json();
-    console.log("pod", pod);
     return pod;
   } catch (error) {
     console.log(`error creating pod`, error);
