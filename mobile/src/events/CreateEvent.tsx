@@ -14,7 +14,7 @@ import LocationPicker from "./LocationPicker";
 
 const apiUrl = "http://localhost:8000";
 
-const CreateEvent: React.FC<{}> = () => {
+const CreateEvent: React.FC<{}> = ({ navigation }) => {
   // Start time = current time
   const [startTime, setStartTime] = useState(new Date());
   // End time = current time + 1 hour
