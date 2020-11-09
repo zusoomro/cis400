@@ -7,17 +7,17 @@ import {
   SafeAreaView,
   StyleSheet,
 } from "react-native";
-import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker from "react-native-dropdown-picker";
 import * as SecureStore from "expo-secure-store";
 
 import DatePicker from "./DatePicker";
 
 const repetitionValues = [
-  { label: 'Does not repeat', value: "no_repeat"},
-  { label: 'Every day', value: "daily"},
-  { label: 'Every week', value: "weekly"},
-  { label: 'Every month', value: "monthly"},
-  { label: 'Every year', value: "yearly"},
+  { label: "Does not repeat", value: "no_repeat" },
+  { label: "Every day", value: "daily" },
+  { label: "Every week", value: "weekly" },
+  { label: "Every month", value: "monthly" },
+  { label: "Every year", value: "yearly" },
 ];
 
 const CreateEvent: React.FC<{}> = ({ navigation }) => {
@@ -43,7 +43,13 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
           navigation.navigate("ScheduleHomePage");
         }}
       >
-        {({ handleChange, handleBlur, handleSubmit, values, setFieldValue }) => (
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          setFieldValue,
+        }) => (
           <ScrollView>
             <TextInput
               onChangeText={handleChange("name")}
@@ -68,12 +74,11 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
               {" "}
             </DatePicker>
 
-            <DropDownPicker items={repetitionValues}
+            <DropDownPicker
+              items={repetitionValues}
               defaultValue={values.repeat}
-              onChangeItem={item =>
-                setFieldValue("repeat", item.value)
-              }
-              containerStyle={{padding:15}}
+              onChangeItem={(item) => setFieldValue("repeat", item.value)}
+              containerStyle={{ padding: 15 }}
             />
 
             <TextInput
