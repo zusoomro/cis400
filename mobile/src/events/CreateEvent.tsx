@@ -15,7 +15,7 @@ import LocationPicker from "./LocationPicker";
 const apiUrl = "http://localhost:8000";
 
 const CreateEvent: React.FC<{}> = () => {
-  // Start time = current time 
+  // Start time = current time
   const [startTime, setStartTime] = useState(new Date());
   // End time = current time + 1 hour
   const [endTime, setEndTime] = useState(new Date(Date.now() + 60 * 60 * 1000));
@@ -31,7 +31,7 @@ const CreateEvent: React.FC<{}> = () => {
             lng: "",
             startTime: startTime,
             endTime: endTime,
-            notes: ""
+            notes: "",
           }}
           onSubmit={(values) => {
             createEventOnSubmit(values);
@@ -47,11 +47,19 @@ const CreateEvent: React.FC<{}> = () => {
                 placeholder="event name"
                 style={styles.input}
               />
-              <LocationPicker latFieldName="lat" lngFieldName="lng" formattedAddress="formattedAddress" />
+              <LocationPicker
+                latFieldName="lat"
+                lngFieldName="lng"
+                formattedAddress="formattedAddress"
+              />
               {/* Start Time input */}
-              <DatePicker name="startTime" date={startTime}> </DatePicker>
+              <DatePicker name="startTime" date={startTime}>
+                {" "}
+              </DatePicker>
               {/* End Time input */}
-              <DatePicker name="endTime" date={endTime}> </DatePicker>
+              <DatePicker name="endTime" date={endTime}>
+                {" "}
+              </DatePicker>
 
               <TextInput
                 onChangeText={handleChange("notes")}
@@ -70,7 +78,7 @@ const CreateEvent: React.FC<{}> = () => {
 };
 
 const createEventOnSubmit = async (values): Promise<Event | null> => {
-  // Create event to be put in database 
+  // Create event to be put in database
   const data = {
     name: values.name,
     formattedAddress: values.formattedAddress,

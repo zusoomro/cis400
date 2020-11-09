@@ -1,20 +1,25 @@
 import React from "react";
-import {StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import CreateEvent from "./CreateEvent";
 import ScheduleHomePage from "./Schedule";
-
 
 const ScheduleNavigator: React.FC<{}> = () => {
   const Stack = createStackNavigator();
 
   return (
     <Stack.Navigator initialRouteName="ScheduleHomePage">
-      <Stack.Screen name="ScheduleHomePage" component={ScheduleHomePage}
-        options={{ title: 'Schedule' }} />
-      <Stack.Screen name="CreateEvent" component={CreateEvent}
-        options={{ title: 'Create Event' }} />
+      <Stack.Screen
+        name="ScheduleHomePage"
+        component={ScheduleHomePage}
+        options={{ title: "Schedule" }}
+      />
+      <Stack.Screen
+        name="CreateEvent"
+        component={CreateEvent}
+        options={{ title: "Create Event" }}
+      />
     </Stack.Navigator>
   );
 };
