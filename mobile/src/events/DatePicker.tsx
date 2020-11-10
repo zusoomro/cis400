@@ -40,7 +40,7 @@ const DatePicker: React.FC<{}> = ({ ...props }) => {
       <View style={styles.dateTimeRow}>
         {/* // Date  */}
         <Text onPress={showDatepicker}>
-          {moment(date).format("ddd, MMM D")}
+          {moment(date).format("dddd, MMM D")}
         </Text>
         {/* // Time  */}
         <Text onPress={showTimepicker}> {moment(date).format(" h:mmA")}</Text>
