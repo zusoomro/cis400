@@ -12,32 +12,31 @@
 POST http://localhost:8000/users
 Content-Type: application/json
 {
-    "email": "zulfiqar.soomro@gmail.co",
-    "password": "examplePassword"
+    "email": "zulfiqar.soomro@gmail.com",
+    "password": "Password"
 }
 #+end_src
 
 #+RESULTS:
-#+begin_example
-,#+BEGIN_SRC js
+#+BEGIN_SRC js
 {
-  "errors": [
-    {
-      "msg": "User already exists"
-    }
-  ]
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyfSwiaWF0IjoxNjA1MDQ3MTkyLCJleHAiOjE2MDU0MDcxOTJ9.Ejpq4pVK_jc_tGyWFx12lpRZtfr_JC5MXKzOTnB4fHI",
+  "user": {
+    "email": "zulfiqar.soomro@gmail.com",
+    "password": "$2b$10$uMzwL0DLQyZdO92MAlnFw.Jw2o6vJH.k9qwbqlaYIGF1O3jlrhs2m",
+    "id": 2
+  }
 }
 // POST http://localhost:8000/users
-// HTTP/1.1 400 Bad Request
+// HTTP/1.1 200 OK
 // X-Powered-By: Express
 // Content-Type: application/json; charset=utf-8
-// Content-Length: 42
-// ETag: W/"2a-VBiGuTvIunFL9XlHdXrotU2H1qA"
-// Date: Fri, 06 Nov 2020 16:05:29 GMT
+// Content-Length: 287
+// ETag: W/"11f-2/1scopX12f+gcV258rkWiZEV7k"
+// Date: Tue, 10 Nov 2020 22:26:32 GMT
 // Connection: keep-alive
-// Request duration: 0.056206s
+// Request duration: 0.136309s
 #+END_SRC
-#+end_example
 
 ** Login
 
@@ -53,23 +52,21 @@ Content-Type: application/json
 #+RESULTS:
 #+BEGIN_SRC js
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo2fSwiaWF0IjoxNjA0Njc4NzM0LCJleHAiOjE2MDQ2Nzk2MzR9.0cQGAS1pKFLvbJt5f9Vlbi26tzpNjslYgvIDJA4fH1U",
-  "user": {
-    "id": 6,
-    "email": "zulfiqar.soomro@gmail.co",
-    "podId": null,
-    "password": "$2b$10$zTLHxLMfTxGwjmzim82ud.knbC5aeqPHp7qgKB66FQvtQEsLGTIWi"
-  }
+  "errors": [
+    {
+      "msg": "Invalid credentials."
+    }
+  ]
 }
 // POST http://localhost:8000/users/login
-// HTTP/1.1 200 OK
+// HTTP/1.1 400 Bad Request
 // X-Powered-By: Express
 // Content-Type: application/json; charset=utf-8
-// Content-Length: 299
-// ETag: W/"12b-yyhjOHqU1FrdJXzREQmaHYTdOys"
-// Date: Fri, 06 Nov 2020 16:05:34 GMT
+// Content-Length: 43
+// ETag: W/"2b-yi7JX4Udq67ZhH/4GU24p6TCCVY"
+// Date: Tue, 10 Nov 2020 22:26:20 GMT
 // Connection: keep-alive
-// Request duration: 0.064481s
+// Request duration: 0.051039s
 #+END_SRC
 
 ** Load User
@@ -101,4 +98,26 @@ x-auth-token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0fSwiaWF0
 // Date: Mon, 26 Oct 2020 15:15:25 GMT
 // Connection: keep-alive
 // Request duration: 0.009105s
+#+END_SRC
+
+* Pods
+#+begin_src restclient
+GET http://localhost:8000/pods/currUsersPod
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyfSwiaWF0IjoxNjA1MDQ3MTkyLCJleHAiOjE2MDU0MDcxOTJ9.Ejpq4pVK_jc_tGyWFx12lpRZtfr_JC5MXKzOTnB4fHI 
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "msg": "No token. Authorization denied"
+}
+// GET http://localhost:8000/pods/currUsersPod
+// HTTP/1.1 401 Unauthorized
+// X-Powered-By: Express
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 40
+// ETag: W/"28-MFE266gNvuP+zFr2CSXnTlSY27c"
+// Date: Tue, 10 Nov 2020 22:26:12 GMT
+// Connection: keep-alive
+// Request duration: 0.002623s
 #+END_SRC

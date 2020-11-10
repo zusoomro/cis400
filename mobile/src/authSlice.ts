@@ -27,7 +27,15 @@ export const loadUser = createAsyncThunk("auth/loadUser", async (data, api) => {
       },
     });
 
-    return await res.json();
+    const json = await res.json();
+
+    console.log(res);
+
+    if (!res.ok) {
+      return api.rejectWithValue(json.message);
+    }
+
+    return json;
   } catch (ex) {
     console.log(`error loading user`, ex);
     return api.rejectWithValue(ex.message);
@@ -169,7 +177,14 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
     [loadToken.rejected]: (state, action) => {
+      state.authenticated = false;
       state.token = "";
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [loadUser.rejected]: (state, action) => {
+      state.authenticated = false;
+      state.user = {};
       state.loading = false;
       state.error = action.payload;
     },

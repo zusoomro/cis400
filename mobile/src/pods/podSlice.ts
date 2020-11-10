@@ -38,6 +38,11 @@ export const loadUserPods = createAsyncThunk(
       });
 
       const json = await res.json();
+
+      if (!res.ok) {
+        return api.rejectWithValue(json.message);
+      }
+
       return json.pod;
     } catch (err) {
       return api.rejectWithValue(err.message);
