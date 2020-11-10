@@ -12,14 +12,34 @@ invitesRouter.get(
   [auth],
   async (req: express.Request, res: express.Response) => {
     try {
-      console.log("hit endpoint /invites/currUsersInvites");
       const userId = (req as AuthRequest).user.id;
       const invitesList = await PodInvites.query().where(
         "inviteeUserId",
         userId
       );
 
-      res.json({ invites: invitesList });
+      const invitesToReturn: Array<Object> = [];
+
+      async function getPodNameForInvite(invitesList: PodInvites[]) {
+        for (const invite of invitesList) {
+          const podName = (await Pod.query().findById(invite.podId)).name;
+          const newInvite = {
+            id: invite.id,
+            inviterUserId: invite.inviterUserId,
+            inviteeUserId: invite.inviteeUserId,
+            podId: invite.podId,
+            podName: podName,
+          };
+          invitesToReturn.push(newInvite);
+        }
+      }
+
+      // console.log(
+      //   "async function invitesToReturn",
+      //   await getPodNameForInvite(invitesList)
+      // );
+      await getPodNameForInvite(invitesList);
+      res.json({ invites: invitesToReturn });
     } catch (err) {
       console.error(err);
       res.status(500).send("Server Error");

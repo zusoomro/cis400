@@ -28,6 +28,7 @@ interface Invite {
   inviterUserId: number;
   inviteeUserId: number;
   podId: number;
+  podName: string;
 }
 
 const PodsHomeScreen = ({ navigation, route }) => {
@@ -79,6 +80,7 @@ const PodsHomeScreen = ({ navigation, route }) => {
         const json = await res.json();
         const invitesList = json.invites;
         if (invitesList.length) {
+          console.log("fetched invites", invitesList);
           setInvites(invitesList);
           setModalVisible(true);
         }
@@ -106,7 +108,9 @@ const PodsHomeScreen = ({ navigation, route }) => {
         console.log("success rejecting invite");
       }
       setModalVisible(false);
-      setInvites(invites.pop());
+      invites?.shift();
+      setInvites([...invites]);
+      //setInvites(invites);
     } catch (err) {
       console.log(err);
     }
@@ -128,11 +132,19 @@ const PodsHomeScreen = ({ navigation, route }) => {
         setPod(json.pod);
       }
       setModalVisible(false);
-      setInvites(invites.pop());
+      invites?.shift();
+      setInvites([...invites]);
     } catch (error) {
       console.log(`error accepting invite`, error);
     }
   };
+
+  React.useEffect(() => {
+    setInvites(invites);
+    if (invites?.length > 0) {
+      setModalVisible(true);
+    }
+  }, [invites]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -148,6 +160,13 @@ const PodsHomeScreen = ({ navigation, route }) => {
         ) : (
           <Text>Pod Name: {pod.name} </Text>
         )}
+        <Button
+          title="Show Invites"
+          onPress={() => {
+            setModalVisible(true);
+          }}
+          disabled={invites == undefined || invites.length <= 0}
+        ></Button>
         {modalVisible && (
           <Modal
             animationType="slide"
@@ -160,7 +179,11 @@ const PodsHomeScreen = ({ navigation, route }) => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>
-                  You've been invites to Pod: {invites![0].podId}!
+                  You've been invites to Pod: {invites![0].podName}!
+                </Text>
+                <Text>
+                  WARNING: If you are already in pod, accepting this invite will
+                  replce your current pod!
                 </Text>
                 <View style={styles.acceptRejectButtonContainer}>
                   <TouchableHighlight onPress={handleAccptInvite}>
@@ -191,12 +214,6 @@ const PodsHomeScreen = ({ navigation, route }) => {
     </SafeAreaView>
   );
 };
-
-// function should
-// 1. accept invite and add user as a member of the pod
-// 2. remove invite from PodInvites table
-// 3. pop invite off the invites list
-// 4. Hide modal
 
 const styles = StyleSheet.create({
   container: {
@@ -247,11 +264,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   acceptButton: {
-    backgroundColor: "#d63024",
+    backgroundColor: "#27c20c",
     padding: 10,
   },
   rejectButton: {
-    backgroundColor: "#27c20c",
+    backgroundColor: "#d63024",
+
     padding: 10,
   },
   acceptRejectButtonContainer: {
