@@ -27,13 +27,22 @@ const Button: React.FC<Props> = ({ title, loading, onPress }) => {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "#4C51BF",
-    padding: 12,
+    padding: 10,
     margin: 10,
     borderRadius: 10,
+
+    // Shadow
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   buttonText: {
     color: "#FFF",
-    fontSize: 18,
+    fontSize: 16,
     textAlign: "center",
   },
 });

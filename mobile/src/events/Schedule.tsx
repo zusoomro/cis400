@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from "react";
 import Button from "../shared/Button";
-import { Text, SafeAreaView, StyleSheet, ScrollView, View } from "react-native";
-import { useSelector } from "react-redux";
-import { Card } from "react-native-elements";
+import {
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  View,
+  Image,
+} from "react-native";
 import * as SecureStore from "expo-secure-store";
+import Nature from "../../assets/undraw_nature_m5ll.png";
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ display: "flex", flexDirection: "column" }}>
+    <SafeAreaView
+      style={{
+        display: "flex",
+        flex: 1,
+        justifyContent: "space-between",
+        flexDirection: "column",
+      }}
+    >
       <Schedule />
       <Button
         title="Create Event"
@@ -16,7 +29,7 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
           navigation.navigate("CreateEvent");
           return;
         }}
-      ></Button>
+      />
     </SafeAreaView>
   );
 };
@@ -54,14 +67,42 @@ const Schedule: React.FC<{}> = () => {
   let todayString = mm + "/" + dd + "/" + yyyy;
 
   return (
-    <View style={{}}>
-      <ScrollView>
-        <Text style={{ marginLeft: 10, marginTop: 20, fontSize: 24 }}>
-          {todayString}
-        </Text>
-        {eventsForUser.map((event) => (
-          <Event event={event} key={event.id}></Event>
-        ))}
+    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.sectionOne}>
+          <Text
+            style={{
+              marginLeft: 10,
+              marginVertical: 18,
+              textAlign: "center",
+              fontSize: 18,
+              color: "#FFF",
+            }}
+          >
+            Today, {todayString}
+          </Text>
+        </View>
+        {eventsForUser.length > 0 ? (
+          eventsForUser.map((event) => (
+            <Event event={event} key={event.id}></Event>
+          ))
+        ) : (
+          <View
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flex: 1,
+              marginTop: "auto",
+              marginBottom: "auto",
+            }}
+          >
+            <Image source={Nature} style={{ height: 200, width: 200 }}></Image>
+            <Text style={{ color: "#3C366B" }}>
+              You've got nothing else scheduled today!
+            </Text>
+          </View>
+        )}
       </ScrollView>
     </View>
   );
@@ -154,6 +195,9 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     marginBottom: 5,
+  },
+  sectionOne: {
+    backgroundColor: "#434190",
   },
 });
 

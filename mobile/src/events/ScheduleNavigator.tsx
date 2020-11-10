@@ -13,7 +13,7 @@ const ScheduleNavigator: React.FC<{}> = () => {
       <Stack.Screen
         name="ScheduleHomePage"
         component={ScheduleHomePage}
-        options={{ title: "Schedule" }}
+        options={{ title: "Schedule", headerShown: false }}
       />
       <Stack.Screen
         name="CreateEvent"

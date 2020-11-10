@@ -1,17 +1,22 @@
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { Provider, useSelector, useDispatch } from "react-redux";
-import store from "./src/configureStore";
+import store, { RootState } from "./src/configureStore";
 import TabNavigator from "./src/Navigator";
 import { loadToken, loadUser } from "./src/authSlice";
 
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer
+        theme={{
+          ...DefaultTheme,
+          colors: { ...DefaultTheme.colors, primary: "#667EEA" },
+        }}
+      >
         <ContextApp />
       </NavigationContainer>
     </Provider>
@@ -19,7 +24,7 @@ export default function App() {
 }
 
 const ContextApp = () => {
-  const userToken = useSelector((state) => state.auth.token);
+  const userToken = useSelector((state: RootState) => state.auth.token);
   const dispatch = useDispatch();
 
   useEffect(() => {
