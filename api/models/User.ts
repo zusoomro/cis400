@@ -4,7 +4,6 @@ import path from "path";
 export default class User extends Model {
   email!: string;
   password!: string;
-  podId?: number;
   id!: number;
 
   static get tableName() {
