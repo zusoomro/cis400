@@ -1,13 +1,20 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+import Event from "../types/Event";
 
 import CreateEvent from "./CreateEvent";
 import ScheduleHomePage from "./Schedule";
 import ModifyEvent from "./ModifyEvent";
 
-const ScheduleNavigator: React.FC<{}> = () => {
-  const Stack = createStackNavigator();
+export type ScheduleNavigatorParamList = {
+  ScheduleHomePage: undefined;
+  CreateEvent: undefined;
+  ModifyEvent: { event: Event };
+};
+
+const ScheduleNavigator: React.FC = () => {
+  const Stack = createStackNavigator<ScheduleNavigatorParamList>();
 
   return (
     <Stack.Navigator initialRouteName="ScheduleHomePage">

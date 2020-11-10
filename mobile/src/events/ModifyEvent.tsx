@@ -7,13 +7,24 @@ import {
   Button,
   SafeAreaView,
   StyleSheet,
+  NativeSyntheticEvent,
+  NativeTouchEvent,
 } from "react-native";
 import DatePicker from "./DatePicker";
 import * as SecureStore from "expo-secure-store";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { ScheduleNavigatorParamList } from "./ScheduleNavigator";
+import Event from "../types/Event";
+import { RouteProp } from "@react-navigation/native";
 
 const apiUrl = "http://localhost:8000";
 
-const CreateEvent: React.FC<{}> = ({ navigation, route }) => {
+type Props = {
+  navigation: StackNavigationProp<ScheduleNavigatorParamList, "ModifyEvent">;
+  route: RouteProp<ScheduleNavigatorParamList, "ModifyEvent">;
+};
+
+const ModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   const { event } = route.params;
 
   // Start time = current time
@@ -27,13 +38,13 @@ const CreateEvent: React.FC<{}> = ({ navigation, route }) => {
         initialValues={{
           name: event.name,
           address: event.address,
-          startTime: event.start_time,
-          endTime: event.end_time,
+          start_time: event.start_time,
+          end_time: event.end_time,
           notes: event.notes,
         }}
         onSubmit={(values) => {
           console.log(values);
-          createEventOnSubmit({ ...values, id: event.id });
+          createEventOnSubmit({ ...values, id: event.id } as Event);
           navigation.navigate("ScheduleHomePage");
         }}
       >
@@ -69,7 +80,14 @@ const CreateEvent: React.FC<{}> = ({ navigation, route }) => {
               placeholder="Add description"
               style={styles.input}
             />
-            <Button onPress={handleSubmit} title="Save" />
+            <Button
+              onPress={
+                (handleSubmit as unknown) as (
+                  ev: NativeSyntheticEvent<NativeTouchEvent>
+                ) => void
+              }
+              title="Save"
+            />
           </ScrollView>
         )}
       </Formik>
@@ -77,15 +95,15 @@ const CreateEvent: React.FC<{}> = ({ navigation, route }) => {
   );
 };
 
-const createEventOnSubmit = async (values): Promise<Event | null> => {
+const createEventOnSubmit = async (values: Event): Promise<Event | null> => {
   console.log("createEventOnSubmit");
 
   // Create event to be put in database
   const data = {
     name: values.name,
     address: values.address,
-    startTime: values.startTime,
-    endTime: values.endTime,
+    startTime: values.start_time,
+    endTime: values.end_time,
     notes: values.notes,
     id: values.id,
   };
@@ -97,7 +115,9 @@ const createEventOnSubmit = async (values): Promise<Event | null> => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": await SecureStore.getItemAsync("wigo-auth-token"),
+        "x-auth-token": (await SecureStore.getItemAsync(
+          "wigo-auth-token"
+        )) as string,
       },
       body: JSON.stringify(data),
     });
@@ -135,4 +155,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateEvent;
+export default ModifyEvent;
