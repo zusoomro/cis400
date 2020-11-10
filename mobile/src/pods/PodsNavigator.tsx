@@ -27,10 +27,26 @@ const PodsNavigator = () => {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="PodsHomeScreen" component={PodsHomeScreen} />
-      <Stack.Screen name="CreatePod" component={CreatePod} />
-      <Stack.Screen name="InviteUsers" component={InviteUsers} />
-      <Stack.Screen name="ManageMembers" component={PodMembers} />
+      <Stack.Screen
+        name="PodsHomeScreen"
+        component={PodsHomeScreen}
+        options={{ title: "Your Pods" }}
+      />
+      <Stack.Screen
+        name="CreatePod"
+        component={CreatePod}
+        options={{ title: "Create a Pod" }}
+      />
+      <Stack.Screen
+        name="InviteUsers"
+        component={InviteUsers}
+        options={{ title: "Invite users" }}
+      />
+      <Stack.Screen
+        name="ManageMembers"
+        component={PodMembers}
+        options={{ title: "Manage members" }}
+      />
     </Stack.Navigator>
   );
 };
