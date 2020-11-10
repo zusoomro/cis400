@@ -3,11 +3,15 @@ import { Provider } from "react-redux";
 import store from "./configureStore";
 import Register from "./Register";
 import { render, fireEvent, act } from "@testing-library/react-native";
-import fetchMock from "fetch-mock";
 import { register } from "./authSlice";
+import configureStore from "redux-mock-store";
+import { Middleware } from "redux";
+
+const middlewares: Middleware[] = [];
+const mockStore = configureStore(middlewares);
 
 const component = (
-  <Provider store={store}>
+  <Provider store={mockStore({ auth: { loading: false } })}>
     <Register />
   </Provider>
 );
@@ -17,12 +21,8 @@ jest.mock("./authSlice", () => ({
 }));
 
 describe("the registration component", () => {
-  beforeEach(() => {
-    fetch.resetMocks();
-  });
-
   it("loads submit and input fields", () => {
-    const { getByPlaceholderText, getByA11yLabel } = render(component);
+    const { getByPlaceholderText, getByLabelText } = render(component);
 
     const emailField = getByPlaceholderText("email");
     expect(emailField).toBeTruthy();
@@ -30,17 +30,17 @@ describe("the registration component", () => {
     const passwordField = getByPlaceholderText("password");
     expect(passwordField).toBeTruthy();
 
-    const submitButton = getByA11yLabel("Submit");
+    const submitButton = getByLabelText("Submit");
     expect(submitButton).toBeTruthy();
   });
 
   it("dispatches redux action with correct data", async () => {
-    data = {
+    const data = {
       email: "test@test.com",
       password: "password",
     };
 
-    const { getByPlaceholderText, getByA11yLabel } = render(component);
+    const { getByPlaceholderText, getByLabelText } = render(component);
 
     const emailField = getByPlaceholderText("email");
     fireEvent.changeText(emailField, data.email);
@@ -48,7 +48,7 @@ describe("the registration component", () => {
     const passwordField = getByPlaceholderText("password");
     fireEvent.changeText(passwordField, data.password);
 
-    const submitButton = getByA11yLabel("Submit");
+    const submitButton = getByLabelText("Submit");
     await act(async () => {
       fireEvent.press(submitButton);
     });
