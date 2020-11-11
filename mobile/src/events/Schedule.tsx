@@ -7,9 +7,14 @@ import {
   ScrollView,
   Switch,
 } from "react-native";
-import { Card } from "react-native-elements";
 import * as SecureStore from "expo-secure-store";
 import Event from "./Event";
+
+interface Pod {
+  id: number;
+  ownerId: number;
+  name: string;
+}
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
   const [isToggledToUser, setIsToggledToUser] = useState(true);
@@ -41,11 +46,11 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
 
 const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
   const [events, setEvents] = useState([]);
-  const [pod, setPod] = useState(-1);
+  const [pod, setPod] = useState<Pod>();
   let today = new Date();
 
-  if (isToggledToUser) {
-    React.useEffect(() => {
+  React.useEffect(() => {
+    if (isToggledToUser) {
       async function fetcher() {
         try {
           const authToken = await SecureStore.getItemAsync("wigo-auth-token");
@@ -66,14 +71,8 @@ const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
         }
       }
       fetcher();
-    }, []);
-  } else {
-    console.log("yoyoyoyoyo");
-    // Get Pod Id
-    // Get events for Pod Id
-    React.useEffect(() => {
+    } else {
       async function fetcher1() {
-        console.log("fetcher 1");
         try {
           const authToken = await SecureStore.getItemAsync("wigo-auth-token");
           const res = await fetch("http://localhost:8000/pods/currUsersPod", {
@@ -93,12 +92,10 @@ const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
         }
       }
       fetcher1();
-
       async function fetcher2() {
-        console.log("fetcher 2");
         try {
           const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-          const res = await fetch(`http://localhost:8000/events/${pod}`, {
+          const res = await fetch(`http://localhost:8000/events/${pod.id}`, {
             headers: {
               "Content-Type": "application/json;charset=utf-8",
               "x-auth-token": authToken!,
@@ -106,7 +103,7 @@ const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
           });
 
           const json = await res.json();
-          const returnedEvents = json.pod;
+          const returnedEvents = json.events;
           if (returnedEvents) {
             setEvents(returnedEvents);
           }
@@ -115,13 +112,15 @@ const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
         }
       }
       fetcher2();
-    }, []);
-  }
+    }
+  }, [isToggledToUser]);
 
   let dd = String(today.getDate()).padStart(2, "0");
   let mm = String(today.getMonth() + 1).padStart(2, "0");
   let yyyy = today.getFullYear();
   let todayString = mm + "/" + dd + "/" + yyyy;
+
+  // need to add check that it is today
 
   return (
     <SafeAreaView style={styles.container}>
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-around",
     alignItems: "center",
-    marginTop: 80,
+    marginTop: 20,
   },
   heading: {
     fontSize: 30,

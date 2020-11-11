@@ -29,7 +29,7 @@ const Event: React.FC<{
     <SafeAreaView>
       <Card>
         <Card.Title>{name}</Card.Title>
-        {/* inseert name stuff */}
+        {/* inseert name stuff, if not toggledtouser add who section */}
         <Text style={styles.sub}>
           When:{" "}
           {new Date(start_time).toLocaleTimeString([], {
