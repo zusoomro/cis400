@@ -6,9 +6,11 @@ import {
   Button,
   SafeAreaView,
   StyleSheet,
+  View,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as SecureStore from "expo-secure-store";
+import LocationPicker from "./LocationPicker";
 
 import DatePicker from "./DatePicker";
 
@@ -27,82 +29,84 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
   const [endTime, setEndTime] = useState(new Date(Date.now() + 60 * 60 * 1000));
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Formik
-        initialValues={{
-          name: "",
-          address: "",
-          startTime: startTime,
-          endTime: endTime,
-          repeat: repetitionValues[0].value,
-          notes: "",
-        }}
-        onSubmit={(values) => {
-          console.log(values);
-          createEventOnSubmit(values);
-          navigation.navigate("ScheduleHomePage");
-        }}
-      >
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          setFieldValue,
-        }) => (
-          <ScrollView>
-            <TextInput
-              onChangeText={handleChange("name")}
-              onBlur={handleBlur("name")}
-              value={values.name}
-              placeholder="event name"
-              style={styles.input}
-            />
-            <TextInput
-              onChangeText={handleChange("address")}
-              onBlur={handleBlur("address")}
-              value={values.address}
-              placeholder="address"
-              style={styles.input}
-            />
-            {/* Start Time input */}
-            <DatePicker name="startTime" date={startTime}>
-              {" "}
-            </DatePicker>
-            {/* End Time input */}
-            <DatePicker name="endTime" date={endTime}>
-              {" "}
-            </DatePicker>
+    <ScrollView keyboardShouldPersistTaps="handled">
+      <SafeAreaView style={styles.container}>
+        <Formik
+          initialValues={{
+            name: "",
+            formattedAddress: "",
+            lat: "",
+            lng: "",
+            startTime: startTime,
+            endTime: endTime,
+            repeat: repetitionValues[0].value,
+            notes: "",
+          }}
+          onSubmit={(values) => {
+            createEventOnSubmit(values);
+            navigation.navigate("ScheduleHomePage");
+          }}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            setFieldValue,
+          }) => (
+            <View>
+              <TextInput
+                onChangeText={handleChange("name")}
+                onBlur={handleBlur("name")}
+                value={values.name}
+                placeholder="event name"
+                style={styles.input}
+              />
+              <LocationPicker
+                latFieldName="lat"
+                lngFieldName="lng"
+                formattedAddress="formattedAddress"
+              />
+              {/* Start Time input */}
+              <DatePicker name="startTime" date={startTime}>
+                {" "}
+              </DatePicker>
+              {/* End Time input */}
+              <DatePicker name="endTime" date={endTime}>
+                {" "}
+              </DatePicker>
 
-            <DropDownPicker
-              items={repetitionValues}
-              defaultValue={values.repeat}
-              onChangeItem={(item) => setFieldValue("repeat", item.value)}
-              containerStyle={{ padding: 15 }}
-            />
+              <DropDownPicker
+                items={repetitionValues}
+                defaultValue={values.repeat}
+                onChangeItem={(item) => setFieldValue("repeat", item.value)}
+                containerStyle={{ flex: 1, paddingBottom: 10 }}
+                itemStyle={{ justifyContent: "flex-start" }}
+              />
 
-            <TextInput
-              onChangeText={handleChange("notes")}
-              onBlur={handleBlur("notes")}
-              value={values.notes}
-              placeholder="Add description"
-              style={styles.input}
-            />
-            <Button onPress={handleSubmit} title="Save" />
-          </ScrollView>
-        )}
-      </Formik>
-    </SafeAreaView>
+              <TextInput
+                onChangeText={handleChange("notes")}
+                onBlur={handleBlur("notes")}
+                value={values.notes}
+                placeholder="Add description"
+                style={styles.input}
+              />
+              <Button onPress={handleSubmit} title="Save" />
+            </View>
+          )}
+        </Formik>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
 const createEventOnSubmit = async (values): Promise<Event | null> => {
-  console.log("createEventOnSubmit");
-
   // Create event to be put in database
   const data = {
     name: values.name,
-    address: values.address,
+    formattedAddress: values.formattedAddress,
+    lat: values.lat,
+    lng: values.lng,
     startTime: values.startTime,
     endTime: values.endTime,
     repeat: values.repeat,
