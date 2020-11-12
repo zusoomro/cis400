@@ -34,7 +34,16 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
 });
 
 eventRouter.put("/", [auth], async (req: Request, res: Response) => {
-  const { name, formattedAddress, lat, lng, start_time, end_time, repeat, notes } = req.body;
+  const {
+    name,
+    formattedAddress,
+    lat,
+    lng,
+    start_time,
+    end_time,
+    repeat,
+    notes,
+  } = req.body;
   const eventId = req.body.id;
 
   console.log("eventid", eventId);

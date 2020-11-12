@@ -66,7 +66,11 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
       <Text style={styles.heading}>{todayString}</Text>
       <ScrollView>
         {eventsForUser.map((event) => (
-          <EventForSchedulePage event={event} key={event.id} navigation={navigation} />
+          <EventForSchedulePage
+            event={event}
+            key={event.id}
+            navigation={navigation}
+          />
         ))}
       </ScrollView>
     </SafeAreaView>
@@ -81,7 +85,15 @@ interface EventProps {
 }
 
 const EventForSchedulePage: React.FC<EventProps> = ({ event, navigation }) => {
-  const { name, start_time, end_time, notes, formattedAddress, id, ownerId } = event;
+  const {
+    name,
+    start_time,
+    end_time,
+    notes,
+    formattedAddress,
+    id,
+    ownerId,
+  } = event;
 
   return (
     <SafeAreaView>

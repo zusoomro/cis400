@@ -9,7 +9,7 @@ import {
   StyleSheet,
   NativeSyntheticEvent,
   NativeTouchEvent,
-  View
+  View,
 } from "react-native";
 import DatePicker from "./DatePicker";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -64,53 +64,53 @@ const ModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             values,
             setFieldValue,
           }) => (
-              <View>
-                <TextInput
-                  onChangeText={handleChange("name")}
-                  onBlur={handleBlur("name")}
-                  value={values.name}
-                  placeholder="event name"
-                  style={styles.input}
-                />
-                <LocationPicker
-                  latFieldName="lat"
-                  lngFieldName="lng"
-                  formattedAddressFieldName="formattedAddress"
-                  formattedAddress={values.formattedAddress}
-                />
-                {/* Start Time input */}
-                <DatePicker name="start_time" date={start_time}>
-                  {" "}
-                </DatePicker>
-                {/* End Time input */}
-                <DatePicker name="end_time" date={end_time}>
-                  {" "}
-                </DatePicker>
+            <View>
+              <TextInput
+                onChangeText={handleChange("name")}
+                onBlur={handleBlur("name")}
+                value={values.name}
+                placeholder="event name"
+                style={styles.input}
+              />
+              <LocationPicker
+                latFieldName="lat"
+                lngFieldName="lng"
+                formattedAddressFieldName="formattedAddress"
+                formattedAddress={values.formattedAddress}
+              />
+              {/* Start Time input */}
+              <DatePicker name="start_time" date={start_time}>
+                {" "}
+              </DatePicker>
+              {/* End Time input */}
+              <DatePicker name="end_time" date={end_time}>
+                {" "}
+              </DatePicker>
 
-                <DropDownPicker
-                  items={repetitionValues}
-                  defaultValue={values.repeat}
-                  onChangeItem={(item) => setFieldValue("repeat", item.value)}
-                  containerStyle={{ flex: 1, paddingBottom: 10 }}
-                  itemStyle={{ justifyContent: "flex-start" }}
-                />
-                <TextInput
-                  onChangeText={handleChange("notes")}
-                  onBlur={handleBlur("notes")}
-                  value={values.notes}
-                  placeholder="Add description"
-                  style={styles.input}
-                />
-                <Button
-                  onPress={
-                    (handleSubmit as unknown) as (
-                      ev: NativeSyntheticEvent<NativeTouchEvent>
-                    ) => void
-                  }
-                  title="Save"
-                />
-              </View>
-            )}
+              <DropDownPicker
+                items={repetitionValues}
+                defaultValue={values.repeat}
+                onChangeItem={(item) => setFieldValue("repeat", item.value)}
+                containerStyle={{ flex: 1, paddingBottom: 10 }}
+                itemStyle={{ justifyContent: "flex-start" }}
+              />
+              <TextInput
+                onChangeText={handleChange("notes")}
+                onBlur={handleBlur("notes")}
+                value={values.notes}
+                placeholder="Add description"
+                style={styles.input}
+              />
+              <Button
+                onPress={
+                  (handleSubmit as unknown) as (
+                    ev: NativeSyntheticEvent<NativeTouchEvent>
+                  ) => void
+                }
+                title="Save"
+              />
+            </View>
+          )}
         </Formik>
       </SafeAreaView>
     </ScrollView>

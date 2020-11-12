@@ -14,7 +14,7 @@ interface LocationProps {
   latFieldName: string; // Formik Field Name
   lngFieldName: string;
   formattedAddressFieldName: string;
-  formattedAddress: string,
+  formattedAddress: string;
 }
 
 const LocationPicker: React.FC<LocationProps> = (props) => {

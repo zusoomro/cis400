@@ -23,10 +23,12 @@ export const repetitionValues = [
 ];
 
 const CreateEvent: React.FC<{}> = ({ navigation }) => {
-  // Start time = current time 
+  // Start time = current time
   const [start_time, setStartTime] = useState(new Date());
   // End time = current time + 1 hour
-  const [end_time, setEndTime] = useState(new Date(Date.now() + 60 * 60 * 1000));
+  const [end_time, setEndTime] = useState(
+    new Date(Date.now() + 60 * 60 * 1000)
+  );
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
