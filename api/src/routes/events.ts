@@ -9,8 +9,8 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   const {
     name,
     formattedAddress,
-    startTime,
-    endTime,
+    start_time,
+    end_time,
     lat,
     lng,
     repeat,
@@ -24,8 +24,8 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     formattedAddress,
     lat,
     lng,
-    start_time: startTime,
-    end_time: endTime,
+    start_time: start_time,
+    end_time: end_time,
     repeat,
     notes,
   });
@@ -34,7 +34,16 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
 });
 
 eventRouter.put("/", [auth], async (req: Request, res: Response) => {
-  const { name, startTime, endTime, notes } = req.body;
+  const {
+    name,
+    formattedAddress,
+    lat,
+    lng,
+    start_time,
+    end_time,
+    repeat,
+    notes,
+  } = req.body;
   const eventId = req.body.id;
 
   console.log("eventid", eventId);
@@ -43,8 +52,12 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
   const event = await Event.query()
     .update({
       name,
-      start_time: startTime,
-      end_time: endTime,
+      formattedAddress,
+      lat,
+      lng,
+      start_time,
+      end_time,
+      repeat,
       notes,
     })
     .where("id", eventId);

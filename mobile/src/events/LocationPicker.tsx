@@ -1,8 +1,8 @@
-import React from "react";
-import { useField, useFormikContext } from "formik";
+import React, { useRef, useEffect } from "react";
+import { useFormikContext } from "formik";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
-import { GOOGLE_MAPS_API_KEY, KEY } from "@env";
+import { GOOGLE_MAPS_API_KEY } from "@env";
 
 export interface Place {
   formatted_address: string;
@@ -13,24 +13,28 @@ export interface Place {
 interface LocationProps {
   latFieldName: string; // Formik Field Name
   lngFieldName: string;
+  formattedAddressFieldName: string;
   formattedAddress: string;
 }
 
 const LocationPicker: React.FC<LocationProps> = (props) => {
+  const ref = useRef();
   // Used with setting date value in formik
   const { setFieldValue } = useFormikContext();
-  const [latField] = useField(props.latFieldName);
-  const [lngField] = useField(props.lngFieldName);
-  const [formattedAddress] = useField(props.formattedAddress);
 
   const locationPicked = (data, details) => {
-    setFieldValue(props.formattedAddress, details?.formatted_address);
+    setFieldValue(props.formattedAddressFieldName, details?.formatted_address);
     setFieldValue(props.latFieldName, details?.geometry.location.lat);
     setFieldValue(props.lngFieldName, details?.geometry.location.lng);
   };
 
+  useEffect(() => {
+    ref.current?.setAddressText(props.formattedAddress);
+  }, []);
+
   return (
     <GooglePlacesAutocomplete
+      ref={ref}
       placeholder="Add Location"
       currentLocation={true}
       fetchDetails={true} // Details in onPress should not be null
