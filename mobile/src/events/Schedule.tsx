@@ -8,7 +8,7 @@ import {
   Switch,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
-import Event from "./Event";
+import EventInSchedule from "./EventInSchedule";
 
 interface Pod {
   id: number;
@@ -127,11 +127,11 @@ const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
       <Text style={styles.heading}>{todayString}</Text>
       <ScrollView>
         {events.map((event) => (
-          <Event
+          <EventInSchedule
             event={event}
             showName={!isToggledToUser}
             key={event.id}
-          ></Event>
+          ></EventInSchedule>
         ))}
       </ScrollView>
     </SafeAreaView>

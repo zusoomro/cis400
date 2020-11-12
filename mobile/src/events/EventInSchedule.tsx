@@ -1,30 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Text, SafeAreaView, StyleSheet } from "react-native";
 import { Card } from "react-native-elements";
+import Event from "../types/Event";
 
-const Event: React.FC<{
-  event: {
-    name: string;
-    start_time: Date;
-    end_time: Date;
-    notes: string;
-    address: string;
-    id: number;
-    ownerId: number;
-  };
+const EventInSchedule: React.FC<{
+  event: Event;
   showName: boolean;
-}> = ({
-  event: {
-    name = "Placeholder",
-    start_time,
-    end_time,
-    notes,
-    address,
-    id,
-    ownerId,
-  },
-  showName,
-}) => {
+}> = ({ event, showName }) => {
   return (
     <SafeAreaView>
       <Card>
@@ -43,7 +25,7 @@ const Event: React.FC<{
             minute: "2-digit",
           })}
         </Text>
-        <Text style={styles.sub}>Where: {address}</Text>
+        <Text style={styles.sub}>Where: {formattedAddress}</Text>
         <Text style={styles.sub}>Notes: {notes}</Text>
       </Card>
     </SafeAreaView>
