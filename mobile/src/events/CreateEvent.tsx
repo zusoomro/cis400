@@ -80,8 +80,8 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
                   items={repetitionValues}
                   defaultValue={values.repeat}
                   onChangeItem={(item) => setFieldValue("repeat", item.value)}
-                  containerStyle={{flex: 1, paddingBottom: 10}}
-                  itemStyle={{justifyContent: 'flex-start'}}
+                  containerStyle={{ flex: 1, paddingBottom: 10 }}
+                  itemStyle={{ justifyContent: 'flex-start' }}
                 />
 
                 <TextInput
