@@ -3,10 +3,29 @@ import { Text, SafeAreaView, StyleSheet } from "react-native";
 import { Card } from "react-native-elements";
 import Event from "../types/Event";
 
-const EventInSchedule: React.FC<{
+interface EventProps {
   event: Event;
+  navigation: {
+    navigate: () => void;
+  };
   showName: boolean;
-}> = ({ event, showName }) => {
+}
+
+const EventInSchedule: React.FC<EventProps> = ({
+  event,
+  navigation,
+  showName,
+}) => {
+  const {
+    name,
+    start_time,
+    end_time,
+    notes,
+    formattedAddress,
+    id,
+    ownerId,
+  } = event;
+
   return (
     <SafeAreaView>
       <Card>
