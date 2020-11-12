@@ -1,4 +1,4 @@
-import { Formik } from "formik";
+import { Formik, FormikProvider } from "formik";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -9,8 +9,13 @@ import {
   StyleSheet,
   NativeSyntheticEvent,
   NativeTouchEvent,
+  View
 } from "react-native";
 import DatePicker from "./DatePicker";
+import DropDownPicker from "react-native-dropdown-picker";
+import LocationPicker from "./LocationPicker";
+
+import { repetitionValues } from "./CreateEvent";
 import * as SecureStore from "expo-secure-store";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { ScheduleNavigatorParamList } from "./ScheduleNavigator";
@@ -27,83 +32,103 @@ type Props = {
 const ModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   const { event } = route.params;
 
-  // Start time = current time
-  const [startTime, setStartTime] = useState(new Date());
-  // End time = current time + 1 hour
-  const [endTime, setEndTime] = useState(new Date(Date.now() + 60 * 60 * 1000));
+  // Start time
+  const [start_time, setStartTime] = useState(event.start_time);
+  // End time
+  const [end_time, setEndTime] = useState(event.end_time);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Formik
-        initialValues={{
-          name: event.name,
-          address: event.address,
-          start_time: event.start_time,
-          end_time: event.end_time,
-          notes: event.notes,
-        }}
-        onSubmit={(values) => {
-          console.log(values);
-          createEventOnSubmit({ ...values, id: event.id } as Event);
-          navigation.navigate("ScheduleHomePage");
-        }}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <ScrollView>
-            <TextInput
-              onChangeText={handleChange("name")}
-              onBlur={handleBlur("name")}
-              value={values.name}
-              placeholder="event name"
-              style={styles.input}
-            />
-            <TextInput
-              onChangeText={handleChange("address")}
-              onBlur={handleBlur("address")}
-              value={values.address}
-              placeholder="address"
-              style={styles.input}
-            />
-            {/* Start Time input */}
-            <DatePicker name="startTime" date={startTime}>
-              {" "}
-            </DatePicker>
-            {/* End Time input */}
-            <DatePicker name="endTime" date={endTime}>
-              {" "}
-            </DatePicker>
+    <ScrollView keyboardShouldPersistTaps="handled">
+      <SafeAreaView style={styles.container}>
+        <Formik
+          initialValues={{
+            name: event.name,
+            formattedAddress: event.formattedAddress,
+            lat: event.lat,
+            lng: event.lng,
+            start_time: event.start_time,
+            end_time: event.end_time,
+            repeat: event.repeat,
+            notes: event.notes,
+          }}
+          onSubmit={(values) => {
+            console.log(values);
+            modifyEventOnSubmit({ ...values, id: event.id } as Event);
+            navigation.navigate("ScheduleHomePage");
+          }}
+        >
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            setFieldValue,
+          }) => (
+              <View>
+                <TextInput
+                  onChangeText={handleChange("name")}
+                  onBlur={handleBlur("name")}
+                  value={values.name}
+                  placeholder="event name"
+                  style={styles.input}
+                />
+                <LocationPicker
+                  latFieldName="lat"
+                  lngFieldName="lng"
+                  formattedAddressFieldName="formattedAddress"
+                  formattedAddress={values.formattedAddress}
+                />
+                {/* Start Time input */}
+                <DatePicker name="start_time" date={start_time}>
+                  {" "}
+                </DatePicker>
+                {/* End Time input */}
+                <DatePicker name="end_time" date={end_time}>
+                  {" "}
+                </DatePicker>
 
-            <TextInput
-              onChangeText={handleChange("notes")}
-              onBlur={handleBlur("notes")}
-              value={values.notes}
-              placeholder="Add description"
-              style={styles.input}
-            />
-            <Button
-              onPress={
-                (handleSubmit as unknown) as (
-                  ev: NativeSyntheticEvent<NativeTouchEvent>
-                ) => void
-              }
-              title="Save"
-            />
-          </ScrollView>
-        )}
-      </Formik>
-    </SafeAreaView>
+                <DropDownPicker
+                  items={repetitionValues}
+                  defaultValue={values.repeat}
+                  onChangeItem={(item) => setFieldValue("repeat", item.value)}
+                  containerStyle={{ flex: 1, paddingBottom: 10 }}
+                  itemStyle={{ justifyContent: "flex-start" }}
+                />
+                <TextInput
+                  onChangeText={handleChange("notes")}
+                  onBlur={handleBlur("notes")}
+                  value={values.notes}
+                  placeholder="Add description"
+                  style={styles.input}
+                />
+                <Button
+                  onPress={
+                    (handleSubmit as unknown) as (
+                      ev: NativeSyntheticEvent<NativeTouchEvent>
+                    ) => void
+                  }
+                  title="Save"
+                />
+              </View>
+            )}
+        </Formik>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
-const createEventOnSubmit = async (values: Event): Promise<Event | null> => {
+const modifyEventOnSubmit = async (values: Event): Promise<Event | null> => {
   console.log("createEventOnSubmit");
 
   // Create event to be put in database
   const data = {
     name: values.name,
-    address: values.address,
-    startTime: values.start_time,
-    endTime: values.end_time,
+    formattedAddress: values.formattedAddress,
+    lat: values.lat,
+    lng: values.lng,
+    start_time: values.start_time,
+    end_time: values.end_time,
+    repeat: values.repeat,
     notes: values.notes,
     id: values.id,
   };

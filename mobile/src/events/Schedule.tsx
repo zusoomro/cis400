@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Card } from "react-native-elements";
 import * as SecureStore from "expo-secure-store";
+import Event from "../types/Event";
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
   console.log("navigation", navigation);
@@ -65,7 +66,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
       <Text style={styles.heading}>{todayString}</Text>
       <ScrollView>
         {eventsForUser.map((event) => (
-          <Event event={event} key={event.id} navigation={navigation} />
+          <EventForSchedulePage event={event} key={event.id} navigation={navigation} />
         ))}
       </ScrollView>
     </SafeAreaView>
@@ -73,24 +74,14 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
 };
 
 interface EventProps {
-  event: {
-    name: string;
-    start_time: Date;
-    end_time: Date;
-    notes: string;
-    address: string;
-    id: number;
-    ownerId: number;
-  };
+  event: Event;
   navigation: {
     navigate: () => void;
   };
 }
 
-const Event: React.FC<EventProps> = ({ event, navigation }) => {
-  const { name, start_time, end_time, notes, address, id, ownerId } = event;
-
-  console.log("event", event);
+const EventForSchedulePage: React.FC<EventProps> = ({ event, navigation }) => {
+  const { name, start_time, end_time, notes, formattedAddress, id, ownerId } = event;
 
   return (
     <SafeAreaView>
@@ -109,7 +100,7 @@ const Event: React.FC<EventProps> = ({ event, navigation }) => {
               minute: "2-digit",
             })}
           </Text>
-          <Text style={styles.sub}>Where: {address}</Text>
+          <Text style={styles.sub}>Where: {formattedAddress}</Text>
           <Text style={styles.sub}>Notes: {notes}</Text>
         </Card>
       </Pressable>

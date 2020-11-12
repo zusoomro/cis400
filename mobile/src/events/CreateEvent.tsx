@@ -11,10 +11,10 @@ import {
 import DropDownPicker from "react-native-dropdown-picker";
 import * as SecureStore from "expo-secure-store";
 import LocationPicker from "./LocationPicker";
-
+import Event from "./types/Event";
 import DatePicker from "./DatePicker";
 
-const repetitionValues = [
+export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
   { label: "Every day", value: "daily" },
   { label: "Every week", value: "weekly" },
@@ -23,10 +23,10 @@ const repetitionValues = [
 ];
 
 const CreateEvent: React.FC<{}> = ({ navigation }) => {
-  // Start time = current time
-  const [startTime, setStartTime] = useState(new Date());
+  // Start time = current time 
+  const [start_time, setStartTime] = useState(new Date());
   // End time = current time + 1 hour
-  const [endTime, setEndTime] = useState(new Date(Date.now() + 60 * 60 * 1000));
+  const [end_time, setEndTime] = useState(new Date(Date.now() + 60 * 60 * 1000));
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -37,8 +37,8 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
             formattedAddress: "",
             lat: "",
             lng: "",
-            startTime: startTime,
-            endTime: endTime,
+            start_time: start_time,
+            end_time: end_time,
             repeat: repetitionValues[0].value,
             notes: "",
           }}
@@ -65,14 +65,15 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
               <LocationPicker
                 latFieldName="lat"
                 lngFieldName="lng"
-                formattedAddress="formattedAddress"
+                formattedAddressFieldName="formattedAddress"
+                formattedAddress={values.formattedAddress}
               />
               {/* Start Time input */}
-              <DatePicker name="startTime" date={startTime}>
+              <DatePicker name="start_time" date={start_time}>
                 {" "}
               </DatePicker>
               {/* End Time input */}
-              <DatePicker name="endTime" date={endTime}>
+              <DatePicker name="end_time" date={end_time}>
                 {" "}
               </DatePicker>
               <DropDownPicker
@@ -98,15 +99,15 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
   );
 };
 
-const createEventOnSubmit = async (values): Promise<Event | null> => {
+const createEventOnSubmit = async (values: Event): Promise<Event | null> => {
   // Create event to be put in database
   const data = {
     name: values.name,
     formattedAddress: values.formattedAddress,
     lat: values.lat,
     lng: values.lng,
-    startTime: values.startTime,
-    endTime: values.endTime,
+    start_time: values.start_time,
+    end_time: values.end_time,
     repeat: values.repeat,
     notes: values.notes,
   };
