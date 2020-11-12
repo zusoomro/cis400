@@ -3,12 +3,20 @@ import Knex from "knex";
 import knexConfig from "../knexfile";
 
 const initializeDb = () => {
-  const environment = process.env.ENVIRONMENT
-    ? knexConfig.production
-    : knexConfig.development;
+  let environment;
+  if (process.env.ENVIRONMENT) {
+    environment = knexConfig.production;
+  } else if (process.env.NODE_ENV == "test") {
+    environment = knexConfig.testing;
+  } else {
+    environment = knexConfig.development;
+  }
 
   const knex = Knex(environment);
+
   Model.knex(knex);
+
+  return knex;
 };
 
 export default initializeDb;

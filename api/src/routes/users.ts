@@ -14,6 +14,24 @@ usersRouter.get("/", async (req, res) => {
 usersRouter.post("/", async (req, res) => {
   const { email, password } = req.body;
 
+  if (!email || !password) {
+    return res.status(400).json({ message: "Please fill out both fields." });
+  }
+
+  if (password.length < 5) {
+    return res.status(400).json({
+      message: "Please provide a password that is at least 5 characters long",
+    });
+  }
+
+  const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  if (!emailRegex.test(email.toLowerCase())) {
+    return res.status(400).json({
+      message: "Please provide a valid email",
+    });
+  }
+
   try {
     const existingUser = await User.query().where("email", email);
 
@@ -21,7 +39,7 @@ usersRouter.post("/", async (req, res) => {
       console.error(
         `Error at POST /users: User with email '${email}' already exists`
       );
-      res.status(400).json({ errors: [{ msg: "User already exists" }] });
+      res.status(400).json({ message: "User already exists" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -60,9 +78,7 @@ usersRouter.post("/login", async (req, res) => {
     let userArray = await User.query().where("email", email);
 
     if (!userArray.length) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "Invalid credentials." }] });
+      return res.status(400).json({ message: "Invalid credentials." });
     }
 
     const user = userArray[0];
@@ -71,9 +87,7 @@ usersRouter.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "Invalid credentials." }] });
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
     // Return the jsonwebtoken

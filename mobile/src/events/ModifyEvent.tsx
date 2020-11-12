@@ -1,51 +1,59 @@
-import { Formik } from "formik";
+import { Formik, FormikProvider } from "formik";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import {
   ScrollView,
   TextInput,
   Button,
   SafeAreaView,
   StyleSheet,
+  NativeSyntheticEvent,
+  NativeTouchEvent,
   View,
 } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
-import * as SecureStore from "expo-secure-store";
-import LocationPicker from "./LocationPicker";
-import Event from "./types/Event";
 import DatePicker from "./DatePicker";
+import DropDownPicker from "react-native-dropdown-picker";
+import LocationPicker from "./LocationPicker";
 
-export const repetitionValues = [
-  { label: "Does not repeat", value: "no_repeat" },
-  { label: "Every day", value: "daily" },
-  { label: "Every week", value: "weekly" },
-  { label: "Every month", value: "monthly" },
-  { label: "Every year", value: "yearly" },
-];
+import { repetitionValues } from "./CreateEvent";
+import * as SecureStore from "expo-secure-store";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { ScheduleNavigatorParamList } from "./ScheduleNavigator";
+import Event from "../types/Event";
+import { RouteProp } from "@react-navigation/native";
 
-const CreateEvent: React.FC<{}> = ({ navigation }) => {
-  // Start time = current time
-  const [start_time, setStartTime] = useState(new Date());
-  // End time = current time + 1 hour
-  const [end_time, setEndTime] = useState(
-    new Date(Date.now() + 60 * 60 * 1000)
-  );
+const apiUrl = "http://localhost:8000";
+
+type Props = {
+  navigation: StackNavigationProp<ScheduleNavigatorParamList, "ModifyEvent">;
+  route: RouteProp<ScheduleNavigatorParamList, "ModifyEvent">;
+};
+
+const ModifyEvent: React.FC<Props> = ({ navigation, route }) => {
+  const { event } = route.params;
+
+  // Start time
+  const [start_time, setStartTime] = useState(event.start_time);
+  // End time
+  const [end_time, setEndTime] = useState(event.end_time);
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
       <SafeAreaView style={styles.container}>
         <Formik
           initialValues={{
-            name: "",
-            formattedAddress: "",
-            lat: "",
-            lng: "",
-            start_time: start_time,
-            end_time: end_time,
-            repeat: repetitionValues[0].value,
-            notes: "",
+            name: event.name,
+            formattedAddress: event.formattedAddress,
+            lat: event.lat,
+            lng: event.lng,
+            start_time: event.start_time,
+            end_time: event.end_time,
+            repeat: event.repeat,
+            notes: event.notes,
           }}
           onSubmit={(values) => {
-            createEventOnSubmit(values);
+            console.log(values);
+            modifyEventOnSubmit({ ...values, id: event.id } as Event);
             navigation.navigate("ScheduleHomePage");
           }}
         >
@@ -78,7 +86,7 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
               <DatePicker name="end_time" date={end_time}>
                 {" "}
               </DatePicker>
-              {/* Pick repetition value*/}
+
               <DropDownPicker
                 items={repetitionValues}
                 defaultValue={values.repeat}
@@ -93,7 +101,14 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
                 placeholder="Add description"
                 style={styles.input}
               />
-              <Button onPress={handleSubmit} title="Save" />
+              <Button
+                onPress={
+                  (handleSubmit as unknown) as (
+                    ev: NativeSyntheticEvent<NativeTouchEvent>
+                  ) => void
+                }
+                title="Save"
+              />
             </View>
           )}
         </Formik>
@@ -102,7 +117,9 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
   );
 };
 
-const createEventOnSubmit = async (values: Event): Promise<Event | null> => {
+const modifyEventOnSubmit = async (values: Event): Promise<Event | null> => {
+  console.log("createEventOnSubmit");
+
   // Create event to be put in database
   const data = {
     name: values.name,
@@ -113,25 +130,28 @@ const createEventOnSubmit = async (values: Event): Promise<Event | null> => {
     end_time: values.end_time,
     repeat: values.repeat,
     notes: values.notes,
+    id: values.id,
   };
 
-  console.log("Data for POST request", data);
+  console.log("Data for PUT request", data);
 
   try {
     const res = await fetch("http://localhost:8000/events", {
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": await SecureStore.getItemAsync("wigo-auth-token"),
+        "x-auth-token": (await SecureStore.getItemAsync(
+          "wigo-auth-token"
+        )) as string,
       },
       body: JSON.stringify(data),
     });
 
     const event = await res.json();
-    console.log("event after post request", event);
+    console.log("event after put request", event);
     return event;
   } catch (error) {
-    console.log(`error creating new event`, error);
+    console.log(`error updatind event`, error);
     return null;
   }
 };
@@ -160,4 +180,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CreateEvent;
+export default ModifyEvent;
