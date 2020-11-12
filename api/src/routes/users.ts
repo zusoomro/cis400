@@ -11,16 +11,6 @@ usersRouter.get("/", async (req, res) => {
   res.json(response);
 });
 
-usersRouter.post("/edit", async (req, res) => {
-  const { email, podId } = req.body;
-  try {
-    await User.query().where("email", email).patch({ podId: podId });
-    res.send("successful update!");
-  } catch {
-    console.log("error when updating podId");
-  }
-});
-
 usersRouter.post("/", async (req, res) => {
   const { email, password } = req.body;
 
