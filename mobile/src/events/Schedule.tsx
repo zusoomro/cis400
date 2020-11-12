@@ -47,11 +47,11 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
 const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
   const [events, setEvents] = useState([]);
   const [pod, setPod] = useState<Pod>();
-  let today = new Date();
+  const today = new Date();
 
   React.useEffect(() => {
     if (isToggledToUser) {
-      async function fetcher() {
+      const fetcher = async function () {
         try {
           const authToken = await SecureStore.getItemAsync("wigo-auth-token");
           const res = await fetch("http://localhost:8000/events", {
@@ -69,10 +69,10 @@ const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
           console.log("ERROR: ", err);
           console.log("error loading events for current user");
         }
-      }
+      };
       fetcher();
     } else {
-      async function fetcher1() {
+      const fetcher1 = async function () {
         try {
           const authToken = await SecureStore.getItemAsync("wigo-auth-token");
           const res = await fetch("http://localhost:8000/pods/currUsersPod", {
@@ -91,9 +91,9 @@ const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
           console.log("ERROR: ", err);
           console.log("error loading pod for current user");
         }
-      }
+      };
 
-      async function fetcher2() {
+      const fetcher2 = async function () {
         try {
           const authToken = await SecureStore.getItemAsync("wigo-auth-token");
           const res = await fetch(`http://localhost:8000/events/${pod.id}`, {
@@ -112,15 +112,16 @@ const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
           console.log("ERROR: ", err);
           console.log("error loading events for current pod");
         }
-      }
+      };
+
       fetcher1().then(fetcher2());
     }
   }, [isToggledToUser, events]);
 
-  let dd = String(today.getDate()).padStart(2, "0");
-  let mm = String(today.getMonth() + 1).padStart(2, "0");
-  let yyyy = today.getFullYear();
-  let todayString = mm + "/" + dd + "/" + yyyy;
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
+  const todayString = mm + "/" + dd + "/" + yyyy;
 
   return (
     <SafeAreaView style={styles.container}>

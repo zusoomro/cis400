@@ -60,7 +60,6 @@ const PodsHomeScreen = ({ navigation, route }) => {
           <Button
             title="Create New Pod"
             onPress={() => {
-              console.log("Create button was pressed");
               navigation.navigate("CreatePod");
               return;
             }}
