@@ -67,15 +67,12 @@ const PodsHomeScreen = ({ navigation, route }) => {
     async function fetchUsersInvites() {
       try {
         const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-        const res = await fetch(
-          "http://localhost:8000/invites/currUsersInvites",
-          {
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-              "x-auth-token": authToken!,
-            },
-          }
-        );
+        const res = await fetch("http://localhost:8000/invites", {
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+            "x-auth-token": authToken!,
+          },
+        });
 
         const json = await res.json();
         const invitesList = json.invites;
@@ -104,7 +101,7 @@ const PodsHomeScreen = ({ navigation, route }) => {
         body: JSON.stringify(data),
       });
       const json = await res.json();
-      if (json.msg == "success") {
+      if (json.message == "success") {
         console.log("success rejecting invite");
       }
       setModalVisible(false);

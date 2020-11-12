@@ -8,7 +8,7 @@ import auth, { AuthRequest } from "../authMiddleware";
 let invitesRouter = express.Router();
 
 invitesRouter.get(
-  "/currUsersInvites",
+  "/",
   [auth],
   async (req: express.Request, res: express.Response) => {
     try {
@@ -72,7 +72,7 @@ invitesRouter.post("/reject", async (req, res) => {
   const { id } = req.body;
   try {
     const numDeleted = await PodInvites.query().deleteById(id);
-    res.send({ msg: "success" });
+    res.send({ message: "success" });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
