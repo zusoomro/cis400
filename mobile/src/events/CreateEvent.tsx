@@ -75,7 +75,6 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
               <DatePicker name="endTime" date={endTime}>
                 {" "}
               </DatePicker>
-
               <DropDownPicker
                 items={repetitionValues}
                 defaultValue={values.repeat}
@@ -83,7 +82,6 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
                 containerStyle={{ flex: 1, paddingBottom: 10 }}
                 itemStyle={{ justifyContent: "flex-start" }}
               />
-
               <TextInput
                 onChangeText={handleChange("notes")}
                 onBlur={handleBlur("notes")}
