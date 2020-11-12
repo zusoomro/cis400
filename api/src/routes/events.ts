@@ -29,7 +29,6 @@ eventRouter.get(
     try {
       const userId = (req as AuthRequest).user.id;
       const eventsList = await Event.query().where("ownerId", userId);
-      console.log(`events: ${eventsList}`);
       res.json({ events: eventsList });
     } catch (err) {
       console.error(err);
@@ -43,11 +42,8 @@ eventRouter.get(
   [auth],
   async (req: express.Request, res: express.Response) => {
     try {
-      console.log("yo getting events for the pod squad");
       const podId = req.params.podId;
-      console.log(`podId ${podId}`);
       const users = await User.query().where("podId", podId);
-      console.log(`users: ${users}`);
       const eventsList: Event[] = [];
       await Promise.all(
         users.map(async (user) => {
@@ -59,7 +55,6 @@ eventRouter.get(
           );
         })
       );
-      console.log(`eventsList: ${eventsList}`);
       res.json({ events: eventsList });
     } catch (err) {
       console.error(err);

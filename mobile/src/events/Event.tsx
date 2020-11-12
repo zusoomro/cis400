@@ -23,13 +23,14 @@ const Event: React.FC<{
     id,
     ownerId,
   },
-  showName: boolean,
+  showName,
 }) => {
   return (
     <SafeAreaView>
       <Card>
         <Card.Title>{name}</Card.Title>
         {/* inseert name stuff, if not toggledtouser add who section */}
+        {showName && <Text style={styles.sub}>Who: {ownerId}</Text>}
         <Text style={styles.sub}>
           When:{" "}
           {new Date(start_time).toLocaleTimeString([], {

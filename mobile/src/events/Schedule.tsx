@@ -88,10 +88,11 @@ const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
             setPod(returnedPod);
           }
         } catch (err) {
+          console.log("ERROR: ", err);
           console.log("error loading pod for current user");
         }
       }
-      fetcher1();
+
       async function fetcher2() {
         try {
           const authToken = await SecureStore.getItemAsync("wigo-auth-token");
@@ -108,19 +109,18 @@ const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
             setEvents(returnedEvents);
           }
         } catch (err) {
+          console.log("ERROR: ", err);
           console.log("error loading events for current pod");
         }
       }
-      fetcher2();
+      fetcher1().then(fetcher2());
     }
-  }, [isToggledToUser]);
+  }, [isToggledToUser, events]);
 
   let dd = String(today.getDate()).padStart(2, "0");
   let mm = String(today.getMonth() + 1).padStart(2, "0");
   let yyyy = today.getFullYear();
   let todayString = mm + "/" + dd + "/" + yyyy;
-
-  // need to add check that it is today
 
   return (
     <SafeAreaView style={styles.container}>
