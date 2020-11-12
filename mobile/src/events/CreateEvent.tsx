@@ -54,46 +54,46 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
             values,
             setFieldValue,
           }) => (
-              <View>
-                <TextInput
-                  onChangeText={handleChange("name")}
-                  onBlur={handleBlur("name")}
-                  value={values.name}
-                  placeholder="event name"
-                  style={styles.input}
-                />
-                <LocationPicker
-                  latFieldName="lat"
-                  lngFieldName="lng"
-                  formattedAddress="formattedAddress"
-                />
-                {/* Start Time input */}
-                <DatePicker name="startTime" date={startTime}>
-                  {" "}
-                </DatePicker>
-                {/* End Time input */}
-                <DatePicker name="endTime" date={endTime}>
-                  {" "}
-                </DatePicker>
+            <View>
+              <TextInput
+                onChangeText={handleChange("name")}
+                onBlur={handleBlur("name")}
+                value={values.name}
+                placeholder="event name"
+                style={styles.input}
+              />
+              <LocationPicker
+                latFieldName="lat"
+                lngFieldName="lng"
+                formattedAddress="formattedAddress"
+              />
+              {/* Start Time input */}
+              <DatePicker name="startTime" date={startTime}>
+                {" "}
+              </DatePicker>
+              {/* End Time input */}
+              <DatePicker name="endTime" date={endTime}>
+                {" "}
+              </DatePicker>
 
-                <DropDownPicker
-                  items={repetitionValues}
-                  defaultValue={values.repeat}
-                  onChangeItem={(item) => setFieldValue("repeat", item.value)}
-                  containerStyle={{ flex: 1, paddingBottom: 10 }}
-                  itemStyle={{ justifyContent: 'flex-start' }}
-                />
+              <DropDownPicker
+                items={repetitionValues}
+                defaultValue={values.repeat}
+                onChangeItem={(item) => setFieldValue("repeat", item.value)}
+                containerStyle={{ flex: 1, paddingBottom: 10 }}
+                itemStyle={{ justifyContent: "flex-start" }}
+              />
 
-                <TextInput
-                  onChangeText={handleChange("notes")}
-                  onBlur={handleBlur("notes")}
-                  value={values.notes}
-                  placeholder="Add description"
-                  style={styles.input}
-                />
-                <Button onPress={handleSubmit} title="Save" />
-              </View>
-            )}
+              <TextInput
+                onChangeText={handleChange("notes")}
+                onBlur={handleBlur("notes")}
+                value={values.notes}
+                placeholder="Add description"
+                style={styles.input}
+              />
+              <Button onPress={handleSubmit} title="Save" />
+            </View>
+          )}
         </Formik>
       </SafeAreaView>
     </ScrollView>
