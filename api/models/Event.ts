@@ -9,6 +9,7 @@ export default class Event extends Model {
   lng!: number;
   start_time!: Date;
   end_time!: Date;
+  repeat!: "no_repeat" | "daily" | "weekly" | "monthly" | "yearly";
   notes!: string;
 
   static get tableName() {

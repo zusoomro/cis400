@@ -17,9 +17,10 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     formattedAddress,
     startTime,
     endTime,
-    notes,
     lat,
     lng,
+    repeat,
+    notes,
   } = req.body;
 
   const id = (req as AuthRequest).user.id;
@@ -31,10 +32,28 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     lng,
     start_time: startTime,
     end_time: endTime,
+    repeat,
     notes,
   });
 
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
+});
+
+eventRouter.put("/", [auth], async (req: Request, res: Response) => {
+  const { name, startTime, endTime, notes } = req.body;
+  const eventId = req.body.id;
+
+  console.log("eventid", eventId);
+
+  const id = (req as AuthRequest).user.id;
+  const event = await Event.query()
+    .update({
+      name,
+      start_time: startTime,
+      end_time: endTime,
+      notes,
+    })
+    .where("id", eventId);
 });
 
 eventRouter.get(

@@ -8,11 +8,19 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import DatePicker from "./DatePicker";
+import DropDownPicker from "react-native-dropdown-picker";
 import * as SecureStore from "expo-secure-store";
 import LocationPicker from "./LocationPicker";
 
-const apiUrl = "http://localhost:8000";
+import DatePicker from "./DatePicker";
+
+const repetitionValues = [
+  { label: "Does not repeat", value: "no_repeat" },
+  { label: "Every day", value: "daily" },
+  { label: "Every week", value: "weekly" },
+  { label: "Every month", value: "monthly" },
+  { label: "Every year", value: "yearly" },
+];
 
 const CreateEvent: React.FC<{}> = ({ navigation }) => {
   // Start time = current time
@@ -31,6 +39,7 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
             lng: "",
             startTime: startTime,
             endTime: endTime,
+            repeat: repetitionValues[0].value,
             notes: "",
           }}
           onSubmit={(values) => {
@@ -38,39 +47,53 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
             navigation.navigate("ScheduleHomePage");
           }}
         >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
-            <View>
-              <TextInput
-                onChangeText={handleChange("name")}
-                onBlur={handleBlur("name")}
-                value={values.name}
-                placeholder="event name"
-                style={styles.input}
-              />
-              <LocationPicker
-                latFieldName="lat"
-                lngFieldName="lng"
-                formattedAddress="formattedAddress"
-              />
-              {/* Start Time input */}
-              <DatePicker name="startTime" date={startTime}>
-                {" "}
-              </DatePicker>
-              {/* End Time input */}
-              <DatePicker name="endTime" date={endTime}>
-                {" "}
-              </DatePicker>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            setFieldValue,
+          }) => (
+              <View>
+                <TextInput
+                  onChangeText={handleChange("name")}
+                  onBlur={handleBlur("name")}
+                  value={values.name}
+                  placeholder="event name"
+                  style={styles.input}
+                />
+                <LocationPicker
+                  latFieldName="lat"
+                  lngFieldName="lng"
+                  formattedAddress="formattedAddress"
+                />
+                {/* Start Time input */}
+                <DatePicker name="startTime" date={startTime}>
+                  {" "}
+                </DatePicker>
+                {/* End Time input */}
+                <DatePicker name="endTime" date={endTime}>
+                  {" "}
+                </DatePicker>
 
-              <TextInput
-                onChangeText={handleChange("notes")}
-                onBlur={handleBlur("notes")}
-                value={values.notes}
-                placeholder="Add description"
-                style={styles.input}
-              />
-              <Button onPress={handleSubmit} title="Save" />
-            </View>
-          )}
+                <DropDownPicker
+                  items={repetitionValues}
+                  defaultValue={values.repeat}
+                  onChangeItem={(item) => setFieldValue("repeat", item.value)}
+                  containerStyle={{flex: 1, paddingBottom: 10}}
+                  itemStyle={{justifyContent: 'flex-start'}}
+                />
+
+                <TextInput
+                  onChangeText={handleChange("notes")}
+                  onBlur={handleBlur("notes")}
+                  value={values.notes}
+                  placeholder="Add description"
+                  style={styles.input}
+                />
+                <Button onPress={handleSubmit} title="Save" />
+              </View>
+            )}
         </Formik>
       </SafeAreaView>
     </ScrollView>
@@ -86,6 +109,7 @@ const createEventOnSubmit = async (values): Promise<Event | null> => {
     lng: values.lng,
     startTime: values.startTime,
     endTime: values.endTime,
+    repeat: values.repeat,
     notes: values.notes,
   };
 

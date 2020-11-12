@@ -5,14 +5,17 @@ import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
+  Pressable,
 } from "react-native";
 import { Card } from "react-native-elements";
 import * as SecureStore from "expo-secure-store";
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
+  console.log("navigation", navigation);
+
   return (
     <SafeAreaView style={styles.container}>
-      <Schedule />
+      <Schedule navigation={navigation} />
       <Button
         title="Create Event"
         onPress={() => {
@@ -25,7 +28,7 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
   );
 };
 
-const Schedule: React.FC<{}> = () => {
+const Schedule: React.FC<{}> = ({ navigation }) => {
   const [eventsForUser, setEventsForUser] = useState([]);
   let today = new Date();
 
@@ -62,14 +65,14 @@ const Schedule: React.FC<{}> = () => {
       <Text style={styles.heading}>{todayString}</Text>
       <ScrollView>
         {eventsForUser.map((event) => (
-          <Event event={event} key={event.id}></Event>
+          <Event event={event} key={event.id} navigation={navigation} />
         ))}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-const Event: React.FC<{
+interface EventProps {
   event: {
     name: string;
     start_time: Date;
@@ -79,36 +82,37 @@ const Event: React.FC<{
     id: number;
     ownerId: number;
   };
-}> = ({
-  event: {
-    name = "Placeholder",
-    start_time,
-    end_time,
-    notes,
-    address,
-    id,
-    ownerId,
-  },
-}) => {
+  navigation: {
+    navigate: () => void;
+  };
+}
+
+const Event: React.FC<EventProps> = ({ event, navigation }) => {
+  const { name, start_time, end_time, notes, address, id, ownerId } = event;
+
+  console.log("event", event);
+
   return (
     <SafeAreaView>
-      <Card>
-        <Card.Title>{name}</Card.Title>
-        <Text style={styles.sub}>
-          When:{" "}
-          {new Date(start_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}{" "}
-          -{" "}
-          {new Date(end_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </Text>
-        <Text style={styles.sub}>Where: {address}</Text>
-        <Text style={styles.sub}>Notes: {notes}</Text>
-      </Card>
+      <Pressable onPress={() => navigation.navigate("ModifyEvent", { event })}>
+        <Card>
+          <Card.Title>{name}</Card.Title>
+          <Text style={styles.sub}>
+            When:{" "}
+            {new Date(start_time).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}{" "}
+            -{" "}
+            {new Date(end_time).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </Text>
+          <Text style={styles.sub}>Where: {address}</Text>
+          <Text style={styles.sub}>Notes: {notes}</Text>
+        </Card>
+      </Pressable>
     </SafeAreaView>
   );
 };
