@@ -4,12 +4,6 @@ import auth, { AuthRequest } from "../authMiddleware";
 
 let eventRouter = express.Router();
 
-eventRouter.get("/", async (req, res) => {
-  const response = await Event.query();
-  console.log(response);
-  res.json(response);
-});
-
 eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   console.log("Calling eventRouter.post");
   const {
