@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import Event from "../../models/Event";
+import User from "../../models/User";
 import auth, { AuthRequest } from "../authMiddleware";
 
 let eventRouter = express.Router();
@@ -70,6 +71,32 @@ eventRouter.get(
     try {
       const userId = (req as AuthRequest).user.id;
       const eventsList = await Event.query().where("ownerId", userId);
+      res.json({ events: eventsList });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Server Error when getting events");
+    }
+  }
+);
+
+eventRouter.get(
+  "/:podId",
+  [auth],
+  async (req: express.Request, res: express.Response) => {
+    try {
+      const podId = req.params.podId;
+      const users = await User.query().where("podId", podId);
+      const eventsList: Event[] = [];
+      await Promise.all(
+        users.map(async (user) => {
+          const eventsForUser = await Event.query().where("ownerId", user.id);
+          await Promise.all(
+            eventsForUser.map(async (event) => {
+              eventsList.push(event);
+            })
+          );
+        })
+      );
       res.json({ events: eventsList });
     } catch (err) {
       console.error(err);
