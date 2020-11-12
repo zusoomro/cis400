@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from "react";
-import { useField, useFormikContext } from "formik";
-import { GooglePlacesAutocomplete, GooglePlacesAutocompleteRef } from "react-native-google-places-autocomplete";
+import { useFormikContext } from "formik";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
-import { GOOGLE_MAPS_API_KEY, KEY } from "@env";
+import { GOOGLE_MAPS_API_KEY } from "@env";
 
 export interface Place {
   formatted_address: string;

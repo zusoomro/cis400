@@ -76,6 +76,7 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
               <DatePicker name="end_time" date={end_time}>
                 {" "}
               </DatePicker>
+              {/* Pick repetition value*/}
               <DropDownPicker
                 items={repetitionValues}
                 defaultValue={values.repeat}
