@@ -7,19 +7,61 @@ let eventRouter = express.Router();
 
 eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   console.log("Calling eventRouter.post");
-  const { name, address, startTime, endTime, notes } = req.body;
+  const {
+    name,
+    formattedAddress,
+    start_time,
+    end_time,
+    lat,
+    lng,
+    repeat,
+    notes,
+  } = req.body;
 
   const id = (req as AuthRequest).user.id;
   const event = await Event.query().insert({
     ownerId: id,
     name,
-    address,
-    start_time: startTime,
-    end_time: endTime,
+    formattedAddress,
+    lat,
+    lng,
+    start_time: start_time,
+    end_time: end_time,
+    repeat,
     notes,
   });
 
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
+});
+
+eventRouter.put("/", [auth], async (req: Request, res: Response) => {
+  const {
+    name,
+    formattedAddress,
+    lat,
+    lng,
+    start_time,
+    end_time,
+    repeat,
+    notes,
+  } = req.body;
+  const eventId = req.body.id;
+
+  console.log("eventid", eventId);
+
+  const id = (req as AuthRequest).user.id;
+  const event = await Event.query()
+    .update({
+      name,
+      formattedAddress,
+      lat,
+      lng,
+      start_time,
+      end_time,
+      repeat,
+      notes,
+    })
+    .where("id", eventId);
 });
 
 eventRouter.get(

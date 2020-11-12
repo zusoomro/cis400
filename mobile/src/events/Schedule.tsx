@@ -6,8 +6,10 @@ import {
   StyleSheet,
   ScrollView,
   Switch,
+  Pressable,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
+import Event from "../types/Event";
 import EventInSchedule from "./EventInSchedule";
 
 interface Pod {
@@ -31,7 +33,7 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
         onValueChange={toggleSwitch}
         value={isToggledToUser}
       />
-      <Schedule isToggledToUser={isToggledToUser} />
+      <Schedule isToggledToUser={isToggledToUser} navigation={navigation} />
       <Button
         title="Create Event"
         onPress={() => {
@@ -44,7 +46,7 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
   );
 };
 
-const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
+const Schedule: React.FC<{}> = ({ isToggledToUser, navigation }) => {
   const [events, setEvents] = useState([]);
   const [pod, setPod] = useState<Pod>();
   const today = new Date();
@@ -127,10 +129,11 @@ const Schedule: React.FC<{}> = ({ isToggledToUser }) => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>{todayString}</Text>
       <ScrollView>
-        {events.map((event) => (
+        {events.map((event: Event) => (
           <EventInSchedule
             event={event}
             showName={!isToggledToUser}
+            navigation={navigation}
             key={event.id}
           ></EventInSchedule>
         ))}
