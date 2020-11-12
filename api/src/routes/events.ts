@@ -26,7 +26,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   const event = await Event.query().insert({
     ownerId: id,
     name,
-    formattedAddress: formattedAddress,
+    formattedAddress,
     lat,
     lng,
     start_time: startTime,
