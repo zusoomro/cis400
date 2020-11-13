@@ -83,25 +83,26 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
   }
 });
 
-export const getApiKey = createAsyncThunk("auth/getApiKey", async (data, api) => {
-  try {
-    const res = await fetch(apiUrl + "/events/apiKey", {
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": await SecureStore.getItemAsync("wigo-auth-token"),
-      },
-    });
+export const getApiKey = createAsyncThunk(
+  "auth/getApiKey",
+  async (data, api) => {
+    try {
+      const res = await fetch(apiUrl + "/events/apiKey", {
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          "x-auth-token": await SecureStore.getItemAsync("wigo-auth-token"),
+        },
+      });
 
-    const json = await res.json();
+      const json = await res.json();
 
-
-    return json.key;
-  } catch (ex) {
-    console.log(`error creating api key`, ex);
-    return api.rejectWithValue(ex.message);
+      return json.key;
+    } catch (ex) {
+      console.log(`error creating api key`, ex);
+      return api.rejectWithValue(ex.message);
+    }
   }
-
-})
+);
 
 export const register = createAsyncThunk("auth/register", async (data, api) => {
   try {
