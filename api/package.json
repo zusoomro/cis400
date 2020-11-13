@@ -6,7 +6,8 @@
   "scripts": {
     "start": "ts-node-dev src/index.ts",
     "test": "jest",
-    "formatAll": "prettier --write \"*/**/*.{ts,tsx}\""
+    "formatAll": "prettier --write \"*/**/*.{ts,tsx}\"",
+    "resetDb": "rm -rf mydb.sqlite && knex migrate:latest && knex seed:run"
   },
   "dependencies": {
     "@types/bcrypt": "^3.0.0",

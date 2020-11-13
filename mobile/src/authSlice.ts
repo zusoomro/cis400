@@ -1,14 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as SecureStore from "expo-secure-store";
-
-let apiUrl: string;
-
-if (__DEV__) {
-  apiUrl = "http://localhost:8000";
-} else {
-  apiUrl = "http://wigo-api.herokuapp.com";
-}
-console.log(apiUrl);
+import { TextInput } from "react-native";
+import React from "react";
+import apiUrl from "./config";
 
 const initialState = {
   authenticated: true,
@@ -16,6 +10,7 @@ const initialState = {
   user: {},
   loading: true,
   error: {},
+  apiKey: "",
 };
 
 export const loadUser = createAsyncThunk("auth/loadUser", async (data, api) => {
@@ -27,7 +22,15 @@ export const loadUser = createAsyncThunk("auth/loadUser", async (data, api) => {
       },
     });
 
-    return await res.json();
+    const json = await res.json();
+
+    console.log(res);
+
+    if (!res.ok) {
+      return api.rejectWithValue(json.message);
+    }
+
+    return json;
   } catch (ex) {
     console.log(`error loading user`, ex);
     return api.rejectWithValue(ex.message);
@@ -38,7 +41,7 @@ export const logOut = createAsyncThunk(
   "auth/logout",
   async (data, api): Promise<string> => {
     try {
-      await SecureStore.deleteItemAsync("ecountabl-token");
+      await SecureStore.deleteItemAsync("wigo-auth-token");
       return {};
     } catch (ex) {
       console.error(`error in logout`, ex);
@@ -59,10 +62,16 @@ export const loadToken = createAsyncThunk(
   }
 );
 
-interface LoginValues {
-  email: string;
-  password: string;
-}
+export const login = createAsyncThunk("auth/login", async (data, api) => {
+  try {
+    console.log("apiUrl", apiUrl);
+    const res = await fetch(apiUrl + "/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify(data),
+    });
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -78,13 +87,42 @@ export const login = createAsyncThunk(
 
       console.log("res", res);
 
-      const json = await res.json();
+    if (!res.ok) {
+      return api.rejectWithValue(json.message);
+    }
+
+    await SecureStore.setItemAsync("wigo-auth-token", json.token);
 
       await SecureStore.setItemAsync("wigo-auth-token", json.token);
 
       return json;
     } catch (ex) {
       console.log(`error creating new user`, ex);
+      return api.rejectWithValue(ex.message);
+    }
+  }
+);
+
+export const getApiKey = createAsyncThunk(
+  "auth/getApiKey",
+  async (data, api) => {
+    try {
+      const res = await fetch(apiUrl + "/events/apiKey", {
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          "x-auth-token": await SecureStore.getItemAsync("wigo-auth-token"),
+        },
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        return api.rejectWithValue(json.message);
+      }
+
+      return json.key;
+    } catch (ex) {
+      console.log(`error creating api key`, ex);
       return api.rejectWithValue(ex.message);
     }
   }
@@ -101,6 +139,10 @@ export const register = createAsyncThunk("auth/register", async (data, api) => {
     });
 
     const json = await res.json();
+
+    if (!res.ok) {
+      return api.rejectWithValue(json.message);
+    }
 
     await SecureStore.setItemAsync("wigo-auth-token", json.token);
 
@@ -134,6 +176,9 @@ const authSlice = createSlice({
     [logOut.pending]: (state, action) => {
       state.loading = true;
     },
+    [getApiKey.pending]: (state, action) => {
+      state.loading = true;
+    },
 
     // Fulfilled
     [register.fulfilled]: (state, action) => {
@@ -164,6 +209,10 @@ const authSlice = createSlice({
       state.authenticated = false;
       state.loading = false;
     },
+    [getApiKey.fulfilled]: (state, action) => {
+      state.apiKey = action.payload;
+      state.loading = false;
+    },
 
     // Rejected
     [register.rejected]: (state, action) => {
@@ -177,7 +226,19 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
     [loadToken.rejected]: (state, action) => {
+      state.authenticated = false;
       state.token = "";
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [getApiKey.rejected]: (state, action) => {
+      state.apiKey = "";
+      state.loading = false;
+      state.error = action.payload;
+    },
+    [loadUser.rejected]: (state, action) => {
+      state.authenticated = false;
+      state.user = {};
       state.loading = false;
       state.error = action.payload;
     },

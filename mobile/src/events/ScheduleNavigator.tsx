@@ -1,13 +1,21 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+import Event from "../types/Event";
 
 import CreateEvent from "./CreateEvent";
 import ScheduleHomePage from "./Schedule";
+import ModifyEvent from "./ModifyEvent";
 
-const ScheduleNavigator: React.FC<{}> = () => {
-  const Stack = createStackNavigator();
+export type ScheduleNavigatorParamList = {
+  ScheduleHomePage: undefined;
+  CreateEvent: undefined;
+  ModifyEvent: { event: Event };
+};
 
+const Stack = createStackNavigator<ScheduleNavigatorParamList>();
+
+const ScheduleNavigator: React.FC = () => {
   return (
     <Stack.Navigator initialRouteName="ScheduleHomePage">
       <Stack.Screen
@@ -19,6 +27,11 @@ const ScheduleNavigator: React.FC<{}> = () => {
         name="CreateEvent"
         component={CreateEvent}
         options={{ title: "Create Event" }}
+      />
+      <Stack.Screen
+        name="ModifyEvent"
+        component={ModifyEvent}
+        options={{ title: "Modify Event" }}
       />
     </Stack.Navigator>
   );

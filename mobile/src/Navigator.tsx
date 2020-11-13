@@ -7,12 +7,23 @@ import Settings from "./Settings";
 import Login from "./Login";
 import Register from "./Register";
 import { useSelector } from "react-redux";
-import { RootState } from './configureStore'
+import { RootState } from "./configureStore";
+import Event from "./types/Event";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<TabNavigatorParamList>();
+
+export type TabNavigatorParamList = {
+  Schedule: undefined;
+  Pods: undefined;
+  Settings: undefined;
+  Login: undefined;
+  Register: undefined;
+};
 
 const TabNavigator = () => {
-  const authenticated = useSelector((state: RootState) => state.auth.token);
+  const authenticated = useSelector(
+    (state: RootState) => state.auth.authenticated
+  );
   console.log("authenticated", authenticated);
 
   return (
@@ -51,27 +62,27 @@ const TabNavigator = () => {
           />
         </React.Fragment>
       ) : (
-          <React.Fragment>
-            <Tab.Screen
-              name="Login"
-              component={Login}
-              options={{
-                tabBarIcon: ({ color, size }) => (
-                  <Ionicons name="ios-people" color={color} size={size} />
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="Register"
-              component={Register}
-              options={{
-                tabBarIcon: ({ color, size }) => (
-                  <Ionicons name="ios-people" color={color} size={size} />
-                ),
-              }}
-            />
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          <Tab.Screen
+            name="Login"
+            component={Login}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="ios-people" color={color} size={size} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Register"
+            component={Register}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="ios-people" color={color} size={size} />
+              ),
+            }}
+          />
+        </React.Fragment>
+      )}
     </Tab.Navigator>
   );
 };

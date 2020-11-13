@@ -7,11 +7,30 @@ import {
   ScrollView,
   View,
   Image,
+  Switch,
+  Pressable,
 } from "react-native";
 import * as SecureStore from "expo-secure-store";
+
 import Nature from "../../assets/undraw_nature_m5ll.png";
 
+import Event from "../types/Event";
+import EventInSchedule from "./EventInSchedule";
+import apiUrl from "../config";
+
+interface Pod {
+  id: number;
+  ownerId: number;
+  name: string;
+}
+
+
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
+  const [isToggledToUser, setIsToggledToUser] = useState(true);
+
+  const toggleSwitch = () =>
+    setIsToggledToUser((previousState) => !previousState);
+
   return (
     <SafeAreaView
       style={{
@@ -21,7 +40,14 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
         flexDirection: "column",
       }}
     >
-      <Schedule />
+      <Switch
+        trackColor={{ false: "#767577", true: "#81b0ff" }}
+        thumbColor={isToggledToUser ? "#f5dd4b" : "#f4f3f4"}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch}
+        value={isToggledToUser}
+      />
+      <Schedule isToggledToUser={isToggledToUser} navigation={navigation} />
       <Button
         title="Create Event"
         onPress={() => {
@@ -34,39 +60,87 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
   );
 };
 
-const Schedule: React.FC<{}> = () => {
-  const [eventsForUser, setEventsForUser] = useState([]);
-  let today = new Date();
+const Schedule: React.FC<{}> = ({ isToggledToUser, navigation }) => {
+  const [events, setEvents] = useState([]);
+  const [pod, setPod] = useState<Pod>();
+  const today = new Date();
 
   React.useEffect(() => {
-    async function fetcher() {
-      try {
-        const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-        const res = await fetch("http://localhost:8000/events", {
-          headers: {
-            "Content-Type": "application/json;charset=utf-8",
-            "x-auth-token": authToken!,
-          },
-        });
-        const json = await res.json();
-        const returnedEvents = json.events;
-        if (returnedEvents) {
-          setEventsForUser(returnedEvents);
+    if (isToggledToUser) {
+      const fetcher = async function () {
+        try {
+          const authToken = await SecureStore.getItemAsync("wigo-auth-token");
+          const res = await fetch(`${apiUrl}/events`, {
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+              "x-auth-token": authToken!,
+            },
+          });
+          const json = await res.json();
+          const returnedEvents = json.events;
+          if (returnedEvents) {
+            setEvents(returnedEvents);
+          }
+        } catch (err) {
+          console.log("ERROR: ", err);
+          console.log("error loading events for current user");
         }
-      } catch (err) {
-        console.log("ERROR: ", err);
-        console.log("error loading events for current user");
-      }
-    }
+      };
+      fetcher();
+    } else {
+      const fetcher1 = async function () {
+        try {
+          const authToken = await SecureStore.getItemAsync("wigo-auth-token");
+          const res = await fetch(`${apiUrl}/currUsersPod`, {
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+              "x-auth-token": authToken!,
+            },
+          });
 
-    fetcher();
-  }, []);
-  let dd = String(today.getDate()).padStart(2, "0");
-  let mm = String(today.getMonth() + 1).padStart(2, "0");
-  let yyyy = today.getFullYear();
-  let todayString = mm + "/" + dd + "/" + yyyy;
+          const json = await res.json();
+          const returnedPod = json.pod;
+          if (returnedPod) {
+            setPod(returnedPod);
+          }
+        } catch (err) {
+          console.log("ERROR: ", err);
+          console.log("error loading pod for current user");
+        }
+      };
+
+      const fetcher2 = async function () {
+        try {
+          const authToken = await SecureStore.getItemAsync("wigo-auth-token");
+          const res = await fetch(`${apiUrl}/events/${pod.id}`, {
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+              "x-auth-token": authToken!,
+            },
+          });
+
+          const json = await res.json();
+          const returnedEvents = json.events;
+          if (returnedEvents) {
+            setEvents(returnedEvents);
+          }
+        } catch (err) {
+          console.log("ERROR: ", err);
+          console.log("error loading events for current pod");
+        }
+      };
+
+      fetcher1().then(fetcher2());
+    }
+  }, [isToggledToUser, events]);
+
+  const dd = String(today.getDate()).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const yyyy = today.getFullYear();
+  const todayString = mm + "/" + dd + "/" + yyyy;
 
   return (
+<<<<<<< variant A
     <View style={{ flex: 1, backgroundColor: "#FFF" }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.sectionOne}>
@@ -83,8 +157,14 @@ const Schedule: React.FC<{}> = () => {
           </Text>
         </View>
         {eventsForUser.length > 0 ? (
-          eventsForUser.map((event) => (
-            <Event event={event} key={event.id}></Event>
+        {events.map((event: Event) => (
+          <EventInSchedule
+            event={event}
+            showName={!isToggledToUser}
+            navigation={navigation}
+            key={event.id}
+          ></EventInSchedule>
+        ))}
           ))
         ) : (
           <View
@@ -103,51 +183,13 @@ const Schedule: React.FC<{}> = () => {
             </Text>
           </View>
         )}
+>>>>>>> variant B
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.heading}>{todayString}</Text>
+      <ScrollView>
+======= end
       </ScrollView>
     </View>
-  );
-};
-
-const Event: React.FC<{
-  event: {
-    name: string;
-    start_time: Date;
-    end_time: Date;
-    notes: string;
-    address: string;
-    id: number;
-    ownerId: number;
-  };
-}> = ({
-  event: {
-    name = "Placeholder",
-    start_time,
-    end_time,
-    notes,
-    address,
-    id,
-    ownerId,
-  },
-}) => {
-  return (
-    <SafeAreaView>
-      <View style={styles.card}>
-        <Text style={styles.title}>{name}</Text>
-        <Text style={{ fontSize: 16 }}>
-          {new Date(start_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}{" "}
-          -{" "}
-          {new Date(end_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </Text>
-        <Text style={{ marginBottom: 10, fontSize: 16 }}>{address}</Text>
-        <Text style={{ color: "#999" }}>{notes}</Text>
-      </View>
-    </SafeAreaView>
   );
 };
 

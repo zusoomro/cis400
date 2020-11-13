@@ -4,7 +4,12 @@ import { View, Text, Platform, StyleSheet } from "react-native";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-const DatePicker: React.FC<{}> = ({ ...props }) => {
+type Props = {
+  name: string;
+  date: Date;
+};
+
+const DatePicker: React.FC<Props> = ({ ...props }) => {
   // Used for user interaction with datepicker
   const [date, setDate] = useState(props.date);
   const [mode, setMode] = useState("date");
@@ -40,7 +45,7 @@ const DatePicker: React.FC<{}> = ({ ...props }) => {
       <View style={styles.dateTimeRow}>
         {/* // Date  */}
         <Text onPress={showDatepicker}>
-          {moment(date).format("ddd, MMM D")}
+          {moment(date).format("dddd, MMM D")}
         </Text>
         {/* // Time  */}
         <Text onPress={showTimepicker}> {moment(date).format(" h:mmA")}</Text>
