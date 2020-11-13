@@ -37,6 +37,8 @@ const Login: React.FC<{}> = () => {
                 value={values.email}
                 placeholder="email"
                 style={styles.input}
+                textContentType="username"
+                autoCapitalize="none"
               />
               <TextInput
                 onChangeText={handleChange("password")}
@@ -45,6 +47,7 @@ const Login: React.FC<{}> = () => {
                 placeholder="password"
                 style={styles.input}
                 secureTextEntry
+                textContentType="password"
               />
               {loading ? (
                 <ActivityIndicator />

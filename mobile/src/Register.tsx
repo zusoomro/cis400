@@ -38,6 +38,7 @@ const Register: React.FC<{}> = () => {
                 value={values.email}
                 placeholder="email"
                 style={sharedStyles.input}
+                autoCapitalize="none"
               />
               <TextInput
                 onChangeText={handleChange("password")}
