@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import { useFormikContext } from "formik";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { useSelector } from 'react-redux';
 
-import { GOOGLE_MAPS_API_KEY } from "@env";
 
 export interface Place {
   formatted_address: string;
@@ -18,6 +18,8 @@ interface LocationProps {
 }
 
 const LocationPicker: React.FC<LocationProps> = (props) => {
+
+  const GOOGLE_MAPS_API_KEY = useSelector((state: { auth: { apiKey: string } }) => state.auth!.apiKey);
   const ref = useRef();
   // Used with setting date value in formik
   const { setFieldValue } = useFormikContext();
