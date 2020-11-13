@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { List, ListItem, SearchBar } from "react-native-elements";
 import { useSelector } from "react-redux";
+import apiUrl from "../config";
 
 interface User {
   id: number;
@@ -28,7 +29,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
   React.useEffect(() => {
     async function fetcher() {
       try {
-        const res = await fetch("http://localhost:8000/users", {
+        const res = await fetch(`${apiUrl}/users`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json;charset=utf-8",
@@ -61,7 +62,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
         title="Select"
         //disabled={isDisabled}
         disabled={invitees.includes(user.id)}
-      ></Button>
+      />
     </View>
   );
 

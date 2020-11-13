@@ -4,6 +4,9 @@ import Pod from "../../models/Pod";
 import User from "../../models/User";
 import PodInvites from "../../models/PodInvites";
 import auth, { AuthRequest } from "../authMiddleware";
+import Event from "../../models/Event";
+import eventRouter from "./events";
+import { compare } from "bcrypt";
 
 const podsRouter = express.Router();
 
@@ -63,5 +66,71 @@ podsRouter.get(
     }
   }
 );
+
+podsRouter.get(
+  "/:podId/conflictingEvents",
+  [auth],
+  async (req: express.Request, res: express.Response) => {
+    const podId = req.params.podId;
+    try {
+      const pod = await Pod.query()
+        .findOne({ "pods.id": podId })
+        .withGraphFetched("members");
+
+      if (
+        !pod.members.map((m) => m.id).includes((req as AuthRequest).user.id)
+      ) {
+        return res
+          .status(401)
+          .json({ message: "You are not authorized to make this request." });
+      }
+
+      const allEvents: Event[] = await Event.query().whereIn(
+        "ownerId",
+        pod.members.map((m) => m.id)
+      );
+
+      const conflictingEvents: Event[] = getConflictingEvents(allEvents);
+
+      res.json({ events: conflictingEvents });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server Error when getting events" });
+    }
+  }
+);
+
+export const getConflictingEvents = (events: Event[]): Event[] => {
+  const conflictingEvents: Event[] = [];
+  let latest: Date = new Date("1970-01-01Z00:00:00:000");
+
+  events.sort((a, b) =>
+    compareDatesFromStrings(
+      (a.start_time as unknown) as string,
+      (b.start_time as unknown) as string
+    )
+  );
+
+  for (const event of events) {
+    const event_start = new Date(event.start_time);
+    const event_end = new Date(event.end_time);
+    console.log("hi");
+    if (event_start < latest) {
+      // It's overlapping
+      console.log("would push");
+      conflictingEvents.push(event);
+    }
+    if (event_end > latest) {
+      console.log("is later");
+      latest = new Date(event.end_time);
+    }
+  }
+
+  return conflictingEvents;
+};
+
+const compareDatesFromStrings = (a: string, b: string): number => {
+  return new Date(a).getTime() - new Date(b).getTime();
+};
 
 export default podsRouter;

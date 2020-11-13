@@ -11,6 +11,7 @@ import {
 import * as SecureStore from "expo-secure-store";
 import Event from "../types/Event";
 import EventInSchedule from "./EventInSchedule";
+import apiUrl from "../config";
 
 interface Pod {
   id: number;
@@ -56,7 +57,7 @@ const Schedule: React.FC<{}> = ({ isToggledToUser, navigation }) => {
       const fetcher = async function () {
         try {
           const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-          const res = await fetch("http://localhost:8000/events", {
+          const res = await fetch(`${apiUrl}/events`, {
             headers: {
               "Content-Type": "application/json;charset=utf-8",
               "x-auth-token": authToken!,
@@ -77,7 +78,7 @@ const Schedule: React.FC<{}> = ({ isToggledToUser, navigation }) => {
       const fetcher1 = async function () {
         try {
           const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-          const res = await fetch("http://localhost:8000/pods/currUsersPod", {
+          const res = await fetch(`${apiUrl}/currUsersPod`, {
             headers: {
               "Content-Type": "application/json;charset=utf-8",
               "x-auth-token": authToken!,
@@ -98,7 +99,7 @@ const Schedule: React.FC<{}> = ({ isToggledToUser, navigation }) => {
       const fetcher2 = async function () {
         try {
           const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-          const res = await fetch(`http://localhost:8000/events/${pod.id}`, {
+          const res = await fetch(`${apiUrl}/events/${pod.id}`, {
             headers: {
               "Content-Type": "application/json;charset=utf-8",
               "x-auth-token": authToken!,

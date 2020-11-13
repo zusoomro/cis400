@@ -19,6 +19,7 @@ import Pod from "../types/Pod";
 import { RouteProp } from "@react-navigation/native";
 import { TabNavigatorParamList } from "../Navigator";
 import Invite from "../types/Invite";
+import apiUrl from "../config";
 
 type Props = {
   navigation: StackNavigationProp<TabNavigatorParamList, "Pods">;
@@ -37,7 +38,7 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
     async function fetchUsersInvites() {
       try {
         const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-        const res = await fetch("http://localhost:8000/invites", {
+        const res = await fetch(`${apiUrl}/invites`, {
           headers: {
             "Content-Type": "application/json;charset=utf-8",
             "x-auth-token": authToken!,
@@ -61,7 +62,7 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
   async function handleRejectInvite() {
     const data = { id: invites![0].id };
     try {
-      const res = await fetch("http://localhost:8000/invites/reject", {
+      const res = await fetch(`${apiUrl}/invites/reject`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
@@ -85,7 +86,7 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
   const handleAccptInvite = async () => {
     const data = { podId: invites![0].podId, inviteId: invites![0].id };
     try {
-      const res = await fetch("http://localhost:8000/invites/accept", {
+      const res = await fetch(`${apiUrl}/invites/accept`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
@@ -133,6 +134,11 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
               onPress={() => navigation.navigate("ManageMembers")}
               style={{ marginTop: 10 }}
             />
+            <SectionButton
+              title="Resolve Conflicts"
+              onPress={() => navigation.navigate("ResolveConflicts")}
+              style={{ borderTopWidth: 0 }}
+            />
           </React.Fragment>
         )}
         <Button
@@ -141,7 +147,7 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
             setModalVisible(true);
           }}
           disabled={invites == undefined || invites.length <= 0}
-        ></Button>
+        />
         {modalVisible && (
           <Modal
             animationType="slide"

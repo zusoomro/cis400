@@ -13,6 +13,7 @@ import * as SecureStore from "expo-secure-store";
 import LocationPicker from "./LocationPicker";
 import Event from "./types/Event";
 import DatePicker from "./DatePicker";
+import apiUrl from "../config";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -118,7 +119,7 @@ const createEventOnSubmit = async (values: Event): Promise<Event | null> => {
   console.log("Data for POST request", data);
 
   try {
-    const res = await fetch("http://localhost:8000/events", {
+    const res = await fetch(`${apiUrl}/events`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",

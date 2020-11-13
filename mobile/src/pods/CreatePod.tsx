@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 import * as SecureStore from "expo-secure-store";
+import apiUrl from "../config";
 
 interface Pod {
   id: number;
@@ -61,7 +62,7 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
                 navigation.navigate("InviteUsers");
                 return;
               }}
-            ></Button>
+            />
             <Button onPress={handleSubmit} title="Submit" />
           </View>
         )}
@@ -73,7 +74,7 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
 const createPodOnSubmit = async (values, invitees) => {
   const data = { name: values.podname, inviteeIds: invitees };
   try {
-    const res = await fetch("http://localhost:8000/pods", {
+    const res = await fetch(`${apiUrl}/pods`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",

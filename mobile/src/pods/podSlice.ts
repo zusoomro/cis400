@@ -30,7 +30,7 @@ export const loadUserPods = createAsyncThunk(
   ): Promise<Pod[] | ReturnType<typeof api.rejectWithValue>> => {
     try {
       const authToken = (api.getState() as RootState).auth.token;
-      const res = await fetch("http://localhost:8000/pods/currUsersPod", {
+      const res = await fetch(`${apiUrl}/pods/currUsersPod`, {
         headers: {
           "Content-Type": "application/json;charset=utf-8",
           "x-auth-token": authToken,

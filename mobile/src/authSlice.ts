@@ -2,15 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as SecureStore from "expo-secure-store";
 import { TextInput } from "react-native";
 import React from "react";
-
-let apiUrl: string;
-
-if (__DEV__) {
-  apiUrl = "http://localhost:8000";
-} else {
-  apiUrl = "http://wigo-api.herokuapp.com";
-}
-console.log(apiUrl);
+import apiUrl from "./config";
 
 const initialState = {
   authenticated: true,

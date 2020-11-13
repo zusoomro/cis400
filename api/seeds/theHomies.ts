@@ -48,4 +48,56 @@ export async function seed(knex: Knex): Promise<void> {
       podId: 1,
     },
   ]);
+
+  // Inserts events
+  await knex("events").insert([
+    {
+      id: 1,
+      ownerId: 1,
+      formattedAddress: "3934 Pine St, Philadelphia, PA 19104, USA",
+      start_time: "2020-11-13T03:10:33.447Z",
+      end_time: "2020-11-13T04:10:33.447Z",
+      notes: "Bike ride time.",
+      name: "Go for a bike ride",
+      lat: 39.95034599999999,
+      lng: -75.201981,
+      repeat: "weekly",
+    },
+    {
+      id: 2,
+      ownerId: 3,
+      formattedAddress: "1204 Walnut St, Philadelphia, PA 19107, USA",
+      start_time: "2020-11-13T04:20:08.731Z",
+      end_time: "2020-11-13T05:20:08.731Z",
+      notes: "Nail time.",
+      name: "Get nails done",
+      lat: 39.94884270000001,
+      lng: -75.1608773,
+      repeat: "no_repeat",
+    },
+    {
+      id: 3,
+      ownerId: 4,
+      formattedAddress: "4000 Spruce St, Philadelphia, PA 19104, USA",
+      start_time: "2020-11-13T04:21:04.295Z",
+      end_time: "2020-11-13T05:21:04.295Z",
+      notes: "Sk8r girl time",
+      name: "Skateboard",
+      lat: 39.951543,
+      lng: -75.2032578,
+      repeat: "no_repeat",
+    },
+    {
+      id: 4,
+      ownerId: 2,
+      formattedAddress: "1209 Vine St, Philadelphia, PA 19107, USA",
+      start_time: "2020-11-13T04:21:53.348Z",
+      end_time: "2020-11-13T05:21:53.348Z",
+      notes: "DJ TIme.",
+      name: "DJ a sick party",
+      lat: 39.9577557,
+      lng: -75.1590322,
+      repeat: "daily",
+    },
+  ]);
 }

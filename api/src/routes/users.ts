@@ -60,7 +60,7 @@ usersRouter.post("/", async (req, res) => {
         },
       },
       "dummySecret",
-      { expiresIn: 360000 },
+      { expiresIn: "2 days" },
       (err, token) => {
         if (err) throw err;
         res.json({ token, user });
@@ -97,7 +97,7 @@ usersRouter.post("/login", async (req, res) => {
       },
     };
 
-    jwt.sign(payload, "dummySecret", { expiresIn: 900 }, (err, token) => {
+    jwt.sign(payload, "dummySecret", { expiresIn: "2 days" }, (err, token) => {
       if (err) throw err;
       res.json({ token, user });
     });
