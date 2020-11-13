@@ -1,6 +1,7 @@
 import express from "express";
 import { isConstructorDeclaration } from "typescript";
 import Pod from "../../models/Pod";
+import User from "../../models/User";
 import PodInvites from "../../models/PodInvites";
 import auth, { AuthRequest } from "../authMiddleware";
 
@@ -24,6 +25,7 @@ podsRouter.post(
 
     const inviteeIds: Array<number> = req.body.inviteeIds;
 
+    // add a pop to the pods database
     const pod = await Pod.query().insert({
       ownerId: currUser,
       name: name,
@@ -31,6 +33,10 @@ podsRouter.post(
 
     await pod.$relatedQuery("members").relate(user.id);
 
+<<<<<<< variant A
+>>>>>>> variant B
+    // send invites
+======= end
     inviteeIds.forEach(async (id) => {
       const invite = await PodInvites.query().insert({
         inviteeUserId: id,
@@ -44,8 +50,6 @@ podsRouter.post(
   }
 );
 
-// currently the only member of the pod is the owner which is why we query for 'where("ownerId", userId)'
-// this will change once we add members to a pod.
 podsRouter.get(
   "/currUsersPod",
   [auth],
