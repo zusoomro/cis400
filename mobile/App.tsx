@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import store from "./src/configureStore";
 import TabNavigator from "./src/Navigator";
-import { loadToken, loadUser } from "./src/authSlice";
+import { loadToken, loadUser, getApiKey } from "./src/authSlice";
 
 export default function App() {
   return (
@@ -29,6 +29,7 @@ const ContextApp = () => {
   useEffect(() => {
     if (userToken) {
       dispatch(loadUser());
+      dispatch(getApiKey());
     }
   }, [userToken]);
 

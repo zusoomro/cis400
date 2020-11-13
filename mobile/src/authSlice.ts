@@ -16,6 +16,7 @@ const initialState = {
   user: {},
   loading: true,
   error: {},
+  apiKey: "",
 };
 
 export const loadUser = createAsyncThunk("auth/loadUser", async (data, api) => {
@@ -82,6 +83,26 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
   }
 });
 
+export const getApiKey = createAsyncThunk("auth/getApiKey", async (data, api) => {
+  try {
+    const res = await fetch(apiUrl + "/events/apiKey", {
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": await SecureStore.getItemAsync("wigo-auth-token"),
+      },
+    });
+
+    const json = await res.json();
+
+
+    return json.key;
+  } catch (ex) {
+    console.log(`error creating api key`, ex);
+    return api.rejectWithValue(ex.message);
+  }
+
+})
+
 export const register = createAsyncThunk("auth/register", async (data, api) => {
   try {
     const res = await fetch(apiUrl + "/users", {
@@ -126,6 +147,9 @@ const authSlice = createSlice({
     [logOut.pending]: (state, action) => {
       state.loading = true;
     },
+    [getApiKey.pending]: (state, action) => {
+      state.loading = true;
+    },
 
     // Fulfilled
     [register.fulfilled]: (state, action) => {
@@ -156,6 +180,10 @@ const authSlice = createSlice({
       state.authenticated = false;
       state.loading = false;
     },
+    [getApiKey.fulfilled]: (state, action) => {
+      state.apiKey = action.payload;
+      state.loading = false;
+    },
 
     // Rejected
     [register.rejected]: (state, action) => {
@@ -172,6 +200,10 @@ const authSlice = createSlice({
       state.token = "";
       state.loading = false;
       state.error = action.payload;
+    },
+    [getApiKey.rejected]: (state, action) => {
+      state.apiKey = "";
+      state.loading = false;
     },
   },
 });
