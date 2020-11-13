@@ -13,9 +13,9 @@ export type ScheduleNavigatorParamList = {
   ModifyEvent: { event: Event };
 };
 
-const ScheduleNavigator: React.FC = () => {
-  const Stack = createStackNavigator<ScheduleNavigatorParamList>();
+const Stack = createStackNavigator<ScheduleNavigatorParamList>();
 
+const ScheduleNavigator: React.FC = () => {
   return (
     <Stack.Navigator initialRouteName="ScheduleHomePage">
       <Stack.Screen

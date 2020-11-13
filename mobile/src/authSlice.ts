@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as SecureStore from "expo-secure-store";
+import { TextInput } from "react-native";
+import React from "react";
 
 let apiUrl: string;
 
@@ -47,7 +49,7 @@ export const logOut = createAsyncThunk(
   "auth/logout",
   async (data, api): Promise<string> => {
     try {
-      await SecureStore.deleteItemAsync("ecountabl-token");
+      await SecureStore.deleteItemAsync("wigo-auth-token");
       return {};
     } catch (ex) {
       console.error(`error in logout`, ex);
@@ -82,6 +84,10 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
 
     const json = await res.json();
 
+    if (!res.ok) {
+      return api.rejectWithValue(json.message);
+    }
+
     await SecureStore.setItemAsync("wigo-auth-token", json.token);
 
     return json;
@@ -104,6 +110,10 @@ export const getApiKey = createAsyncThunk(
 
       const json = await res.json();
 
+      if (!res.ok) {
+        return api.rejectWithValue(json.message);
+      }
+
       return json.key;
     } catch (ex) {
       console.log(`error creating api key`, ex);
@@ -123,6 +133,10 @@ export const register = createAsyncThunk("auth/register", async (data, api) => {
     });
 
     const json = await res.json();
+
+    if (!res.ok) {
+      return api.rejectWithValue(json.message);
+    }
 
     await SecureStore.setItemAsync("wigo-auth-token", json.token);
 
@@ -215,7 +229,7 @@ const authSlice = createSlice({
       state.apiKey = "";
       state.loading = false;
       state.error = action.payload;
-    }
+    },
     [loadUser.rejected]: (state, action) => {
       state.authenticated = false;
       state.user = {};

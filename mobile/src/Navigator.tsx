@@ -8,8 +8,17 @@ import Login from "./Login";
 import Register from "./Register";
 import { useSelector } from "react-redux";
 import { RootState } from "./configureStore";
+import Event from "./types/Event";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<TabNavigatorParamList>();
+
+export type TabNavigatorParamList = {
+  Schedule: undefined;
+  Pods: undefined;
+  Settings: undefined;
+  Login: undefined;
+  Register: undefined;
+};
 
 const TabNavigator = () => {
   const authenticated = useSelector(
