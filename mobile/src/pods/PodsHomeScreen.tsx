@@ -1,51 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   SafeAreaView,
   StyleSheet,
   Button,
-  TextInput,
   Modal,
   Alert,
   TouchableHighlight,
 } from "react-native";
-<<<<<<< variant A
 import { useDispatch, useSelector } from "react-redux";
-import { loadUserPods } from "./podSlice";
+import { setPod, loadUserPods } from "./podSlice";
 import SectionButton from "../shared/SectionButton";
 import { RootState } from "../configureStore";
 import { StackNavigationProp } from "@react-navigation/stack";
->>>>>>> variant B
-import { Formik } from "formik";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { useFocusEffect } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
-import InviteUsers from "./InviteUsers";
-======= end
+import Pod from "../types/Pod";
+import { RouteProp } from "@react-navigation/native";
+import { TabNavigatorParamList } from "../Navigator";
+import Invite from "../types/Invite";
 
-interface Pod {
-  id: number;
-  ownerId: number;
-  name: string;
-}
-
-
-interface Props {
-  navigation: StackNavigationProp<any>;
-}
-
-interface Invite {
-  id: number;
-  inviterUserId: number;
-  inviteeUserId: number;
-  podId: number;
-  podName: string;
-}
+type Props = {
+  navigation: StackNavigationProp<TabNavigatorParamList, "Pods">;
+  route: RouteProp<TabNavigatorParamList, "Pods">;
+};
 
 const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
   const firstPod = useSelector((state: RootState) => state.pods.pods[0]);
+  const [invites, setInvites] = useState<Invite[]>();
+  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -90,9 +73,10 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
         console.log("success rejecting invite");
       }
       setModalVisible(false);
-      invites?.shift();
-      setInvites([...invites]);
-      //setInvites(invites);
+      if (invites) {
+        invites.shift();
+        setInvites([...invites]);
+      }
     } catch (err) {
       console.log(err);
     }

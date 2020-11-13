@@ -53,7 +53,11 @@ export const loadUserPods = createAsyncThunk(
 const podSlice = createSlice({
   name: "pods",
   initialState,
-  reducers: {},
+  reducers: {
+    setPod(state, action) {
+      state.pods = [action.payload];
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(loadUserPods.pending, (state, action) => {
       state.loading = true;
@@ -74,4 +78,5 @@ const podSlice = createSlice({
   },
 });
 
+export const { setPod } = podSlice.actions;
 export default podSlice.reducer;

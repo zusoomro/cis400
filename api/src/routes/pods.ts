@@ -33,10 +33,6 @@ podsRouter.post(
 
     await pod.$relatedQuery("members").relate(user.id);
 
-<<<<<<< variant A
->>>>>>> variant B
-    // send invites
-======= end
     inviteeIds.forEach(async (id) => {
       const invite = await PodInvites.query().insert({
         inviteeUserId: id,
