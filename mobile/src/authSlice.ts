@@ -64,6 +64,7 @@ export const loadToken = createAsyncThunk(
 
 export const login = createAsyncThunk("auth/login", async (data, api) => {
   try {
+    console.log("apiUrl", apiUrl);
     const res = await fetch(apiUrl + "/users/login", {
       method: "POST",
       headers: {

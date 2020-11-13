@@ -72,6 +72,7 @@ podsRouter.get(
   [auth],
   async (req: express.Request, res: express.Response) => {
     const podId = req.params.podId;
+    console.log("conflicting events");
     try {
       const pod = await Pod.query()
         .findOne({ "pods.id": podId })
@@ -90,9 +91,18 @@ podsRouter.get(
         pod.members.map((m) => m.id)
       );
 
+      console.log("allevents", allEvents);
+
+      const podMemberDict: { [key: string]: string } = {};
+      for (const member of pod.members) {
+        podMemberDict[member.id] = member.email;
+      }
+
       const conflictingEvents: Event[] = getConflictingEvents(allEvents);
 
-      res.json({ events: conflictingEvents });
+      console.log("conflictingEvents", conflictingEvents);
+
+      res.json({ events: conflictingEvents, members: podMemberDict });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: "Server Error when getting events" });
@@ -100,31 +110,82 @@ podsRouter.get(
   }
 );
 
+class Endpoint {
+  time: Date;
+  id: number;
+  isEnd: boolean;
+
+  constructor(time: Date, id: number, isEnd: boolean) {
+    this.time = time;
+    this.id = id;
+    this.isEnd = isEnd;
+  }
+}
+
 export const getConflictingEvents = (events: Event[]): Event[] => {
   const conflictingEvents: Event[] = [];
-  let latest: Date = new Date("1970-01-01Z00:00:00:000");
+  const iterationArray: Endpoint[] = [];
 
-  events.sort((a, b) =>
-    compareDatesFromStrings(
-      (a.start_time as unknown) as string,
-      (b.start_time as unknown) as string
-    )
-  );
+  // Construct a dict/hashmap
+  const dict: { [key: number]: Event } = {};
+  for (const event of events) {
+    dict[event.id] = event;
+  }
 
   for (const event of events) {
-    const event_start = new Date(event.start_time);
-    const event_end = new Date(event.end_time);
-    console.log("hi");
-    if (event_start < latest) {
-      // It's overlapping
-      console.log("would push");
-      conflictingEvents.push(event);
-    }
-    if (event_end > latest) {
-      console.log("is later");
-      latest = new Date(event.end_time);
+    iterationArray.push(new Endpoint(event.start_time, event.id, false));
+    iterationArray.push(new Endpoint(event.end_time, event.id, true));
+  }
+
+  iterationArray.sort(
+    (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+  );
+
+  console.log("iterationArray", iterationArray);
+
+  let numOpenIntervals = 0;
+  let lastEndpoint: Endpoint | undefined = undefined;
+
+  for (const point of iterationArray) {
+    if (point.isEnd) {
+      numOpenIntervals--;
+    } else {
+      if (numOpenIntervals === 1 && lastEndpoint) {
+        console.log("hello", dict[lastEndpoint.id], dict[point.id]);
+        conflictingEvents.push(dict[lastEndpoint.id]);
+        conflictingEvents.push(dict[point.id]);
+      } else if (numOpenIntervals > 1) {
+        conflictingEvents.push(dict[point.id]);
+      }
+      numOpenIntervals++;
+      lastEndpoint = point;
     }
   }
+
+  // const conflictingEvents: Event[] = [];
+  // let latest: Date = new Date("1970-01-01Z00:00:00:000");
+  //
+  // events.sort((a, b) =>
+  //   compareDatesFromStrings(
+  //     (a.start_time as unknown) as string,
+  //     (b.start_time as unknown) as string
+  //   )
+  // );
+  //
+  // for (const event of events) {
+  //   const event_start = new Date(event.start_time);
+  //   const event_end = new Date(event.end_time);
+  //   console.log("hi");
+  //   if (event_start < latest) {
+  //     // It's overlapping
+  //     console.log("would push");
+  //     conflictingEvents.push(event);
+  //   }
+  //   if (event_end > latest) {
+  //     console.log("is later");
+  //     latest = new Date(event.end_time);
+  //   }
+  // }
 
   return conflictingEvents;
 };

@@ -11,12 +11,16 @@ import apiUrl from "../config";
 import { useSelector } from "react-redux";
 import { RootState } from "../configureStore";
 import Event from "../types/Event";
+import moment from "moment";
 
 const ResolveConflicts: React.FC = ({ navigation }) => {
   const podId = useSelector((state: RootState) => state.pods.pods[0].id);
   const { user, token } = useSelector((state: RootState) => state.auth);
   const [loading, setLoading] = useState<boolean>(false);
-  const [conEvents, setConEvents] = useState<Event[]>();
+  const [fetchData, setFetchData] = useState<{
+    events: Event[];
+    members: { [key: string]: string };
+  }>();
 
   const updateEvents = async () => {
     await setLoading(true);
@@ -30,7 +34,9 @@ const ResolveConflicts: React.FC = ({ navigation }) => {
 
     const json = await res.json();
 
-    setConEvents(json.events);
+    console.log("json", json);
+    setFetchData(json);
+
     await setLoading(false);
   };
 
@@ -46,8 +52,10 @@ const ResolveConflicts: React.FC = ({ navigation }) => {
         }
       >
         {!loading ? (
-          conEvents &&
-          conEvents.map((event) => (
+          fetchData &&
+          fetchData.events &&
+          fetchData.members &&
+          fetchData.events.map((event) => (
             <View
               style={{
                 padding: 10,
@@ -56,12 +64,16 @@ const ResolveConflicts: React.FC = ({ navigation }) => {
                 backgroundColor: "#FFF",
                 borderRadius: 10,
               }}
+              key={event.id}
             >
               <Text style={{ color: "red", fontSize: 18, marginBottom: 5 }}>
                 {event.name}
               </Text>
-              <Text>{event.start_time}</Text>
-              <Text>{event.end_time}</Text>
+              <Text style={{ marginBottom: 5 }}>
+                {fetchData.members[event.ownerId]}
+              </Text>
+              <Text>{moment(event.start_time).format("LLLL")}</Text>
+              <Text>{moment(event.end_time).format("LLLL")}</Text>
               <Button
                 title={"Modify This Event"}
                 disabled={event.ownerId != user.id}

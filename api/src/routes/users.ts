@@ -74,6 +74,8 @@ usersRouter.post("/", async (req, res) => {
 usersRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
+  console.log("hit login endpoint");
+
   try {
     let userArray = await User.query().where("email", email);
 
