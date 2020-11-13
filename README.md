@@ -30,3 +30,9 @@ For all routes created, ensure authorizaiton of user via authmiddleware. For Exa
   }
 }
 ```
+
+### Loading in the Google Maps API Key on DEV
+1. Get the API KEY from Ally 
+2. Create a file called .env in the api folder. Put the key in it as GOOGLE_MAPS_API_KEY=PastedKey
+3. Run source env. to load in your api variables in the api folder
+4. Then be happy :)
