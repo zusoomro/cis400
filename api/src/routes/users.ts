@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import auth, { AuthRequest } from "../authMiddleware";
 
-let usersRouter = express.Router();
+const usersRouter = express.Router();
 
 usersRouter.get("/", async (req, res) => {
   const response = await User.query();

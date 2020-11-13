@@ -7,11 +7,14 @@ import Settings from "./Settings";
 import Login from "./Login";
 import Register from "./Register";
 import { useSelector } from "react-redux";
+import { RootState } from "./configureStore";
 
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-  const authenticated = useSelector((state) => state.auth.token);
+  const authenticated = useSelector(
+    (state: RootState) => state.auth.authenticated
+  );
   console.log("authenticated", authenticated);
 
   return (
