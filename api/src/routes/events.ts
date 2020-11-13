@@ -64,17 +64,20 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     .where("id", eventId);
 });
 
-eventRouter.get("/apiKey", [auth], async (req: express.Request, res: express.Response) => {
-  try {
-    const key = process.env.GOOGLE_MAPS_API_KEY;
+eventRouter.get(
+  "/apiKey",
+  [auth],
+  async (req: express.Request, res: express.Response) => {
+    try {
+      const key = process.env.GOOGLE_MAPS_API_KEY;
 
-    res.json({ key });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server Error" });
+      res.json({ key });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server Error" });
+    }
   }
-});
-
+);
 
 eventRouter.get(
   "/",
