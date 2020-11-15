@@ -9,7 +9,9 @@ import {
   Image,
   Switch,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
 
 import Nature from "../../assets/undraw_nature_m5ll.png";
@@ -17,6 +19,7 @@ import Nature from "../../assets/undraw_nature_m5ll.png";
 import Event from "../types/Event";
 import EventInSchedule from "./EventInSchedule";
 import apiUrl from "../config";
+import sharedStyles from "../sharedStyles";
 
 interface Pod {
   id: number;
@@ -24,13 +27,7 @@ interface Pod {
   name: string;
 }
 
-
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
-  const [isToggledToUser, setIsToggledToUser] = useState(true);
-
-  const toggleSwitch = () =>
-    setIsToggledToUser((previousState) => !previousState);
-
   return (
     <SafeAreaView
       style={{
@@ -40,30 +37,44 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
         flexDirection: "column",
       }}
     >
-      <Switch
-        trackColor={{ false: "#767577", true: "#81b0ff" }}
-        thumbColor={isToggledToUser ? "#f5dd4b" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isToggledToUser}
-      />
-      <Schedule isToggledToUser={isToggledToUser} navigation={navigation} />
-      <Button
-        title="Create Event"
+      <Schedule navigation={navigation} />
+      <TouchableOpacity
+        style={[
+          {
+            position: "absolute",
+            bottom: 15,
+            right: 15,
+            height: 50,
+            width: 50,
+            borderRadius: 100,
+            backgroundColor: "#5A67D8",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          },
+          sharedStyles.shadow,
+        ]}
         onPress={() => {
           console.log("Create New Event button clicked");
           navigation.navigate("CreateEvent");
           return;
         }}
-      />
+      >
+        <Ionicons name="md-create" size={24} color="#FFF" />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
-const Schedule: React.FC<{}> = ({ isToggledToUser, navigation }) => {
+const Schedule: React.FC<{}> = ({ navigation }) => {
   const [events, setEvents] = useState([]);
   const [pod, setPod] = useState<Pod>();
   const today = new Date();
+
+  const [isToggledToUser, setIsToggledToUser] = useState(true);
+
+  const toggleSwitch = () =>
+    setIsToggledToUser((previousState) => !previousState);
 
   React.useEffect(() => {
     if (isToggledToUser) {
@@ -140,32 +151,55 @@ const Schedule: React.FC<{}> = ({ isToggledToUser, navigation }) => {
   const todayString = mm + "/" + dd + "/" + yyyy;
 
   return (
-<<<<<<< variant A
-    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
+    <View style={{ flex: 1 }}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <View style={styles.sectionOne}>
-          <Text
-            style={{
-              marginLeft: 10,
-              marginVertical: 18,
-              textAlign: "center",
-              fontSize: 18,
-              color: "#FFF",
-            }}
-          >
-            Today, {todayString}
+        <Text style={[sharedStyles.h1, { marginBottom: 5, marginLeft: 15 }]}>
+          Schedule
+        </Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            marginLeft: 15,
+            marginBottom: 20,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ fontSize: 16, marginRight: "auto" }}>
+            Shared schedule
           </Text>
+          <Switch
+            trackColor={{ false: "#5A67D8", true: "#7F9CF5" }}
+            thumbColor={"#FFF"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isToggledToUser}
+            style={{
+              transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
+              marginRight: 15,
+            }}
+          />
         </View>
-        {eventsForUser.length > 0 ? (
-        {events.map((event: Event) => (
-          <EventInSchedule
-            event={event}
-            showName={!isToggledToUser}
-            navigation={navigation}
-            key={event.id}
-          ></EventInSchedule>
-        ))}
-          ))
+        <Text
+          style={{
+            marginLeft: 15,
+            fontSize: 18,
+            marginBottom: 15,
+          }}
+        >
+          Today, {todayString}
+        </Text>
+        {events.length > 0 ? (
+          <View>
+            {events.map((event: Event) => (
+              <EventInSchedule
+                event={event}
+                showName={!isToggledToUser}
+                navigation={navigation}
+                key={event.id}
+              />
+            ))}
+          </View>
         ) : (
           <View
             style={{
@@ -183,11 +217,6 @@ const Schedule: React.FC<{}> = ({ isToggledToUser, navigation }) => {
             </Text>
           </View>
         )}
->>>>>>> variant B
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>{todayString}</Text>
-      <ScrollView>
-======= end
       </ScrollView>
     </View>
   );

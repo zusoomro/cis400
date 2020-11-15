@@ -3,6 +3,7 @@ import User from "../../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import auth, { AuthRequest } from "../authMiddleware";
+import gravatar from "gravatar";
 
 const usersRouter = express.Router();
 
@@ -46,9 +47,21 @@ usersRouter.post("/", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Get/create an avatar
+    const avatar = gravatar.url(
+      email,
+      {
+        s: "100",
+        r: "pg",
+        d: "retro",
+      },
+      false
+    );
+
     const user = await User.query().insert({
       email,
       password: hashedPassword,
+      avatar,
     });
 
     console.log(`Creating user with email '${email}'`);

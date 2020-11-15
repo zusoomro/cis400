@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet, TextInput } from "react-native";
 import Button from "../shared/Button";
-import { Formik } from "formik";
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { useFocusEffect } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   View,
   Text,
   SafeAreaView,
   StyleSheet,
-  Button,
   Modal,
   Alert,
   TouchableHighlight,
+  Image,
+  TouchableOpacity,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { setPod, loadUserPods } from "./podSlice";
@@ -27,6 +22,7 @@ import { RouteProp } from "@react-navigation/native";
 import { TabNavigatorParamList } from "../Navigator";
 import Invite from "../types/Invite";
 import apiUrl from "../config";
+import sharedStyles from "../sharedStyles";
 
 type Props = {
   navigation: StackNavigationProp<TabNavigatorParamList, "Pods">;
@@ -121,85 +117,127 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
   }, [invites]);
 
   return (
-    <SafeAreaView>
-      <View>
-        {firstPod == null ? (
-          <Button
-            title="Create New Pod"
-            onPress={() => {
-              navigation.navigate("CreatePod");
-              return;
-            }}
-          />
-        ) : (
-          <React.Fragment>
-            <Text style={[styles.h1, { marginLeft: 10, marginTop: 20 }]}>
+    <SafeAreaView style={{ display: "flex", flex: 1 }}>
+      {firstPod == null ? (
+        <Button
+          title="Create New Pod"
+          onPress={() => {
+            navigation.navigate("CreatePod");
+            return;
+          }}
+        />
+      ) : (
+        <React.Fragment>
+          <Text style={[sharedStyles.h1, { marginHorizontal: 15 }]}>Pods</Text>
+          <View
+            style={[
+              {
+                margin: 15,
+                marginTop: 0,
+                padding: 15,
+                backgroundColor: "#FFF",
+                borderRadius: 15,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              },
+              sharedStyles.shadow,
+            ]}
+          >
+            <PodVisual pod={firstPod} />
+            <Text style={{ fontSize: 24, fontWeight: "600", marginBottom: 5 }}>
               {firstPod?.name ? firstPod.name : "Your Pod"}
             </Text>
-            <SectionButton
-              title="Manage Members"
+            <TouchableOpacity
               onPress={() => navigation.navigate("ManageMembers")}
-              style={{ marginTop: 10 }}
-            />
-            <SectionButton
-              title="Resolve Conflicts"
+            >
+              <Text style={{ fontSize: 16, color: "#667EEA", marginBottom: 5 }}>
+                Manage Members
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               onPress={() => navigation.navigate("ResolveConflicts")}
-              style={{ borderTopWidth: 0 }}
-            />
-          </React.Fragment>
-        )}
-        <Button
-          title="Show Invites"
-          onPress={() => {
-            setModalVisible(true);
+            >
+              <Text style={{ fontSize: 16, color: "#667EEA", marginBottom: 5 }}>
+                Resolve Conflicts
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </React.Fragment>
+      )}
+      <Button
+        title="Show Invites"
+        onPress={() => {
+          setModalVisible(true);
+        }}
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 15,
+          right: 15,
+          width: "auto",
+        }}
+        disabled={invites == undefined || invites.length <= 0}
+      />
+      {modalVisible && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
           }}
-          disabled={invites == undefined || invites.length <= 0}
-        />
-        {modalVisible && (
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-            }}
-          >
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>
-                  You've been invites to Pod: {invites![0].podName}!
-                </Text>
-                <Text>
-                  WARNING: If you are already in pod, accepting this invite will
-                  replce your current pod!
-                </Text>
-                <View style={styles.acceptRejectButtonContainer}>
-                  <TouchableHighlight onPress={handleAccptInvite}>
-                    <View style={styles.acceptButton}>
-                      <Text>Accept</Text>
-                    </View>
-                  </TouchableHighlight>
-                  <TouchableHighlight onPress={handleRejectInvite}>
-                    <View style={styles.rejectButton}>
-                      <Text>Reject</Text>
-                    </View>
-                  </TouchableHighlight>
-                </View>
-
-                <TouchableHighlight
-                  style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                  }}
-                >
-                  <Text style={styles.textStyle}>Hide Modal</Text>
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>
+                You've been invites to Pod: {invites![0].podName}!
+              </Text>
+              <Text>
+                WARNING: If you are already in pod, accepting this invite will
+                replce your current pod!
+              </Text>
+              <View style={styles.acceptRejectButtonContainer}>
+                <TouchableHighlight onPress={handleAccptInvite}>
+                  <View style={styles.acceptButton}>
+                    <Text>Accept</Text>
+                  </View>
+                </TouchableHighlight>
+                <TouchableHighlight onPress={handleRejectInvite}>
+                  <View style={styles.rejectButton}>
+                    <Text>Reject</Text>
+                  </View>
                 </TouchableHighlight>
               </View>
+
+              <TouchableHighlight
+                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </TouchableHighlight>
             </View>
-          </Modal>
-        )}
-      </View>
+          </View>
+        </Modal>
+      )}
     </SafeAreaView>
+  );
+};
+
+const PodVisual: React.FC<{ pod: Pod }> = ({ pod }) => {
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  console.log("user", user);
+
+  return user ? (
+    <Image
+      style={{ height: 125, width: 125, borderRadius: 1000, marginBottom: 15 }}
+      source={{ uri: user.avatar }}
+    />
+  ) : (
+    <View />
   );
 };
 

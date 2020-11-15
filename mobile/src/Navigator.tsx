@@ -65,22 +65,26 @@ const TabNavigator = () => {
         <React.Fragment>
           <Tab.Screen
             name="Login"
-            component={Login}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-people" color={color} size={size} />
               ),
+              tabBarVisible: false,
             }}
-          />
+          >
+            {(props) => <Login isLogin={true} {...props} />}
+          </Tab.Screen>
           <Tab.Screen
             name="Register"
-            component={Register}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-people" color={color} size={size} />
               ),
+              tabBarVisible: false,
             }}
-          />
+          >
+            {(props) => <Login isLogin={false} {...props} />}
+          </Tab.Screen>
         </React.Fragment>
       )}
     </Tab.Navigator>

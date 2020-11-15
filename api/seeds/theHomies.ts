@@ -1,5 +1,18 @@
 import * as Knex from "knex";
 import bcrypt from "bcrypt";
+import gravatar from "gravatar";
+
+const getAvatar = (email: string) => {
+  return gravatar.url(
+    email,
+    {
+      s: "200",
+      r: "pg",
+      d: "retro",
+    },
+    false
+  );
+};
 
 export async function seed(knex: Knex): Promise<void> {
   // Deletes ALL existing entries
@@ -10,10 +23,30 @@ export async function seed(knex: Knex): Promise<void> {
 
   // Inserts user entries
   await knex("users").insert([
-    { id: 1, email: "zulfi@wigo.com", password: hashedPassword },
-    { id: 2, email: "caro@wigo.com", password: hashedPassword },
-    { id: 3, email: "chloe@wigo.com", password: hashedPassword },
-    { id: 4, email: "ally@wigo.com", password: hashedPassword },
+    {
+      id: 1,
+      email: "zusoomro@seas.upenn.edu",
+      password: hashedPassword,
+      avatar: getAvatar("zusoomro@seas.upenn.edu"),
+    },
+    {
+      id: 2,
+      email: "caromurp@seas.upenn.edu",
+      password: hashedPassword,
+      avatar: getAvatar("caromurp@seas.upenn.edu"),
+    },
+    {
+      id: 3,
+      email: "pchloe@seas.upenn.edu",
+      password: hashedPassword,
+      avatar: getAvatar("pchloe@seas.upenn.edu"),
+    },
+    {
+      id: 4,
+      email: "name8@seas.upenn.edu",
+      password: hashedPassword,
+      avatar: getAvatar("name8@seas.upenn.edu"),
+    },
   ]);
 
   // Inserts pod entry

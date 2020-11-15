@@ -3,19 +3,20 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   SafeAreaView,
   StyleSheet,
   Keyboard,
   TouchableWithoutFeedback,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
+import Button from "./shared/Button";
 import { Formik } from "formik";
 import { register } from "./authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import sharedStyles from "./sharedStyles";
 
-const Register: React.FC<{}> = () => {
+const Register: React.FC<{}> = ({ navigation }) => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.auth);
 
@@ -31,7 +32,26 @@ const Register: React.FC<{}> = () => {
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <View>
-              <Text style={styles.heading}>Register</Text>
+              <Text
+                style={{
+                  fontFamily: "BebasNeue_400Regular",
+                  fontSize: 64,
+                  textAlign: "center",
+                  color: "#5A67D8",
+                }}
+              >
+                WIGO
+              </Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  textAlign: "center",
+                  color: "#5A67D8",
+                  marginBottom: 24,
+                }}
+              >
+                #Letsride
+              </Text>
               <TextInput
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
@@ -51,12 +71,28 @@ const Register: React.FC<{}> = () => {
               {loading ? (
                 <ActivityIndicator />
               ) : (
-                <Button
-                  accessibilityLabel="Submit"
-                  onPress={handleSubmit}
-                  title="Submit"
-                />
+                <View>
+                  <Button
+                    accessibilityLabel="Submit"
+                    style={{ backgroundColor: "#667EEA" }}
+                    onPress={handleSubmit}
+                    title="Register"
+                  />
+                </View>
               )}
+
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 16,
+                    color: "#7F9CF5",
+                  }}
+                >
+                  Have an account? Login here.
+                </Text>
+              </TouchableOpacity>
+              {error && <Text>{JSON.stringify(error)}</Text>}
             </View>
           )}
         </Formik>
@@ -70,7 +106,7 @@ export const styles = StyleSheet.create({
     display: "flex",
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+    margin: 15,
   },
   input: {
     backgroundColor: "white",

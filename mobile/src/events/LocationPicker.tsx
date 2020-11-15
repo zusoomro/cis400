@@ -1,12 +1,14 @@
 import React, { useRef, useEffect } from "react";
 import { useFormikContext } from "formik";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import sharedStyles from '../sharedStyles'
 import { useSelector } from "react-redux";
 
 export interface Place {
   formatted_address: string;
   latValue: number;
   lngValue: number;
+
 }
 
 interface LocationProps {
@@ -46,17 +48,7 @@ const LocationPicker: React.FC<LocationProps> = (props) => {
       }}
       onPress={locationPicked}
       nearbyPlacesAPI="GooglePlacesSearch"
-      styles={{
-        textInputContainer: {
-          width: "100%",
-        },
-        description: {
-          fontWeight: "bold",
-        },
-        predefinedPlacesDescription: {
-          color: "#1faadb",
-        },
-      }}
+      styles={{textInputContainer: { ...sharedStyles.input, paddingLeft: 10}}}
     />
   );
 };

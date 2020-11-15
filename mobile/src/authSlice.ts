@@ -64,7 +64,6 @@ export const loadToken = createAsyncThunk(
 
 export const login = createAsyncThunk("auth/login", async (data, api) => {
   try {
-    console.log("apiUrl", apiUrl);
     const res = await fetch(apiUrl + "/users/login", {
       method: "POST",
       headers: {
@@ -73,19 +72,9 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
       body: JSON.stringify(data),
     });
 
-export const login = createAsyncThunk(
-  "auth/login",
-  async (data: LoginValues, api) => {
-    try {
-      const res = await fetch(apiUrl + "/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify(data),
-      });
+    console.log("res", res);
 
-      console.log("res", res);
+    const json = await res.json();
 
     if (!res.ok) {
       return api.rejectWithValue(json.message);
@@ -93,15 +82,12 @@ export const login = createAsyncThunk(
 
     await SecureStore.setItemAsync("wigo-auth-token", json.token);
 
-      await SecureStore.setItemAsync("wigo-auth-token", json.token);
-
-      return json;
-    } catch (ex) {
-      console.log(`error creating new user`, ex);
-      return api.rejectWithValue(ex.message);
-    }
+    return json;
+  } catch (ex) {
+    console.log(`error creating new user`, ex);
+    return api.rejectWithValue(ex.message);
   }
-);
+});
 
 export const getApiKey = createAsyncThunk(
   "auth/getApiKey",

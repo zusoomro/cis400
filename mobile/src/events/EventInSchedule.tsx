@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Text, SafeAreaView, StyleSheet } from "react-native";
+import { Text, SafeAreaView, StyleSheet, View, Image } from "react-native";
 import { Card } from "react-native-elements";
 import Event from "../types/Event";
+import sharedStyles from "../sharedStyles";
+import { useSelector } from "react-redux";
+import { RootState } from "../configureStore";
 
 interface EventProps {
   event: Event;
@@ -16,6 +19,8 @@ const EventInSchedule: React.FC<EventProps> = ({
   navigation,
   showName,
 }) => {
+  const { avatar } = useSelector((state: RootState) => state.auth.user);
+
   const {
     name,
     start_time,
@@ -27,28 +32,54 @@ const EventInSchedule: React.FC<EventProps> = ({
   } = event;
 
   return (
-    <SafeAreaView>
-      <Card>
-        <Card.Title>{name}</Card.Title>
-        {/* inseert name stuff, if not toggledtouser add who section */}
-        {showName && <Text style={styles.sub}>Who: {ownerId}</Text>}
-        <Text style={styles.sub}>
-          When:{" "}
-          {new Date(start_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}{" "}
-          -{" "}
-          {new Date(end_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+    <View
+      style={[
+        {
+          padding: 15,
+          backgroundColor: "#FFF",
+          margin: 15,
+          marginTop: 0,
+          borderRadius: 10,
+          display: "flex",
+          flexDirection: "row",
+        },
+        sharedStyles.shadow,
+      ]}
+    >
+      <Image
+        source={{ uri: avatar }}
+        style={{
+          width: 50,
+          height: 50,
+          marginRight: 15,
+          borderRadius: 100,
+        }}
+      />
+      <View>
+        <Text style={{ fontSize: 18, fontWeight: "600", marginBottom: 5 }}>
+          {name}
         </Text>
-        <Text style={styles.sub}>Where: {formattedAddress}</Text>
-        <Text style={styles.sub}>Notes: {notes}</Text>
-      </Card>
-    </SafeAreaView>
+        {showName && <Text style={styles.sub}>Who: {ownerId}</Text>}
+        <Text style={{ color: "#718096", marginBottom: 5 }}>
+          {generateDateString(event)}
+        </Text>
+        <Text style={{ color: "#319795", marginBottom: 5 }}>
+          {formattedAddress}
+        </Text>
+        <Text style={{ color: "#4A5568" }}>{notes}</Text>
+      </View>
+    </View>
   );
+};
+
+const generateDateString = (event: Event): string => {
+  return `${new Date(event.start_time).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  })} - ${new Date(event.end_time).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  })}`;
 };
 
 const styles = StyleSheet.create({
@@ -71,7 +102,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sub: {
-    fontSize: 10,
+    fontSize: 14,
     textAlign: "left",
     marginBottom: 10,
   },

@@ -31,7 +31,7 @@ const PodsNavigator = () => {
       <Stack.Screen
         name="PodsHomeScreen"
         component={PodsHomeScreen}
-        options={{ title: "Your Pods" }}
+        options={{ title: "Your Pods", headerShown: false }}
       />
       <Stack.Screen
         name="CreatePod"

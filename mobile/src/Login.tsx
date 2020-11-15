@@ -4,18 +4,25 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   SafeAreaView,
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
+  TouchableOpacity,
 } from "react-native";
+import Button from "./shared/Button";
 import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "./authSlice";
+import { login, register } from "./authSlice";
 import { RootState } from "./configureStore";
+import sharedStyles from "./sharedStyles";
+import { Ionicons } from "@expo/vector-icons";
 
-const Login: React.FC = () => {
+type AuthComponentProps = {
+  isLogin?: boolean;
+};
+
+const Login: React.FC<AuthComponentProps> = ({ navigation, isLogin }) => {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state: RootState) => state.auth);
 
@@ -25,40 +32,82 @@ const Login: React.FC = () => {
         <Formik
           initialValues={{ email: "", password: "" }}
           onSubmit={(values) => {
-            dispatch(login(values));
-            console.log(values);
+            if (isLogin) {
+              dispatch(login(values));
+            } else {
+              dispatch(register(values));
+            }
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <View>
-              <Text style={styles.heading}>Login</Text>
+              <Text
+                style={{
+                  fontFamily: "BebasNeue_400Regular",
+                  fontSize: 64,
+                  textAlign: "center",
+                  color: "#5A67D8",
+                }}
+              >
+                WIGO
+              </Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  textAlign: "center",
+                  color: "#5A67D8",
+                  marginBottom: 24,
+                }}
+              >
+                #Letsride
+              </Text>
               <TextInput
                 onChangeText={handleChange("email")}
                 onBlur={handleBlur("email")}
                 value={values.email}
                 placeholder="email"
-                style={styles.input}
+                style={sharedStyles.input}
                 textContentType="username"
                 autoCapitalize="none"
+                autoCorrect={false}
               />
               <TextInput
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
                 value={values.password}
                 placeholder="password"
-                style={styles.input}
+                style={sharedStyles.input}
                 secureTextEntry
                 textContentType="password"
+                autoCorrect={false}
               />
               {loading ? (
                 <ActivityIndicator />
               ) : (
                 <Button
                   accessibilityLabel="Submit"
+                  style={{ backgroundColor: "#667EEA" }}
                   onPress={handleSubmit}
-                  title="Submit"
+                  title={isLogin ? "Login" : "Register"}
                 />
               )}
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(isLogin ? "Register" : "Login")
+                }
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 16,
+                    color: "#7F9CF5",
+                  }}
+                >
+                  {isLogin
+                    ? "Need an account? Register here."
+                    : "Have an account? Login here."}
+                </Text>
+              </TouchableOpacity>
               {error && <Text>{JSON.stringify(error)}</Text>}
             </View>
           )}

@@ -10,6 +10,8 @@
     "formatAll": "prettier --write \"*/**/*.{ts,tsx}\""
   },
   "dependencies": {
+    "@expo-google-fonts/bebas-neue": "^0.1.0",
+    "@expo/vector-icons": "^10.2.1",
     "@react-native-community/datetimepicker": "3.0.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.9.2",
@@ -27,7 +29,9 @@
     "eslint": "^7.11.0",
     "eslint-plugin-react": "^7.21.5",
     "expo": "^39.0.3",
+    "expo-font": "^8.3.0",
     "expo-secure-store": "^9.2.0",
+    "expo-splash-screen": "^0.6.2",
     "expo-status-bar": "~1.0.2",
     "fetch-mock": "^9.10.7",
     "formik": "^2.2.0",

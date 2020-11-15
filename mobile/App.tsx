@@ -1,12 +1,15 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import store, { RootState } from "./src/configureStore";
 import TabNavigator from "./src/Navigator";
 import { loadToken, loadUser, getApiKey } from "./src/authSlice";
+import { useFonts, BebasNeue_400Regular } from "@expo-google-fonts/bebas-neue";
+import * as SplashScreen from "expo-splash-screen";
+import { AppLoading } from "expo";
 
 export default function App() {
   return (
@@ -25,6 +28,7 @@ export default function App() {
 
 const ContextApp = () => {
   const userToken = useSelector((state: RootState) => state.auth.token);
+  const [fontsLoaded] = useFonts({ BebasNeue_400Regular });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,5 +42,5 @@ const ContextApp = () => {
     }
   }, [userToken]);
 
-  return <TabNavigator />;
+  return fontsLoaded ? <TabNavigator /> : <AppLoading />;
 };

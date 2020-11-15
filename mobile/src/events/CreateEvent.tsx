@@ -3,17 +3,19 @@ import React, { useState } from "react";
 import {
   ScrollView,
   TextInput,
-  Button,
   SafeAreaView,
   StyleSheet,
   View,
+  Text,
 } from "react-native";
+import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as SecureStore from "expo-secure-store";
 import LocationPicker from "./LocationPicker";
 import Event from "./types/Event";
 import DatePicker from "./DatePicker";
 import apiUrl from "../config";
+import sharedStyles from "../sharedStyles";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -33,72 +35,81 @@ const CreateEvent: React.FC<{}> = ({ navigation }) => {
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
-      <SafeAreaView style={styles.container}>
-        <Formik
-          initialValues={{
-            name: "",
-            formattedAddress: "",
-            lat: "",
-            lng: "",
-            start_time: start_time,
-            end_time: end_time,
-            repeat: repetitionValues[0].value,
-            notes: "",
-          }}
-          onSubmit={(values) => {
-            createEventOnSubmit(values);
-            navigation.navigate("ScheduleHomePage");
-          }}
-        >
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            setFieldValue,
-          }) => (
-            <View>
-              <TextInput
-                onChangeText={handleChange("name")}
-                onBlur={handleBlur("name")}
-                value={values.name}
-                placeholder="event name"
-                style={styles.input}
-              />
-              <LocationPicker
-                latFieldName="lat"
-                lngFieldName="lng"
-                formattedAddressFieldName="formattedAddress"
-                formattedAddress={values.formattedAddress}
-              />
-              {/* Start Time input */}
-              <DatePicker name="start_time" date={start_time}>
-                {" "}
-              </DatePicker>
-              {/* End Time input */}
-              <DatePicker name="end_time" date={end_time}>
-                {" "}
-              </DatePicker>
-              {/* Pick repetition value*/}
-              <DropDownPicker
-                items={repetitionValues}
-                defaultValue={values.repeat}
-                onChangeItem={(item) => setFieldValue("repeat", item.value)}
-                containerStyle={{ flex: 1, paddingBottom: 10 }}
-                itemStyle={{ justifyContent: "flex-start" }}
-              />
-              <TextInput
-                onChangeText={handleChange("notes")}
-                onBlur={handleBlur("notes")}
-                value={values.notes}
-                placeholder="Add description"
-                style={styles.input}
-              />
-              <Button onPress={handleSubmit} title="Save" />
-            </View>
-          )}
-        </Formik>
-      </SafeAreaView>
+      <Formik
+        initialValues={{
+          name: "",
+          formattedAddress: "",
+          lat: "",
+          lng: "",
+          start_time: start_time,
+          end_time: end_time,
+          repeat: repetitionValues[0].value,
+          notes: "",
+        }}
+        onSubmit={(values) => {
+          createEventOnSubmit(values);
+          navigation.navigate("ScheduleHomePage");
+        }}
+      >
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          setFieldValue,
+        }) => (
+          <View style={{ margin: 15 }}>
+            <Text style={sharedStyles.inputLabelText}>Event Name</Text>
+            <TextInput
+              onChangeText={handleChange("name")}
+              onBlur={handleBlur("name")}
+              value={values.name}
+              placeholder="event name"
+              style={sharedStyles.input}
+            />
+            <Text style={sharedStyles.inputLabelText}>Location</Text>
+            <LocationPicker
+              latFieldName="lat"
+              lngFieldName="lng"
+              formattedAddressFieldName="formattedAddress"
+              formattedAddress={values.formattedAddress}
+            />
+            {/* Start Time input */}
+            <Text style={sharedStyles.inputLabelText}>Start Time</Text>
+            <DatePicker name="start_time" date={start_time} />
+            <Text style={sharedStyles.inputLabelText}>End Time</Text>
+            {/* End Time input */}
+            <DatePicker name="end_time" date={end_time} />
+            {/* Pick repetition value*/}
+            <Text style={sharedStyles.inputLabelText}>Repeat</Text>
+            <DropDownPicker
+              items={repetitionValues}
+              defaultValue={values.repeat}
+              onChangeItem={(item) => setFieldValue("repeat", item.value)}
+              itemStyle={{ justifyContent: "flex-start" }}
+              containerStyle={{ borderRadius: 15 }}
+              style={[
+                sharedStyles.input,
+                {
+                  borderRadius: 15,
+                  borderWidth: 0,
+                  paddingLeft: 15,
+                },
+              ]}
+              labelStyle={sharedStyles.inputText}
+            />
+            <Text style={sharedStyles.inputLabelText}>Description</Text>
+            <TextInput
+              onChangeText={handleChange("notes")}
+              onBlur={handleBlur("notes")}
+              value={values.notes}
+              placeholder="Add description"
+              style={[sharedStyles.input, { marginBottom: 24 }]}
+            />
+            <Button onPress={handleSubmit} title="Save" style={{ margin: 0 }} />
+          </View>
+        )}
+      </Formik>
     </ScrollView>
   );
 };
@@ -143,16 +154,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  input: {
-    backgroundColor: "white",
-    marginBottom: 20,
-    paddingHorizontal: 20,
-    width: 300,
-    height: 50,
-    fontSize: 16,
-    color: "black",
-    borderRadius: 20,
   },
   heading: {
     fontSize: 20,
