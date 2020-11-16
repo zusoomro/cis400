@@ -4,30 +4,47 @@ import {
   Text,
   TextInput,
   SafeAreaView,
-  StyleSheet,
-  Keyboard,
   TouchableWithoutFeedback,
+  Keyboard,
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
 import Button from "./shared/Button";
 import { Formik } from "formik";
-import { register } from "./authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { login, register } from "./authSlice";
+import { RootState } from "./configureStore";
 import sharedStyles from "./sharedStyles";
 
-const Register: React.FC<{}> = ({ navigation }) => {
+type AuthComponentProps = {
+  isLogin?: boolean;
+};
+
+const LoginRegister: React.FC<AuthComponentProps> = ({
+  navigation,
+  isLogin,
+}) => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state: RootState) => state.auth);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={sharedStyles.container}>
+      <SafeAreaView
+        style={{
+          display: "flex",
+          flex: 1,
+          justifyContent: "center",
+          margin: 45,
+        }}
+      >
         <Formik
           initialValues={{ email: "", password: "" }}
           onSubmit={(values) => {
-            dispatch(register(values));
-            console.log(values);
+            if (isLogin) {
+              dispatch(login(values));
+            } else {
+              dispatch(register(values));
+            }
           }}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -58,7 +75,9 @@ const Register: React.FC<{}> = ({ navigation }) => {
                 value={values.email}
                 placeholder="email"
                 style={sharedStyles.input}
+                textContentType="username"
                 autoCapitalize="none"
+                autoCorrect={false}
               />
               <TextInput
                 onChangeText={handleChange("password")}
@@ -67,21 +86,24 @@ const Register: React.FC<{}> = ({ navigation }) => {
                 placeholder="password"
                 style={sharedStyles.input}
                 secureTextEntry
+                textContentType="password"
+                autoCorrect={false}
               />
               {loading ? (
                 <ActivityIndicator />
               ) : (
-                <View>
-                  <Button
-                    accessibilityLabel="Submit"
-                    style={{ backgroundColor: "#667EEA" }}
-                    onPress={handleSubmit}
-                    title="Register"
-                  />
-                </View>
+                <Button
+                  accessibilityLabel="Submit"
+                  style={{ backgroundColor: "#667EEA" }}
+                  onPress={handleSubmit}
+                  title={isLogin ? "Login" : "Register"}
+                />
               )}
-
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(isLogin ? "Register" : "Login")
+                }
+              >
                 <Text
                   style={{
                     textAlign: "center",
@@ -89,10 +111,23 @@ const Register: React.FC<{}> = ({ navigation }) => {
                     color: "#7F9CF5",
                   }}
                 >
-                  Have an account? Login here.
+                  {isLogin
+                    ? "Need an account? Register here."
+                    : "Have an account? Login here."}
                 </Text>
               </TouchableOpacity>
-              {error && <Text>{JSON.stringify(error)}</Text>}
+              {error && !!Object.entries(error).length && (
+                <Text
+                  style={{
+                    marginTop: 15,
+                    textAlign: "center",
+                    color: "red",
+                    fontSize: 16,
+                  }}
+                >
+                  {error}
+                </Text>
+              )}
             </View>
           )}
         </Formik>
@@ -101,28 +136,4 @@ const Register: React.FC<{}> = ({ navigation }) => {
   );
 };
 
-export const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flex: 1,
-    justifyContent: "center",
-    margin: 15,
-  },
-  input: {
-    backgroundColor: "white",
-    marginBottom: 20,
-    paddingHorizontal: 20,
-    width: 300,
-    height: 50,
-    fontSize: 16,
-    color: "black",
-    borderRadius: 20,
-  },
-  heading: {
-    fontSize: 20,
-    textAlign: "center",
-    marginBottom: 30,
-  },
-});
-
-export default Register;
+export default LoginRegister;

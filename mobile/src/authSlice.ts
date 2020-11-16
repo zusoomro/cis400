@@ -3,11 +3,12 @@ import * as SecureStore from "expo-secure-store";
 import { TextInput } from "react-native";
 import React from "react";
 import apiUrl from "./config";
+import User from './types/User'
 
 const initialState = {
   authenticated: true,
   token: "",
-  user: {},
+  user: {} as User,
   loading: true,
   error: {},
   apiKey: "",

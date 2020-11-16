@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -7,11 +8,11 @@ import {
   Text,
   View,
 } from "react-native";
-import apiUrl from "../config";
 import { useSelector } from "react-redux";
+import apiUrl from "../config";
 import { RootState } from "../configureStore";
 import Event from "../types/Event";
-import moment from "moment";
+import sharedStyles from "../sharedStyles";
 
 const ResolveConflicts: React.FC = ({ navigation }) => {
   const podId = useSelector((state: RootState) => state.pods.pods[0].id);
@@ -23,7 +24,7 @@ const ResolveConflicts: React.FC = ({ navigation }) => {
   }>();
 
   const updateEvents = async () => {
-    await setLoading(true);
+    setLoading(true);
 
     const res = await fetch(`${apiUrl}/pods/${podId}/conflictingEvents`, {
       headers: {
@@ -37,7 +38,7 @@ const ResolveConflicts: React.FC = ({ navigation }) => {
     console.log("json", json);
     setFetchData(json);
 
-    await setLoading(false);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -47,23 +48,32 @@ const ResolveConflicts: React.FC = ({ navigation }) => {
   return (
     <View>
       <ScrollView
+        contentContainerStyle={{ height: "100%" }}
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={updateEvents} />
         }
       >
+        <Text style={{ margin: 15, fontSize: 16 }}>
+          These are the events that are conflicting in this pod. If you are the
+          creator of an event, press "Modify this event" to change it's time.
+          After the conflict is resolved, pull up to refresh.
+        </Text>
         {!loading ? (
           fetchData &&
           fetchData.events &&
           fetchData.members &&
           fetchData.events.map((event) => (
             <View
-              style={{
-                padding: 10,
-                marginVertical: 5,
-                marginHorizontal: 10,
-                backgroundColor: "#FFF",
-                borderRadius: 10,
-              }}
+              style={[
+                {
+                  padding: 15,
+                  margin: 15,
+                  marginBottom: 0,
+                  backgroundColor: "#FFF",
+                  borderRadius: 10,
+                },
+                sharedStyles.shadow,
+              ]}
               key={event.id}
             >
               <Text style={{ color: "red", fontSize: 18, marginBottom: 5 }}>

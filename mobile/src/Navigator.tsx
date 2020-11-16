@@ -4,11 +4,9 @@ import { Ionicons } from "@expo/vector-icons";
 import ScheduleNavigator from "./events/ScheduleNavigator";
 import PodsNavigator from "./pods/PodsNavigator";
 import Settings from "./Settings";
-import Login from "./Login";
-import Register from "./Register";
+import LoginRegister from "./LoginRegister";
 import { useSelector } from "react-redux";
 import { RootState } from "./configureStore";
-import Event from "./types/Event";
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 
@@ -72,7 +70,7 @@ const TabNavigator = () => {
               tabBarVisible: false,
             }}
           >
-            {(props) => <Login isLogin={true} {...props} />}
+            {(props) => <LoginRegister isLogin={true} {...props} />}
           </Tab.Screen>
           <Tab.Screen
             name="Register"
@@ -83,7 +81,7 @@ const TabNavigator = () => {
               tabBarVisible: false,
             }}
           >
-            {(props) => <Login isLogin={false} {...props} />}
+            {(props) => <LoginRegister isLogin={false} {...props} />}
           </Tab.Screen>
         </React.Fragment>
       )}

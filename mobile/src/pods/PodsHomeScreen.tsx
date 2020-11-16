@@ -10,6 +10,7 @@ import {
   TouchableHighlight,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { setPod, loadUserPods } from "./podSlice";
@@ -31,6 +32,7 @@ type Props = {
 
 const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
   const firstPod = useSelector((state: RootState) => state.pods.pods[0]);
+  const { loading } = useSelector((state: RootState) => state.pods);
   const [invites, setInvites] = useState<Invite[]>();
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
@@ -116,19 +118,53 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
     }
   }, [invites]);
 
-  return (
+  return loading ? (
+    <View
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <ActivityIndicator />
+    </View>
+  ) : (
     <SafeAreaView style={{ display: "flex", flex: 1 }}>
+      <Text style={[sharedStyles.h1, { marginHorizontal: 15 }]}>Pods</Text>
       {firstPod == null ? (
-        <Button
-          title="Create New Pod"
-          onPress={() => {
-            navigation.navigate("CreatePod");
-            return;
+        <View
+          style={{
+            display: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            flex: 1,
           }}
-        />
+        >
+          <Text
+            style={{
+              marginHorizontal: 30,
+              marginBottom: 15,
+              fontSize: 16,
+              color: "#667EEA",
+            }}
+          >
+            You're not part of a pod yet! Press the button below to create one.
+          </Text>
+          <Button
+            title="Create a Pod"
+            onPress={() => {
+              navigation.navigate("CreatePod");
+              return;
+            }}
+            style={{
+              backgroundColor: "#5A67D8",
+              marginHorizontal: 35,
+              width: "auto",
+            }}
+          />
+        </View>
       ) : (
         <React.Fragment>
-          <Text style={[sharedStyles.h1, { marginHorizontal: 15 }]}>Pods</Text>
           <View
             style={[
               {
@@ -179,7 +215,7 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
         }}
         disabled={invites == undefined || invites.length <= 0}
       />
-      {modalVisible && (
+      {modalVisible && invites && (
         <Modal
           animationType="slide"
           transparent={true}
@@ -190,33 +226,42 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>
-                You've been invites to Pod: {invites![0].podName}!
+              <Text style={{ fontSize: 18, marginBottom: 15 }}>
+                You've been invited to {invites![0].podName}!
               </Text>
-              <Text>
-                WARNING: If you are already in pod, accepting this invite will
-                replce your current pod!
-              </Text>
-              <View style={styles.acceptRejectButtonContainer}>
-                <TouchableHighlight onPress={handleAccptInvite}>
-                  <View style={styles.acceptButton}>
-                    <Text>Accept</Text>
-                  </View>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={handleRejectInvite}>
-                  <View style={styles.rejectButton}>
-                    <Text>Reject</Text>
-                  </View>
-                </TouchableHighlight>
+              <View>
+                <View style={styles.acceptRejectButtonContainer}>
+                  <TouchableHighlight
+                    onPress={handleAccptInvite}
+                    style={{ flex: 1 }}
+                  >
+                    <View style={styles.acceptButton}>
+                      <Text style={{ color: "#2F855A", fontSize: 16 }}>
+                        Accept
+                      </Text>
+                    </View>
+                  </TouchableHighlight>
+                  <TouchableHighlight
+                    onPress={handleRejectInvite}
+                    style={{ flex: 1, marginLeft: 10 }}
+                  >
+                    <View style={styles.rejectButton}>
+                      <Text style={{ color: "#9B2C2C", fontSize: 16 }}>
+                        Reject
+                      </Text>
+                    </View>
+                  </TouchableHighlight>
+                </View>
               </View>
 
               <TouchableHighlight
-                style={{ ...styles.openButton, backgroundColor: "#2196F3" }}
                 onPress={() => {
                   setModalVisible(!modalVisible);
                 }}
               >
-                <Text style={styles.textStyle}>Hide Modal</Text>
+                <Text style={{ color: "#5A67D8", textAlign: "center" }}>
+                  Hide Modal
+                </Text>
               </TouchableHighlight>
             </View>
           </View>
@@ -257,7 +302,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -288,16 +332,29 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   acceptButton: {
-    backgroundColor: "#27c20c",
+    backgroundColor: "#C6F6D5",
+    borderWidth: 1,
+    borderColor: "#2F855A",
+    borderRadius: 5,
     padding: 10,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   rejectButton: {
-    backgroundColor: "#d63024",
-
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FED7D7",
+    borderColor: "#C53030",
+    borderWidth: 1,
+    borderRadius: 5,
     padding: 10,
   },
   acceptRejectButtonContainer: {
+    width: "100%",
     flexDirection: "row",
+    marginBottom: 15,
   },
 });
 

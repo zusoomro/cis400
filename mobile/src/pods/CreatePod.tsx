@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  SafeAreaView,
-  StyleSheet,
-  Button,
-} from "react-native";
+import { View, Text, TextInput, SafeAreaView, StyleSheet } from "react-native";
+import Button from "../shared/Button";
 import { Formik } from "formik";
 import * as SecureStore from "expo-secure-store";
 import apiUrl from "../config";
+import { setPod as reduxSetPod } from "./podSlice";
+import sharedStyles from "../sharedStyles";
+import { useDispatch } from "react-redux";
 
 interface Pod {
   id: number;
@@ -26,6 +23,8 @@ interface Props {
 const CreatePod: React.FC<Props> = ({ navigation, route }) => {
   const [pod, setPod] = useState<Pod>();
   const [invitees, setInvitees] = useState([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     if (route.params?.invitees) {
@@ -35,38 +34,43 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
   }, [route.params?.invitees]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Formik
-        initialValues={{ podname: "" }}
-        onSubmit={async (values) => {
-          const res: Pod = await createPodOnSubmit(values, invitees);
-          if (res) {
-            setPod(res);
-          }
-          navigation.navigate("PodsHomeScreen", { pod: res });
-        }}
-      >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
-          <View>
-            <Text style={styles.heading}>Create Pod</Text>
-            <TextInput
-              onChangeText={handleChange("podname")}
-              onBlur={handleBlur("podName")}
-              value={values.podname}
-              placeholder="Pod Name"
-              style={styles.input}
-            />
-            <Button
-              title="Invite Users to Pod"
-              onPress={() => {
-                navigation.navigate("InviteUsers");
-                return;
-              }}
-            />
-            <Button onPress={handleSubmit} title="Submit" />
-          </View>
-        )}
-      </Formik>
+    <SafeAreaView style={{ margin: 15 }}>
+      {loading ? (
+        <View />
+      ) : (
+        <Formik
+          initialValues={{ podname: "" }}
+          onSubmit={async (values) => {
+            const res: Pod = await createPodOnSubmit(values, invitees);
+            if (res) {
+              dispatch(reduxSetPod(res));
+              setPod(res);
+            }
+            navigation.navigate("PodsHomeScreen", { pod: res });
+          }}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values }) => (
+            <View>
+              <Text style={sharedStyles.inputLabelText}>Pod Name</Text>
+              <TextInput
+                onChangeText={handleChange("podname")}
+                onBlur={handleBlur("podName")}
+                value={values.podname}
+                placeholder="The Homies"
+                style={sharedStyles.input}
+              />
+              <Button
+                title="Invite Users to Pod"
+                onPress={() => {
+                  navigation.navigate("InviteUsers");
+                  return;
+                }}
+              />
+              <Button onPress={handleSubmit} title="Submit" />
+            </View>
+          )}
+        </Formik>
+      )}
     </SafeAreaView>
   );
 };

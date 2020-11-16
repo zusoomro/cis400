@@ -13,6 +13,7 @@ import {
 import { List, ListItem, SearchBar } from "react-native-elements";
 import { useSelector } from "react-redux";
 import apiUrl from "../config";
+import sharedStyles from "../sharedStyles";
 
 interface User {
   id: number;
@@ -48,9 +49,10 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
   }, []);
 
   const UserRowItem = ({ title, user }) => (
-    <View style={styles.item}>
+    <View style={[styles.item, sharedStyles.shadow]}>
       <Text style={styles.title}>{title}</Text>
       <Button
+        color="#5A67D8"
         onPress={() => {
           const newInvite: Array<number> = [user.id];
           if (invitees) {
@@ -76,7 +78,13 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Button onPress={handleInviteUsers} title="Send Invites"></Button>
+      <View style={{ margin: 10 }}>
+        <Button
+          color="#5A67D8"
+          onPress={handleInviteUsers}
+          title="Send Invites"
+        ></Button>
+      </View>
       <FlatList
         data={users}
         renderItem={renderItem}
@@ -93,8 +101,10 @@ const styles = StyleSheet.create({
   },
   item: {
     flexDirection: "row",
-    backgroundColor: "#e6e6ff",
+    backgroundColor: "#FFF",
+    borderRadius: 15,
     justifyContent: "space-between",
+    alignItems: "center",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,

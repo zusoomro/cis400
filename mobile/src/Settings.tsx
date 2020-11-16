@@ -31,16 +31,13 @@ const Settings: React.FC = () => {
       >
         <Image
           source={{ uri: user.avatar }}
-          style={[
-            {
-              width: 60,
-              height: 60,
-              marginHorizontal: "auto",
-              borderRadius: 1000,
-              marginRight: 15,
-            },
-            sharedStyles.shadow,
-          ]}
+          style={{
+            width: 60,
+            height: 60,
+            marginHorizontal: "auto",
+            borderRadius: 1000,
+            marginRight: 15,
+          }}
         />
         <View>
           <Text

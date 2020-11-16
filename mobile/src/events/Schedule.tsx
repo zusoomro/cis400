@@ -1,25 +1,20 @@
-import React, { useState, useEffect } from "react";
-import Button from "../shared/Button";
-import {
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Image,
-  Switch,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
-
-import Nature from "../../assets/undraw_nature_m5ll.png";
-
-import Event from "../types/Event";
-import EventInSchedule from "./EventInSchedule";
+import React, { useState } from "react";
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Switch,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import apiUrl from "../config";
 import sharedStyles from "../sharedStyles";
+import Event from "../types/Event";
+import EventInSchedule from "./EventInSchedule";
 
 interface Pod {
   id: number;
@@ -166,7 +161,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
           }}
         >
           <Text style={{ fontSize: 16, marginRight: "auto" }}>
-            Shared schedule
+            View personal schedule
           </Text>
           <Switch
             trackColor={{ false: "#5A67D8", true: "#7F9CF5" }}
@@ -211,9 +206,11 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
               marginBottom: "auto",
             }}
           >
-            <Image source={Nature} style={{ height: 200, width: 200 }}></Image>
-            <Text style={{ color: "#3C366B" }}>
-              You've got nothing else scheduled today!
+            <Text
+              style={{ color: "#3C366B", fontSize: 16, marginHorizontal: 30 }}
+            >
+              You've got nothing scheduled today! Press the button below to add
+              more events.
             </Text>
           </View>
         )}
