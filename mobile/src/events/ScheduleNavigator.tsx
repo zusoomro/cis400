@@ -3,9 +3,8 @@ import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Event from "../types/Event";
 
-import CreateEvent from "./CreateEvent";
 import ScheduleHomePage from "./Schedule";
-import ModifyEvent from "./ModifyEvent";
+import CreateModifyEvent from './CreateModifyEvent'
 
 export type ScheduleNavigatorParamList = {
   ScheduleHomePage: undefined;
@@ -25,12 +24,12 @@ const ScheduleNavigator: React.FC = () => {
       />
       <Stack.Screen
         name="CreateEvent"
-        component={CreateEvent}
+        component={CreateModifyEvent}
         options={{ title: "Create Event" }}
       />
       <Stack.Screen
         name="ModifyEvent"
-        component={ModifyEvent}
+        component={CreateModifyEvent}
         options={{ title: "Modify Event" }}
       />
     </Stack.Navigator>

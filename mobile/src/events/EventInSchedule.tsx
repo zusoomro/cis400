@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Text, SafeAreaView, StyleSheet, View, Image } from "react-native";
-import { Card } from "react-native-elements";
-import Event from "../types/Event";
-import sharedStyles from "../sharedStyles";
+import React from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { RootState } from "../configureStore";
+import sharedStyles from "../sharedStyles";
+import Event from "../types/Event";
 
 interface EventProps {
   event: Event;
@@ -32,43 +31,45 @@ const EventInSchedule: React.FC<EventProps> = ({
   } = event;
 
   return (
-    <View
-      style={[
-        {
-          padding: 15,
-          backgroundColor: "#FFF",
-          margin: 15,
-          marginTop: 0,
-          borderRadius: 10,
-          display: "flex",
-          flexDirection: "row",
-        },
-        sharedStyles.shadow,
-      ]}
-    >
-      <Image
-        source={{ uri: avatar }}
-        style={{
-          width: 50,
-          height: 50,
-          marginRight: 15,
-          borderRadius: 100,
-        }}
-      />
-      <View>
-        <Text style={{ fontSize: 18, fontWeight: "600", marginBottom: 5 }}>
-          {name}
-        </Text>
-        {showName && <Text style={styles.sub}>Who: {ownerId}</Text>}
-        <Text style={{ color: "#718096", marginBottom: 5 }}>
-          {generateDateString(event)}
-        </Text>
-        <Text style={{ color: "#319795", marginBottom: 5 }}>
-          {formattedAddress}
-        </Text>
-        <Text style={{ color: "#4A5568" }}>{notes}</Text>
+    <Pressable onPress={() => navigation.navigate("ModifyEvent", { event })}>
+      <View
+        style={[
+          {
+            padding: 15,
+            backgroundColor: "#FFF",
+            margin: 15,
+            marginTop: 0,
+            borderRadius: 10,
+            display: "flex",
+            flexDirection: "row",
+          },
+          sharedStyles.shadow,
+        ]}
+      >
+        <Image
+          source={{ uri: avatar }}
+          style={{
+            width: 50,
+            height: 50,
+            marginRight: 15,
+            borderRadius: 100,
+          }}
+        />
+        <View>
+          <Text style={{ fontSize: 18, fontWeight: "600", marginBottom: 5 }}>
+            {name}
+          </Text>
+          {showName && <Text style={styles.sub}>Who: {ownerId}</Text>}
+          <Text style={{ color: "#718096", marginBottom: 5 }}>
+            {generateDateString(event)}
+          </Text>
+          <Text style={{ color: "#319795", marginBottom: 5 }}>
+            {formattedAddress}
+          </Text>
+          <Text style={{ color: "#4A5568" }}>{notes}</Text>
+        </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
