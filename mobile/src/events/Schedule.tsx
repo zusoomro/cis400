@@ -11,6 +11,7 @@ import {
 import * as SecureStore from "expo-secure-store";
 import Event from "../types/Event";
 import EventInSchedule from "./EventInSchedule";
+import { useSelector } from "react-redux";
 
 interface Pod {
   id: number;
@@ -49,76 +50,20 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
 const Schedule: React.FC<{}> = ({ isToggledToUser, navigation }) => {
   const [events, setEvents] = useState([]);
   const [pod, setPod] = useState<Pod>();
+  const authToken = useSelector((state) => state.auth.token);
   const today = new Date();
 
   React.useEffect(() => {
+    fetchPod(setPod, authToken);
+  }, []);
+
+  React.useEffect(() => {
     if (isToggledToUser) {
-      const fetcher = async function () {
-        try {
-          const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-          const res = await fetch("http://localhost:8000/events", {
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-              "x-auth-token": authToken!,
-            },
-          });
-          const json = await res.json();
-          const returnedEvents = json.events;
-          if (returnedEvents) {
-            setEvents(returnedEvents);
-          }
-        } catch (err) {
-          console.log("ERROR: ", err);
-          console.log("error loading events for current user");
-        }
-      };
-      fetcher();
+      fetchUserSchedule(setEvents, authToken);
     } else {
-      const fetcher1 = async function () {
-        try {
-          const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-          const res = await fetch("http://localhost:8000/pods/currUsersPod", {
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-              "x-auth-token": authToken!,
-            },
-          });
-
-          const json = await res.json();
-          const returnedPod = json.pod;
-          if (returnedPod) {
-            setPod(returnedPod);
-          }
-        } catch (err) {
-          console.log("ERROR: ", err);
-          console.log("error loading pod for current user");
-        }
-      };
-
-      const fetcher2 = async function () {
-        try {
-          const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-          const res = await fetch(`http://localhost:8000/events/${pod.id}`, {
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-              "x-auth-token": authToken!,
-            },
-          });
-
-          const json = await res.json();
-          const returnedEvents = json.events;
-          if (returnedEvents) {
-            setEvents(returnedEvents);
-          }
-        } catch (err) {
-          console.log("ERROR: ", err);
-          console.log("error loading events for current pod");
-        }
-      };
-
-      fetcher1().then(fetcher2());
+      fetchPodSchedule(setPod, setEvents, pod, authToken);
     }
-  }, [isToggledToUser, events]);
+  }, [isToggledToUser, pod]);
 
   const dd = String(today.getDate()).padStart(2, "0");
   const mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -140,6 +85,64 @@ const Schedule: React.FC<{}> = ({ isToggledToUser, navigation }) => {
       </ScrollView>
     </SafeAreaView>
   );
+};
+
+const fetchUserSchedule = async (setEvents, authToken) => {
+  try {
+    const res = await fetch("http://localhost:8000/events", {
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": authToken!,
+      },
+    });
+    const json = await res.json();
+    const returnedEvents = json.events;
+    if (returnedEvents) {
+      setEvents(returnedEvents);
+    }
+  } catch (err) {
+    console.log("ERROR1: ", err);
+    console.log("error loading events for current user");
+  }
+};
+
+const fetchPodSchedule = async function (setPod, setEvents, pod, authToken) {
+  console.log("pod", pod);
+  try {
+    const res = await fetch(`http://localhost:8000/events/${pod.id}`, {
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": authToken!,
+      },
+    });
+
+    const json = await res.json();
+    const returnedEvents = json.events;
+    if (returnedEvents) {
+      setEvents(returnedEvents);
+    }
+  } catch (err) {
+    console.log("ERROR2: ", err);
+    console.log("error loading pod for current user");
+  }
+};
+
+const fetchPod = async (setPod, authToken) => {
+  try {
+    const resPod = await fetch("http://localhost:8000/pods/currUsersPod", {
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": authToken!,
+      },
+    });
+
+    const jsonPod = await resPod.json();
+    const returnedPod = jsonPod.pod;
+    console.log("setting pod", returnedPod.id);
+    setPod(returnedPod);
+  } catch (err) {
+    console.error("fetchpod error");
+  }
 };
 
 const styles = StyleSheet.create({

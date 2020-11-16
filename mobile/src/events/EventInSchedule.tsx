@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, SafeAreaView, StyleSheet } from "react-native";
+import { Text, SafeAreaView, StyleSheet, Pressable } from "react-native";
 import { Card } from "react-native-elements";
 import Event from "../types/Event";
 
@@ -28,25 +28,26 @@ const EventInSchedule: React.FC<EventProps> = ({
 
   return (
     <SafeAreaView>
-      <Card>
-        <Card.Title>{name}</Card.Title>
-        {/* inseert name stuff, if not toggledtouser add who section */}
-        {showName && <Text style={styles.sub}>Who: {ownerId}</Text>}
-        <Text style={styles.sub}>
-          When:{" "}
-          {new Date(start_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}{" "}
-          -{" "}
-          {new Date(end_time).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </Text>
-        <Text style={styles.sub}>Where: {formattedAddress}</Text>
-        <Text style={styles.sub}>Notes: {notes}</Text>
-      </Card>
+      <Pressable onPress={() => navigation.navigate("ModifyEvent", { event })}>
+        <Card>
+          <Card.Title>{name}</Card.Title>
+          {showName && <Text style={styles.sub}>Who: {ownerId}</Text>}
+          <Text style={styles.sub}>
+            When:{" "}
+            {new Date(start_time).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}{" "}
+            -{" "}
+            {new Date(end_time).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </Text>
+          <Text style={styles.sub}>Where: {formattedAddress}</Text>
+          <Text style={styles.sub}>Notes: {notes}</Text>
+        </Card>
+      </Pressable>
     </SafeAreaView>
   );
 };
