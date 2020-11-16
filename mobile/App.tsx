@@ -1,15 +1,12 @@
-import "react-native-gesture-handler";
-import { StatusBar } from "expo-status-bar";
+import { BebasNeue_400Regular, useFonts } from "@expo-google-fonts/bebas-neue";
+import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
+import { AppLoading } from "expo";
 import React, { useEffect } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import { Provider, useSelector, useDispatch } from "react-redux";
+import "react-native-gesture-handler";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { getApiKey, loadToken, loadUser } from "./src/authSlice";
 import store, { RootState } from "./src/configureStore";
 import TabNavigator from "./src/Navigator";
-import { loadToken, loadUser, getApiKey } from "./src/authSlice";
-import { useFonts, BebasNeue_400Regular } from "@expo-google-fonts/bebas-neue";
-import * as SplashScreen from "expo-splash-screen";
-import { AppLoading } from "expo";
 
 export default function App() {
   return (

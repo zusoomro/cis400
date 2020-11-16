@@ -27,7 +27,9 @@ const TabNavigator = () => {
   return (
     <Tab.Navigator
       initialRouteName="Schedule"
-      tabBarOptions={{ labelStyle: { marginTop: -10 } }}
+      tabBarOptions={{
+        labelStyle: { marginTop: -10 },
+      }}
     >
       {authenticated ? (
         <React.Fragment>

@@ -23,7 +23,6 @@ interface Props {
 const CreatePod: React.FC<Props> = ({ navigation, route }) => {
   const [pod, setPod] = useState<Pod>();
   const [invitees, setInvitees] = useState([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const dispatch = useDispatch();
 
   React.useEffect(() => {

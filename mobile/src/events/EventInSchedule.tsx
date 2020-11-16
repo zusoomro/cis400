@@ -1,9 +1,16 @@
-import React from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import { useSelector } from "react-redux";
-import { RootState } from "../configureStore";
+import * as SecureStore from "expo-secure-store";
+import React, { useEffect, useState } from "react";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
+import apiUrl from "../config";
 
 interface EventProps {
   event: Event;
@@ -11,24 +18,23 @@ interface EventProps {
     navigate: () => void;
   };
   showName: boolean;
+  avatar: string;
 }
 
 const EventInSchedule: React.FC<EventProps> = ({
   event,
   navigation,
   showName,
+  avatar,
 }) => {
-  const { avatar } = useSelector((state: RootState) => state.auth.user);
+  const { name, notes, formattedAddress, id, ownerId } = event;
 
-  const {
-    name,
-    start_time,
-    end_time,
-    notes,
-    formattedAddress,
-    id,
-    ownerId,
-  } = event;
+  // This is a hack and should be rewritten!
+  const [email, setEmail] = useState<string>();
+
+  useEffect(() => {
+    getUserEmail(id).then((res) => setEmail(res));
+  });
 
   return (
     <Pressable onPress={() => navigation.navigate("ModifyEvent", { event })}>
@@ -46,20 +52,30 @@ const EventInSchedule: React.FC<EventProps> = ({
           sharedStyles.shadow,
         ]}
       >
-        <Image
-          source={{ uri: avatar }}
-          style={{
-            width: 50,
-            height: 50,
-            marginRight: 15,
-            borderRadius: 100,
-          }}
-        />
+        {avatar && (
+          <Image
+            source={{ uri: avatar }}
+            style={{
+              width: 50,
+              height: 50,
+              marginRight: 15,
+              borderRadius: 100,
+            }}
+          />
+        )}
         <View>
           <Text style={{ fontSize: 18, fontWeight: "600", marginBottom: 5 }}>
             {name}
           </Text>
-          {showName && <Text style={styles.sub}>Who: {ownerId}</Text>}
+          {showName && (
+            <Text style={styles.sub}>
+              {!!email ? (
+                email
+              ) : (
+                <ActivityIndicator style={{ paddingTop: 5 }} />
+              )}
+            </Text>
+          )}
           <Text style={{ color: "#718096", marginBottom: 5 }}>
             {generateDateString(event)}
           </Text>
@@ -81,6 +97,23 @@ const generateDateString = (event: Event): string => {
     hour: "2-digit",
     minute: "2-digit",
   })}`;
+};
+
+const getUserEmail = async (id) => {
+  try {
+    const authToken = await SecureStore.getItemAsync("wigo-auth-token");
+    const res = await fetch(`${apiUrl}/users/email/${id}`, {
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": authToken!,
+      },
+    });
+    const json = await res.json();
+    return json.email;
+  } catch (err) {
+    console.log("ERROR: ", err);
+    console.log("error loading events for current user");
+  }
 };
 
 const styles = StyleSheet.create({

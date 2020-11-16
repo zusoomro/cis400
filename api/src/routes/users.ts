@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import User from "../../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -139,5 +139,36 @@ usersRouter.get(
     }
   }
 );
+
+// This is a hack and should be temporary!
+// Given an array of user id's return a map from their ids to their avatars and emails
+usersRouter.get("/avatars", [auth], async (req: Request, res: Response) => {
+  try {
+    const { ids } = req.body;
+    const userList = await User.query().whereIn("id", ids);
+    const dict: { [key: number]: string } = {};
+
+    for (const user of userList) {
+      dict[user.id] = user.avatar;
+    }
+
+    return res.json({ map: dict });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+});
+
+// This is a hack and should be temporary!
+usersRouter.get("/email/:id", [auth], async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const user = await User.query().findOne("id", id);
+    return res.json({ email: user.email });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+});
 
 export default usersRouter;
