@@ -108,7 +108,18 @@ const Login: React.FC<AuthComponentProps> = ({ navigation, isLogin }) => {
                     : "Have an account? Login here."}
                 </Text>
               </TouchableOpacity>
-              {error && <Text>{JSON.stringify(error)}</Text>}
+              {error && !!Object.entries(error).length && (
+                <Text
+                  style={{
+                    marginTop: 15,
+                    textAlign: "center",
+                    color: "red",
+                    fontSize: 16,
+                  }}
+                >
+                  {error}
+                </Text>
+              )}
             </View>
           )}
         </Formik>
