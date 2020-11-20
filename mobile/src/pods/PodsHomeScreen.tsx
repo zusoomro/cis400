@@ -1,29 +1,32 @@
-import Button from "../shared/Button";
+import { RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
+  ActivityIndicator,
+  Alert,
+  Image,
+  Modal,
   SafeAreaView,
   StyleSheet,
-  Modal,
-  Alert,
+  Text,
   TouchableHighlight,
-  Image,
   TouchableOpacity,
-  ActivityIndicator,
+  View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { setPod, loadUserPods } from "./podSlice";
-import SectionButton from "../shared/SectionButton";
 import { RootState } from "../configureStore";
-import { StackNavigationProp } from "@react-navigation/stack";
-import * as SecureStore from "expo-secure-store";
-import Pod from "../types/Pod";
-import { RouteProp } from "@react-navigation/native";
 import { TabNavigatorParamList } from "../Navigator";
-import Invite from "../types/Invite";
-import apiUrl from "../config";
+import Button from "../shared/Button";
 import sharedStyles from "../sharedStyles";
+import Invite from "../types/Invite";
+import Pod from "../types/Pod";
+import {
+  fetchUsersInvites,
+  handleAcceptInvite,
+  handleRejectInvite,
+} from "./podService";
+import { loadUserPods, setPod } from "./podSlice";
+import PodInviteModal from "./PodInviteModal";
 
 type Props = {
   navigation: StackNavigationProp<TabNavigatorParamList, "Pods">;
@@ -40,80 +43,15 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
   React.useEffect(() => {
     dispatch(loadUserPods());
 
-    async function fetchUsersInvites() {
-      try {
-        const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-        const res = await fetch(`${apiUrl}/invites`, {
-          headers: {
-            "Content-Type": "application/json;charset=utf-8",
-            "x-auth-token": authToken!,
-          },
-        });
-
-        const json = await res.json();
-        const invitesList = json.invites;
-        if (invitesList.length) {
-          console.log("fetched invites", invitesList);
-          setInvites(invitesList);
-          setModalVisible(true);
-        }
-      } catch (err) {
-        console.log("error loading invites for current user");
-      }
-    }
-    fetchUsersInvites();
+    fetchUsersInvites().then((invites) => {
+      setInvites(invites);
+      setModalVisible(true);
+    });
   }, []);
-
-  async function handleRejectInvite() {
-    const data = { id: invites![0].id };
-    try {
-      const res = await fetch(`${apiUrl}/invites/reject`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify(data),
-      });
-      const json = await res.json();
-      if (json.message == "success") {
-        console.log("success rejecting invite");
-      }
-      setModalVisible(false);
-      if (invites) {
-        invites.shift();
-        setInvites([...invites]);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  const handleAccptInvite = async () => {
-    const data = { podId: invites![0].podId, inviteId: invites![0].id };
-    try {
-      const res = await fetch(`${apiUrl}/invites/accept`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json;charset=utf-8",
-          "x-auth-token": (await SecureStore.getItemAsync("wigo-auth-token"))!,
-        },
-        body: JSON.stringify(data),
-      });
-      const json = await res.json();
-      if (json.pod) {
-        setPod(json.pod);
-      }
-      setModalVisible(false);
-      invites?.shift();
-      setInvites([...invites]);
-    } catch (error) {
-      console.log(`error accepting invite`, error);
-    }
-  };
 
   React.useEffect(() => {
     setInvites(invites);
-    if (invites?.length > 0) {
+    if (invites && invites.length > 0) {
       setModalVisible(true);
     }
   }, [invites]);
@@ -216,56 +154,12 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
         disabled={invites == undefined || invites.length <= 0}
       />
       {modalVisible && invites && (
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={{ fontSize: 18, marginBottom: 15 }}>
-                You've been invited to {invites![0].podName}!
-              </Text>
-              <View>
-                <View style={styles.acceptRejectButtonContainer}>
-                  <TouchableHighlight
-                    onPress={handleAccptInvite}
-                    style={{ flex: 1 }}
-                  >
-                    <View style={styles.acceptButton}>
-                      <Text style={{ color: "#2F855A", fontSize: 16 }}>
-                        Accept
-                      </Text>
-                    </View>
-                  </TouchableHighlight>
-                  <TouchableHighlight
-                    onPress={handleRejectInvite}
-                    style={{ flex: 1, marginLeft: 10 }}
-                  >
-                    <View style={styles.rejectButton}>
-                      <Text style={{ color: "#9B2C2C", fontSize: 16 }}>
-                        Reject
-                      </Text>
-                    </View>
-                  </TouchableHighlight>
-                </View>
-              </View>
-
-              <TouchableHighlight
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <Text style={{ color: "#5A67D8", textAlign: "center" }}>
-                  Hide Modal
-                </Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </Modal>
+        <PodInviteModal
+          modalVisible={modalVisible}
+          invites={invites}
+          setModalVisible={setModalVisible}
+          setInvites={setInvites}
+        />
       )}
     </SafeAreaView>
   );
@@ -291,26 +185,6 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "300",
   },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
   openButton: {
     backgroundColor: "#F194FF",
     borderRadius: 20,
@@ -330,31 +204,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#DDDDDD",
     padding: 10,
-  },
-  acceptButton: {
-    backgroundColor: "#C6F6D5",
-    borderWidth: 1,
-    borderColor: "#2F855A",
-    borderRadius: 5,
-    padding: 10,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  rejectButton: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#FED7D7",
-    borderColor: "#C53030",
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-  },
-  acceptRejectButtonContainer: {
-    width: "100%",
-    flexDirection: "row",
-    marginBottom: 15,
   },
 });
 

@@ -76,10 +76,12 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
     setLoading(true);
     fetchUserPod().then((res) => {
       setPod(res);
-      fetchAvatarsAndEmails(res.members.map((m) => m.id)).then((map) => {
-        setMap(map);
-        setLoading(false);
-      });
+      if (res) {
+        fetchAvatarsAndEmails(res.members.map((m) => m.id)).then((map) => {
+          setMap(map);
+          setLoading(false);
+        });
+      }
     });
   }, []);
 

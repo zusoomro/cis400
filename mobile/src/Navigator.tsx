@@ -29,6 +29,7 @@ const TabNavigator = () => {
       initialRouteName="Schedule"
       tabBarOptions={{
         labelStyle: { marginTop: -10 },
+        labelPosition: "below-icon",
       }}
     >
       {authenticated ? (

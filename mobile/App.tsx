@@ -1,6 +1,7 @@
 import { BebasNeue_400Regular, useFonts } from "@expo-google-fonts/bebas-neue";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { AppLoading } from "expo";
+import * as SecureStore from "expo-secure-store";
 import React, { useEffect } from "react";
 import "react-native-gesture-handler";
 import { Provider, useDispatch, useSelector } from "react-redux";
@@ -30,6 +31,8 @@ const ContextApp = () => {
 
   useEffect(() => {
     dispatch(loadToken());
+    // In case you need to delete the user token, uncomment this line
+    // SecureStore.deleteItemAsync("wigo-auth-token");
   }, []);
 
   useEffect(() => {

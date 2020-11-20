@@ -6,7 +6,7 @@ import * as SecureStore from "expo-secure-store";
 import apiUrl from "../config";
 import { setPod as reduxSetPod } from "./podSlice";
 import sharedStyles from "../sharedStyles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 interface Pod {
   id: number;
@@ -23,6 +23,7 @@ interface Props {
 const CreatePod: React.FC<Props> = ({ navigation, route }) => {
   const [pod, setPod] = useState<Pod>();
   const [invitees, setInvitees] = useState([]);
+  const loading = useSelector((state) => state.pods.loading);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
