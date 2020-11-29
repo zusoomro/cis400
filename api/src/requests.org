@@ -1,7 +1,4 @@
-
-* TODOS
-** TODO Create environment variable for database
-** TODO Create environment variable for JWT salt
+#+title: API Documentation
 
 * Auth
 
@@ -11,64 +8,65 @@
 POST http://localhost:8000/users
 Content-Type: application/json
 {
-    "email": "email@gmail.com",
-    "password": "examplePassword"
-}
-#+end_src
-
-#+RESULTS:
-#+begin_example
-,#+BEGIN_SRC js
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxM30sImlhdCI6MTYwNDE1Nzk4MiwiZXhwIjoxNjA0NTE3OTgyfQ.ZtvoZIH6y0o4YJWtGEAe_fM8OgT7luwOMy0Id4eDQ94",
-  "user": {
-    "email": "email@gmail.com",
-    "password": "$2b$10$Vdz90uFNOwtS3.Z8aKXCleSaQ7/KD/.OxFAY1OgTao0EWt3dVphRu",
-    "id": 13
-  }
-}
-// POST http://localhost:8000/users
-// HTTP/1.1 200 OK
-// X-Powered-By: Express
-// Content-Type: application/json; charset=utf-8
-// Content-Length: 280
-// ETag: W/"118-LLSyahNlJ0SP+6fypCiOeLlQaCU"
-// Date: Sat, 31 Oct 2020 15:26:22 GMT
-// Connection: keep-alive
-// Request duration: 0.218814s
-,#+END_SRC
-#+end_example
-
-** Login
-
-#+begin_src restclient
-POST http://localhost:8000/users/login
-Content-Type: application/json
-{
-    "email": "zulfiqar.soomro@gmail.co",
-    "password": "examplePassword"
+    "email": "zulfi@wigo.com",
+    "password": "password"
 }
 #+end_src
 
 #+RESULTS:
 #+BEGIN_SRC js
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1fSwiaWF0IjoxNjAzMDc3MzM1LCJleHAiOjE2MDMwNzgyMzV9.wQ56trtEHBtarcv2ClYU0ms4Zti9wpE_1GDbwlUI4zo"
+  "message": "User already exists"
+}
+// POST http://localhost:8000/users
+// HTTP/1.1 400 Bad Request
+// X-Powered-By: Express
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 33
+// ETag: W/"21-iGErLku/9taeeOQN+9qwFgLXnuo"
+// Date: Fri, 13 Nov 2020 03:13:15 GMT
+// Connection: keep-alive
+// Request duration: 0.005346s
+#+END_SRC
+
+** Login
+
+#+name: login
+#+begin_src restclient
+POST http://localhost:8000/users/login
+Content-Type: application/json
+{
+    "email": "zulfi@wigo.com",
+    "password": "password"
+}
+#+end_src
+
+#+RESULTS: login
+#+BEGIN_SRC js
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0IjoxNjA1MjQ1NDE0LCJleHAiOjE2MDU0MTgyMTR9.7OTktqcWxTwZLFyEJl709FsIJpkBvdfCxDBzehbt95w",
+  "user": {
+    "id": 1,
+    "email": "zulfi@wigo.com",
+    "password": "$2b$10$7of.apGLoBUom5OXsAxffOuZCQ1sYNAdFnDf.kSuDWcHijQnqUG2O"
+  }
 }
 // POST http://localhost:8000/users/login
 // HTTP/1.1 200 OK
 // X-Powered-By: Express
 // Content-Type: application/json; charset=utf-8
-// Content-Length: 161
-// ETag: W/"a1-CTqjhuvbfHDGeDnVgmDHNMll95I"
-// Date: Mon, 19 Oct 2020 03:15:35 GMT
+// Content-Length: 276
+// ETag: W/"114-z30ij84ifnxjLjuyJzofNw8fjKw"
+// Date: Fri, 13 Nov 2020 05:30:14 GMT
 // Connection: keep-alive
-// Request duration: 0.067611s
+// Request duration: 0.073101s
 #+END_SRC
+
+
 
 ** Load User
 
-#+begin_src restclient
+#+begin_src restclient :var
 GET http://localhost:8000/users/loadUser
 Content-Type: application/json
 x-auth-token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0fSwiaWF0IjoxNjAzNzI1MjIxLCJleHAiOjE2MDQwODUyMjF9.RLEvpRkAIuecm0SXFtVe-Jw058sQGERf7cW_x2BlDko
@@ -96,3 +94,99 @@ x-auth-token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0fSwiaWF0
 // Connection: keep-alive
 // Request duration: 0.009105s
 #+END_SRC
+
+
+* Events
+
+** Get events for pod
+#+begin_src restclient
+GET http://localhost:8000/pods/1/conflictingEvents
+Content-Type: application/json
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0IjoxNjA1MjQ1NDE0LCJleHAiOjE2MDU0MTgyMTR9.7OTktqcWxTwZLFyEJl709FsIJpkBvdfCxDBzehbt95w
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "events": [
+    {
+      "id": 3,
+      "ownerId": 4,
+      "formattedAddress": "4000 Spruce St, Philadelphia, PA 19104, USA",
+      "start_time": "2020-02-13T04:21:04.000Z",
+      "end_time": "2020-11-13T05:21:04.295Z",
+      "notes": "Sk8r girl time",
+      "name": "Skateboard",
+      "lat": 39.951543,
+      "lng": -75.2032578,
+      "repeat": "no_repeat"
+    },
+    {
+      "id": 1,
+      "ownerId": 1,
+      "formattedAddress": "3934 Pine St, Philadelphia, PA 19104, USA",
+      "start_time": "2020-11-13T03:10:33.447Z",
+      "end_time": "2020-11-13T04:10:33.447Z",
+      "notes": "Bike ride time.",
+      "name": "Go for a bike ride",
+      "lat": 39.95034599999999,
+      "lng": -75.201981,
+      "repeat": "weekly"
+    },
+    {
+      "id": 1,
+      "ownerId": 1,
+      "formattedAddress": "3934 Pine St, Philadelphia, PA 19104, USA",
+      "start_time": "2020-11-13T03:10:33.447Z",
+      "end_time": "2020-11-13T04:10:33.447Z",
+      "notes": "Bike ride time.",
+      "name": "Go for a bike ride",
+      "lat": 39.95034599999999,
+      "lng": -75.201981,
+      "repeat": "weekly"
+    },
+    {
+      "id": 2,
+      "ownerId": 3,
+      "formattedAddress": "1204 Walnut St, Philadelphia, PA 19107, USA",
+      "start_time": "2020-11-13T04:20:08.731Z",
+      "end_time": "2020-11-13T05:20:08.731Z",
+      "notes": "Nail time.",
+      "name": "Get nails done",
+      "lat": 39.94884270000001,
+      "lng": -75.1608773,
+      "repeat": "no_repeat"
+    },
+    {
+      "id": 4,
+      "ownerId": 2,
+      "formattedAddress": "1209 Vine St, Philadelphia, PA 19107, USA",
+      "start_time": "2020-11-13T04:21:53.348Z",
+      "end_time": "2020-11-13T05:21:53.348Z",
+      "notes": "DJ TIme.",
+      "name": "DJ a sick party",
+      "lat": 39.9577557,
+      "lng": -75.1590322,
+      "repeat": "daily"
+    }
+  ],
+  "members": {
+    "1": "zulfi@wigo.com",
+    "2": "caro@wigo.com",
+    "3": "chloe@wigo.com",
+    "4": "ally@wigo.com"
+  }
+}
+// GET http://localhost:8000/pods/1/conflictingEvents
+// HTTP/1.1 200 OK
+// X-Powered-By: Express
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 1450
+// ETag: W/"5aa-0e4Z2n7IGNgZlxU9nSeeZtX/Ex4"
+// Date: Fri, 13 Nov 2020 16:28:10 GMT
+// Connection: keep-alive
+// Request duration: 0.008472s
+#+END_SRC
+
+#+RESULTS:
+

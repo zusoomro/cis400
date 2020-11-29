@@ -55,9 +55,18 @@ invitesRouter.post(
     try {
       const userId = (req as AuthRequest).user.id;
       const { podId, inviteId } = req.body;
-      const numUpdated = await User.query().findById(userId).patch({
-        podId: podId,
-      });
+
+      const pod = (await Pod.query().where("id", podId))[0];
+
+      if (!pod) {
+        console.log("Could not find the pod");
+        return res
+          .status(500)
+          .json({ message: "Could not find the requested pod." });
+      }
+
+      await pod.$relatedQuery("members").relate(userId);
+
       const numDeleted = await PodInvites.query().deleteById(inviteId);
       const acceptedPod = await Pod.query().findById(podId);
       res.send({ pod: acceptedPod });
