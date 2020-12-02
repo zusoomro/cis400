@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Event from "../types/Event";
 
 import ScheduleHomePage from "./Schedule";
-import CreateModifyEvent from './CreateModifyEvent'
+import CreateModifyEvent from "./CreateModifyEvent";
 
 export type ScheduleNavigatorParamList = {
   ScheduleHomePage: undefined;

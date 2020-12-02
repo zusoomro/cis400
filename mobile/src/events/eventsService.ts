@@ -1,8 +1,24 @@
-import Event from '../types/Event'
+import Event from "../types/Event";
 import apiUrl from "../config";
-import * as SecureStore from 'expo-secure-store'
+import * as SecureStore from "expo-secure-store";
+import * as Yup from "yup";
 
-export const createEventOnSubmit = async (values: Event): Promise<Event | null> => {
+export const validateEventSchema = () => {
+  return Yup.object().shape({
+    name: Yup.string().required("Name required"),
+    formattedAddress: Yup.string().required("Location Required"),
+    // Make sure end_time > start_time
+    start_time: Yup.date().required(),
+    end_time: Yup.date().min(
+      Yup.ref("start_time"),
+      "End time needs to be after start time"
+    ),
+  });
+};
+
+export const createEventOnSubmit = async (
+  values: Event
+): Promise<Event | null> => {
   // Create event to be put in database
   const data = {
     name: values.name,
@@ -22,7 +38,9 @@ export const createEventOnSubmit = async (values: Event): Promise<Event | null> 
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": await SecureStore.getItemAsync("wigo-auth-token") as string,
+        "x-auth-token": (await SecureStore.getItemAsync(
+          "wigo-auth-token"
+        )) as string,
       }),
       body: JSON.stringify(data),
     });
@@ -36,8 +54,10 @@ export const createEventOnSubmit = async (values: Event): Promise<Event | null> 
   }
 };
 
-export const modifyEventOnSubmit = async (values: Event): Promise<Event | null> => {
-  console.log("createEventOnSubmit");
+export const modifyEventOnSubmit = async (
+  values: Event
+): Promise<Event | null> => {
+  console.log("modifyEventOnSubmit");
 
   // Create event to be put in database
   const data = {

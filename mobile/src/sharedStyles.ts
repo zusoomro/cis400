@@ -34,6 +34,13 @@ export default StyleSheet.create({
     borderRadius: 10,
     width: "100%",
   },
+  inputError: {
+    marginTop: 4,
+    marginBottom: 6,
+    fontSize: 12,
+    color: "red",
+    width: "100%",
+  },
   inputText: {
     fontSize: globalFontSize,
   },
