@@ -4,20 +4,33 @@ import { Ionicons } from "@expo/vector-icons";
 import ScheduleNavigator from "./events/ScheduleNavigator";
 import PodsNavigator from "./pods/PodsNavigator";
 import Settings from "./Settings";
-import Login from "./Login";
-import Register from "./Register";
+import LoginRegister from "./LoginRegister";
 import { useSelector } from "react-redux";
+import { RootState } from "./configureStore";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<TabNavigatorParamList>();
+
+export type TabNavigatorParamList = {
+  Schedule: undefined;
+  Pods: undefined;
+  Settings: undefined;
+  Login: undefined;
+  Register: undefined;
+};
 
 const TabNavigator = () => {
-  const authenticated = useSelector((state) => state.auth.token);
+  const authenticated = useSelector(
+    (state: RootState) => state.auth.authenticated
+  );
   console.log("authenticated", authenticated);
 
   return (
     <Tab.Navigator
       initialRouteName="Schedule"
-      tabBarOptions={{ labelStyle: { marginTop: -10 } }}
+      tabBarOptions={{
+        labelStyle: { marginTop: -10 },
+        labelPosition: "below-icon",
+      }}
     >
       {authenticated ? (
         <React.Fragment>
@@ -53,22 +66,26 @@ const TabNavigator = () => {
         <React.Fragment>
           <Tab.Screen
             name="Login"
-            component={Login}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-people" color={color} size={size} />
               ),
+              tabBarVisible: false,
             }}
-          />
+          >
+            {(props) => <LoginRegister isLogin={true} {...props} />}
+          </Tab.Screen>
           <Tab.Screen
             name="Register"
-            component={Register}
             options={{
               tabBarIcon: ({ color, size }) => (
                 <Ionicons name="ios-people" color={color} size={size} />
               ),
+              tabBarVisible: false,
             }}
-          />
+          >
+            {(props) => <LoginRegister isLogin={false} {...props} />}
+          </Tab.Screen>
         </React.Fragment>
       )}
     </Tab.Navigator>

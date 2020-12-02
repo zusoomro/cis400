@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import Event from "../../models/Event";
 import User from "../../models/User";
 import auth, { AuthRequest } from "../authMiddleware";
+import Pod from "../../models/Pod";
 
 let eventRouter = express.Router();
 
@@ -100,22 +101,22 @@ eventRouter.get(
   async (req: express.Request, res: express.Response) => {
     try {
       const podId = req.params.podId;
-      const users = await User.query().where("podId", podId);
-      const eventsList: Event[] = [];
-      await Promise.all(
-        users.map(async (user) => {
-          const eventsForUser = await Event.query().where("ownerId", user.id);
-          await Promise.all(
-            eventsForUser.map(async (event) => {
-              eventsList.push(event);
-            })
-          );
-        })
+
+      const pod = await Pod.query()
+        .findOne({ "pods.id": podId })
+        .withGraphFetched("members");
+
+      console.log("pod", pod);
+
+      const allEvents: Event[] = await Event.query().whereIn(
+        "ownerId",
+        pod.members.map((m) => m.id)
       );
-      res.json({ events: eventsList });
+
+      res.json({ events: allEvents });
     } catch (err) {
       console.error(err);
-      res.status(500).send("Server Error when getting events");
+      res.status(500).json({ message: "Server Error when getting events" });
     }
   }
 );
