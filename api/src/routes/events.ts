@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import Event from "../../models/Event";
-import User from "../../models/User";
 import auth, { AuthRequest } from "../authMiddleware";
 import Pod from "../../models/Pod";
 
@@ -18,6 +17,14 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     repeat,
     notes,
   } = req.body;
+
+  if (!name || !formattedAddress || !start_time || !end_time || !repeat) {
+    return res.status(400).json({ message: "Please fill out the required fields." });
+  }
+
+  if (end_time < start_time) {
+    return res.status(400).json({ message: "The start date must be before the end date." });
+  }
 
   const id = (req as AuthRequest).user.id;
   const event = await Event.query().insert({
@@ -46,10 +53,16 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     repeat,
     notes,
   } = req.body;
+
+  if (!name || !formattedAddress || !start_time || !end_time || !repeat) {
+    return res.status(400).json({ message: "Please fill out the required fields." });
+  }
+
+  if (end_time < start_time) {
+    return res.status(400).json({ message: "The start date must be before the end date." });
+  }
+
   const eventId = req.body.id;
-
-  console.log("eventid", eventId);
-
   const id = (req as AuthRequest).user.id;
   const event = await Event.query()
     .update({

@@ -78,21 +78,22 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
           handleChange,
           handleBlur,
           handleSubmit,
+          isValid,
           setFieldValue,
           touched,
           values,
         }) => (
           <View style={{ margin: 15 }}>
             <Text style={sharedStyles.inputLabelText}>Event Name</Text>
-              <TextInput
-                onChangeText={handleChange("name")}
-                onBlur={handleBlur("name")}
-                value={values.name}
-                placeholder="event name"
-                style={[sharedStyles.input, { marginBottom: 0 }]}
-                />
-            <Text style={sharedStyles.inputError}> 
-            {(touched.name && errors.name) ? (errors.name as String) : ''}
+            <TextInput
+              onChangeText={handleChange("name")}
+              onBlur={handleBlur("name")}
+              value={values.name}
+              placeholder="event name"
+              style={[sharedStyles.input, { marginBottom: 0 }]}
+            />
+            <Text style={sharedStyles.inputError}>
+              {touched.name && errors.name ? (errors.name as String) : ""}
             </Text>
             <Text style={sharedStyles.inputLabelText}>Location</Text>
             <LocationPicker
@@ -101,8 +102,10 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               formattedAddressFieldName="formattedAddress"
               formattedAddress={values.formattedAddress}
             />
-            <Text style={sharedStyles.inputError}> 
-              {errors.formattedAddress ? (errors.formattedAddress as String) : ''}
+            <Text style={sharedStyles.inputError}>
+              {touched.formattedAddress && errors.formattedAddress
+                ? (errors.formattedAddress as String)
+                : ""}
             </Text>
             {/* Start Time input */}
             <Text style={sharedStyles.inputLabelText}>Start Time</Text>
@@ -142,7 +145,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               placeholder="Add description"
               style={[sharedStyles.input, { marginBottom: 24 }]}
             />
-            <Button onPress={handleSubmit} title="Save" style={{ margin: 0 }} />
+            <Button onPress={handleSubmit} title="Save" style={[{ margin: 0},  !isValid && sharedStyles.disabledButton ]} />
           </View>
         )}
       </Formik>

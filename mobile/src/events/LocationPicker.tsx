@@ -48,7 +48,11 @@ const LocationPicker: React.FC<LocationProps> = (props) => {
       onPress={locationPicked}
       nearbyPlacesAPI="GooglePlacesSearch"
       styles={{
-        textInputContainer: { ...sharedStyles.input, paddingLeft: 10, marginBottom: 0},
+        textInputContainer: {
+          ...sharedStyles.input,
+          paddingLeft: 10,
+          marginBottom: 0,
+        },
       }}
     />
   );
