@@ -26,6 +26,18 @@ podsRouter.post(
     const currUser = (req as AuthRequest).user.id;
     const name: string = req.body.name;
 
+    if (!name) {
+      return res
+        .status(400)
+        .json({ message: "Please add a name for your pod." });
+    }
+
+    if (name.length < 3) {
+      return res
+        .status(400)
+        .json({ message: "Pod name must be more than two characters" });
+    }
+
     const inviteeIds: Array<number> = req.body.inviteeIds;
 
     // add a pop to the pods database
