@@ -21,8 +21,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { ScheduleNavigatorParamList } from "./ScheduleNavigator";
 import Event from "../types/Event";
 import { RouteProp } from "@react-navigation/native";
-
-const apiUrl = "http://localhost:8000";
+import apiUrl from "../config";
 
 type Props = {
   navigation: StackNavigationProp<ScheduleNavigatorParamList, "ModifyEvent">;
@@ -136,7 +135,7 @@ const modifyEventOnSubmit = async (values: Event): Promise<Event | null> => {
   console.log("Data for PUT request", data);
 
   try {
-    const res = await fetch("http://localhost:8000/events", {
+    const res = await fetch(`${apiUrl}/events`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
