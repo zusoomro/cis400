@@ -19,11 +19,15 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   } = req.body;
 
   if (!name || !formattedAddress || !start_time || !end_time || !repeat) {
-    return res.status(400).json({ message: "Please fill out the required fields." });
+    return res
+      .status(400)
+      .json({ message: "Please fill out the required fields." });
   }
 
   if (end_time < start_time) {
-    return res.status(400).json({ message: "The start date must be before the end date." });
+    return res
+      .status(400)
+      .json({ message: "The start date must be before the end date." });
   }
 
   const id = (req as AuthRequest).user.id;
@@ -55,11 +59,15 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
   } = req.body;
 
   if (!name || !formattedAddress || !start_time || !end_time || !repeat) {
-    return res.status(400).json({ message: "Please fill out the required fields." });
+    return res
+      .status(400)
+      .json({ message: "Please fill out the required fields." });
   }
 
   if (end_time < start_time) {
-    return res.status(400).json({ message: "The start date must be before the end date." });
+    return res
+      .status(400)
+      .json({ message: "The start date must be before the end date." });
   }
 
   const eventId = req.body.id;
