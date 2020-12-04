@@ -1,10 +1,11 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import User from "../../models/User";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import auth, { AuthRequest } from "../authMiddleware";
+import gravatar from "gravatar";
 
-let usersRouter = express.Router();
+const usersRouter = express.Router();
 
 usersRouter.get("/", async (req, res) => {
   const response = await User.query();
@@ -46,9 +47,21 @@ usersRouter.post("/", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Get/create an avatar
+    const avatar = gravatar.url(
+      email,
+      {
+        s: "100",
+        r: "pg",
+        d: "retro",
+      },
+      false
+    );
+
     const user = await User.query().insert({
       email,
       password: hashedPassword,
+      avatar,
     });
 
     console.log(`Creating user with email '${email}'`);
@@ -60,7 +73,7 @@ usersRouter.post("/", async (req, res) => {
         },
       },
       "dummySecret",
-      { expiresIn: 360000 },
+      { expiresIn: "2 days" },
       (err, token) => {
         if (err) throw err;
         res.json({ token, user });
@@ -73,6 +86,8 @@ usersRouter.post("/", async (req, res) => {
 
 usersRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
+
+  console.log("hit login endpoint");
 
   try {
     let userArray = await User.query().where("email", email);
@@ -97,7 +112,7 @@ usersRouter.post("/login", async (req, res) => {
       },
     };
 
-    jwt.sign(payload, "dummySecret", { expiresIn: 900 }, (err, token) => {
+    jwt.sign(payload, "dummySecret", { expiresIn: "2 days" }, (err, token) => {
       if (err) throw err;
       res.json({ token, user });
     });
@@ -124,5 +139,36 @@ usersRouter.get(
     }
   }
 );
+
+// This is a hack and should be temporary!
+// Given an array of user id's return a map from their ids to their avatars and emails
+usersRouter.get("/avatars", [auth], async (req: Request, res: Response) => {
+  try {
+    const { ids } = req.body;
+    const userList = await User.query().whereIn("id", ids);
+    const dict: { [key: number]: string } = {};
+
+    for (const user of userList) {
+      dict[user.id] = user.avatar;
+    }
+
+    return res.json({ map: dict });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+});
+
+// This is a hack and should be temporary!
+usersRouter.get("/email/:id", [auth], async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const user = await User.query().findOne("id", id);
+    return res.json({ email: user.email });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+});
 
 export default usersRouter;

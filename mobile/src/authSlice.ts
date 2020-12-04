@@ -1,19 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as SecureStore from "expo-secure-store";
-
-let apiUrl: string;
-
-if (__DEV__) {
-  apiUrl = "http://localhost:8000";
-} else {
-  apiUrl = "http://wigo-api.herokuapp.com";
-}
-console.log(apiUrl);
+import { TextInput } from "react-native";
+import React from "react";
+import apiUrl from "./config";
+import User from './types/User'
 
 const initialState = {
   authenticated: true,
   token: "",
-  user: {},
+  user: {} as User,
   loading: true,
   error: {},
   apiKey: "",
@@ -28,7 +23,15 @@ export const loadUser = createAsyncThunk("auth/loadUser", async (data, api) => {
       },
     });
 
-    return await res.json();
+    const json = await res.json();
+
+    console.log(res);
+
+    if (!res.ok) {
+      return api.rejectWithValue(json.message);
+    }
+
+    return json;
   } catch (ex) {
     console.log(`error loading user`, ex);
     return api.rejectWithValue(ex.message);
@@ -39,7 +42,7 @@ export const logOut = createAsyncThunk(
   "auth/logout",
   async (data, api): Promise<string> => {
     try {
-      await SecureStore.deleteItemAsync("ecountabl-token");
+      await SecureStore.deleteItemAsync("wigo-auth-token");
       return {};
     } catch (ex) {
       console.error(`error in logout`, ex);
@@ -74,6 +77,10 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
 
     const json = await res.json();
 
+    if (!res.ok) {
+      return api.rejectWithValue(json.message);
+    }
+
     await SecureStore.setItemAsync("wigo-auth-token", json.token);
 
     return json;
@@ -96,6 +103,10 @@ export const getApiKey = createAsyncThunk(
 
       const json = await res.json();
 
+      if (!res.ok) {
+        return api.rejectWithValue(json.message);
+      }
+
       return json.key;
     } catch (ex) {
       console.log(`error creating api key`, ex);
@@ -115,6 +126,10 @@ export const register = createAsyncThunk("auth/register", async (data, api) => {
     });
 
     const json = await res.json();
+
+    if (!res.ok) {
+      return api.rejectWithValue(json.message);
+    }
 
     await SecureStore.setItemAsync("wigo-auth-token", json.token);
 
@@ -198,6 +213,7 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
     [loadToken.rejected]: (state, action) => {
+      state.authenticated = false;
       state.token = "";
       state.loading = false;
       state.error = action.payload;
@@ -205,6 +221,13 @@ const authSlice = createSlice({
     [getApiKey.rejected]: (state, action) => {
       state.apiKey = "";
       state.loading = false;
+      state.error = action.payload;
+    },
+    [loadUser.rejected]: (state, action) => {
+      state.authenticated = false;
+      state.user = {};
+      state.loading = false;
+      state.error = action.payload;
     },
   },
 });
