@@ -6,7 +6,6 @@ import Pod from "../../models/Pod";
 let eventRouter = express.Router();
 
 eventRouter.post("/", [auth], async (req: Request, res: Response) => {
-  console.log("Calling eventRouter.post");
   const {
     name,
     formattedAddress,
