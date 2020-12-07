@@ -12,7 +12,7 @@ import {
   createEventOnSubmit,
   modifyEventOnSubmit,
 } from "./eventsService";
-import { eventConflictAlert, isConflictingEvent } from "./eventConflicts";
+import { ConflictAction, eventConflictAlert, isConflictingEvent } from "./eventConflicts";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -66,10 +66,22 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               }
         }
         validationSchema={validateEventSchema}
-        onSubmit={(values) => {
+        onSubmit={async (values) => {
+          let action: ConflictAction = ConflictAction.scheduleEvent;
+          // Check if event conflicts, and set action to the value chosen by the user 
           if (isConflictingEvent()) {
-            // TO DO FIGURE OUT HOW TO GET MODIFY & CREATE INTO ALERT. 
-            eventConflictAlert();
+            await eventConflictAlert().then((userChosenAction: ConflictAction) => {
+              action = userChosenAction;
+            });
+          } 
+
+          // User wants to continue editing the event
+          if (action as ConflictAction === ConflictAction.editEvent) {
+            return; 
+          }
+          // User wants to schedule event at suggested time
+          if (action as ConflictAction == ConflictAction.suggestedTime) {
+            // TO DO: SET VALUES TO SUGGESTED TIME
           }
 
           if (event) {
