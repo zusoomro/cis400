@@ -83,7 +83,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
           if (action as ConflictAction == ConflictAction.suggestedTime) {
             // TO DO: SET VALUES TO SUGGESTED TIME
           }
-
+        
           if (event) {
             modifyEventOnSubmit({ ...values, id: event.id } as Event);
           } else {
