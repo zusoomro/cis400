@@ -145,7 +145,11 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               placeholder="Add description"
               style={[sharedStyles.input, { marginBottom: 24 }]}
             />
-            <Button onPress={handleSubmit} title="Save" style={[{ margin: 0},  !isValid && sharedStyles.disabledButton ]} />
+            <Button
+              onPress={handleSubmit}
+              title="Save"
+              style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
+            />
           </View>
         )}
       </Formik>

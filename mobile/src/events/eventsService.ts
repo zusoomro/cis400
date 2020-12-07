@@ -47,7 +47,7 @@ export const createEventOnSubmit = async (
 
     if (!res.ok) {
       console.log("Event creation rejected by backend");
-      console.log("Event:", event)
+      console.log("Event:", event);
       throw new Error("Event creation rejected by backend");
     }
     return event;
@@ -89,7 +89,7 @@ export const modifyEventOnSubmit = async (
 
     if (!res.ok) {
       console.log("Event creation rejected by backend");
-      console.log("Event:", event)
+      console.log("Event:", event);
       throw new Error("Event modification rejected by backend");
     }
 
