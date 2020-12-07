@@ -34,6 +34,13 @@ export default StyleSheet.create({
     borderRadius: 10,
     width: "100%",
   },
+  inputError: {
+    marginTop: 4,
+    marginBottom: 6,
+    fontSize: 12,
+    color: "red",
+    width: "100%",
+  },
   inputText: {
     fontSize: globalFontSize,
   },
@@ -41,5 +48,22 @@ export default StyleSheet.create({
     fontSize: globalFontSize,
     color: "#4A5568",
     marginBottom: 6,
+  },
+  disabledButton: {
+    backgroundColor: "#D3D3D3",
+    padding: 10,
+    marginTop: 0,
+    marginBottom: 15,
+    borderRadius: 10,
+    width: "100%",
+
+    // Shadow
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0,
+    shadowRadius: 0,
   },
 });
