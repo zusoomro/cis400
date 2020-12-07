@@ -1,24 +1,8 @@
-import Event from "../types/Event";
+import Event from '../types/Event'
 import apiUrl from "../config";
-import * as SecureStore from "expo-secure-store";
-import * as Yup from "yup";
+import * as SecureStore from 'expo-secure-store'
 
-export const validateEventSchema = () => {
-  return Yup.object().shape({
-    name: Yup.string().required("Name required"),
-    formattedAddress: Yup.string().required("Location Required"),
-    // Make sure end_time > start_time
-    start_time: Yup.date().required(),
-    end_time: Yup.date().min(
-      Yup.ref("start_time"),
-      "End time needs to be after start time"
-    ),
-  });
-};
-
-export const createEventOnSubmit = async (
-  values: Event
-): Promise<Event | null> => {
+export const createEventOnSubmit = async (values: Event): Promise<Event | null> => {
   // Create event to be put in database
   const data = {
     name: values.name,
@@ -31,25 +15,20 @@ export const createEventOnSubmit = async (
     notes: values.notes,
   };
 
+  console.log("Data for POST request", data);
+
   try {
     const res = await fetch(`${apiUrl}/events`, {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": (await SecureStore.getItemAsync(
-          "wigo-auth-token"
-        )) as string,
+        "x-auth-token": await SecureStore.getItemAsync("wigo-auth-token") as string,
       }),
       body: JSON.stringify(data),
     });
 
     const event = await res.json();
-
-    if (!res.ok) {
-      console.log("Event creation rejected by backend");
-      console.log("Event:", event)
-      throw new Error("Event creation rejected by backend");
-    }
+    console.log("event after post request", event);
     return event;
   } catch (error) {
     console.log(`error creating new event`, error);
@@ -57,9 +36,9 @@ export const createEventOnSubmit = async (
   }
 };
 
-export const modifyEventOnSubmit = async (
-  values: Event
-): Promise<Event | null> => {
+export const modifyEventOnSubmit = async (values: Event): Promise<Event | null> => {
+  console.log("createEventOnSubmit");
+
   // Create event to be put in database
   const data = {
     name: values.name,
@@ -72,6 +51,8 @@ export const modifyEventOnSubmit = async (
     notes: values.notes,
     id: values.id,
   };
+
+  console.log("Data for PUT request", data);
 
   try {
     const res = await fetch(`${apiUrl}/events`, {
@@ -86,13 +67,7 @@ export const modifyEventOnSubmit = async (
     });
 
     const event = await res.json();
-
-    if (!res.ok) {
-      console.log("Event creation rejected by backend");
-      console.log("Event:", event)
-      throw new Error("Event modification rejected by backend");
-    }
-
+    console.log("event after put request", event);
     return event;
   } catch (error) {
     console.log(`error updatind event`, error);

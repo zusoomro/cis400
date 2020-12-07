@@ -3,7 +3,7 @@ import * as SecureStore from "expo-secure-store";
 import { TextInput } from "react-native";
 import React from "react";
 import apiUrl from "./config";
-import User from "./types/User";
+import User from './types/User'
 
 const initialState = {
   authenticated: true,
