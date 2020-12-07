@@ -12,7 +12,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
 
   // check if it exists
   if (!token) {
-    return res.status(401).json({ msg: "No token. Authorization denied" });
+    return res.status(401).json({ message: "No token. Authorization denied" });
   }
 
   // Verify token
@@ -24,7 +24,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
     (req as AuthRequest).user = decoded.user;
     next();
   } catch (err) {
-    return res.status(401).json({ msg: "Invalid token." });
+    return res.status(401).json({ message: "Invalid token." });
   }
 };
 
