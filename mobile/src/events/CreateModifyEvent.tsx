@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { ScrollView, TextInput, View, Text } from "react-native";
+import { ScrollView, Text, TextInput, View } from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import LocationPicker from "./LocationPicker";
@@ -12,6 +12,7 @@ import {
   createEventOnSubmit,
   modifyEventOnSubmit,
 } from "./eventsService";
+import { eventConflictAlert, isConflictingEvent } from "./eventConflicts";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -26,6 +27,7 @@ type Props = {
   navigation: Object;
   route: Object;
 };
+
 
 const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   const event = route?.params?.event;
@@ -65,6 +67,11 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
         }
         validationSchema={validateEventSchema}
         onSubmit={(values) => {
+          if (isConflictingEvent()) {
+            // TO DO FIGURE OUT HOW TO GET MODIFY & CREATE INTO ALERT. 
+            eventConflictAlert();
+          }
+
           if (event) {
             modifyEventOnSubmit({ ...values, id: event.id } as Event);
           } else {
