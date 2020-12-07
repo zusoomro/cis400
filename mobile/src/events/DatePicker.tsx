@@ -87,5 +87,4 @@ const DatePicker: React.FC<Props> = (props) => {
   );
 };
 
-
 export default DatePicker;

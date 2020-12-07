@@ -8,6 +8,7 @@ export interface Place {
   formatted_address: string;
   latValue: number;
   lngValue: number;
+
 }
 
 interface LocationProps {
