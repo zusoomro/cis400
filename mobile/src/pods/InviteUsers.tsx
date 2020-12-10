@@ -27,10 +27,6 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
   const [invitees, setInvitees] = useState([]);
 
   const caller = route?.params?.caller;
-  //const { caller, pod } = route?.params;
-
-  console.log("caller", caller);
-
   const currUserId = useSelector((state) => state.auth.user.id);
 
   React.useEffect(() => {
@@ -44,18 +40,16 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
         });
 
         const json = await res.json();
+        let result = json.filter((user) => user.id != currUserId);
         const pod = route?.params?.pod;
-        const currMembers: Array<number> = [];
         if (pod) {
+          const currMembers: Array<number> = [];
           pod.members.forEach((member) => {
             currMembers.push(member.id);
           });
-          console.log("currMembers", currMembers);
-        }
-        console.log("pod", pod);
-        let result = json.filter((user) => user.id != currUserId);
-        if (currMembers.length) {
-          result = result.filter((user) => !currMembers.includes(user.id));
+          if (currMembers.length) {
+            result = result.filter((user) => !currMembers.includes(user.id));
+          }
         }
         setUsers(result);
       } catch (err) {
@@ -93,9 +87,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
   const handleInviteUsers = async () => {
     if (caller) {
       if (caller === "PodMembers") {
-        console.log("Going back to pod members");
         const pod = route?.params?.pod;
-        console.log("pod", pod);
         const data = {
           inviteeIds: invitees,
           pod: pod,
@@ -120,13 +112,11 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
           console.log(`error sending invites`, error);
         }
       } else if (caller === "CreatePod") {
-        console.log("Going back to create pod");
         navigation.navigate("CreatePod", { invitees: invitees });
       } else {
         console.log("error: i'm confused");
       }
     }
-    //navigation.navigate("CreatePod", { invitees: invitees });
   };
 
   return (

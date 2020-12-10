@@ -25,7 +25,6 @@ const PodMembers: React.FC<Props> = ({ navigation }) => {
           <Button
             title="Add New Members"
             onPress={() => {
-              console.log("add members button pressed");
               navigation.navigate("InviteUsers", {
                 caller: "PodMembers",
                 pod: firstPod,
