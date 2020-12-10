@@ -7,8 +7,13 @@ import LocationPicker from "./LocationPicker";
 import DatePicker from "./DatePicker";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
-import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
+import { createEventOnSubmit, modifyEventOnSubmit, validateEventSchema} from "./eventsService";
 import DeleteEventModal from "./DeleteEventModal"
+import {
+  ConflictAction,
+  eventConflictAlert,
+  isConflictingEvent,
+} from "./eventConflicts";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -25,7 +30,7 @@ type Props = {
 };
 
 const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
-  const event = route?.params?.event
+  const event = route?.params?.event;
 
   // Start time = current time
   const [start_time, setStartTime] = useState(new Date());
@@ -42,27 +47,47 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
         initialValues={
           event
             ? {
-              name: event.name,
-              formattedAddress: event.formattedAddress,
-              lat: event.lat,
-              lng: event.lng,
-              start_time: event.start_time,
-              end_time: event.end_time,
-              repeat: repetitionValues[0].value,
-              notes: event.notes,
-            }
+                name: event.name,
+                formattedAddress: event.formattedAddress,
+                lat: event.lat,
+                lng: event.lng,
+                start_time: event.start_time,
+                end_time: event.end_time,
+                repeat: repetitionValues[0].value,
+                notes: event.notes,
+              }
             : {
-              name: "",
-              formattedAddress: "",
-              lat: "",
-              lng: "",
-              start_time: start_time,
-              end_time: end_time,
-              repeat: repetitionValues[0].value,
-              notes: "",
-            }
+                name: "",
+                formattedAddress: "",
+                lat: "",
+                lng: "",
+                start_time: start_time,
+                end_time: end_time,
+                repeat: repetitionValues[0].value,
+                notes: "",
+              }
         }
-        onSubmit={(values) => {
+        validationSchema={validateEventSchema}
+        onSubmit={async (values) => {
+          let action: ConflictAction = ConflictAction.scheduleEvent;
+          // Check if event conflicts, and set action to the value chosen by the user
+          if (isConflictingEvent()) {
+            await eventConflictAlert().then(
+              (userChosenAction: ConflictAction) => {
+                action = userChosenAction;
+              }
+            );
+          }
+
+          // User wants to continue editing the event
+          if ((action as ConflictAction) === ConflictAction.editEvent) {
+            return;
+          }
+          // User wants to schedule event at suggested time
+          if ((action as ConflictAction) == ConflictAction.suggestedTime) {
+            // TO DO: SET VALUES TO SUGGESTED TIME
+          }
+
           if (event) {
             modifyEventOnSubmit({ ...values, id: event.id } as Event);
           } else {
@@ -147,7 +172,5 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
     </ScrollView>
   );
 };
-
-
 
 export default CreateModifyEvent;

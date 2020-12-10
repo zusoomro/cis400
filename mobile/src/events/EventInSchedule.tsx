@@ -1,4 +1,3 @@
-import { Card } from "react-native-elements";
 import * as SecureStore from "expo-secure-store";
 import React, { useEffect, useState } from "react";
 import {

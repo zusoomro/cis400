@@ -1,5 +1,20 @@
 import { getConflictingEvents } from "./pods";
 import Event from "../../models/Event";
+import Knex from "knex";
+import initializeDb from "../initializeDb";
+
+let knex: Knex;
+
+beforeEach(async () => {
+  knex = initializeDb();
+  await knex.migrate.latest();
+  await knex.seed.run();
+});
+
+afterEach(async (done) => {
+  await knex.destroy();
+  done();
+});
 
 const basicEvents = [
   {
@@ -35,6 +50,6 @@ describe("The conflict finder function", () => {
     );
 
     // This is not the final expected behavior, but works for now
-    expect(resolvedEvents.length).toBe(1);
+    expect(resolvedEvents.length).toBe(2);
   });
 });
