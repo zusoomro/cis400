@@ -1,3 +1,4 @@
+import { render } from "@testing-library/react-native";
 import React from "react";
 import { useState } from "react";
 import {
@@ -24,6 +25,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
   const u: User[] = [];
   const [users, setUsers] = useState(u);
   const [invitees, setInvitees] = useState([]);
+  const [query, setQuery] = useState("");
 
   const currUserId = useSelector((state) => state.auth.user.id);
 
@@ -40,6 +42,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
         const json = await res.json();
         const result = json.filter((user) => user.id != currUserId);
         setUsers(result);
+        arrayHolder = [...result];
       } catch (err) {
         console.log("error loading users");
       }
@@ -62,7 +65,6 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
           }
         }}
         title="Select"
-        //disabled={isDisabled}
         disabled={invitees.includes(user.id)}
       />
     </View>
@@ -75,6 +77,35 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
   const handleInviteUsers = () => {
     navigation.navigate("CreatePod", { invitees: invitees });
   };
+
+  const searchFilterFunction = (text: string) => {
+    console.log("original query: ", query);
+    console.log("text:", text);
+    console.log("updated query:", query);
+    let arrayHolder: User[] = [...users];
+    const newData = arrayHolder.filter((item) => {
+      const itemData = item.email.toUpperCase();
+      const textData = text.toUpperCase();
+
+      return itemData.includes(text);
+    });
+
+    console.log("filtered list:", newData);
+    setUsers(newData);
+    console.log("updated query:", query);
+  };
+
+  function renderHeader() {
+    return (
+      <SearchBar
+        placeholder="Seach Here.."
+        round
+        onChangeText={(text) => searchFilterFunction(text)}
+        autoCorrect={false}
+        value={query}
+      ></SearchBar>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -89,6 +120,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
         data={users}
         renderItem={renderItem}
         keyExtractor={(item) => "" + item.id}
+        ListHeaderComponent={renderHeader}
       />
     </SafeAreaView>
   );
