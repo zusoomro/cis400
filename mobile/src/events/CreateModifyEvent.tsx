@@ -97,77 +97,98 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
         }}
       >
         {({
+          errors,
           handleChange,
           handleBlur,
           handleSubmit,
-          values,
+          isValid,
           setFieldValue,
+          touched,
+          values,
         }) => (
-            <View style={{ margin: 15 }}>
-              <Text style={sharedStyles.inputLabelText}>Event Name</Text>
-              <TextInput
-                onChangeText={handleChange("name")}
-                onBlur={handleBlur("name")}
-                value={values.name}
-                placeholder="event name"
-                style={sharedStyles.input}
+          <View style={{ margin: 15 }}>
+            <Text style={sharedStyles.inputLabelText}>Event Name</Text>
+            <TextInput
+              onChangeText={handleChange("name")}
+              onBlur={handleBlur("name")}
+              value={values.name}
+              placeholder="event name"
+              style={[sharedStyles.input, { marginBottom: 0 }]}
+            />
+            <Text style={sharedStyles.inputError}>
+              {touched.name && errors.name ? (errors.name as String) : ""}
+            </Text>
+            <Text style={sharedStyles.inputLabelText}>Location</Text>
+            <LocationPicker
+              latFieldName="lat"
+              lngFieldName="lng"
+              formattedAddressFieldName="formattedAddress"
+              formattedAddress={values.formattedAddress}
+            />
+            <Text style={sharedStyles.inputError}>
+              {touched.formattedAddress && errors.formattedAddress
+                ? (errors.formattedAddress as String)
+                : ""}
+            </Text>
+            {/* Start Time input */}
+            <Text style={sharedStyles.inputLabelText}>Start Time</Text>
+            <DatePicker name="start_time" date={start_time} />
+            {touched.start_time && errors.start_time && (
+              <Text>{errors.start_time}</Text>
+            )}
+            <Text style={sharedStyles.inputLabelText}>End Time</Text>
+            {/* End Time input */}
+            <DatePicker name="end_time" date={end_time} />
+            {errors.end_time && (
+              <Text style={sharedStyles.inputError}>{errors.end_time}</Text>
+            )}
+            {/* Pick repetition value*/}
+            <Text style={sharedStyles.inputLabelText}>Repeat</Text>
+            <DropDownPicker
+              items={repetitionValues}
+              defaultValue={values.repeat}
+              onChangeItem={(item) => setFieldValue("repeat", item.value)}
+              itemStyle={{ justifyContent: "flex-start" }}
+              containerStyle={{ borderRadius: 15 }}
+              style={[
+                sharedStyles.input,
+                {
+                  borderRadius: 15,
+                  borderWidth: 0,
+                  paddingLeft: 15,
+                },
+              ]}
+              labelStyle={sharedStyles.inputText}
+            />
+            <Text style={sharedStyles.inputLabelText}>Description</Text>
+            <TextInput
+              onChangeText={handleChange("notes")}
+              onBlur={handleBlur("notes")}
+              value={values.notes}
+              placeholder="Add description"
+              style={[sharedStyles.input, { marginBottom: 24 }]}
+            />
+            <Button
+              onPress={handleSubmit}
+              title="Save"
+              style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
+            />
+            {event && 
+              <Button
+                onPress={() => setModalVisible(true)}
+                title="Delete"
+                style={{ margin: 0 }}
               />
-              <Text style={sharedStyles.inputLabelText}>Location</Text>
-              <LocationPicker
-                latFieldName="lat"
-                lngFieldName="lng"
-                formattedAddressFieldName="formattedAddress"
-                formattedAddress={values.formattedAddress}
+            }
+            {modalVisible && event && (
+              <DeleteEventModal
+                modalVisible={modalVisible}
+                event={event}
+                setModalVisible={setModalVisible}
               />
-              {/* Start Time input */}
-              <Text style={sharedStyles.inputLabelText}>Start Time</Text>
-              <DatePicker name="start_time" date={start_time} />
-              <Text style={sharedStyles.inputLabelText}>End Time</Text>
-              {/* End Time input */}
-              <DatePicker name="end_time" date={end_time} />
-              {/* Pick repetition value*/}
-              <Text style={sharedStyles.inputLabelText}>Repeat</Text>
-              <DropDownPicker
-                items={repetitionValues}
-                defaultValue={values.repeat}
-                onChangeItem={(item) => setFieldValue("repeat", item.value)}
-                itemStyle={{ justifyContent: "flex-start" }}
-                containerStyle={{ borderRadius: 15 }}
-                style={[
-                  sharedStyles.input,
-                  {
-                    borderRadius: 15,
-                    borderWidth: 0,
-                    paddingLeft: 15,
-                  },
-                ]}
-                labelStyle={sharedStyles.inputText}
-              />
-              <Text style={sharedStyles.inputLabelText}>Description</Text>
-              <TextInput
-                onChangeText={handleChange("notes")}
-                onBlur={handleBlur("notes")}
-                value={values.notes}
-                placeholder="Add description"
-                style={[sharedStyles.input, { marginBottom: 24 }]}
-              />
-              <Button onPress={handleSubmit} title="Save" style={{ margin: 0 }} />
-              {event && 
-                <Button
-                  onPress={() => setModalVisible(true)}
-                  title="Delete"
-                  style={{ margin: 0 }}
-                />
-              }
-              {modalVisible && event && (
-                <DeleteEventModal
-                  modalVisible={modalVisible}
-                  event={event}
-                  setModalVisible={setModalVisible}
-                />
-              )}
-            </View>
-          )}   
+            )}
+          </View>
+        )}   
       </Formik>
     </ScrollView>
   );
