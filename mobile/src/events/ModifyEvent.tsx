@@ -108,16 +108,48 @@ const ModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 }
                 title="Save"
               />
+              <p>hey</p>
             </View>
           )}
+          
         </Formik>
-
         
+        <Button
+          color="#FF0000"
+          onPress={
+            (handleDeleteEvent(event) as unknown) as (
+              ev: NativeSyntheticEvent<NativeTouchEvent>
+            ) => void
+          }
+          title="Delete"
+        />
       </SafeAreaView>
     </ScrollView>
   );
 };
 
+const handleDeleteEvent = async (values: Event): Promise<Event | null> => {
+  console.log("deleting event yo!");
+  const data = { id: values.id };
+  try {
+    const res = await fetch(`http://localhost:8000/events`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": (await SecureStore.getItemAsync(
+          "wigo-auth-token"
+        )) as string,
+      },
+      body: JSON.stringify(data),
+    });
+    const event = await res.json();
+    console.log("event deleted");
+    return null;
+  } catch (error) {
+    console.log(`error deleting event`, error);
+    return null;
+  }
+};
 
 const modifyEventOnSubmit = async (values: Event): Promise<Event | null> => {
   console.log("createEventOnSubmit");

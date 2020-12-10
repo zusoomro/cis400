@@ -4,10 +4,12 @@ import { ScrollView, TextInput, StyleSheet, View, Text } from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import LocationPicker from "./LocationPicker";
+import * as SecureStore from "expo-secure-store";
 import DatePicker from "./DatePicker";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
+import DeleteEventModal from "./DeleteEventModal"
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -32,6 +34,8 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   const [end_time, setEndTime] = useState(
     new Date(Date.now() + 60 * 60 * 1000)
   );
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -124,11 +128,29 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 style={[sharedStyles.input, { marginBottom: 24 }]}
               />
               <Button onPress={handleSubmit} title="Save" style={{ margin: 0 }} />
+              {event && 
+                <Button
+                  color="#FF0000"
+                  onPress={() => setModalVisible(true)}
+                  //onPress={handleDeleteEvent(event)}
+                  title="Delete"
+                  style={{ margin: 0 }}
+                />
+              }
+              {modalVisible && event && (
+                <DeleteEventModal
+                  modalVisible={modalVisible}
+                  event={event}
+                  setModalVisible={setModalVisible}
+                />
+              )}
             </View>
-          )}
+          )}   
       </Formik>
     </ScrollView>
   );
 };
+
+
 
 export default CreateModifyEvent;

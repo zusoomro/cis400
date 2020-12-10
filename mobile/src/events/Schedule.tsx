@@ -86,10 +86,6 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
   }, []);
 
   React.useEffect(() => {
-    fetchPod(setPod, authToken);
-  }, []);
-
-  React.useEffect(() => {
     if (isToggledToUser) {
       setLoading(true);
       fetchUserEvents().then((res) => {
