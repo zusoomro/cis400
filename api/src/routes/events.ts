@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import Event from "../../models/Event";
 import auth, { AuthRequest } from "../authMiddleware";
 import Pod from "../../models/Pod";
+import User from "../../models/User";
 
 let eventRouter = express.Router();
 
@@ -130,7 +131,7 @@ eventRouter.get(
 
       const allEvents: Event[] = await Event.query().whereIn(
         "ownerId",
-        pod.members.map((m) => m.id)
+        pod.members.map((m: User) => m.id)
       );
 
       res.json({ events: allEvents });
