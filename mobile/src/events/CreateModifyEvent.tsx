@@ -1,10 +1,9 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { ScrollView, TextInput, StyleSheet, View, Text } from "react-native";
+import { ScrollView, TextInput, View, Text } from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import LocationPicker from "./LocationPicker";
-import * as SecureStore from "expo-secure-store";
 import DatePicker from "./DatePicker";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
@@ -130,9 +129,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               <Button onPress={handleSubmit} title="Save" style={{ margin: 0 }} />
               {event && 
                 <Button
-                  color="#FF0000"
                   onPress={() => setModalVisible(true)}
-                  //onPress={handleDeleteEvent(event)}
                   title="Delete"
                   style={{ margin: 0 }}
                 />

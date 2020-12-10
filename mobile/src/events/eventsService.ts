@@ -76,7 +76,6 @@ export const modifyEventOnSubmit = async (values: Event): Promise<Event | null> 
 };
 
 export const handleDeleteEvent = async (values: Event): Promise<Event | null> => {
-  console.log("deleting event yo!");
   const data = { id: values.id };
   try {
     const res = await fetch(`http://localhost:8000/events`, {
@@ -89,7 +88,6 @@ export const handleDeleteEvent = async (values: Event): Promise<Event | null> =>
       },
       body: JSON.stringify(data),
     });
-    //const event = await res.json();
     console.log("event deleted");
     return await res.json();
   } catch (error) {

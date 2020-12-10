@@ -22,7 +22,6 @@ const DeleteEventModal: React.FC<Props> = ({
   modalVisible,
   event,
 }) => {
-  const dispatch = useDispatch();
 
   return (
     <Modal
