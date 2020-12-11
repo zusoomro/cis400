@@ -1,3 +1,4 @@
+import fetch from 'node-fetch'
 import express, { Request, Response } from "express";
 import Event from "../../models/Event";
 import auth, { AuthRequest } from "../authMiddleware";
@@ -122,8 +123,98 @@ const getProposedEventsConflictingEvents = (proposedEvent: Event, existingEvents
   return false
 }
 
+const getPreviousAndNextEvent = (proposedEvent: Event, events: Event[]) => {
+  let previousEvent: Event | undefined = undefined;
+  let nextEvent: Event | undefined = undefined;
+
+  for (const event of events) {
+    if (event.end_time <= proposedEvent.start_time && (previousEvent == undefined || event.end_time >= previousEvent.end_time)) {
+      previousEvent = event
+    } else if (event.start_time >= proposedEvent.end_time && (nextEvent == undefined || event.start_time <= nextEvent.start_time)) {
+      nextEvent = event
+    }
+  }
+
+  return { previousEvent, nextEvent }
+}
+
+const getTravelTime = async (firstEvent: Event, secondEvent: Event) => {
+  console.log('json to send', JSON.stringify({
+    locations: [
+      {
+        latLng: {
+          lat: firstEvent.lat,
+          lng: firstEvent.lng
+        }
+      },
+      {
+        latLng: {
+          lat: secondEvent.lat,
+          lng: secondEvent.lng
+        }
+      }
+    ]
+  }))
+  const res = await fetch(`http://www.mapquestapi.com/directions/v2/route?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      locations: [
+        {
+          latLng: {
+            lat: firstEvent.lat,
+            lng: firstEvent.lng
+          }
+        },
+        {
+          latLng: {
+            lat: secondEvent.lat,
+            lng: secondEvent.lng
+          }
+        }
+      ]
+    })
+  })
+
+  // const travelTime = (await res.json()).route.time
+  console.log('res', res)
+  const text = await res.text()
+  // const json = await res.json()
+  console.log('test response', text)
+
+  const travelTime = 2
+
+  return travelTime
+};
+
+const determineTravelTimeConflicts = async (proposedEvent: Event, previousEvent: Event | undefined, nextEvent: Event | undefined) => {
+  // Travel time is in minutes
+  if (previousEvent) {
+    const firstTravelTime = await getTravelTime(previousEvent, proposedEvent);
+    var diff = Math.abs(+previousEvent.end_time - +proposedEvent.start_time);
+    var minutes = Math.floor((diff / 1000) / 60);
+    if (firstTravelTime >= minutes) {
+      return true
+    }
+  }
+
+  // Travel time is in minutes
+  if (nextEvent) {
+    const secondTravelTime = await getTravelTime(proposedEvent, nextEvent);
+    var diff = Math.abs(+proposedEvent.end_time - +nextEvent.start_time);
+    var minutes = Math.floor((diff / 1000) / 60);
+    if (secondTravelTime >= minutes) {
+      return true
+    }
+  }
+  return false
+}
+
 // Assume all this data is good for now
 eventRouter.post("/proposeEvent", async (req: Request, res: Response) => {
+  console.log("req.body", req.body);
   try {
     const { event, podId } = req.body
 
@@ -136,17 +227,15 @@ eventRouter.post("/proposeEvent", async (req: Request, res: Response) => {
     }
 
     // Determine the next event and previous event in the schedule
+    const { previousEvent, nextEvent } = getPreviousAndNextEvent(event, events);
 
     // Determine the travel time between those events and the proposed event
-
-
+    return res.json({ isConflicting: await determineTravelTimeConflicts(event, previousEvent, nextEvent) })
 
   } catch (err) {
     console.error(err)
     res.status(500).json({ message: "Server Error" })
   }
-  const data = req.body
-  res.json({ message: "you're good" })
 })
 
 eventRouter.get(

@@ -68,6 +68,7 @@ podsRouter.get(
 );
 
 export const getPodEvents = async (podId: number) => {
+  console.log("podId in getPodEvents", podId)
   const pod = await Pod.query()
     .findOne({ "pods.id": podId })
     .withGraphFetched("members");
