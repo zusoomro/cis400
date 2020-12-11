@@ -100,6 +100,10 @@ eventRouter.get(
   }
 );
 
+eventRouter.get("/proposeEvent", async (req: Request, res: Response) => {
+  res.json({ message: "you're good" })
+})
+
 eventRouter.get(
   "/",
   [auth],
@@ -140,5 +144,9 @@ eventRouter.get(
     }
   }
 );
+
+
+
+
 
 export default eventRouter;

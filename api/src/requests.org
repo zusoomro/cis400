@@ -95,7 +95,6 @@ x-auth-token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0fSwiaWF0
 // Request duration: 0.009105s
 #+END_SRC
 
-
 * Events
 
 ** Get events for pod
@@ -189,4 +188,25 @@ x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0I
 #+END_SRC
 
 #+RESULTS:
+
+** Propose an event
+#+begin_src restclient
+GET http://localhost:8000/events/proposeEvent
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "message": "you're good"
+}
+// GET http://localhost:8000/events/proposeEvent
+// HTTP/1.1 200 OK
+// X-Powered-By: Express
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 25
+// ETag: W/"19-izLkDH8VmTf4HFlqClkBs+VpD/8"
+// Date: Fri, 11 Dec 2020 05:41:40 GMT
+// Connection: keep-alive
+// Request duration: 0.013784s
+#+END_SRC
 
