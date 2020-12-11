@@ -1,8 +1,8 @@
 import { BebasNeue_400Regular, useFonts } from "@expo-google-fonts/bebas-neue";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { AppLoading } from "expo";
-import * as SecureStore from "expo-secure-store";
-import React, { useEffect } from "react";
+
+import React, { useEffect, useRef, useState } from "react";
 import "react-native-gesture-handler";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { getApiKey, loadToken, loadUser } from "./src/authSlice";
@@ -24,7 +24,7 @@ export default function App() {
   );
 }
 
-const ContextApp = () => {
+const ContextApp = ({ navigation }) => {
   const userToken = useSelector((state: RootState) => state.auth.token);
   const [fontsLoaded] = useFonts({ BebasNeue_400Regular });
   const dispatch = useDispatch();

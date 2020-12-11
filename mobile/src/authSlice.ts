@@ -65,6 +65,7 @@ export const loadToken = createAsyncThunk(
 
 export const login = createAsyncThunk("auth/login", async (data, api) => {
   try {
+    console.log(apiUrl + "/users/login")
     const res = await fetch(apiUrl + "/users/login", {
       method: "POST",
       headers: {
@@ -85,7 +86,7 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
 
     return json;
   } catch (ex) {
-    console.log(`error creating new user`, ex);
+    console.log(`error logging in with this user`, ex);
     return api.rejectWithValue(ex.message);
   }
 });

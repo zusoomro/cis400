@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import ScheduleNavigator from "./events/ScheduleNavigator";
 import PodsNavigator from "./pods/PodsNavigator";
 import Settings from "./Settings";
 import LoginRegister from "./LoginRegister";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./configureStore";
+import { registerForPushNotificationsAsync } from "./pushNotifications/pushNotifications";
+import { setPushToken } from "./pushNotifications/pushNotificationsSlice";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 
@@ -22,7 +33,40 @@ const TabNavigator = () => {
   const authenticated = useSelector(
     (state: RootState) => state.auth.authenticated
   );
-  console.log("authenticated", authenticated);
+  const [notification, setNotification] = useState<Notification>();
+  const notificationListener = useRef<
+    ReturnType<typeof Notifications.addNotificationReceivedListener>
+  >();
+  const responseListener = useRef();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>
+      dispatch(setPushToken(token))
+    );
+
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log("We received a notification with this data", notification);
+
+        setNotification(notification);
+      }
+    );
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        navigation.navigate("ModifyEvent");
+        console.log(response);
+      }
+    );
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, []);
 
   return (
     <Tab.Navigator

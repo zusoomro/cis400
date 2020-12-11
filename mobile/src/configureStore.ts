@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import auth from "./authSlice";
 import pods from "./pods/podSlice";
+import push from './pushNotifications/pushNotificationsSlice'
 
 const rootReducer = combineReducers({
   auth,
   pods,
+  push,
 });
 
 const store = configureStore({

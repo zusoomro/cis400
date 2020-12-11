@@ -95,7 +95,6 @@ x-auth-token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0fSwiaWF0
 // Request duration: 0.009105s
 #+END_SRC
 
-
 * Events
 
 ** Get events for pod
@@ -189,4 +188,7 @@ x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0I
 #+END_SRC
 
 #+RESULTS:
+
+* Directions API
+
 
