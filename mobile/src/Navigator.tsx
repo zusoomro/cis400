@@ -10,6 +10,7 @@ import { RootState } from "./configureStore";
 import { registerForPushNotificationsAsync } from "./pushNotifications/pushNotifications";
 import { setPushToken } from "./pushNotifications/pushNotificationsSlice";
 import * as Notifications from "expo-notifications";
+import * as RootNavigation from './rootNavigation'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -57,7 +58,7 @@ const TabNavigator = () => {
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current = Notifications.addNotificationResponseReceivedListener(
       (response) => {
-        navigation.navigate("ModifyEvent");
+        RootNavigation.navigate("ModifyEvent", {});
         console.log(response);
       }
     );
@@ -107,31 +108,31 @@ const TabNavigator = () => {
           />
         </React.Fragment>
       ) : (
-        <React.Fragment>
-          <Tab.Screen
-            name="Login"
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="ios-people" color={color} size={size} />
-              ),
-              tabBarVisible: false,
-            }}
-          >
-            {(props) => <LoginRegister isLogin={true} {...props} />}
-          </Tab.Screen>
-          <Tab.Screen
-            name="Register"
-            options={{
-              tabBarIcon: ({ color, size }) => (
-                <Ionicons name="ios-people" color={color} size={size} />
-              ),
-              tabBarVisible: false,
-            }}
-          >
-            {(props) => <LoginRegister isLogin={false} {...props} />}
-          </Tab.Screen>
-        </React.Fragment>
-      )}
+          <React.Fragment>
+            <Tab.Screen
+              name="Login"
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="ios-people" color={color} size={size} />
+                ),
+                tabBarVisible: false,
+              }}
+            >
+              {(props) => <LoginRegister isLogin={true} {...props} />}
+            </Tab.Screen>
+            <Tab.Screen
+              name="Register"
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="ios-people" color={color} size={size} />
+                ),
+                tabBarVisible: false,
+              }}
+            >
+              {(props) => <LoginRegister isLogin={false} {...props} />}
+            </Tab.Screen>
+          </React.Fragment>
+        )}
     </Tab.Navigator>
   );
 };

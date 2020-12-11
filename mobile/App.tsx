@@ -8,8 +8,10 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import { getApiKey, loadToken, loadUser } from "./src/authSlice";
 import store, { RootState } from "./src/configureStore";
 import TabNavigator from "./src/Navigator";
+import { navigationRef } from './src/rootNavigation'
 
 export default function App() {
+
   return (
     <Provider store={store}>
       <NavigationContainer
@@ -17,6 +19,7 @@ export default function App() {
           ...DefaultTheme,
           colors: { ...DefaultTheme.colors, primary: "#667EEA" },
         }}
+        ref={navigationRef}
       >
         <ContextApp />
       </NavigationContainer>
@@ -24,7 +27,7 @@ export default function App() {
   );
 }
 
-const ContextApp = ({ navigation }) => {
+const ContextApp = () => {
   const userToken = useSelector((state: RootState) => state.auth.token);
   const [fontsLoaded] = useFonts({ BebasNeue_400Regular });
   const dispatch = useDispatch();
