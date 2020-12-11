@@ -10,15 +10,15 @@ export const setupPushNotifications = async (notificationListener, responseListe
   // This listener is fired whenever a notification is received while the app is foregrounded
   notificationListener.current = Notifications.addNotificationReceivedListener(
     (notification) => {
-      console.log("We received a notification with this data", notification);
+      // console.log("We received a notification with this data", notification);
     }
   );
 
   // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
   responseListener.current = Notifications.addNotificationResponseReceivedListener(
     (response) => {
-      RootNavigation.navigate("ModifyEvent", {});
-      console.log(response);
+      RootNavigation.navigate("ModifyEvent", { eventId: 1 });
+      //       console.log(response);
     }
   );
 
@@ -52,14 +52,13 @@ export const registerForPushNotificationsAsync = async () => {
 export async function sendPushNotification(
   expoPushToken: string,
   eventId: number,
-  event: Event
 ) {
   const message = {
     to: expoPushToken,
     sound: "default",
     title: "You have a new conflicting event!",
     body: "View your schedule and remove the conflict to resolve the schedule.",
-    data: { eventId, event },
+    data: { eventId },
   };
 
   await fetch("https://exp.host/--/api/v2/push/send", {

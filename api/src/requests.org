@@ -189,6 +189,40 @@ x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0I
 
 #+RESULTS:
 
+** Get event with id
+#+begin_src restclient
+GET http://localhost:8000/events/event/1
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "event": {
+    "id": 1,
+    "ownerId": 1,
+    "formattedAddress": "3934 Pine St, Philadelphia, PA 19104, USA",
+    "start_time": "2020-11-13T03:10:33.447Z",
+    "end_time": "2020-11-13T04:10:33.447Z",
+    "notes": "Bike ride time.",
+    "name": "Go for a bike ride",
+    "lat": 39.95034599999999,
+    "lng": -75.201981,
+    "repeat": "weekly"
+  }
+}
+// GET http://localhost:8000/events/event/1
+// HTTP/1.1 200 OK
+// X-Powered-By: Express
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 284
+// ETag: W/"11c-Ewl44kPS9YyVH0KSbI8aqGH9bSk"
+// Date: Fri, 11 Dec 2020 04:28:01 GMT
+// Connection: keep-alive
+// Request duration: 0.008280s
+#+END_SRC
+
+** Get all events
+
 * Directions API
 
 
