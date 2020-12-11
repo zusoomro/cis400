@@ -60,7 +60,7 @@
     "react-test-renderer": "^17.0.1",
     "redux": "^4.0.5",
     "ts-node": "^9.0.0",
-    "yup": "^0.31.0"
+    "yup": "^0.31.1"
   },
   "devDependencies": {
     "@testing-library/jest-native": "^3.4.3",

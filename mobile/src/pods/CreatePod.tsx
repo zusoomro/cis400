@@ -7,6 +7,7 @@ import apiUrl from "../config";
 import { setPod as reduxSetPod } from "./podSlice";
 import sharedStyles from "../sharedStyles";
 import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
 
 interface Pod {
   id: number;
@@ -40,16 +41,35 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
       ) : (
         <Formik
           initialValues={{ podname: "" }}
+          validationSchema={validatePodSchema}
           onSubmit={async (values) => {
             const res: Pod = await createPodOnSubmit(values, invitees);
-            if (res) {
-              dispatch(reduxSetPod(res));
-              setPod(res);
+            const json = await res.json();
+            if (res.status == 400) {
+              console.log(
+                "pod creation unsuccessful. received error message:",
+                json.message
+              );
+            } else {
+              console.log("pods creation successful");
+              const pod = json;
+              if (pod) {
+                dispatch(reduxSetPod(pod));
+                setPod(pod);
+              }
+              navigation.navigate("PodsHomeScreen", { pod: pod });
             }
-            navigation.navigate("PodsHomeScreen", { pod: res });
           }}
         >
-          {({ handleChange, handleBlur, handleSubmit, values }) => (
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            isValid,
+            touched,
+          }) => (
             <View>
               <Text style={sharedStyles.inputLabelText}>Pod Name</Text>
               <TextInput
@@ -59,14 +79,21 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
                 placeholder="The Homies"
                 style={sharedStyles.input}
               />
+              {errors.podname && touched.podname && (
+                <Text style={sharedStyles.inputError}>{errors.podname}</Text>
+              )}
               <Button
                 title="Invite Users to Pod"
                 onPress={() => {
-                  navigation.navigate("InviteUsers", { caller: "CreatePod" });
+                  navigation.navigate("InviteUsers");
                   return;
                 }}
               />
-              <Button onPress={handleSubmit} title="Submit" />
+              <Button
+                onPress={handleSubmit}
+                title="Submit"
+                disabled={!isValid}
+              />
             </View>
           )}
         </Formik>
@@ -86,12 +113,19 @@ const createPodOnSubmit = async (values, invitees) => {
       },
       body: JSON.stringify(data),
     });
-    const pod = await res.json();
-    return pod;
+    return res;
   } catch (error) {
     console.log(`error creating pod`, error);
     return null;
   }
+};
+
+const validatePodSchema = () => {
+  return Yup.object().shape({
+    podname: Yup.string()
+      .min(3, ({ min }) => "Pod name must be at least 3 characters")
+      .required("Pod name required"),
+  });
 };
 
 const styles = StyleSheet.create({
