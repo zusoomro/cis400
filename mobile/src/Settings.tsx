@@ -85,7 +85,7 @@ const Settings: React.FC = () => {
       />
       <Button
         title="Send push notification"
-        onPress={() => sendPushNotification(token)}
+        onPress={() => sendPushNotification(token, 0, {})}
       />
       <Text
         style={{
