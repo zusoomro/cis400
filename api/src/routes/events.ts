@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import Event from "../../models/Event";
 import auth, { AuthRequest } from "../authMiddleware";
 import Pod from "../../models/Pod";
+import { getPodEvents } from "./pods";
 
 let eventRouter = express.Router();
 
@@ -100,7 +101,51 @@ eventRouter.get(
   }
 );
 
-eventRouter.get("/proposeEvent", async (req: Request, res: Response) => {
+type proposalResponseSchema = {
+  conflictingEvents: Event[];
+}
+
+const getProposedEventsConflictingEvents = (proposedEvent: Event, existingEvents: Event[]) => {
+  const endpointTimes: Date[] = []
+
+  existingEvents.forEach((event) => {
+    endpointTimes.push(event.start_time)
+    endpointTimes.push(event.end_time)
+  })
+
+  for (const time of endpointTimes) {
+    if (time >= proposedEvent.start_time && time <= proposedEvent.end_time) {
+      return true
+    }
+  }
+
+  return false
+}
+
+// Assume all this data is good for now
+eventRouter.post("/proposeEvent", async (req: Request, res: Response) => {
+  try {
+    const { event, podId } = req.body
+
+    // Determine if there are any immediately conflicting events
+    const events: Event[] = await getPodEvents(podId);
+
+    // If there are immediately conflicting events, return them
+    if (getProposedEventsConflictingEvents(event, events)) {
+      return res.json({ isConflicting: true })
+    }
+
+    // Determine the next event and previous event in the schedule
+
+    // Determine the travel time between those events and the proposed event
+
+
+
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ message: "Server Error" })
+  }
+  const data = req.body
   res.json({ message: "you're good" })
 })
 
