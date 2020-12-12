@@ -13,7 +13,7 @@ interface Props {
   onPress: () => void;
   style?: StyleProp<any>;
   textStyle?: StyleProp<any>;
-  testID?: string
+  testID?: string;
 }
 
 const Button: React.FC<Props> = ({
@@ -22,15 +22,19 @@ const Button: React.FC<Props> = ({
   onPress,
   style,
   textStyle,
-  testID
+  testID,
 }) => {
   return (
-    <TouchableOpacity testID={testID} onPress={onPress} style={[styles.button, style]}>
+    <TouchableOpacity
+      testID={testID}
+      onPress={onPress}
+      style={[styles.button, style]}
+    >
       {loading ? (
         <ActivityIndicator />
       ) : (
-          <Text style={[styles.buttonText, textStyle]}>{title}</Text>
-        )}
+        <Text style={[styles.buttonText, textStyle]}>{title}</Text>
+      )}
     </TouchableOpacity>
   );
 };

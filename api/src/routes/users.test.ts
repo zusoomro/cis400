@@ -3,7 +3,6 @@ import request from "supertest";
 import Knex from "knex";
 import initializeDb from "../initializeDb";
 
-
 let knex: Knex;
 
 beforeEach(async () => {
@@ -15,7 +14,7 @@ beforeEach(async () => {
 afterEach(async (done) => {
   await knex.destroy();
   done();
-})
+});
 
 describe("the users api", () => {
   describe("the get all users route", () => {
@@ -90,7 +89,6 @@ describe("the users api", () => {
   });
 
   describe("The login route", () => {
-
     it("returns an error when the password is wrong", async () => {
       const res = await request(app)
         .post("/users/login")
@@ -104,7 +102,7 @@ describe("the users api", () => {
       const body = res.body;
 
       expect(body.message).toBeTruthy();
-    })
+    });
 
     it("returns an error when the user doesn't exist", async () => {
       const res = await request(app)
@@ -122,7 +120,6 @@ describe("the users api", () => {
     });
 
     it("allows us to login after registering", async () => {
-
       const loginRes = await request(app)
         .post("/users/login")
         .send({
@@ -135,7 +132,5 @@ describe("the users api", () => {
 
       expect(loginBody.token).toBeTruthy();
     });
-
-
   });
 });
