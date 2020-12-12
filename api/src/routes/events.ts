@@ -138,7 +138,7 @@ const getPreviousAndNextEvent = (proposedEvent: Event, events: Event[]) => {
   return { previousEvent, nextEvent }
 }
 
-const getTravelTime = async (firstEvent: Event, secondEvent: Event) => {
+export const getTravelTime = async (firstEvent: Event, secondEvent: Event) => {
   console.log('json to send', JSON.stringify({
     locations: [
       {
