@@ -92,13 +92,13 @@ const LoginRegister: React.FC<AuthComponentProps> = ({
               {loading ? (
                 <ActivityIndicator />
               ) : (
-                <Button
-                  accessibilityLabel="Submit"
-                  style={{ backgroundColor: "#667EEA" }}
-                  onPress={handleSubmit}
-                  title={isLogin ? "Login" : "Register"}
-                />
-              )}
+                  <Button
+                    testID="Submit"
+                    style={{ backgroundColor: "#667EEA" }}
+                    onPress={handleSubmit}
+                    title={isLogin ? "Login" : "Register"}
+                  />
+                )}
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate(isLogin ? "Register" : "Login")
