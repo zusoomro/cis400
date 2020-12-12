@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import store from "./configureStore";
-import LoginRegister from './LoginRegister'
+import LoginRegister from "./LoginRegister";
 import { render, fireEvent, act } from "@testing-library/react-native";
 import { register } from "./authSlice";
 import configureStore from "redux-mock-store";
