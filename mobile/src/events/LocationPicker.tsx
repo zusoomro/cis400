@@ -9,7 +9,6 @@ export interface Place {
   latValue: number;
   lngValue: number;
 }
-
 interface LocationProps {
   latFieldName: string; // Formik Field Name
   lngFieldName: string;
