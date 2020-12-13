@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+import fetch from "node-fetch";
 import express, { Request, Response } from "express";
 import Event from "../../models/Event";
 import auth, { AuthRequest } from "../authMiddleware";
@@ -104,99 +104,144 @@ eventRouter.get(
 
 type proposalResponseSchema = {
   conflictingEvents: Event[];
+};
+
+class Endpoint {
+  time: Date;
+  event: Event;
+
+  constructor(time: Date, event: Event) {
+    this.time = time;
+    this.event = event;
+  }
 }
 
-const getProposedEventsConflictingEvents = (proposedEvent: Event, existingEvents: Event[]) => {
-  const endpointTimes: Date[] = []
+const getProposedEventsConflictingEvents = (
+  proposedEvent: Event,
+  existingEvents: Event[]
+) => {
+  const endpointTimes: Endpoint[] = [];
+  const eventsAdded = new Set();
+  const conflictingEvents = [];
 
   existingEvents.forEach((event) => {
-    endpointTimes.push(event.start_time)
-    endpointTimes.push(event.end_time)
-  })
+    endpointTimes.push(new Endpoint(event.start_time, event));
+    endpointTimes.push(new Endpoint(event.end_time, event));
+  });
 
-  for (const time of endpointTimes) {
-    if (time >= proposedEvent.start_time && time <= proposedEvent.end_time) {
-      return true
+  for (const endpoint of endpointTimes) {
+    if (
+      endpoint.time >= proposedEvent.start_time &&
+      endpoint.time <= proposedEvent.end_time &&
+      !eventsAdded.has(endpoint.event.id)
+    ) {
+      conflictingEvents.push(endpoint.event);
+      eventsAdded.add(endpoint.event.id);
     }
   }
 
-  return false
-}
+  return conflictingEvents;
+};
 
 const getPreviousAndNextEvent = (proposedEvent: Event, events: Event[]) => {
   let previousEvent: Event | undefined = undefined;
   let nextEvent: Event | undefined = undefined;
 
   for (const event of events) {
-    if (event.end_time <= proposedEvent.start_time && (previousEvent == undefined || event.end_time >= previousEvent.end_time)) {
-      previousEvent = event
-    } else if (event.start_time >= proposedEvent.end_time && (nextEvent == undefined || event.start_time <= nextEvent.start_time)) {
-      nextEvent = event
+    if (
+      event.end_time <= proposedEvent.start_time &&
+      (previousEvent == undefined || event.end_time >= previousEvent.end_time)
+    ) {
+      previousEvent = event;
+    } else if (
+      event.start_time >= proposedEvent.end_time &&
+      (nextEvent == undefined || event.start_time <= nextEvent.start_time)
+    ) {
+      nextEvent = event;
     }
   }
 
-  return { previousEvent, nextEvent }
-}
+  return { previousEvent, nextEvent };
+};
 
 export const getTravelTime = async (firstEvent: Event, secondEvent: Event) => {
-  console.log('json to send', JSON.stringify({
-    locations: [
-      {
-        latLng: {
-          lat: firstEvent.lat,
-          lng: firstEvent.lng
-        }
-      },
-      {
-        latLng: {
-          lat: secondEvent.lat,
-          lng: secondEvent.lng
-        }
-      }
-    ]
-  }))
-  const res = await fetch(`http://www.mapquestapi.com/directions/v2/route?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  console.log(
+    "json to send",
+    JSON.stringify({
       locations: [
         {
           latLng: {
             lat: firstEvent.lat,
-            lng: firstEvent.lng
-          }
+            lng: firstEvent.lng,
+          },
         },
         {
           latLng: {
             lat: secondEvent.lat,
-            lng: secondEvent.lng
-          }
-        }
-      ]
+            lng: secondEvent.lng,
+          },
+        },
+      ],
     })
-  })
+  );
+  const res = await fetch(
+    `http://www.mapquestapi.com/directions/v2/route?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        locations: [
+          {
+            latLng: {
+              lat: firstEvent.lat,
+              lng: firstEvent.lng,
+            },
+          },
+          {
+            latLng: {
+              lat: secondEvent.lat,
+              lng: secondEvent.lng,
+            },
+          },
+        ],
+      }),
+    }
+  );
 
   // const travelTime = (await res.json()).route.time
-  console.log('res', res)
-  const text = await res.text()
+  console.log("res", res);
+  const text = await res.text();
   // const json = await res.json()
-  console.log('test response', text)
+  console.log("test response", text);
 
-  const travelTime = 2
+  const travelTime = 2;
 
-  return travelTime
+  return travelTime;
 };
 
-const determineTravelTimeConflicts = async (proposedEvent: Event, previousEvent: Event | undefined, nextEvent: Event | undefined) => {
+const determineTravelTimeConflicts = async (
+  proposedEvent: Event,
+  previousEvent: Event | undefined,
+  nextEvent: Event | undefined
+) => {
+  const conflictingEvents: Event[] = [];
+  const conflictingBuffers: Buffer[] = [];
+
   // Travel time is in minutes
   if (previousEvent) {
     const firstTravelTime = await getTravelTime(previousEvent, proposedEvent);
     var diff = Math.abs(+previousEvent.end_time - +proposedEvent.start_time);
-    var minutes = Math.floor((diff / 1000) / 60);
+    var minutes = Math.floor(diff / 1000 / 60);
     if (firstTravelTime >= minutes) {
-      return true
+      conflictingEvents.push(previousEvent);
+      conflictingBuffers.push({
+        firstEventId: previousEvent.id,
+        secondEventId: proposedEvent.id,
+        availableTime: minutes,
+        travelTime: firstTravelTime,
+      });
     }
   }
 
@@ -204,39 +249,65 @@ const determineTravelTimeConflicts = async (proposedEvent: Event, previousEvent:
   if (nextEvent) {
     const secondTravelTime = await getTravelTime(proposedEvent, nextEvent);
     var diff = Math.abs(+proposedEvent.end_time - +nextEvent.start_time);
-    var minutes = Math.floor((diff / 1000) / 60);
+    var minutes = Math.floor(diff / 1000 / 60);
     if (secondTravelTime >= minutes) {
-      return true
+      conflictingEvents.push(nextEvent);
+      conflictingBuffers.push({
+        firstEventId: proposedEvent.id,
+        secondEventId: nextEvent.id,
+        availableTime: minutes,
+        travelTime: secondTravelTime,
+      });
     }
   }
-  return false
-}
+
+  return {
+    isConflicting: conflictingEvents.length ? true : false,
+    conflictingEvents,
+    conflictingBuffers,
+  };
+};
+
+type Buffer = {
+  firstEventId: number;
+  secondEventId: number;
+  availableTime: number;
+  travelTime: number;
+};
 
 // Assume all this data is good for now
 eventRouter.post("/proposeEvent", async (req: Request, res: Response) => {
   console.log("req.body", req.body);
   try {
-    const { event, podId } = req.body
+    const { event, podId } = req.body;
 
     // Determine if there are any immediately conflicting events
     const events: Event[] = await getPodEvents(podId);
 
+    let conflictingEvents = getProposedEventsConflictingEvents(event, events);
+    let conflictingBuffers: Buffer[] = [];
+
     // If there are immediately conflicting events, return them
-    if (getProposedEventsConflictingEvents(event, events)) {
-      return res.json({ isConflicting: true })
+    if (conflictingEvents.length) {
+      return res.json({
+        isConficting: true,
+        conflictingEvents,
+        conflictingBuffers,
+      });
     }
 
     // Determine the next event and previous event in the schedule
     const { previousEvent, nextEvent } = getPreviousAndNextEvent(event, events);
 
     // Determine the travel time between those events and the proposed event
-    return res.json({ isConflicting: await determineTravelTimeConflicts(event, previousEvent, nextEvent) })
-
+    return res.json(
+      await determineTravelTimeConflicts(event, previousEvent, nextEvent)
+    );
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ message: "Server Error" })
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
   }
-})
+});
 
 eventRouter.get(
   "/",
@@ -278,9 +349,5 @@ eventRouter.get(
     }
   }
 );
-
-
-
-
 
 export default eventRouter;
