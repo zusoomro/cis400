@@ -1,5 +1,11 @@
 import React from "react";
-import { Button, TouchableOpacity, Modal, StyleSheet, Text, View } from "react-native";
+import {
+  TouchableOpacity,
+  Modal,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import Event from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
@@ -30,31 +36,25 @@ export const EventConflictModal: React.FC<Props> = ({
     <Modal animationType="none" visible={modalVisible} transparent={true}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <View style= {{ padding: 15}}>
-          <Text style={styles.title}> Event Conflicts</Text>
-          <Text>This event will conflict with Event it conflicst with</Text>
-          {/* SHOW CONFLICITNG EVENTS */}
-          <Text style={{ marginVertical: 10}}>Suggested times</Text>
+          <View style={{ padding: 15 }}>
+            <Text style={styles.title}> Event Conflicts</Text>
+            <Text>This event will conflict with Event it conflicst with</Text>
+            {/* SHOW CONFLICITNG EVENTS */}
+            <Text style={{ marginVertical: 10 }}>Suggested times</Text>
           </View>
 
-          <TouchableOpacity 
-            style={styles.modalButton}
-            onPress={() => {}}>
-            <Text style={styles.modalButtonText}>
-              Choose a Suggested Time
-              </Text>
+          <TouchableOpacity style={styles.modalButton} onPress={() => {}}>
+            <Text style={styles.modalButtonText}>Choose a Suggested Time</Text>
           </TouchableOpacity>
-          
+
           <TouchableOpacity
             onPress={() => {
               setModalVisible(false);
             }}
             style={styles.modalButton}
           >
-            <Text style={styles.modalButtonText}>
-              Back To Editing
-            </Text>
-            </TouchableOpacity>
+            <Text style={styles.modalButtonText}>Back To Editing</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               if (existingEvent) {
@@ -69,9 +69,7 @@ export const EventConflictModal: React.FC<Props> = ({
             }}
             style={styles.modalButton}
           >
-            <Text style={styles.cancelModalButtonText}>
-              Schedule Event
-            </Text>
+            <Text style={styles.cancelModalButtonText}>Schedule Event</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -121,5 +119,5 @@ const styles = StyleSheet.create({
     margin: 8,
     fontSize: 18,
     color: "#FF0000",
-  }
+  },
 });
