@@ -127,7 +127,6 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
   const handleSearch = (text: string) => {
     const formattedQuery = text.toLowerCase();
     const filteredData = tempData.filter((user: User) => {
-      console.log("user", user);
       return user.email.includes(formattedQuery);
     });
     setUsers(filteredData);
