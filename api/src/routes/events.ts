@@ -85,6 +85,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     .where("id", eventId);
 });
 
+
 eventRouter.get(
   "/apiKey",
   [auth],

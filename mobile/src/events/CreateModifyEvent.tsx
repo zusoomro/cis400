@@ -183,6 +183,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 title="Delete"
                 style={{ margin: 0 }}
               />
+
             )}
             {modalVisible && event && (
               <DeleteEventModal
@@ -192,7 +193,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               />
             )}
           </View>
-        )}
+        )}   
       </Formik>
     </ScrollView>
   );
