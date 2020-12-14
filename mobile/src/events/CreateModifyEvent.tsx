@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { ScrollView, TextInput, View, Text } from "react-native";
+import { ScrollView, TextInput, View, Text, SafeAreaView } from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import LocationPicker from "./LocationPicker";
@@ -14,9 +14,7 @@ import {
   proposeEvent,
   ProposedEventConflicts,
 } from "./eventsService";
-import { ConflictAction, eventConflictAlert } from "./eventConflicts";
-import { useSelector } from "react-redux";
-import { RootState } from "../configureStore";
+import { EventConflictModal } from "./EventConflictModal";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -36,12 +34,19 @@ type Props = {
 
 const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   const event = route?.params?.event;
-  const podId = useSelector((state: RootState) => state.pods.pods[0].id);
+  // const podId = useSelector((state: RootState) => state.pods.pods[0].id);
 
+  // TO DO -- DO THIS CORRECTLy
+  const podId = 1;
   // Start time = current time
-  const start_time = useState(new Date());
+  const [start_time, setStartTime] = useState(new Date());
   // End time = current time + 1 hour
-  const end_time = useState(new Date(Date.now() + 60 * 60 * 1000));
+  const [end_time, setEndTime] = useState(
+    new Date(Date.now() + 60 * 60 * 1000)
+  );
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [valuesOnSubmit, setValuesOnSubmit] = useState<Event>();
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -70,8 +75,25 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               }
         }
         validationSchema={validateEventSchema}
-        onSubmit={(values) => {
-          handleEventSubmission(values as Event, event, navigation, podId);
+        onSubmit={async (values) => {
+          const conflicts: ProposedEventConflicts = (await proposeEvent(
+            values as Event,
+            podId
+          ))!;
+
+          // If event has conflicts, show the conflict modal
+          if (conflicts.isConflicting) {
+            setValuesOnSubmit(values as Event);
+            setModalVisible(true);
+            return;
+          }
+
+          if (event) {
+            modifyEventOnSubmit({ ...values, id: event.id } as Event);
+          } else {
+            createEventOnSubmit(values as Event);
+          }
+          navigation.navigate("ScheduleHomePage");
         }}
       >
         {({
@@ -154,44 +176,19 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
           </View>
         )}
       </Formik>
+      <SafeAreaView>
+        {modalVisible && (
+          <EventConflictModal
+            setModalVisible={setModalVisible}
+            modalVisible={modalVisible}
+            values={valuesOnSubmit!}
+            navigation={navigation}
+            existingEvent={event}
+          />
+        )}
+      </SafeAreaView>
     </ScrollView>
   );
-};
-
-const handleEventSubmission = async (
-  values: Event,
-  existingEvent: Event,
-  navigation,
-  podId: number
-) => {
-  let action: ConflictAction = ConflictAction.scheduleEvent;
-  // Check if event conflicts, and set action to the value chosen by the user
-  const conflicts: ProposedEventConflicts = (await proposeEvent(
-    values as Event,
-    podId
-  ))!;
-
-  if (conflicts.isConflicting) {
-    await eventConflictAlert().then((userChosenAction: ConflictAction) => {
-      action = userChosenAction;
-    });
-  }
-
-  // User wants to continue editing the event
-  if ((action as ConflictAction) === ConflictAction.editEvent) {
-    return;
-  }
-  // User wants to schedule event at suggested time
-  if ((action as ConflictAction) == ConflictAction.suggestedTime) {
-    // TO DO: SET VALUES TO SUGGESTED TIME
-  }
-
-  if (existingEvent) {
-    modifyEventOnSubmit({ ...values, id: existingEvent.id } as Event);
-  } else {
-    createEventOnSubmit(values as Event);
-  }
-  navigation.navigate("ScheduleHomePage");
 };
 
 export default CreateModifyEvent;
