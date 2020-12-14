@@ -11,12 +11,12 @@ import {
   validateEventSchema,
   createEventOnSubmit,
   modifyEventOnSubmit,
+  proposeEvent,
+  ProposedEventConflicts,
 } from "./eventsService";
-import {
-  ConflictAction,
-  eventConflictAlert,
-  isConflictingEvent,
-} from "./eventConflicts";
+import { ConflictAction, eventConflictAlert } from "./eventConflicts";
+import { useSelector } from "react-redux";
+import { RootState } from "../configureStore";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -28,19 +28,20 @@ export const repetitionValues = [
 
 type Props = {
   event?: Event;
-  navigation: Object;
+  navigation: {
+    navigate: (screen: string) => void;
+  };
   route: Object;
 };
 
 const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   const event = route?.params?.event;
+  const podId = useSelector((state: RootState) => state.pods.pods[0].id);
 
   // Start time = current time
-  const [start_time, setStartTime] = useState(new Date());
+  const start_time = useState(new Date());
   // End time = current time + 1 hour
-  const [end_time, setEndTime] = useState(
-    new Date(Date.now() + 60 * 60 * 1000)
-  );
+  const end_time = useState(new Date(Date.now() + 60 * 60 * 1000));
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -69,32 +70,8 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               }
         }
         validationSchema={validateEventSchema}
-        onSubmit={async (values) => {
-          let action: ConflictAction = ConflictAction.scheduleEvent;
-          // Check if event conflicts, and set action to the value chosen by the user
-          if (isConflictingEvent()) {
-            await eventConflictAlert().then(
-              (userChosenAction: ConflictAction) => {
-                action = userChosenAction;
-              }
-            );
-          }
-
-          // User wants to continue editing the event
-          if ((action as ConflictAction) === ConflictAction.editEvent) {
-            return;
-          }
-          // User wants to schedule event at suggested time
-          if ((action as ConflictAction) == ConflictAction.suggestedTime) {
-            // TO DO: SET VALUES TO SUGGESTED TIME
-          }
-
-          if (event) {
-            modifyEventOnSubmit({ ...values, id: event.id } as Event);
-          } else {
-            createEventOnSubmit(values as Event);
-          }
-          navigation.navigate("ScheduleHomePage");
+        onSubmit={(values) => {
+          handleEventSubmission(values as Event, event, navigation, podId);
         }}
       >
         {({
@@ -179,6 +156,42 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
       </Formik>
     </ScrollView>
   );
+};
+
+const handleEventSubmission = async (
+  values: Event,
+  existingEvent: Event,
+  navigation,
+  podId: number
+) => {
+  let action: ConflictAction = ConflictAction.scheduleEvent;
+  // Check if event conflicts, and set action to the value chosen by the user
+  const conflicts: ProposedEventConflicts = (await proposeEvent(
+    values as Event,
+    podId
+  ))!;
+
+  if (conflicts.isConflicting) {
+    await eventConflictAlert().then((userChosenAction: ConflictAction) => {
+      action = userChosenAction;
+    });
+  }
+
+  // User wants to continue editing the event
+  if ((action as ConflictAction) === ConflictAction.editEvent) {
+    return;
+  }
+  // User wants to schedule event at suggested time
+  if ((action as ConflictAction) == ConflictAction.suggestedTime) {
+    // TO DO: SET VALUES TO SUGGESTED TIME
+  }
+
+  if (existingEvent) {
+    modifyEventOnSubmit({ ...values, id: existingEvent.id } as Event);
+  } else {
+    createEventOnSubmit(values as Event);
+  }
+  navigation.navigate("ScheduleHomePage");
 };
 
 export default CreateModifyEvent;

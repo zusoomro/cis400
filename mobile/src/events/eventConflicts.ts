@@ -37,7 +37,3 @@ export const eventConflictAlert = () =>
       ]
     );
   });
-
-export const isConflictingEvent = (): boolean => {
-  return true;
-};
