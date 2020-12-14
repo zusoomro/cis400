@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import Event from "../types/Event";
-import { handleDeleteEvent } from "./eventsService"
+import { handleDeleteEvent } from "./eventsService";
 import { useDispatch } from "react-redux";
 
 type Props = {
@@ -22,7 +22,6 @@ const DeleteEventModal: React.FC<Props> = ({
   modalVisible,
   event,
 }) => {
-
   return (
     <Modal
       animationType="slide"
@@ -41,11 +40,9 @@ const DeleteEventModal: React.FC<Props> = ({
             <View style={styles.acceptRejectButtonContainer}>
               <TouchableHighlight
                 onPress={() => {
-                  handleDeleteEvent(event).then(
-                    () => {
-                      setModalVisible(false);
-                    }
-                  );
+                  handleDeleteEvent(event).then(() => {
+                    setModalVisible(false);
+                  });
                 }}
                 style={{ flex: 1 }}
               >

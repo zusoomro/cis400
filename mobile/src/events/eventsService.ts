@@ -6,7 +6,7 @@ import * as Yup from "yup";
 export const validateEventSchema = () => {
   return Yup.object().shape({
     name: Yup.string().required("Name required"),
-    formattedAddress: Yup.string().required("Location Required"),
+    //formattedAddress: Yup.string().required("Location Required"),
     // Make sure end_time > start_time
     start_time: Yup.date().required(),
     end_time: Yup.date().min(
@@ -100,7 +100,9 @@ export const modifyEventOnSubmit = async (
   }
 };
 
-export const handleDeleteEvent = async (values: Event): Promise<Event | null> => {
+export const handleDeleteEvent = async (
+  values: Event
+): Promise<Event | null> => {
   const data = { id: values.id };
   try {
     const res = await fetch(`http://localhost:8000/events`, {
