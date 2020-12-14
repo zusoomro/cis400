@@ -29,7 +29,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
 
   // variables used for search filtering
   const [query, setQuery] = useState("");
-  const [tempData, settempData] = useState([]);
+  const [tempData, setTempData] = useState([]);
 
   const caller = route?.params?.caller;
   const currUserId = useSelector((state) => state.auth.user.id);
@@ -57,8 +57,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
           }
         }
         setUsers(result);
-        settempData(result);
-        arrayHolder = [...result];
+        setTempData(result);
       } catch (err) {
         console.log("error loading users");
       }
