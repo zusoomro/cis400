@@ -9,11 +9,6 @@ import {
 
 import Event from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
-export enum ConflictAction {
-  editEvent, // Return to event page to edit event
-  suggestedTime, // Schedule the event with the suggested time
-  scheduleEvent, // Schedule the conflicting evet
-}
 
 type Props = {
   modalVisible: boolean;
@@ -38,15 +33,17 @@ export const EventConflictModal: React.FC<Props> = ({
         <View style={styles.modalView}>
           <View style={{ padding: 15 }}>
             <Text style={styles.title}> Event Conflicts</Text>
-            <Text>This event will conflict with Event it conflicst with</Text>
+            <Text>This event will conflict with Event it conflicts with</Text>
             {/* SHOW CONFLICITNG EVENTS */}
             <Text style={{ marginVertical: 10 }}>Suggested times</Text>
           </View>
 
+          {/* Choose a suggested time */}
           <TouchableOpacity style={styles.modalButton} onPress={() => {}}>
             <Text style={styles.modalButtonText}>Choose a Suggested Time</Text>
           </TouchableOpacity>
 
+          {/* Return to editing the event*/}
           <TouchableOpacity
             onPress={() => {
               setModalVisible(false);
@@ -55,6 +52,8 @@ export const EventConflictModal: React.FC<Props> = ({
           >
             <Text style={styles.modalButtonText}>Back To Editing</Text>
           </TouchableOpacity>
+
+          {/* schedule the event anyway */}
           <TouchableOpacity
             onPress={() => {
               if (existingEvent) {

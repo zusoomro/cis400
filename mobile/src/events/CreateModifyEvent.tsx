@@ -15,6 +15,7 @@ import {
   ProposedEventConflicts,
 } from "./eventsService";
 import { EventConflictModal } from "./EventConflictModal";
+import { fetchUserPod } from "./Schedule";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -34,10 +35,7 @@ type Props = {
 
 const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   const event = route?.params?.event;
-  // const podId = useSelector((state: RootState) => state.pods.pods[0].id);
 
-  // TO DO -- DO THIS CORRECTLy
-  const podId = 1;
   // Start time = current time
   const [start_time, setStartTime] = useState(new Date());
   // End time = current time + 1 hour
@@ -76,13 +74,19 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
         }
         validationSchema={validateEventSchema}
         onSubmit={async (values) => {
-          const conflicts: ProposedEventConflicts = (await proposeEvent(
-            values as Event,
-            podId
-          ))!;
+          const pod = await fetchUserPod();
+          console.log("pod id on submit", pod?.id);
 
-          // If event has conflicts, show the conflict modal
-          if (conflicts.isConflicting) {
+          // const conflicts: ProposedEventConflicts | false = pod != undefined && (await proposeEvent(
+          //   values as Event,
+          //   pod.id
+          // ))!;
+          const conflicts = {
+            isConflicting: true,
+          }
+
+          // If event is in a pod && If event has conflicts, show the conflict modal
+          if (conflicts && conflicts.isConflicting) {
             setValuesOnSubmit(values as Event);
             setModalVisible(true);
             return;
