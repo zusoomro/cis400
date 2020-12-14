@@ -122,9 +122,7 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
             <Text style={{ fontSize: 24, fontWeight: "600", marginBottom: 5 }}>
               {firstPod?.name ? firstPod.name : "Your Pod"}
             </Text>
-            <TouchableOpacity
-              onPress={() => navigation.navigate("ManageMembers")}
-            >
+            <TouchableOpacity onPress={() => navigation.navigate("PodMembers")}>
               <Text style={{ fontSize: 16, color: "#667EEA", marginBottom: 5 }}>
                 Manage Members
               </Text>

@@ -49,7 +49,7 @@ const PodsNavigator = () => {
         options={{ title: "Invite users" }}
       />
       <Stack.Screen
-        name="ManageMembers"
+        name="PodMembers"
         component={PodMembers}
         options={{ title: "Manage members" }}
       />

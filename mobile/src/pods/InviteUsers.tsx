@@ -15,6 +15,7 @@ import { List, ListItem, SearchBar } from "react-native-elements";
 import { useSelector } from "react-redux";
 import apiUrl from "../config";
 import sharedStyles from "../sharedStyles";
+import * as SecureStore from "expo-secure-store";
 
 interface User {
   id: number;
@@ -27,6 +28,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
   const [invitees, setInvitees] = useState([]);
   const [query, setQuery] = useState("");
 
+  const caller = route?.params?.caller;
   const currUserId = useSelector((state) => state.auth.user.id);
 
   React.useEffect(() => {
@@ -40,7 +42,17 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
         });
 
         const json = await res.json();
-        const result = json.filter((user) => user.id != currUserId);
+        let result = json.filter((user) => user.id != currUserId);
+        const pod = route?.params?.pod;
+        if (pod) {
+          const currMembers: Array<number> = [];
+          pod.members.forEach((member) => {
+            currMembers.push(member.id);
+          });
+          if (currMembers.length) {
+            result = result.filter((user) => !currMembers.includes(user.id));
+          }
+        }
         setUsers(result);
         arrayHolder = [...result];
       } catch (err) {
@@ -74,8 +86,39 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
     <UserRowItem title={item.email} user={item} />
   );
 
-  const handleInviteUsers = () => {
-    navigation.navigate("CreatePod", { invitees: invitees });
+  const handleInviteUsers = async () => {
+    if (caller) {
+      if (caller === "PodMembers") {
+        const pod = route?.params?.pod;
+        const data = {
+          inviteeIds: invitees,
+          pod: pod,
+        };
+
+        // make post request to /invites and send the invites
+        try {
+          const res = await fetch(`${apiUrl}/invites`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+              "x-auth-token": (await SecureStore.getItemAsync(
+                "wigo-auth-token"
+              ))!,
+            },
+            body: JSON.stringify(data),
+          });
+          const message = await res.json();
+          console.log("message", message);
+          navigation.navigate("PodMembers");
+        } catch (error) {
+          console.log(`error sending invites`, error);
+        }
+      } else if (caller === "CreatePod") {
+        navigation.navigate("CreatePod", { invitees: invitees });
+      } else {
+        console.log("error: i'm confused");
+      }
+    }
   };
 
   const searchFilterFunction = (text: string) => {
