@@ -1,14 +1,19 @@
 import React from "react";
 import {
   TouchableOpacity,
+  FlatList,
   Modal,
   StyleSheet,
+  StatusBar,
+  SafeAreaView,
   Text,
   View,
 } from "react-native";
+import moment from "moment";
 
 import Event from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
+import { ProposedEventConflicts } from "./eventsService";
 
 type Props = {
   modalVisible: boolean;
@@ -18,6 +23,7 @@ type Props = {
   navigation: {
     navigate: (screen: string) => void;
   };
+  conflicts: ProposedEventConflicts;
 };
 
 export const EventConflictModal: React.FC<Props> = ({
@@ -26,22 +32,49 @@ export const EventConflictModal: React.FC<Props> = ({
   values,
   existingEvent,
   navigation,
+  conflicts,
 }) => {
+
+  const ConflictEventRow = ({
+    title,
+    conflictEvent,
+  }: {
+    title: string;
+    conflictEvent: Event;
+  }) => (
+    <View>
+      <Text style={{textAlign:'center'}}>{title}: {moment(conflictEvent.start_time).format(" h:mm")}-{moment(conflictEvent.end_time).format(" h:mmA")}</Text>
+    </View>
+  );
+
+  const renderRow = ({ item }: { item: Event }) => (
+    <ConflictEventRow title={item.name} conflictEvent={item} />
+  );
+
+  console.log(conflicts);
+
   return (
     <Modal animationType="none" visible={modalVisible} transparent={true}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <View style={{ padding: 15 }}>
             <Text style={styles.title}> Event Conflicts</Text>
-            <Text>This event will conflict with Event it conflicts with</Text>
             {/* SHOW CONFLICITNG EVENTS */}
-            <Text style={{ marginVertical: 10 }}>Suggested times</Text>
+            <SafeAreaView style={[styles.container]}>
+              <FlatList
+                style={{flexGrow : 0}}
+                data={conflicts.conflictingEvents}
+                renderItem={renderRow}
+                keyExtractor={item => item.id.toString()}
+              />
+            </SafeAreaView>
+            {/* <Text style={{ marginVertical: 10 }}>Suggested times</Text> */}
           </View>
 
           {/* Choose a suggested time */}
-          <TouchableOpacity style={styles.modalButton} onPress={() => {}}>
+          {/* <TouchableOpacity style={styles.modalButton} onPress={() => {}}>
             <Text style={styles.modalButtonText}>Choose a Suggested Time</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           {/* Return to editing the event*/}
           <TouchableOpacity
@@ -77,6 +110,10 @@ export const EventConflictModal: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 0,
+    marginTop: StatusBar.currentHeight || 0,
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",

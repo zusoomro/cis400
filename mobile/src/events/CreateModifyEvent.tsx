@@ -45,6 +45,9 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [valuesOnSubmit, setValuesOnSubmit] = useState<Event>();
+  const [conflictValues, setConflictValues] = useState<
+    ProposedEventConflicts
+  >();
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -81,13 +84,30 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
           //   values as Event,
           //   pod.id
           // ))!;
-          const conflicts = {
-            isConflicting: true,
+          // FAKE DATA UNTIL CAN INTEGRATE WITH BACKENDN
+          const event1: Event = {
+            name: "Doctors Appointment",
+            id: 1,
+            start_time: new Date(),
+            end_time: new Date(Date.now() + 60 * 60 * 1000),
           }
+          const event2: Event = {
+            name:"Water Plants",
+            id: 2,
+            start_time: new Date(),
+            end_time: new Date(Date.now() + 60 * 60 * 1000),
+          }
+          
+          const conflicts: ProposedEventConflicts = {
+            isConflicting: true,
+            conflictingEvents: [event1, event2],
+            conflictingBuffers: [],
+          };
 
           // If event is in a pod && If event has conflicts, show the conflict modal
           if (conflicts && conflicts.isConflicting) {
             setValuesOnSubmit(values as Event);
+            setConflictValues(conflicts);
             setModalVisible(true);
             return;
           }
@@ -188,6 +208,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             values={valuesOnSubmit!}
             navigation={navigation}
             existingEvent={event}
+            conflicts={conflictValues!}
           />
         )}
       </SafeAreaView>
