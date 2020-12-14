@@ -85,6 +85,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     .where("id", eventId);
 });
 
+
 eventRouter.get(
   "/apiKey",
   [auth],
@@ -114,6 +115,16 @@ eventRouter.get(
     }
   }
 );
+
+eventRouter.delete("/", async (req: Request, res: Response) => {
+  const eventId = req.body.id;
+  console.log("eventid", eventId);
+
+  // const id = (req as AuthRequest).user.id;
+  const event = await Event.query().deleteById(eventId);
+  console.log("event", event);
+  res.json({ event });
+});
 
 eventRouter.get(
   "/:podId",

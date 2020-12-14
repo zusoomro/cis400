@@ -99,3 +99,24 @@ export const modifyEventOnSubmit = async (
     return null;
   }
 };
+
+export const handleDeleteEvent = async (values: Event): Promise<Event | null> => {
+  const data = { id: values.id };
+  try {
+    const res = await fetch(`http://localhost:8000/events`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": (await SecureStore.getItemAsync(
+          "wigo-auth-token"
+        )) as string,
+      },
+      body: JSON.stringify(data),
+    });
+    console.log("event deleted");
+    return await res.json();
+  } catch (error) {
+    console.log(`error deleting event`, error);
+    return null;
+  }
+};

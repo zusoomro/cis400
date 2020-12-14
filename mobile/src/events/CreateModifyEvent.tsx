@@ -7,11 +7,8 @@ import LocationPicker from "./LocationPicker";
 import DatePicker from "./DatePicker";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
-import {
-  validateEventSchema,
-  createEventOnSubmit,
-  modifyEventOnSubmit,
-} from "./eventsService";
+import { createEventOnSubmit, modifyEventOnSubmit, validateEventSchema} from "./eventsService";
+import DeleteEventModal from "./DeleteEventModal"
 import {
   ConflictAction,
   eventConflictAlert,
@@ -41,6 +38,8 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   const [end_time, setEndTime] = useState(
     new Date(Date.now() + 60 * 60 * 1000)
   );
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -174,8 +173,22 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               title="Save"
               style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
             />
+            {event && 
+              <Button
+                onPress={() => setModalVisible(true)}
+                title="Delete"
+                style={{ margin: 0 }}
+              />
+            }
+            {modalVisible && event && (
+              <DeleteEventModal
+                modalVisible={modalVisible}
+                event={event}
+                setModalVisible={setModalVisible}
+              />
+            )}
           </View>
-        )}
+        )}   
       </Formik>
     </ScrollView>
   );
