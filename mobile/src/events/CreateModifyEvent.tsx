@@ -7,8 +7,12 @@ import LocationPicker from "./LocationPicker";
 import DatePicker from "./DatePicker";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
-import { createEventOnSubmit, modifyEventOnSubmit, validateEventSchema} from "./eventsService";
-import DeleteEventModal from "./DeleteEventModal"
+import {
+  createEventOnSubmit,
+  modifyEventOnSubmit,
+  validateEventSchema,
+} from "./eventsService";
+import DeleteEventModal from "./DeleteEventModal";
 import {
   ConflictAction,
   eventConflictAlert,
@@ -173,13 +177,14 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               title="Save"
               style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
             />
-            {event && 
+            {event && (
               <Button
                 onPress={() => setModalVisible(true)}
                 title="Delete"
                 style={{ margin: 0 }}
               />
-            }
+
+            )}
             {modalVisible && event && (
               <DeleteEventModal
                 modalVisible={modalVisible}
