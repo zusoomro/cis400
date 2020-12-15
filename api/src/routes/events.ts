@@ -8,7 +8,7 @@ import moment from "moment";
 
 let eventRouter = express.Router();
 
-// Create an event 
+// Create an event
 eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   const {
     name,
@@ -49,7 +49,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
 });
 
-// Modify the event 
+// Modify the event
 eventRouter.put("/", [auth], async (req: Request, res: Response) => {
   const {
     name,
@@ -90,7 +90,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     .where("id", eventId);
 });
 
-// Get api key 
+// Get api key
 eventRouter.get(
   "/apiKey",
   [auth],

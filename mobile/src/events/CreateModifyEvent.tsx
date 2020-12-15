@@ -38,16 +38,20 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   const event: Event = route?.params?.event;
 
   // Start time = current time
-  const [start_time, setStartTime] = useState(event ? event.start_time : new Date());
+  const [start_time, setStartTime] = useState(
+    event ? event.start_time : new Date()
+  );
   // End time = current time + 1 hour
-  const [end_time, setEndTime] = useState(event ? event.end_time :
-    new Date(Date.now() + 60 * 60 * 1000)
+  const [end_time, setEndTime] = useState(
+    event ? event.end_time : new Date(Date.now() + 60 * 60 * 1000)
   );
 
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [conflictModalVisible, setConflictModalVisible] = useState(false);
   const [valuesOnSubmit, setValuesOnSubmit] = useState<Event>();
-  const [conflictValues, setConflictValues] = useState<ProposedEventConflicts>();
+  const [conflictValues, setConflictValues] = useState<
+    ProposedEventConflicts
+  >();
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -79,11 +83,9 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
         onSubmit={async (values) => {
           const pod = await fetchUserPod();
 
-          const conflicts: ProposedEventConflicts | false = pod != undefined && (await proposeEvent(
-            values as Event,
-            pod.id,
-            event,
-          ))!;
+          const conflicts: ProposedEventConflicts | false =
+            pod != undefined &&
+            (await proposeEvent(values as Event, pod.id, event))!;
 
           // If event is in a pod && If event has conflicts, show the conflict modal
           if (conflicts && conflicts.isConflicting) {
@@ -184,7 +186,6 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 title="Delete"
                 style={{ margin: 0 }}
               />
-
             )}
             {deleteModalVisible && event && (
               <DeleteEventModal
@@ -194,7 +195,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               />
             )}
           </View>
-        )}   
+        )}
       </Formik>
       <SafeAreaView>
         {conflictModalVisible && (

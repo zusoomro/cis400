@@ -28,9 +28,9 @@ type Props = {
 
 type ConflictingEvent = {
   event: Event;
-  // conflictBuffer will not be null if the event conflicts with the proposal due to buffers 
+  // conflictBuffer will not be null if the event conflicts with the proposal due to buffers
   conflictBuffer: ConflictBuffer | null;
-}
+};
 
 export const EventConflictModal: React.FC<Props> = ({
   conflictModalVisible,
@@ -40,16 +40,18 @@ export const EventConflictModal: React.FC<Props> = ({
   navigation,
   conflicts,
 }) => {
- 
   // Create conflicting events array from conflicts.conflictingEvents
-  const conflictingEvents: ConflictingEvent[] = 
-    conflicts.conflictingEvents.map((event: Event) => {
-      const conflictBuffer = conflicts.conflictingBuffers.find(buffer => buffer.otherEventId == event.id);
+  const conflictingEvents: ConflictingEvent[] = conflicts.conflictingEvents.map(
+    (event: Event) => {
+      const conflictBuffer = conflicts.conflictingBuffers.find(
+        (buffer) => buffer.otherEventId == event.id
+      );
       return {
         event: event,
         conflictBuffer: conflictBuffer ? conflictBuffer : null,
-      }
-    });
+      };
+    }
+  );
 
   const ConflictEventRow = ({
     title,
@@ -58,23 +60,36 @@ export const EventConflictModal: React.FC<Props> = ({
   }: {
     title: string;
     conflictEvent: Event;
-    conflictBuffer: ConflictingEvent | null;
+    conflictBuffer: ConflictBuffer | null;
   }) => (
-    <View style={{flexDirection: "row"}}>
-      <Text style={{fontWeight:"bold"}}>{title}:</Text>
-      <Text style={{textAlign:'center'}}>{moment(conflictEvent.start_time).format(" h:mm")}-{moment(conflictEvent.end_time).format(" h:mmA")}</Text>
-      {conflictBuffer && <Text style={styles.travelTimeText}> (Travel Time) </Text> }
+    <View style={{ flexDirection: "row" }}>
+      <Text style={{ fontWeight: "bold" }}>{title}:</Text>
+      <Text style={{ textAlign: "center" }}>
+        {moment(conflictEvent.start_time).format(" h:mm")}-
+        {moment(conflictEvent.end_time).format(" h:mmA")}
+      </Text>
+      {conflictBuffer && (
+        <Text style={styles.travelTimeText}> (Travel Time) </Text>
+      )}
     </View>
   );
 
   const renderRow = ({ item }: { item: ConflictingEvent }) => (
-    <ConflictEventRow title={item.event.name} conflictEvent={item.event} conflictBuffer = {item.conflictBuffer} />
+    <ConflictEventRow
+      title={item.event.name}
+      conflictEvent={item.event}
+      conflictBuffer={item.conflictBuffer}
+    />
   );
 
   console.log(conflicts);
 
   return (
-    <Modal animationType="none" visible={conflictModalVisible} transparent={true}>
+    <Modal
+      animationType="none"
+      visible={conflictModalVisible}
+      transparent={true}
+    >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <View style={{ padding: 15 }}>
@@ -82,10 +97,10 @@ export const EventConflictModal: React.FC<Props> = ({
             {/* SHOW CONFLICITNG EVENTS */}
             <SafeAreaView style={[styles.container]}>
               <FlatList
-                style={{flexGrow : 0}}
+                style={{ flexGrow: 0 }}
                 data={conflictingEvents}
                 renderItem={renderRow}
-                keyExtractor={item => item.event.id.toString()}
+                keyExtractor={(item) => item.event.id.toString()}
               />
             </SafeAreaView>
             {/* <Text style={{ marginVertical: 10 }}>Suggested times</Text> */}
@@ -155,7 +170,7 @@ const styles = StyleSheet.create({
   travelTimeText: {
     fontSize: 14,
     fontStyle: "italic",
-    color: "#4285F4"
+    color: "#4285F4",
   },
   title: {
     fontSize: 25,

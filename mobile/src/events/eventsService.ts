@@ -20,7 +20,7 @@ export interface ConflictBuffer {
   otherEventId: number;
   availableTime: number;
   travelTime: number;
-};
+}
 
 export interface ProposedEventConflicts {
   isConflicting: boolean;
@@ -31,7 +31,7 @@ export interface ProposedEventConflicts {
 export const proposeEvent = async (
   values: Event,
   podId: number,
-  existingEvent: Event,
+  existingEvent: Event
 ): Promise<ProposedEventConflicts | null> => {
   const data = {
     podId: podId,
