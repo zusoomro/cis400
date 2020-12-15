@@ -11,11 +11,6 @@ beforeEach(async () => {
   await knex.seed.run();
 });
 
-afterEach(async (done) => {
-  await knex.destroy();
-  done();
-});
-
 const basicEvents = [
   {
     id: 2,

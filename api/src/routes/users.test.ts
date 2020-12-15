@@ -80,7 +80,7 @@ describe("the users api", () => {
     it("returns an error when the user already exists", async () => {
       const res = await request(app)
         .post("/users")
-        .send({ email: "zulfi@wigo.com", password: "testtest" })
+        .send({ email: "zusoomro@seas.upenn.edu", password: "password" })
         .expect(400);
       const body = res.body;
 
@@ -89,26 +89,19 @@ describe("the users api", () => {
   });
 
   describe("The login route", () => {
-    beforeEach(async () => {
-      await request(app)
-        .post("/users")
-        .send({ email: "test@test.com", password: "password" })
-        .expect(200);
-    });
-
-    it("allows us to login after registering", async () => {
-      const loginRes = await request(app)
+    it("returns an error when the password is wrong", async () => {
+      const res = await request(app)
         .post("/users/login")
 
         .send({
-          email: "test@test.com",
-          password: "password",
+          email: "zusoomro@seas.upenn.edu",
+          password: "passwod",
         })
-        .expect(200);
+        .expect(400);
 
-      const loginBody = loginRes.body;
+      const body = res.body;
 
-      expect(loginBody.token).toBeTruthy();
+      expect(body.message).toBeTruthy();
     });
 
     it("returns an error when the user doesn't exist", async () => {
@@ -126,19 +119,18 @@ describe("the users api", () => {
       expect(body.message).toBeTruthy();
     });
 
-    it("returns an error when the password is wrong", async () => {
-      const res = await request(app)
+    it("allows us to login after registering", async () => {
+      const loginRes = await request(app)
         .post("/users/login")
-
         .send({
-          email: "test@test.com",
-          password: "passwod",
+          email: "zusoomro@seas.upenn.edu",
+          password: "password",
         })
-        .expect(400);
+        .expect(200);
 
-      const body = res.body;
+      const loginBody = loginRes.body;
 
-      expect(body.message).toBeTruthy();
+      expect(loginBody.token).toBeTruthy();
     });
   });
 });
