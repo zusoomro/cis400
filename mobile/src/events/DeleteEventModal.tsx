@@ -12,21 +12,21 @@ import { handleDeleteEvent } from "./eventsService";
 import { useDispatch } from "react-redux";
 
 type Props = {
-  modalVisible: boolean;
+  deleteModalVisible: boolean;
   event: Event;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeleteModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const DeleteEventModal: React.FC<Props> = ({
-  setModalVisible,
-  modalVisible,
+  deleteModalVisible,
+  setDeleteModalVisible,
   event,
 }) => {
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={modalVisible}
+      visible={deleteModalVisible}
       onRequestClose={() => {
         Alert.alert("Modal has been closed.");
       }}
@@ -41,7 +41,7 @@ const DeleteEventModal: React.FC<Props> = ({
               <TouchableHighlight
                 onPress={() => {
                   handleDeleteEvent(event).then(() => {
-                    setModalVisible(false);
+                    setDeleteModalVisible(false);
                   });
                 }}
                 style={{ flex: 1 }}
@@ -52,7 +52,7 @@ const DeleteEventModal: React.FC<Props> = ({
               </TouchableHighlight>
               <TouchableHighlight
                 onPress={() => {
-                  setModalVisible(false);
+                  setDeleteModalVisible(false);
                 }}
                 style={{ flex: 1, marginLeft: 10 }}
               >

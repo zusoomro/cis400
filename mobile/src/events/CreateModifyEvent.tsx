@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { ScrollView, TextInput, View, Text } from "react-native";
+import { ScrollView, TextInput, View, Text, SafeAreaView } from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import LocationPicker from "./LocationPicker";
@@ -10,14 +10,13 @@ import Event from "../types/Event";
 import {
   createEventOnSubmit,
   modifyEventOnSubmit,
+  proposeEvent,
+  ProposedEventConflicts,
   validateEventSchema,
 } from "./eventsService";
+import { EventConflictModal } from "./EventConflictModal";
+import { fetchUserPod } from "./Schedule";
 import DeleteEventModal from "./DeleteEventModal";
-import {
-  ConflictAction,
-  eventConflictAlert,
-  isConflictingEvent,
-} from "./eventConflicts";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -29,21 +28,30 @@ export const repetitionValues = [
 
 type Props = {
   event?: Event;
-  navigation: Object;
+  navigation: {
+    navigate: (screen: string) => void;
+  };
   route: Object;
 };
 
 const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
-  const event = route?.params?.event;
+  const event: Event = route?.params?.event;
 
   // Start time = current time
-  const [start_time, setStartTime] = useState(new Date());
+  const [start_time, setStartTime] = useState(
+    event ? event.start_time : new Date()
+  );
   // End time = current time + 1 hour
   const [end_time, setEndTime] = useState(
-    new Date(Date.now() + 60 * 60 * 1000)
+    event ? event.end_time : new Date(Date.now() + 60 * 60 * 1000)
   );
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [conflictModalVisible, setConflictModalVisible] = useState(false);
+  const [valuesOnSubmit, setValuesOnSubmit] = useState<Event>();
+  const [conflictValues, setConflictValues] = useState<
+    ProposedEventConflicts
+  >();
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -73,23 +81,18 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
         }
         validationSchema={validateEventSchema}
         onSubmit={async (values) => {
-          let action: ConflictAction = ConflictAction.scheduleEvent;
-          // Check if event conflicts, and set action to the value chosen by the user
-          if (isConflictingEvent()) {
-            await eventConflictAlert().then(
-              (userChosenAction: ConflictAction) => {
-                action = userChosenAction;
-              }
-            );
-          }
+          const pod = await fetchUserPod();
 
-          // User wants to continue editing the event
-          if ((action as ConflictAction) === ConflictAction.editEvent) {
+          const conflicts: ProposedEventConflicts | false =
+            pod != undefined &&
+            (await proposeEvent(values as Event, pod.id, event))!;
+
+          // If event is in a pod && If event has conflicts, show the conflict modal
+          if (conflicts && conflicts.isConflicting) {
+            setValuesOnSubmit(values as Event);
+            setConflictValues(conflicts);
+            setConflictModalVisible(true);
             return;
-          }
-          // User wants to schedule event at suggested time
-          if ((action as ConflictAction) == ConflictAction.suggestedTime) {
-            // TO DO: SET VALUES TO SUGGESTED TIME
           }
 
           if (event) {
@@ -179,22 +182,33 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             />
             {event && (
               <Button
-                onPress={() => setModalVisible(true)}
+                onPress={() => setDeleteModalVisible(true)}
                 title="Delete"
                 style={{ margin: 0 }}
               />
-
             )}
-            {modalVisible && event && (
+            {deleteModalVisible && event && (
               <DeleteEventModal
-                modalVisible={modalVisible}
+                deleteModalVisible={deleteModalVisible}
                 event={event}
-                setModalVisible={setModalVisible}
+                setDeleteModalVisible={setDeleteModalVisible}
               />
             )}
           </View>
-        )}   
+        )}
       </Formik>
+      <SafeAreaView>
+        {conflictModalVisible && (
+          <EventConflictModal
+            setConflictModalVisible={setConflictModalVisible}
+            conflictModalVisible={conflictModalVisible}
+            values={valuesOnSubmit!}
+            navigation={navigation}
+            existingEvent={event}
+            conflicts={conflictValues!}
+          />
+        )}
+      </SafeAreaView>
     </ScrollView>
   );
 };

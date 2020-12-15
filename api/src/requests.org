@@ -95,7 +95,6 @@ x-auth-token:  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0fSwiaWF0
 // Request duration: 0.009105s
 #+END_SRC
 
-
 * Events
 
 ** Get events for pod
@@ -189,4 +188,661 @@ x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxfSwiaWF0I
 #+END_SRC
 
 #+RESULTS:
+
+** Propose an event
+#+begin_src restclient
+POST http://localhost:8000/events/proposeEvent
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "message": "you're good"
+}
+// GET http://localhost:8000/events/proposeEvent
+// HTTP/1.1 200 OK
+// X-Powered-By: Express
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 25
+// ETag: W/"19-izLkDH8VmTf4HFlqClkBs+VpD/8"
+// Date: Fri, 11 Dec 2020 05:41:40 GMT
+// Connection: keep-alive
+// Request duration: 0.013784s
+#+END_SRC
+
+* Directions
+** Testing mapquest api
+#+begin_src restclient
+POST http://www.mapquestapi.com/directions/v2/route?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J
+Content-Type: "application/json"
+{"locations":[{"latLng":{"lat":39.9577557,"lng":-75.1590322}},{"latLng":{"lat":"39.95034599999999","lng":"-75.201981"}}]}}
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "route": {
+    "hasTollRoad": false,
+    "hasBridge": true,
+    "boundingBox": {
+      "lr": {
+        "lng": -75.158829,
+        "lat": 39.950516
+      },
+      "ul": {
+        "lng": -75.2033,
+        "lat": 39.960133
+      }
+    },
+    "distance": 3.669,
+    "hasTimedRestriction": false,
+    "hasTunnel": true,
+    "hasHighway": true,
+    "computedWaypoints": [],
+    "routeError": {
+      "errorCode": -400,
+      "message": ""
+    },
+    "formattedTime": "00:08:24",
+    "sessionId": "5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+    "hasAccessRestriction": false,
+    "realTime": 958,
+    "hasSeasonalClosure": false,
+    "hasCountryCross": false,
+    "fuelUsed": 0.22,
+    "legs": [
+      {
+        "hasTollRoad": false,
+        "hasBridge": true,
+        "destNarrative": "Proceed to 3934 PINE ST.",
+        "distance": 3.669,
+        "hasTimedRestriction": false,
+        "hasTunnel": true,
+        "hasHighway": true,
+        "index": 0,
+        "formattedTime": "00:08:24",
+        "origIndex": 2,
+        "hasAccessRestriction": false,
+        "hasSeasonalClosure": false,
+        "hasCountryCross": false,
+        "roadGradeStrategy": [
+          []
+        ],
+        "destIndex": 8,
+        "time": 504,
+        "hasUnpaved": false,
+        "origNarrative": "Go west on I-676 W/US-30 W.",
+        "maneuvers": [
+          {
+            "distance": 0.342,
+            "streets": [
+              "Vine St"
+            ],
+            "narrative": "Start out going west on Vine St toward N 13th St.",
+            "turnType": 2,
+            "startPoint": {
+              "lng": -75.158829,
+              "lat": 39.957623
+            },
+            "index": 0,
+            "formattedTime": "00:00:46",
+            "directionName": "West",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.95762252807617,-75.15882873535156|marker-1||39.958457946777344,-75.16517639160156|marker-2||&center=39.95804023742676,-75.16200256347656&defaultMarker=none&zoom=12&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 0,
+            "time": 46,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/icon-dirs-start_sm.gif",
+            "direction": 7
+          },
+          {
+            "distance": 0.055,
+            "streets": [
+              "N 16th St"
+            ],
+            "narrative": "Turn right onto N 16th St.",
+            "turnType": 2,
+            "startPoint": {
+              "lng": -75.165176,
+              "lat": 39.958458
+            },
+            "index": 1,
+            "formattedTime": "00:00:08",
+            "directionName": "Northwest",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.958457946777344,-75.16517639160156|marker-2||39.959129333496094,-75.16548156738281|marker-3||&center=39.95879364013672,-75.16532897949219&defaultMarker=none&zoom=14&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 0,
+            "time": 8,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/rs_right_sm.gif",
+            "direction": 2
+          },
+          {
+            "distance": 0.942,
+            "streets": [
+              "I-676 W",
+              "US-30 W"
+            ],
+            "narrative": "Merge onto I-676 W/US-30 W toward Int'l Airport/Valley Forge/I-76.",
+            "turnType": 10,
+            "startPoint": {
+              "lng": -75.165482,
+              "lat": 39.959129
+            },
+            "index": 2,
+            "formattedTime": "00:01:21",
+            "directionName": "West",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [
+              {
+                "extraText": "",
+                "text": "676",
+                "type": 1,
+                "url": "http://icons.mqcdn.com/icons/rs1.png?n=676&d=WEST",
+                "direction": 7
+              },
+              {
+                "extraText": "",
+                "text": "30",
+                "type": 2,
+                "url": "http://icons.mqcdn.com/icons/rs2.png?n=30&d=WEST",
+                "direction": 7
+              }
+            ],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.959129333496094,-75.16548156738281|marker-3||39.96013259887695,-75.17988586425781|marker-4||&center=39.95963096618652,-75.17268371582031&defaultMarker=none&zoom=10&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 3200,
+            "time": 81,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/rs_merge_right_sm.gif",
+            "direction": 7
+          },
+          {
+            "distance": 0.409,
+            "streets": [],
+            "narrative": "Take the I-76 E exit toward Internat'l Airport.",
+            "turnType": 14,
+            "startPoint": {
+              "lng": -75.179886,
+              "lat": 39.960133
+            },
+            "index": 3,
+            "formattedTime": "00:00:44",
+            "directionName": "Southeast",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.96013259887695,-75.17988586425781|marker-4||39.95914840698242,-75.18082427978516|marker-5||&center=39.95964050292969,-75.18035507202148&defaultMarker=none&zoom=13&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 1024,
+            "time": 44,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/rs_gr_exitright_sm.gif",
+            "direction": 5
+          },
+          {
+            "distance": 0.159,
+            "streets": [],
+            "narrative": "Take EXIT 345 toward Market St/30TH St.",
+            "turnType": 14,
+            "startPoint": {
+              "lng": -75.180824,
+              "lat": 39.959148
+            },
+            "index": 4,
+            "formattedTime": "00:00:17",
+            "directionName": "South",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [
+              {
+                "extraText": "",
+                "text": "345",
+                "type": 1001,
+                "url": "http://icons.mqcdn.com/icons/rs1001.png?n=345&d=RIGHT",
+                "direction": 0
+              }
+            ],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.95914840698242,-75.18082427978516|marker-5||39.95686721801758,-75.1810073852539|marker-6||&center=39.9580078125,-75.18091583251953&defaultMarker=none&zoom=12&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 0,
+            "time": 17,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/rs_gr_exitright_sm.gif",
+            "direction": 4
+          },
+          {
+            "distance": 0.097,
+            "streets": [
+              "Arch St",
+              "PA-3"
+            ],
+            "narrative": "Turn right onto Arch St/PA-3.",
+            "turnType": 2,
+            "startPoint": {
+              "lng": -75.181007,
+              "lat": 39.956867
+            },
+            "index": 5,
+            "formattedTime": "00:00:13",
+            "directionName": "West",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [
+              {
+                "extraText": "",
+                "text": "3",
+                "type": 537,
+                "url": "http://icons.mqcdn.com/icons/rs537.png?n=3",
+                "direction": 0
+              }
+            ],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.95686721801758,-75.1810073852539|marker-6||39.95698165893555,-75.18276977539062|marker-7||&center=39.95692443847656,-75.18188858032227&defaultMarker=none&zoom=14&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 0,
+            "time": 13,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/rs_right_sm.gif",
+            "direction": 7
+          },
+          {
+            "distance": 0.063,
+            "streets": [
+              "N 30th St",
+              "PA-3"
+            ],
+            "narrative": "Arch St/PA-3 becomes N 30th St/PA-3.",
+            "turnType": 0,
+            "startPoint": {
+              "lng": -75.18277,
+              "lat": 39.956982
+            },
+            "index": 6,
+            "formattedTime": "00:00:09",
+            "directionName": "South",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [
+              {
+                "extraText": "",
+                "text": "3",
+                "type": 537,
+                "url": "http://icons.mqcdn.com/icons/rs537.png?n=3",
+                "direction": 0
+              }
+            ],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.95698165893555,-75.18276977539062|marker-7||39.956092834472656,-75.18299102783203|marker-8||&center=39.9565372467041,-75.18288040161133&defaultMarker=none&zoom=14&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 0,
+            "time": 9,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/rs_straight_sm.gif",
+            "direction": 4
+          },
+          {
+            "distance": 0.286,
+            "streets": [
+              "John F Kennedy Blvd",
+              "PA-3"
+            ],
+            "narrative": "Turn slight right onto John F Kennedy Blvd/PA-3.",
+            "turnType": 1,
+            "startPoint": {
+              "lng": -75.182991,
+              "lat": 39.956093
+            },
+            "index": 7,
+            "formattedTime": "00:00:51",
+            "directionName": "West",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [
+              {
+                "extraText": "",
+                "text": "3",
+                "type": 537,
+                "url": "http://icons.mqcdn.com/icons/rs537.png?n=3",
+                "direction": 0
+              }
+            ],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.956092834472656,-75.18299102783203|marker-8||39.95532989501953,-75.18721771240234|marker-9||&center=39.955711364746094,-75.18510437011719&defaultMarker=none&zoom=12&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 0,
+            "time": 51,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/rs_slight_right_sm.gif",
+            "direction": 7
+          },
+          {
+            "distance": 0.587,
+            "streets": [
+              "Market St",
+              "PA-3"
+            ],
+            "narrative": "Turn right onto Market St/PA-3.",
+            "turnType": 2,
+            "startPoint": {
+              "lng": -75.187218,
+              "lat": 39.95533
+            },
+            "index": 8,
+            "formattedTime": "00:01:25",
+            "directionName": "West",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [
+              {
+                "extraText": "",
+                "text": "3",
+                "type": 537,
+                "url": "http://icons.mqcdn.com/icons/rs537.png?n=3",
+                "direction": 0
+              }
+            ],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.95532989501953,-75.18721771240234|marker-9||39.95668411254883,-75.19813537597656|marker-10||&center=39.95600700378418,-75.19267654418945&defaultMarker=none&zoom=11&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 0,
+            "time": 85,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/rs_right_sm.gif",
+            "direction": 7
+          },
+          {
+            "distance": 0.213,
+            "streets": [
+              "S 38th St",
+              "US-13 S"
+            ],
+            "narrative": "Turn left onto S 38th St/US-13 S.",
+            "turnType": 6,
+            "startPoint": {
+              "lng": -75.198135,
+              "lat": 39.956684
+            },
+            "index": 9,
+            "formattedTime": "00:00:34",
+            "directionName": "South",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [
+              {
+                "extraText": "",
+                "text": "13",
+                "type": 2,
+                "url": "http://icons.mqcdn.com/icons/rs2.png?n=13&d=SOUTH",
+                "direction": 4
+              }
+            ],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.95668411254883,-75.19813537597656|marker-10||39.95363235473633,-75.19878387451172|marker-11||&center=39.95515823364258,-75.19845962524414&defaultMarker=none&zoom=11&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 0,
+            "time": 34,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/rs_left_sm.gif",
+            "direction": 4
+          },
+          {
+            "distance": 0.205,
+            "streets": [
+              "Walnut St",
+              "PA-3"
+            ],
+            "narrative": "Turn right onto Walnut St/PA-3.",
+            "turnType": 2,
+            "startPoint": {
+              "lng": -75.198784,
+              "lat": 39.953632
+            },
+            "index": 10,
+            "formattedTime": "00:00:29",
+            "directionName": "West",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [
+              {
+                "extraText": "",
+                "text": "3",
+                "type": 537,
+                "url": "http://icons.mqcdn.com/icons/rs537.png?n=3",
+                "direction": 0
+              }
+            ],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.95363235473633,-75.19878387451172|marker-11||39.9541015625,-75.20258331298828|marker-12||&center=39.953866958618164,-75.20068359375&defaultMarker=none&zoom=13&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 0,
+            "time": 29,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/rs_right_sm.gif",
+            "direction": 7
+          },
+          {
+            "distance": 0.239,
+            "streets": [
+              "S 40th St"
+            ],
+            "narrative": "Turn left onto S 40th St.",
+            "turnType": 6,
+            "startPoint": {
+              "lng": -75.202583,
+              "lat": 39.954102
+            },
+            "index": 11,
+            "formattedTime": "00:01:10",
+            "directionName": "South",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.9541015625,-75.20258331298828|marker-12||39.95068359375,-75.20330047607422|marker-13||&center=39.952392578125,-75.20294189453125&defaultMarker=none&zoom=11&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 0,
+            "time": 70,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/rs_left_sm.gif",
+            "direction": 4
+          },
+          {
+            "distance": 0.072,
+            "streets": [
+              "Pine St"
+            ],
+            "narrative": "Turn left onto Pine St.",
+            "turnType": 6,
+            "startPoint": {
+              "lng": -75.2033,
+              "lat": 39.950684
+            },
+            "index": 12,
+            "formattedTime": "00:00:17",
+            "directionName": "East",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [],
+            "mapUrl": "http://www.mapquestapi.com/staticmap/v5/map?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J&size=225,160&locations=39.95068359375,-75.20330047607422|marker-13||39.95051574707031,-75.20195770263672|marker-14||&center=39.950599670410156,-75.20262908935547&defaultMarker=none&zoom=15&rand=-1543583595&session=5fd513c2-00fc-6750-02b4-34d4-0af205efcd21",
+            "transportMode": "AUTO",
+            "attributes": 0,
+            "time": 17,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/rs_left_sm.gif",
+            "direction": 8
+          },
+          {
+            "distance": 0,
+            "streets": [],
+            "narrative": "3934 PINE ST is on the right.",
+            "turnType": -1,
+            "startPoint": {
+              "lng": -75.201958,
+              "lat": 39.950516
+            },
+            "index": 13,
+            "formattedTime": "00:00:00",
+            "directionName": "",
+            "maneuverNotes": [],
+            "linkIds": [],
+            "signs": [],
+            "transportMode": "AUTO",
+            "attributes": 0,
+            "time": 0,
+            "iconUrl": "http://content.mqcdn.com/mqsite/turnsigns/icon-dirs-end_sm.gif",
+            "direction": 0
+          }
+        ],
+        "hasFerry": false
+      }
+    ],
+    "options": {
+      "arteryWeights": [],
+      "cyclingRoadFactor": 1,
+      "timeType": 0,
+      "useTraffic": false,
+      "returnLinkDirections": false,
+      "countryBoundaryDisplay": true,
+      "enhancedNarrative": false,
+      "locale": "en_US",
+      "tryAvoidLinkIds": [],
+      "drivingStyle": 2,
+      "doReverseGeocode": true,
+      "generalize": -1,
+      "mustAvoidLinkIds": [],
+      "sideOfStreetDisplay": true,
+      "routeType": "FASTEST",
+      "avoidTimedConditions": false,
+      "routeNumber": 0,
+      "shapeFormat": "raw",
+      "maxWalkingDistance": -1,
+      "destinationManeuverDisplay": true,
+      "transferPenalty": -1,
+      "narrativeType": "text",
+      "walkingSpeed": -1,
+      "urbanAvoidFactor": -1,
+      "stateBoundaryDisplay": true,
+      "unit": "M",
+      "highwayEfficiency": 22,
+      "maxLinkId": 0,
+      "maneuverPenalty": -1,
+      "avoidTripIds": [],
+      "filterZoneFactor": -1,
+      "manmaps": "true"
+    },
+    "locations": [
+      {
+        "dragPoint": false,
+        "displayLatLng": {
+          "lng": -75.159032,
+          "lat": 39.957756
+        },
+        "adminArea4": "Philadelphia",
+        "adminArea5": "Philadelphia",
+        "postalCode": "19107-1111",
+        "adminArea1": "US",
+        "adminArea3": "PA",
+        "type": "s",
+        "sideOfStreet": "R",
+        "geocodeQualityCode": "L1AAA",
+        "adminArea4Type": "County",
+        "linkId": 17360227,
+        "street": "1269 Vine St",
+        "adminArea5Type": "City",
+        "geocodeQuality": "ADDRESS",
+        "adminArea1Type": "Country",
+        "adminArea3Type": "State",
+        "latLng": {
+          "lng": -75.159032,
+          "lat": 39.957756
+        }
+      },
+      {
+        "dragPoint": false,
+        "displayLatLng": {
+          "lng": -75.201981,
+          "lat": 39.950346
+        },
+        "adminArea4": "Philadelphia",
+        "adminArea5": "Philadelphia",
+        "postalCode": "19104-4102",
+        "adminArea1": "US",
+        "adminArea3": "PA",
+        "type": "s",
+        "sideOfStreet": "L",
+        "geocodeQualityCode": "L1AAA",
+        "adminArea4Type": "County",
+        "linkId": 54856566,
+        "street": "3934 Pine St",
+        "adminArea5Type": "City",
+        "geocodeQuality": "ADDRESS",
+        "adminArea1Type": "Country",
+        "adminArea3Type": "State",
+        "latLng": {
+          "lng": -75.201981,
+          "lat": 39.950346
+        }
+      }
+    ],
+    "time": 504,
+    "hasUnpaved": false,
+    "locationSequence": [
+      0,
+      1
+    ],
+    "hasFerry": false
+  },
+  "info": {
+    "statuscode": 0,
+    "copyright": {
+      "imageAltText": "© 2020 MapQuest, Inc.",
+      "imageUrl": "http://api.mqcdn.com/res/mqlogo.gif",
+      "text": "© 2020 MapQuest, Inc."
+    },
+    "messages": []
+  }
+}
+// POST http://www.mapquestapi.com/directions/v2/route?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J
+// HTTP/1.1 200 OK
+// Date: Sat, 12 Dec 2020 19:02:26 GMT
+// Content-Type: application/json;charset=UTF-8
+// Transfer-Encoding: chunked
+// Server: Apache-Coyote/1.1
+// Set-Cookie: JSESSIONID=68CEE2B7B1BC72225ACAACA2E41A2697; Path=/directions; HttpOnly
+// Expires: Mon, 20 Dec 1998 01:00:00 GMT
+// Last-Modified: Sat, 12 Dec 2020 19:02:26 GMT
+// Cache-Control: no-cache, must-revalidate
+// Pragma: no-cache
+// Access-Control-Allow-Origin: *
+// Access-Control-Allow-Methods: OPTIONS,GET,POST
+// status: success
+// transactionWeight: 1
+// Request duration: 0.156244s
+#+END_SRC
+
+#+RESULTS:
+** Testing our api
+#+begin_src restclient
+POST http://localhost:8000/events/proposeEvent
+Content-Type: application/json
+{
+    "podId": "1",
+    "event": {
+      "id": "1",
+      "ownerId": "1",
+      "formattedAddress": "3934 Pine St, Philadelphia, PA 19104, USA",
+      "start_time": "2021-11-13T03:10:33.447Z",
+      "end_time": "2021-11-13T04:10:33.447Z",
+      "notes": "Bike ride time.",
+      "name": "Go for a bike ride",
+      "lat": "39.95034599999999",
+      "lng": "-75.201981",
+      "repeat": "weekly"
+    }
+}     
+#+end_src
+
+#+RESULTS:
+#+BEGIN_SRC js
+{
+  "isConflicting": false
+}
+// POST http://localhost:8000/events/proposeEvent
+// HTTP/1.1 200 OK
+// X-Powered-By: Express
+// Content-Type: application/json; charset=utf-8
+// Content-Length: 23
+// ETag: W/"17-ZZdL9/cXiwsfWMpY6hdUNais/uE"
+// Date: Sat, 12 Dec 2020 19:23:34 GMT
+// Connection: keep-alive
+// Request duration: 0.253120s
+#+END_SRC
 
