@@ -118,20 +118,20 @@ eventRouter.get(
 
 eventRouter.get(
   "/event/:eventId",
-  [auth], async (req: Request, res: Response) => {
-    const { eventId } = req.params
+  [auth],
+  async (req: Request, res: Response) => {
+    const { eventId } = req.params;
     try {
-      console.log('id', eventId)
-      const event = await Event.query()
-        .findOne({ "events.id": eventId })
+      console.log("id", eventId);
+      const event = await Event.query().findOne({ "events.id": eventId });
 
-      res.json({ event })
+      res.json({ event });
     } catch (err) {
-      console.error(err)
-      res.status(500).json({ message: "Server Error" })
+      console.error(err);
+      res.status(500).json({ message: "Server Error" });
     }
   }
-)
+);
 
 eventRouter.get(
   "/:podId",
