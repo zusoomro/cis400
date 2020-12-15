@@ -4,6 +4,7 @@ import Event from "../../models/Event";
 import auth, { AuthRequest } from "../authMiddleware";
 import Pod from "../../models/Pod";
 import { getPodEvents } from "./pods";
+import moment from "moment";
 
 let eventRouter = express.Router();
 
@@ -87,7 +88,6 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     .where("id", eventId);
 });
 
-
 eventRouter.get(
   "/apiKey",
   [auth],
@@ -165,26 +165,8 @@ const getPreviousAndNextEvent = (proposedEvent: Event, events: Event[]) => {
   return { previousEvent, nextEvent };
 };
 
+// Returns the travel time in minutes
 export const getTravelTime = async (firstEvent: Event, secondEvent: Event) => {
-  console.log(
-    "json to send",
-    JSON.stringify({
-      locations: [
-        {
-          latLng: {
-            lat: firstEvent.lat,
-            lng: firstEvent.lng,
-          },
-        },
-        {
-          latLng: {
-            lat: secondEvent.lat,
-            lng: secondEvent.lng,
-          },
-        },
-      ],
-    })
-  );
   const res = await fetch(
     `http://www.mapquestapi.com/directions/v2/route?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J`,
     {
@@ -211,14 +193,8 @@ export const getTravelTime = async (firstEvent: Event, secondEvent: Event) => {
     }
   );
 
-  const travelTime = (await res.json()).route.time
-  // console.log("res", res);
-  // const text = await res.text();
-  // const json = await res.json()
-  // console.log("test response", text);
-
-  // const travelTime = 2;
-
+  // route.realTime is in seconds, convert it to minutes
+  const travelTime = (await res.json()).route.realTime / 60;
   return travelTime;
 };
 
@@ -233,14 +209,15 @@ const determineTravelTimeConflicts = async (
   // Travel time is in minutes
   if (previousEvent) {
     const firstTravelTime = await getTravelTime(previousEvent, proposedEvent);
-    var diff = Math.abs(+previousEvent.end_time - +proposedEvent.start_time);
-    var minutes = Math.floor(diff / 1000 / 60);
-    if (firstTravelTime >= minutes) {
+    var diffMinutes = Math.abs(
+      moment(previousEvent.end_time).diff(proposedEvent.start_time, "minutes")
+    );
+    if (firstTravelTime >= diffMinutes) {
       conflictingEvents.push(previousEvent);
       conflictingBuffers.push({
         firstEventId: previousEvent.id,
         secondEventId: proposedEvent.id,
-        availableTime: minutes,
+        availableTime: diffMinutes,
         travelTime: firstTravelTime,
       });
     }
@@ -249,14 +226,15 @@ const determineTravelTimeConflicts = async (
   // Travel time is in minutes
   if (nextEvent) {
     const secondTravelTime = await getTravelTime(proposedEvent, nextEvent);
-    var diff = Math.abs(+proposedEvent.end_time - +nextEvent.start_time);
-    var minutes = Math.floor(diff / 1000 / 60);
-    if (secondTravelTime >= minutes) {
+    var diffMinutes = Math.abs(
+      moment(nextEvent.end_time).diff(proposedEvent.start_time, "minutes")
+    );
+    if (secondTravelTime >= diffMinutes) {
       conflictingEvents.push(nextEvent);
       conflictingBuffers.push({
         firstEventId: proposedEvent.id,
         secondEventId: nextEvent.id,
-        availableTime: minutes,
+        availableTime: diffMinutes,
         travelTime: secondTravelTime,
       });
     }
@@ -279,14 +257,14 @@ type Buffer = {
 // Assume all this data is good for now
 eventRouter.post("/proposeEvent", async (req: Request, res: Response) => {
   try {
-    const { event, podId} = req.body;
+    const { event, podId } = req.body;
 
     // Determine if there are any immediately conflicting events
     let events: Event[] = await getPodEvents(podId);
 
     // Filter out current event if it exists
     if (event.id) {
-      events = events.filter(eventItem => eventItem.id != event.id);
+      events = events.filter((eventItem) => eventItem.id != event.id);
     }
 
     let conflictingEvents = getProposedEventsConflictingEvents(event, events);

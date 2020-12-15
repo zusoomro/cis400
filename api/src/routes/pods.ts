@@ -80,7 +80,7 @@ podsRouter.get(
 );
 
 export const getPodEvents = async (podId: number) => {
-  console.log("podId in getPodEvents", podId)
+  console.log("podId in getPodEvents", podId);
   const pod = await Pod.query()
     .findOne({ "pods.id": podId })
     .withGraphFetched("members");
@@ -88,10 +88,10 @@ export const getPodEvents = async (podId: number) => {
   const allEvents: Event[] = await Event.query().whereIn(
     "ownerId",
     pod.members.map((m) => m.id)
-  )
+  );
 
-  return allEvents
-}
+  return allEvents;
+};
 
 podsRouter.get(
   "/:podId/conflictingEvents",
