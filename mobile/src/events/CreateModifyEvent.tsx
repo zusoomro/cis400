@@ -35,12 +35,12 @@ type Props = {
 };
 
 const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
-  const event = route?.params?.event;
+  const event: Event = route?.params?.event;
 
   // Start time = current time
-  const [start_time, setStartTime] = useState(new Date());
+  const [start_time, setStartTime] = useState(event ? event.start_time : new Date());
   // End time = current time + 1 hour
-  const [end_time, setEndTime] = useState(
+  const [end_time, setEndTime] = useState(event ? event.end_time :
     new Date(Date.now() + 60 * 60 * 1000)
   );
 
@@ -82,13 +82,12 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
 
           const conflicts: ProposedEventConflicts | false = pod != undefined && (await proposeEvent(
             values as Event,
-            pod.id
+            pod.id,
+            event,
           ))!;
           console.log("Conflicts right after calling proposeEvent", conflicts);
 
           // If event is in a pod && If event has conflicts, show the conflict modal
-          console.log("if conflicts =", conflicts ? "true" : "false");
-          console.log("if conflicts =", (conflicts as ProposedEventConflicts).isConflicting ? "true" : "false");
           if (conflicts && conflicts.isConflicting) {
             setValuesOnSubmit(values as Event);
             setConflictValues(conflicts);

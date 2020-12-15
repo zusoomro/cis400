@@ -28,11 +28,13 @@ export interface ProposedEventConflicts {
 
 export const proposeEvent = async (
   values: Event,
-  podId: number
+  podId: number,
+  existingEvent: Event,
 ): Promise<ProposedEventConflicts | null> => {
   const data = {
     podId: podId,
     event: {
+      id: existingEvent ? existingEvent.id : null,
       name: values.name,
       formattedAddress: values.formattedAddress,
       lat: values.lat,
@@ -41,7 +43,7 @@ export const proposeEvent = async (
       end_time: values.end_time,
       repeat: values.repeat,
       notes: values.notes,
-    }
+    },
   };
 
   try {

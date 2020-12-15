@@ -211,13 +211,13 @@ export const getTravelTime = async (firstEvent: Event, secondEvent: Event) => {
     }
   );
 
-  // const travelTime = (await res.json()).route.time
-  console.log("res", res);
-  const text = await res.text();
+  const travelTime = (await res.json()).route.time
+  // console.log("res", res);
+  // const text = await res.text();
   // const json = await res.json()
-  console.log("test response", text);
+  // console.log("test response", text);
 
-  const travelTime = 2;
+  // const travelTime = 2;
 
   return travelTime;
 };
@@ -279,10 +279,15 @@ type Buffer = {
 // Assume all this data is good for now
 eventRouter.post("/proposeEvent", async (req: Request, res: Response) => {
   try {
-    const { event, podId } = req.body;
+    const { event, podId} = req.body;
 
     // Determine if there are any immediately conflicting events
-    const events: Event[] = await getPodEvents(podId);
+    let events: Event[] = await getPodEvents(podId);
+
+    // Filter out current event if it exists
+    if (event.id) {
+      events = events.filter(eventItem => eventItem.id != event.id);
+    }
 
     let conflictingEvents = getProposedEventsConflictingEvents(event, events);
     let conflictingBuffers: Buffer[] = [];
