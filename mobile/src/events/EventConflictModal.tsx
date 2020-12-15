@@ -16,8 +16,8 @@ import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
 import { ProposedEventConflicts } from "./eventsService";
 
 type Props = {
-  modalVisible: boolean;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  conflictModalVisible: boolean;
+  setConflictModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   values: Event;
   existingEvent: Event;
   navigation: {
@@ -27,8 +27,8 @@ type Props = {
 };
 
 export const EventConflictModal: React.FC<Props> = ({
-  modalVisible,
-  setModalVisible,
+  conflictModalVisible,
+  setConflictModalVisible,
   values,
   existingEvent,
   navigation,
@@ -54,7 +54,7 @@ export const EventConflictModal: React.FC<Props> = ({
   console.log(conflicts);
 
   return (
-    <Modal animationType="none" visible={modalVisible} transparent={true}>
+    <Modal animationType="none" visible={conflictModalVisible} transparent={true}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <View style={{ padding: 15 }}>
@@ -79,7 +79,7 @@ export const EventConflictModal: React.FC<Props> = ({
           {/* Return to editing the event*/}
           <TouchableOpacity
             onPress={() => {
-              setModalVisible(false);
+              setConflictModalVisible(false);
             }}
             style={styles.modalButton}
           >
