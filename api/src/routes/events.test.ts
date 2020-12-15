@@ -2,7 +2,6 @@ import { app } from "../index";
 import request from "supertest";
 import Knex from "knex";
 import initializeDb from "../initializeDb";
-import { getTravelTime } from "./events";
 import Event from "../../models/Event";
 
 let knex: Knex;
@@ -41,17 +40,6 @@ const events = [
 ];
 
 describe("the events api", () => {
-  describe("the getTravelTime function", () => {
-    it("returns something", async () => {
-      const travelTime = await getTravelTime(
-        (events[0] as unknown) as Event,
-        (events[1] as unknown) as Event
-      );
-
-      expect(travelTime).not.toBe(null);
-    });
-  });
-
   describe("update event route", () => {
     it("requires auth", async () => {
       await request(app).put("/events").send({}).expect(401);
