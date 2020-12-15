@@ -1,3 +1,4 @@
+import { render } from "@testing-library/react-native";
 import React from "react";
 import { useState } from "react";
 import {
@@ -26,6 +27,10 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
   const [users, setUsers] = useState(u);
   const [invitees, setInvitees] = useState([]);
 
+  // variables used for search filtering
+  const [query, setQuery] = useState("");
+  const [tempData, setTempData] = useState([]);
+
   const caller = route?.params?.caller;
   const currUserId = useSelector((state) => state.auth.user.id);
 
@@ -52,6 +57,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
           }
         }
         setUsers(result);
+        setTempData(result);
       } catch (err) {
         console.log("error loading users");
       }
@@ -74,7 +80,6 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
           }
         }}
         title="Select"
-        //disabled={isDisabled}
         disabled={invitees.includes(user.id)}
       />
     </View>
@@ -119,6 +124,15 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
     }
   };
 
+  const handleSearch = (text: string) => {
+    const formattedQuery = text.toLowerCase();
+    const filteredData = tempData.filter((user: User) => {
+      return user.email.includes(formattedQuery);
+    });
+    setUsers(filteredData);
+    setQuery(text);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ margin: 10 }}>
@@ -132,6 +146,15 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
         data={users}
         renderItem={renderItem}
         keyExtractor={(item) => "" + item.id}
+        ListHeaderComponent={
+          <SearchBar
+            placeholder="Seach Here.."
+            round
+            onChangeText={(text) => handleSearch(text)}
+            autoCorrect={false}
+            value={query}
+          ></SearchBar>
+        }
       />
     </SafeAreaView>
   );
