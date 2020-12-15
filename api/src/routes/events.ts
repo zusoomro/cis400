@@ -278,7 +278,6 @@ type Buffer = {
 
 // Assume all this data is good for now
 eventRouter.post("/proposeEvent", async (req: Request, res: Response) => {
-  console.log("req.body", req.body);
   try {
     const { event, podId } = req.body;
 
@@ -291,7 +290,7 @@ eventRouter.post("/proposeEvent", async (req: Request, res: Response) => {
     // If there are immediately conflicting events, return them
     if (conflictingEvents.length) {
       return res.json({
-        isConficting: true,
+        isConflicting: true,
         conflictingEvents,
         conflictingBuffers,
       });

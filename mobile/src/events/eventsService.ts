@@ -32,18 +32,20 @@ export const proposeEvent = async (
 ): Promise<ProposedEventConflicts | null> => {
   const data = {
     podId: podId,
-    name: values.name,
-    formattedAddress: values.formattedAddress,
-    lat: values.lat,
-    lng: values.lng,
-    start_time: values.start_time,
-    end_time: values.end_time,
-    repeat: values.repeat,
-    notes: values.notes,
+    event: {
+      name: values.name,
+      formattedAddress: values.formattedAddress,
+      lat: values.lat,
+      lng: values.lng,
+      start_time: values.start_time,
+      end_time: values.end_time,
+      repeat: values.repeat,
+      notes: values.notes,
+    }
   };
 
   try {
-    const res = await fetch(`${apiUrl}/events/proproseEvent`, {
+    const res = await fetch(`${apiUrl}/events/proposeEvent`, {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json;charset=utf-8",
@@ -64,7 +66,7 @@ export const proposeEvent = async (
 
     return conflicts;
   } catch (error) {
-    console.log("error creating new event", error);
+    console.log("error proposing new event", error);
     return null;
   }
 };

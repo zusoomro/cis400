@@ -35,6 +35,8 @@ export const EventConflictModal: React.FC<Props> = ({
   conflicts,
 }) => {
 
+  const conflictingEvents: Event[] = existingEvent ? conflicts.conflictingEvents.filter(event => event.id != existingEvent.id) : conflicts.conflictingEvents;
+
   const ConflictEventRow = ({
     title,
     conflictEvent,
@@ -63,7 +65,7 @@ export const EventConflictModal: React.FC<Props> = ({
             <SafeAreaView style={[styles.container]}>
               <FlatList
                 style={{flexGrow : 0}}
-                data={conflicts.conflictingEvents}
+                data={conflictingEvents}
                 renderItem={renderRow}
                 keyExtractor={item => item.id.toString()}
               />

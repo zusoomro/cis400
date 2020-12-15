@@ -80,41 +80,28 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
           const pod = await fetchUserPod();
           console.log("pod id on submit", pod?.id);
 
-          // const conflicts: ProposedEventConflicts | false = pod != undefined && (await proposeEvent(
-          //   values as Event,
-          //   pod.id
-          // ))!;
-          // FAKE DATA UNTIL CAN INTEGRATE WITH BACKENDN
-          const event1: Event = {
-            name: "Doctors Appointment",
-            id: 1,
-            start_time: new Date(),
-            end_time: new Date(Date.now() + 60 * 60 * 1000),
-          }
-          const event2: Event = {
-            name:"Water Plants",
-            id: 2,
-            start_time: new Date(),
-            end_time: new Date(Date.now() + 60 * 60 * 1000),
-          }
-          
-          const conflicts: ProposedEventConflicts = {
-            isConflicting: true,
-            conflictingEvents: [event1, event2],
-            conflictingBuffers: [],
-          };
+          const conflicts: ProposedEventConflicts | false = pod != undefined && (await proposeEvent(
+            values as Event,
+            pod.id
+          ))!;
+          console.log("Conflicts right after calling proposeEvent", conflicts);
 
           // If event is in a pod && If event has conflicts, show the conflict modal
+          console.log("if conflicts =", conflicts ? "true" : "false");
+          console.log("if conflicts =", (conflicts as ProposedEventConflicts).isConflicting ? "true" : "false");
           if (conflicts && conflicts.isConflicting) {
             setValuesOnSubmit(values as Event);
             setConflictValues(conflicts);
             setConflictModalVisible(true);
+            console.log("should show conflict modal");
             return;
           }
 
           if (event) {
+            console.log("Modify event on submit");
             modifyEventOnSubmit({ ...values, id: event.id } as Event);
           } else {
+            console.log("Create event on submit");
             createEventOnSubmit(values as Event);
           }
           navigation.navigate("ScheduleHomePage");
