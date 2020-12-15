@@ -16,10 +16,16 @@ export const validateEventSchema = () => {
   });
 };
 
+export interface ConflictBuffer {
+  otherEventId: number;
+  availableTime: number;
+  travelTime: number;
+};
+
 export interface ProposedEventConflicts {
   isConflicting: boolean;
   conflictingEvents: Event[];
-  conflictingBuffers: Event[]; // THIS TYPE IS GOING TO CHANGE!
+  conflictingBuffers: ConflictBuffer[];
 }
 
 export const proposeEvent = async (

@@ -8,6 +8,7 @@ import moment from "moment";
 
 let eventRouter = express.Router();
 
+// Create an event 
 eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   const {
     name,
@@ -48,6 +49,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
 });
 
+// Modify the event 
 eventRouter.put("/", [auth], async (req: Request, res: Response) => {
   const {
     name,
@@ -88,6 +90,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     .where("id", eventId);
 });
 
+// Get api key 
 eventRouter.get(
   "/apiKey",
   [auth],
@@ -215,8 +218,7 @@ const determineTravelTimeConflicts = async (
     if (firstTravelTime >= diffMinutes) {
       conflictingEvents.push(previousEvent);
       conflictingBuffers.push({
-        firstEventId: previousEvent.id,
-        secondEventId: proposedEvent.id,
+        otherEventId: previousEvent.id,
         availableTime: diffMinutes,
         travelTime: firstTravelTime,
       });
@@ -232,8 +234,7 @@ const determineTravelTimeConflicts = async (
     if (secondTravelTime >= diffMinutes) {
       conflictingEvents.push(nextEvent);
       conflictingBuffers.push({
-        firstEventId: proposedEvent.id,
-        secondEventId: nextEvent.id,
+        otherEventId: nextEvent.id,
         availableTime: diffMinutes,
         travelTime: secondTravelTime,
       });
@@ -248,8 +249,7 @@ const determineTravelTimeConflicts = async (
 };
 
 type Buffer = {
-  firstEventId: number;
-  secondEventId: number;
+  otherEventId: number;
   availableTime: number;
   travelTime: number;
 };
