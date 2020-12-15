@@ -3,10 +3,6 @@ import apiUrl from "../config";
 import * as SecureStore from "expo-secure-store";
 import * as Yup from "yup";
 
-export const isEventConflicting = async () => {
-
-}
-
 export const validateEventSchema = () => {
   return Yup.object().shape({
     name: Yup.string().required("Name required"),
