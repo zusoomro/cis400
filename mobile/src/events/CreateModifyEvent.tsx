@@ -78,29 +78,24 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
         validationSchema={validateEventSchema}
         onSubmit={async (values) => {
           const pod = await fetchUserPod();
-          console.log("pod id on submit", pod?.id);
 
           const conflicts: ProposedEventConflicts | false = pod != undefined && (await proposeEvent(
             values as Event,
             pod.id,
             event,
           ))!;
-          console.log("Conflicts right after calling proposeEvent", conflicts);
 
           // If event is in a pod && If event has conflicts, show the conflict modal
           if (conflicts && conflicts.isConflicting) {
             setValuesOnSubmit(values as Event);
             setConflictValues(conflicts);
             setConflictModalVisible(true);
-            console.log("should show conflict modal");
             return;
           }
 
           if (event) {
-            console.log("Modify event on submit");
             modifyEventOnSubmit({ ...values, id: event.id } as Event);
           } else {
-            console.log("Create event on submit");
             createEventOnSubmit(values as Event);
           }
           navigation.navigate("ScheduleHomePage");
