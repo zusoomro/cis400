@@ -1,10 +1,14 @@
-import fetch from "node-fetch";
 import express, { Request, Response } from "express";
 import Event from "../../models/Event";
 import auth, { AuthRequest } from "../authMiddleware";
 import Pod from "../../models/Pod";
 import { getPodEvents } from "./pods";
-import moment from "moment";
+import {
+  ConflictBuffer,
+  determineTravelTimeConflicts,
+  getOverlappingEvents,
+  getPreviousAndNextEvent,
+} from "./eventConflictFunctions";
 
 let eventRouter = express.Router();
 
@@ -73,8 +77,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
   }
 
   const eventId = req.body.id;
-  const id = (req as AuthRequest).user.id;
-  const event = await Event.query()
+  await Event.query()
     .update({
       name,
       formattedAddress,
@@ -103,157 +106,6 @@ eventRouter.get(
   }
 );
 
-type proposalResponseSchema = {
-  conflictingEvents: Event[];
-};
-
-class Endpoint {
-  time: Date;
-  event: Event;
-
-  constructor(time: Date, event: Event) {
-    this.time = time;
-    this.event = event;
-  }
-}
-
-const getProposedEventsConflictingEvents = (
-  proposedEvent: Event,
-  existingEvents: Event[]
-) => {
-  const endpointTimes: Endpoint[] = [];
-  const eventsAdded = new Set();
-  const conflictingEvents = [];
-
-  existingEvents.forEach((event) => {
-    endpointTimes.push(new Endpoint(event.start_time, event));
-    endpointTimes.push(new Endpoint(event.end_time, event));
-  });
-
-  for (const endpoint of endpointTimes) {
-    if (
-      endpoint.time >= proposedEvent.start_time &&
-      endpoint.time <= proposedEvent.end_time &&
-      !eventsAdded.has(endpoint.event.id)
-    ) {
-      conflictingEvents.push(endpoint.event);
-      eventsAdded.add(endpoint.event.id);
-    }
-  }
-
-  return conflictingEvents;
-};
-
-const getPreviousAndNextEvent = (proposedEvent: Event, events: Event[]) => {
-  let previousEvent: Event | undefined = undefined;
-  let nextEvent: Event | undefined = undefined;
-
-  for (const event of events) {
-    if (
-      event.end_time <= proposedEvent.start_time &&
-      (previousEvent == undefined || event.end_time >= previousEvent.end_time)
-    ) {
-      previousEvent = event;
-    } else if (
-      event.start_time >= proposedEvent.end_time &&
-      (nextEvent == undefined || event.start_time <= nextEvent.start_time)
-    ) {
-      nextEvent = event;
-    }
-  }
-
-  return { previousEvent, nextEvent };
-};
-
-// Returns the travel time in minutes
-export const getTravelTime = async (firstEvent: Event, secondEvent: Event) => {
-  const res = await fetch(
-    `http://www.mapquestapi.com/directions/v2/route?key=zDTYEvSBZwi8zypUKkAhDBzvxY6sSQ4J`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        locations: [
-          {
-            latLng: {
-              lat: firstEvent.lat,
-              lng: firstEvent.lng,
-            },
-          },
-          {
-            latLng: {
-              lat: secondEvent.lat,
-              lng: secondEvent.lng,
-            },
-          },
-        ],
-      }),
-    }
-  );
-
-  // route.realTime is in seconds, convert it to minutes
-  const travelTime = (await res.json()).route.realTime / 60;
-  return travelTime;
-};
-
-const determineTravelTimeConflicts = async (
-  proposedEvent: Event,
-  previousEvent: Event | undefined,
-  nextEvent: Event | undefined
-) => {
-  const conflictingEvents: Event[] = [];
-  const conflictingBuffers: Buffer[] = [];
-
-  // Travel time is in minutes
-  if (previousEvent) {
-    const firstTravelTime = await getTravelTime(previousEvent, proposedEvent);
-    var diffMinutes = Math.abs(
-      moment(previousEvent.end_time).diff(proposedEvent.start_time, "minutes")
-    );
-    if (firstTravelTime >= diffMinutes) {
-      conflictingEvents.push(previousEvent);
-      conflictingBuffers.push({
-        firstEventId: previousEvent.id,
-        secondEventId: proposedEvent.id,
-        availableTime: diffMinutes,
-        travelTime: firstTravelTime,
-      });
-    }
-  }
-
-  // Travel time is in minutes
-  if (nextEvent) {
-    const secondTravelTime = await getTravelTime(proposedEvent, nextEvent);
-    var diffMinutes = Math.abs(
-      moment(nextEvent.end_time).diff(proposedEvent.start_time, "minutes")
-    );
-    if (secondTravelTime >= diffMinutes) {
-      conflictingEvents.push(nextEvent);
-      conflictingBuffers.push({
-        firstEventId: proposedEvent.id,
-        secondEventId: nextEvent.id,
-        availableTime: diffMinutes,
-        travelTime: secondTravelTime,
-      });
-    }
-  }
-
-  return {
-    isConflicting: conflictingEvents.length ? true : false,
-    conflictingEvents,
-    conflictingBuffers,
-  };
-};
-
-type Buffer = {
-  firstEventId: number;
-  secondEventId: number;
-  availableTime: number;
-  travelTime: number;
-};
-
 // Assume all this data is good for now
 eventRouter.post("/proposeEvent", async (req: Request, res: Response) => {
   try {
@@ -267,8 +119,8 @@ eventRouter.post("/proposeEvent", async (req: Request, res: Response) => {
       events = events.filter((eventItem) => eventItem.id != event.id);
     }
 
-    let conflictingEvents = getProposedEventsConflictingEvents(event, events);
-    let conflictingBuffers: Buffer[] = [];
+    let conflictingEvents = getOverlappingEvents(event, events);
+    let conflictingBuffers: ConflictBuffer[] = [];
 
     // If there are immediately conflicting events, return them
     if (conflictingEvents.length) {
