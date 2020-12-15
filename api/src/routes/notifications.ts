@@ -1,8 +1,6 @@
 import { Expo } from "expo-server-sdk";
 import express, { Request, Response } from "express";
-import Event from "../../models/Event";
 import auth, { AuthRequest } from "../authMiddleware";
-import Pod from "../../models/Pod";
 import User from "../../models/User";
 const expo = new Expo();
 
@@ -38,15 +36,21 @@ notificationsRouter.post(
 
     const message = {
       to: recipient.notificationToken,
-      sound: "default",
+      sound: undefined,
       title: "You have a new conflicting event!",
       body:
         "View your schedule and remove the conflict to resolve the schedule.",
       data: { eventId },
     };
+    try {
+      const receipt = await expo.sendPushNotificationsAsync([message]);
 
-    const chunk = expo.chunkPushNotifications([message]);
-    // Do something here to send the notification
+      return res.json(receipt);
+    } catch (err) {
+      return res.status(500).json({
+        message: "There was a server error in sending the notification.",
+      });
+    }
   }
 );
 
