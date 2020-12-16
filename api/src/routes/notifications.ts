@@ -10,7 +10,10 @@ notificationsRouter.post(
   "/token",
   [auth],
   async (req: Request, res: Response) => {
-    const { token, userId } = req.body;
+    console.log("hit token upload route");
+
+    const userId = (req as AuthRequest).user.id;
+    const { token } = req.body;
 
     const user = await User.query().patchAndFetchById(userId, {
       notificationToken: token,
@@ -24,6 +27,8 @@ notificationsRouter.post(
   "/message",
   [auth],
   async (req: Request, res: Response) => {
+    console.log("got here in the api");
+
     const { recipientId, eventId } = req.body;
 
     const recipient = await User.query().findById(recipientId);
@@ -54,4 +59,28 @@ notificationsRouter.post(
   }
 );
 
+// Delete a user's notification token. Usually called when logging out, so that
+// there isn't ever a situation where a non-authenticated defice is getting
+// notifications for an old user.
+notificationsRouter.delete(
+  "/token",
+  [auth],
+  async (req: Request, res: Response) => {
+    try {
+      console.log("Hit the delete token route");
+
+      const userId = (req as AuthRequest).user.id;
+
+      console.log("userId", userId);
+
+      const user = await User.query().patchAndFetchById(userId, {
+        notificationToken: "invalid",
+      });
+
+      return res.json({ user });
+    } catch (err) {
+      console.error('Error in deleting notification token", err');
+    }
+  }
+);
 export default notificationsRouter;

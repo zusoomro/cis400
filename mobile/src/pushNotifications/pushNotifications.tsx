@@ -1,12 +1,16 @@
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
-import * as RootNavigation from '../rootNavigation'
-import Event from '../types/Event'
+import apiUrl from "../config";
+import * as RootNavigation from "../rootNavigation";
+import Event from "../types/Event";
+import * as SecureStore from "expo-secure-store";
+import { useRef } from "react";
 
-export const setupPushNotifications = async (notificationListener, responseListener) => {
-  const token = await registerForPushNotificationsAsync()
-
+export const setupNotificationListeners = async (
+  notificationListener,
+  responseListener
+) => {
   // This listener is fired whenever a notification is received while the app is foregrounded
   notificationListener.current = Notifications.addNotificationReceivedListener(
     (notification) => {
@@ -21,9 +25,7 @@ export const setupPushNotifications = async (notificationListener, responseListe
       //       console.log(response);
     }
   );
-
-  return token
-}
+};
 
 export const registerForPushNotificationsAsync = async () => {
   let token;
@@ -48,26 +50,84 @@ export const registerForPushNotificationsAsync = async () => {
   return token;
 };
 
-// Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/notifications
-export async function sendPushNotification(
-  expoPushToken: string,
-  eventId: number,
-) {
-  const message = {
-    to: expoPushToken,
-    sound: "default",
-    title: "You have a new conflicting event!",
-    body: "View your schedule and remove the conflict to resolve the schedule.",
-    data: { eventId },
-  };
+export const generateAndUploadPushNotificationToken = async () => {
+  const token = await registerForPushNotificationsAsync();
 
-  await fetch("https://exp.host/--/api/v2/push/send", {
+  console.log("getting to this point.");
+
+  const url = apiUrl + "/notifications/token";
+
+  console.log("url", url);
+
+  console.log("got to outside the try block");
+  console.log("got to right before the fetch request");
+
+  console.log("token", token);
+
+  const res = await fetch(url, {
     method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Accept-encoding": "gzip, deflate",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(message),
+    headers: new Headers({
+      "Content-Type": "application/json;charset=utf-8",
+      "x-auth-token": (await SecureStore.getItemAsync(
+        "wigo-auth-token"
+      )) as string,
+    }),
+    body: JSON.stringify({ token }),
   });
+
+  console.log("res");
+  console.log(res);
+  console.log("hello ");
+};
+
+interface Props {
+  recipientId: number;
+  eventId: number;
 }
+
+export const sendPushNotification = async ({ recipientId, eventId }: Props) => {
+  try {
+    console.log("sending push notification");
+    const res = await fetch(apiUrl + "/notifications/message", {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": (await SecureStore.getItemAsync(
+          "wigo-auth-token"
+        )) as string,
+      }),
+      body: JSON.stringify({ recipientId, eventId }),
+    });
+
+    if (!res.ok) {
+      console.error("the res is not ok");
+    }
+    console.log("whats up");
+    console.log("res", { message: "hello" });
+    console.log("res", res);
+  } catch (err) {
+    console.log("whats up, im here");
+    console.error("Error sending push notification", err);
+  }
+};
+
+export const deletePushNotificationToken = async () => {
+  try {
+    console.log("deleting push notification token");
+    const res = await fetch(apiUrl + "/notifications/token", {
+      method: "DELETE",
+      headers: new Headers({
+        "Content-Type": "application/json;charset=utf-8",
+        "x-auth-token": (await SecureStore.getItemAsync(
+          "wigo-auth-token"
+        )) as string,
+      }),
+    });
+
+    if (!res.ok) {
+      console.error("the res is not ok");
+    }
+  } catch (err) {
+    console.error("Error sending push notification", err);
+  }
+};

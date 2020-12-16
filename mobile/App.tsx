@@ -1,19 +1,17 @@
 import { BebasNeue_400Regular, useFonts } from "@expo-google-fonts/bebas-neue";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
-import { AppLoading, } from "expo";
-import * as Notifications from "expo-notifications"
+import { AppLoading } from "expo";
+import * as Notifications from "expo-notifications";
 import React, { useEffect, useRef, useState } from "react";
 import "react-native-gesture-handler";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { getApiKey, loadToken, loadUser } from "./src/authSlice";
 import store, { RootState } from "./src/configureStore";
 import TabNavigator from "./src/Navigator";
-import { navigationRef } from './src/rootNavigation'
-import { setPushToken } from "./src/pushNotifications/pushNotificationsSlice";
-import { setupPushNotifications } from "./src/pushNotifications/pushNotifications";
+import { navigationRef } from "./src/rootNavigation";
+import { setupNotificationListeners } from "./src/pushNotifications/pushNotifications";
 
 export default function App() {
-
   return (
     <Provider store={store}>
       <NavigationContainer
@@ -37,12 +35,12 @@ const ContextApp = () => {
   const responseListener = useRef();
 
   useEffect(() => {
-    setupPushNotifications(notificationListener, responseListener).then((token: string) => dispatch(setPushToken(token)))
+    setupNotificationListeners(notificationListener, responseListener);
     return () => {
       Notifications.removeNotificationSubscription(notificationListener);
       Notifications.removeNotificationSubscription(responseListener);
     };
-  })
+  });
 
   useEffect(() => {
     dispatch(loadToken());

@@ -4,6 +4,10 @@ import { TextInput } from "react-native";
 import React from "react";
 import apiUrl from "./config";
 import User from "./types/User";
+import {
+  generateAndUploadPushNotificationToken,
+  deletePushNotificationToken,
+} from "./pushNotifications/pushNotifications";
 
 const initialState = {
   authenticated: true,
@@ -42,11 +46,12 @@ export const logOut = createAsyncThunk(
   "auth/logout",
   async (data, api): Promise<string> => {
     try {
+      await deletePushNotificationToken();
       await SecureStore.deleteItemAsync("wigo-auth-token");
-      return {};
     } catch (ex) {
       console.error(`error in logout`, ex);
     }
+    return "";
   }
 );
 
@@ -65,7 +70,6 @@ export const loadToken = createAsyncThunk(
 
 export const login = createAsyncThunk("auth/login", async (data, api) => {
   try {
-    console.log(apiUrl + "/users/login")
     const res = await fetch(apiUrl + "/users/login", {
       method: "POST",
       headers: {
@@ -74,8 +78,6 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
       body: JSON.stringify(data),
     });
 
-    console.log("res", res);
-
     const json = await res.json();
 
     if (!res.ok) {
@@ -83,6 +85,8 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
     }
 
     await SecureStore.setItemAsync("wigo-auth-token", json.token);
+
+    await generateAndUploadPushNotificationToken();
 
     return json;
   } catch (ex) {
@@ -118,6 +122,7 @@ export const getApiKey = createAsyncThunk(
 
 export const register = createAsyncThunk("auth/register", async (data, api) => {
   try {
+    generateAndUploadPushNotificationToken();
     const res = await fetch(apiUrl + "/users", {
       method: "POST",
       headers: {
