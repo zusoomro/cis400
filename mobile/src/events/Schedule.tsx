@@ -13,11 +13,12 @@ import {
   ActivityIndicator,
 } from "react-native";
 import apiUrl from "../config";
+import { setEvents as reduxSetEvents } from "./eventsSlice";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
 import EventInSchedule from "./EventInSchedule";
 import Pod from "../types/Pod";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
   return (

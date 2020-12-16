@@ -8,12 +8,15 @@ import DatePicker from "./DatePicker";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit, validateEventSchema} from "./eventsService";
-import DeleteEventModal from "./DeleteEventModal"
+import DeleteEventModal from "./DeleteEventModal";
+import { setEvents as reduxSetEvents } from "./eventsSlice";
 import {
   ConflictAction,
   eventConflictAlert,
   isConflictingEvent,
 } from "./eventConflicts";
+import { useDispatch } from "react-redux";
+
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -40,6 +43,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   );
 
   const [modalVisible, setModalVisible] = useState(false);
+  const dispatch = useDispatch();
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -87,11 +91,21 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
           if ((action as ConflictAction) == ConflictAction.suggestedTime) {
             // TO DO: SET VALUES TO SUGGESTED TIME
           }
-
           if (event) {
-            modifyEventOnSubmit({ ...values, id: event.id } as Event);
+            const res = await modifyEventOnSubmit({ ...values, id: event.id } as Event);
+            console.log("res: " + res);
+            console.log(res)
+            if (res) {
+              const eventToAdd : Event = res.eventForReturn[0]
+              console.log(eventToAdd)
+              dispatch(reduxSetEvents(eventToAdd));
+            }
           } else {
-            createEventOnSubmit(values as Event);
+            const res = await createEventOnSubmit(values as Event);
+            console.log("res: " + res);
+            if (res) {
+              dispatch(reduxSetEvents(res));
+            }
           }
           navigation.navigate("ScheduleHomePage");
         }}
