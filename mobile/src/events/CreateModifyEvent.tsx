@@ -1,7 +1,6 @@
-import * as SecureStore from 'expo-secure-store'
 import { Formik } from "formik";
-import React, { useState, useEffect } from "react";
-import { ScrollView, TextInput, View, Text } from "react-native";
+import React, { useState } from "react";
+import { ScrollView, TextInput, View, Text, SafeAreaView } from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import LocationPicker from "./LocationPicker";
@@ -9,11 +8,15 @@ import DatePicker from "./DatePicker";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
 import {
-  validateEventSchema,
   createEventOnSubmit,
   modifyEventOnSubmit,
+  proposeEvent,
+  ProposedEventConflicts,
+  validateEventSchema,
 } from "./eventsService";
-import apiUrl from "../config";
+import { EventConflictModal } from "./EventConflictModal";
+import { fetchUserPod } from "./Schedule";
+import DeleteEventModal from "./DeleteEventModal";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -23,67 +26,39 @@ export const repetitionValues = [
   { label: "Every year", value: "yearly" },
 ];
 
-;
-
-const fetchEventUsingId = async (eventId: number) => {
-  try {
-    const authToken = await SecureStore.getItemAsync("wigo-auth-token")
-    const res = await fetch(`${apiUrl}/events/event/${eventId}`, {
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": authToken!,
-      },
-    });
-    const { event } = await res.json()
-    return event
-
-  } catch (err) {
-    console.error(err)
-  }
-}
-
 type Props = {
   event?: Event;
-  eventId?: number;
-  navigation: Object;
+  navigation: {
+    navigate: (screen: string) => void;
+  };
   route: Object;
-}
+};
 
-// You can either pass in an event here or pass in an event id and it will fetch
-// it for you.Passing in the event itself was the initial behavior and is
-// maintained in order to make a non breaking change
 const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
-  const [event, setEvent] = useState(route?.params?.event)
-  const [loading, setLoading] = useState(true)
-  const eventId = route?.params?.eventId
-
-  console.log("eventId", eventId)
-
-  useEffect(() => {
-    if (eventId) {
-      setLoading(true)
-      fetchEventUsingId(eventId).then((returnedEvent) => {
-        console.log(returnedEvent)
-        setEvent(returnedEvent);
-        setLoading(false)
-      })
-    }
-  }, [eventId])
+  const event: Event = route?.params?.event;
 
   // Start time = current time
-  const [start_time, setStartTime] = useState(new Date());
+  const [start_time, setStartTime] = useState(
+    event ? event.start_time : new Date()
+  );
   // End time = current time + 1 hour
   const [end_time, setEndTime] = useState(
-    new Date(Date.now() + 60 * 60 * 1000)
+    event ? event.end_time : new Date(Date.now() + 60 * 60 * 1000)
   );
 
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [conflictModalVisible, setConflictModalVisible] = useState(false);
+  const [valuesOnSubmit, setValuesOnSubmit] = useState<Event>();
+  const [conflictValues, setConflictValues] = useState<
+    ProposedEventConflicts
+  >();
+
   return (
-    !loading ? (
-      <ScrollView keyboardShouldPersistTaps="handled">
-        <Formik
-          initialValues={
-            event
-              ? {
+    <ScrollView keyboardShouldPersistTaps="handled">
+      <Formik
+        initialValues={
+          event
+            ? {
                 name: event.name,
                 formattedAddress: event.formattedAddress,
                 lat: event.lat,
@@ -93,7 +68,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 repeat: repetitionValues[0].value,
                 notes: event.notes,
               }
-              : {
+            : {
                 name: "",
                 formattedAddress: "",
                 lat: "",
@@ -103,98 +78,138 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 repeat: repetitionValues[0].value,
                 notes: "",
               }
+        }
+        validationSchema={validateEventSchema}
+        onSubmit={async (values) => {
+          const pod = await fetchUserPod();
+
+          const conflicts: ProposedEventConflicts | false =
+            pod != undefined &&
+            (await proposeEvent(values as Event, pod.id, event))!;
+
+          // If event is in a pod && If event has conflicts, show the conflict modal
+          if (conflicts && conflicts.isConflicting) {
+            setValuesOnSubmit(values as Event);
+            setConflictValues(conflicts);
+            setConflictModalVisible(true);
+            return;
           }
-          validationSchema={validateEventSchema}
-          onSubmit={(values) => {
-            if (event) {
-              modifyEventOnSubmit({ ...values, id: event.id } as Event);
-            } else {
-              createEventOnSubmit(values as Event);
-            }
-            navigation.navigate("ScheduleHomePage");
-          }}
-        >
-          {({
-            errors,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isValid,
-            setFieldValue,
-            touched,
-            values,
-          }) => (
-              <View style={{ margin: 15 }}>
-                <Text style={sharedStyles.inputLabelText}>Event Name</Text>
-                <TextInput
-                  onChangeText={handleChange("name")}
-                  onBlur={handleBlur("name")}
-                  value={values.name}
-                  placeholder="event name"
-                  style={[sharedStyles.input, { marginBottom: 0 }]}
-                />
-                <Text style={sharedStyles.inputError}>
-                  {touched.name && errors.name ? (errors.name as String) : ""}
-                </Text>
-                <Text style={sharedStyles.inputLabelText}>Location</Text>
-                <LocationPicker
-                  latFieldName="lat"
-                  lngFieldName="lng"
-                  formattedAddressFieldName="formattedAddress"
-                  formattedAddress={values.formattedAddress}
-                />
-                <Text style={sharedStyles.inputError}>
-                  {touched.formattedAddress && errors.formattedAddress
-                    ? (errors.formattedAddress as String)
-                    : ""}
-                </Text>
-                {/* Start Time input */}
-                <Text style={sharedStyles.inputLabelText}>Start Time</Text>
-                <DatePicker name="start_time" date={start_time} />
-                {touched.start_time && errors.start_time && (
-                  <Text>{errors.start_time}</Text>
-                )}
-                <Text style={sharedStyles.inputLabelText}>End Time</Text>
-                {/* End Time input */}
-                <DatePicker name="end_time" date={end_time} />
-                {errors.end_time && (
-                  <Text style={sharedStyles.inputError}>{errors.end_time}</Text>
-                )}
-                {/* Pick repetition value*/}
-                <Text style={sharedStyles.inputLabelText}>Repeat</Text>
-                <DropDownPicker
-                  items={repetitionValues}
-                  defaultValue={values.repeat}
-                  onChangeItem={(item) => setFieldValue("repeat", item.value)}
-                  itemStyle={{ justifyContent: "flex-start" }}
-                  containerStyle={{ borderRadius: 15 }}
-                  style={[
-                    sharedStyles.input,
-                    {
-                      borderRadius: 15,
-                      borderWidth: 0,
-                      paddingLeft: 15,
-                    },
-                  ]}
-                  labelStyle={sharedStyles.inputText}
-                />
-                <Text style={sharedStyles.inputLabelText}>Description</Text>
-                <TextInput
-                  onChangeText={handleChange("notes")}
-                  onBlur={handleBlur("notes")}
-                  value={values.notes}
-                  placeholder="Add description"
-                  style={[sharedStyles.input, { marginBottom: 24 }]}
-                />
-                <Button
-                  onPress={handleSubmit}
-                  title="Save"
-                  style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
-                />
-              </View>
+
+          if (event) {
+            modifyEventOnSubmit({ ...values, id: event.id } as Event);
+          } else {
+            createEventOnSubmit(values as Event);
+          }
+          navigation.navigate("ScheduleHomePage");
+        }}
+      >
+        {({
+          errors,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isValid,
+          setFieldValue,
+          touched,
+          values,
+        }) => (
+          <View style={{ margin: 15 }}>
+            <Text style={sharedStyles.inputLabelText}>Event Name</Text>
+            <TextInput
+              onChangeText={handleChange("name")}
+              onBlur={handleBlur("name")}
+              value={values.name}
+              placeholder="event name"
+              style={[sharedStyles.input, { marginBottom: 0 }]}
+            />
+            <Text style={sharedStyles.inputError}>
+              {touched.name && errors.name ? (errors.name as String) : ""}
+            </Text>
+            <Text style={sharedStyles.inputLabelText}>Location</Text>
+            <LocationPicker
+              latFieldName="lat"
+              lngFieldName="lng"
+              formattedAddressFieldName="formattedAddress"
+              formattedAddress={values.formattedAddress}
+            />
+            <Text style={sharedStyles.inputError}>
+              {touched.formattedAddress && errors.formattedAddress
+                ? (errors.formattedAddress as String)
+                : ""}
+            </Text>
+            {/* Start Time input */}
+            <Text style={sharedStyles.inputLabelText}>Start Time</Text>
+            <DatePicker name="start_time" date={start_time} />
+            {touched.start_time && errors.start_time && (
+              <Text>{errors.start_time}</Text>
             )}
-        </Formik>
-      </ScrollView>) : (<View />)
+            <Text style={sharedStyles.inputLabelText}>End Time</Text>
+            {/* End Time input */}
+            <DatePicker name="end_time" date={end_time} />
+            {errors.end_time && (
+              <Text style={sharedStyles.inputError}>{errors.end_time}</Text>
+            )}
+            {/* Pick repetition value*/}
+            <Text style={sharedStyles.inputLabelText}>Repeat</Text>
+            <DropDownPicker
+              items={repetitionValues}
+              defaultValue={values.repeat}
+              onChangeItem={(item) => setFieldValue("repeat", item.value)}
+              itemStyle={{ justifyContent: "flex-start" }}
+              containerStyle={{ borderRadius: 15 }}
+              style={[
+                sharedStyles.input,
+                {
+                  borderRadius: 15,
+                  borderWidth: 0,
+                  paddingLeft: 15,
+                },
+              ]}
+              labelStyle={sharedStyles.inputText}
+            />
+            <Text style={sharedStyles.inputLabelText}>Description</Text>
+            <TextInput
+              onChangeText={handleChange("notes")}
+              onBlur={handleBlur("notes")}
+              value={values.notes}
+              placeholder="Add description"
+              style={[sharedStyles.input, { marginBottom: 24 }]}
+            />
+            <Button
+              onPress={handleSubmit}
+              title="Save"
+              style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
+            />
+            {event && (
+              <Button
+                onPress={() => setDeleteModalVisible(true)}
+                title="Delete"
+                style={{ margin: 0 }}
+              />
+            )}
+            {deleteModalVisible && event && (
+              <DeleteEventModal
+                deleteModalVisible={deleteModalVisible}
+                event={event}
+                setDeleteModalVisible={setDeleteModalVisible}
+              />
+            )}
+          </View>
+        )}
+      </Formik>
+      <SafeAreaView>
+        {conflictModalVisible && (
+          <EventConflictModal
+            setConflictModalVisible={setConflictModalVisible}
+            conflictModalVisible={conflictModalVisible}
+            values={valuesOnSubmit!}
+            navigation={navigation}
+            existingEvent={event}
+            conflicts={conflictValues!}
+          />
+        )}
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 

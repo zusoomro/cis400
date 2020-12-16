@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import store from "./configureStore";
-import Register from "./Register";
+import LoginRegister from "./LoginRegister";
 import { render, fireEvent, act } from "@testing-library/react-native";
 import { register } from "./authSlice";
 import configureStore from "redux-mock-store";
@@ -12,7 +12,7 @@ const mockStore = configureStore(middlewares);
 
 const component = (
   <Provider store={mockStore({ auth: { loading: false } })}>
-    <Register />
+    <LoginRegister />
   </Provider>
 );
 
@@ -22,7 +22,7 @@ jest.mock("./authSlice", () => ({
 
 describe("the registration component", () => {
   it("loads submit and input fields", () => {
-    const { getByPlaceholderText, getByLabelText } = render(component);
+    const { getByPlaceholderText, getByTestId } = render(component);
 
     const emailField = getByPlaceholderText("email");
     expect(emailField).toBeTruthy();
@@ -30,7 +30,7 @@ describe("the registration component", () => {
     const passwordField = getByPlaceholderText("password");
     expect(passwordField).toBeTruthy();
 
-    const submitButton = getByLabelText("Submit");
+    const submitButton = getByTestId("Submit");
     expect(submitButton).toBeTruthy();
   });
 
@@ -40,7 +40,7 @@ describe("the registration component", () => {
       password: "password",
     };
 
-    const { getByPlaceholderText, getByLabelText } = render(component);
+    const { getByPlaceholderText, getByTestId } = render(component);
 
     const emailField = getByPlaceholderText("email");
     fireEvent.changeText(emailField, data.email);
@@ -48,7 +48,7 @@ describe("the registration component", () => {
     const passwordField = getByPlaceholderText("password");
     fireEvent.changeText(passwordField, data.password);
 
-    const submitButton = getByLabelText("Submit");
+    const submitButton = getByTestId("Submit");
     await act(async () => {
       fireEvent.press(submitButton);
     });
