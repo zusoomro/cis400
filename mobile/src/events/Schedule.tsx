@@ -61,6 +61,8 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
 
 const Schedule: React.FC<{}> = ({ navigation }) => {
   const [events, setEvents] = useState([]);
+  //const firstPod = useSelector((state: RootState) => state.pods.pods[0]);
+  //const { loading } = useSelector((state: RootState) => state.pods);
   const [map, setMap] = useState([]);
   const [podEvents, setPodEvents] = useState([]);
   const [pod, setPod] = useState<Pod>();

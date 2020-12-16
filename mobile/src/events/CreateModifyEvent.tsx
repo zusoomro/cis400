@@ -28,7 +28,9 @@ export const repetitionValues = [
 
 type Props = {
   event?: Event;
-  navigation: Object;
+  navigation: {
+    navigate: (screen: string) => void;
+  };
   route: Object;
 };
 
@@ -199,6 +201,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 modalVisible={modalVisible}
                 event={event}
                 setModalVisible={setModalVisible}
+                //navigation={navigation}
               />
             )}
           </View>
