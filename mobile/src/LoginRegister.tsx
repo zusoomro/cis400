@@ -93,7 +93,7 @@ const LoginRegister: React.FC<AuthComponentProps> = ({
                 <ActivityIndicator />
               ) : (
                 <Button
-                  accessibilityLabel="Submit"
+                  testID="Submit"
                   style={{ backgroundColor: "#667EEA" }}
                   onPress={handleSubmit}
                   title={isLogin ? "Login" : "Register"}

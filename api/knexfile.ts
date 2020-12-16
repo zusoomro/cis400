@@ -9,15 +9,13 @@ const config = {
     connection: {
       filename: "./mydb.sqlite",
     },
-    useNullasDefault: true,
+    useNullAsDefault: true,
   },
 
   testing: {
     client: "sqlite3",
-    connection: {
-      filename: "./testdb.sqlite",
-    },
-    useNullasDefault: true,
+    connection: ":memory:",
+    useNullAsDefault: true,
   },
 
   production: {

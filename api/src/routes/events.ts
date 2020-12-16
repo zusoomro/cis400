@@ -2,9 +2,17 @@ import express, { Request, Response } from "express";
 import Event from "../../models/Event";
 import auth, { AuthRequest } from "../authMiddleware";
 import Pod from "../../models/Pod";
+import { getPodEvents } from "./pods";
+import {
+  ConflictBuffer,
+  determineTravelTimeConflicts,
+  getOverlappingEvents,
+  getPreviousAndNextEvent,
+} from "./eventConflictFunctions";
 
 let eventRouter = express.Router();
 
+// Create an event
 eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   const {
     name,
@@ -45,6 +53,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
 });
 
+// Modify the event
 eventRouter.put("/", [auth], async (req: Request, res: Response) => {
   const {
     name,
@@ -70,8 +79,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
   }
 
   const eventId = req.body.id;
-  const id = (req as AuthRequest).user.id;
-  const event = await Event.query()
+  await Event.query()
     .update({
       name,
       formattedAddress,
@@ -85,6 +93,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     .where("id", eventId);
 });
 
+// Get api key
 eventRouter.get(
   "/apiKey",
   [auth],
@@ -100,6 +109,44 @@ eventRouter.get(
   }
 );
 
+// Assume all this data is good for now
+eventRouter.post("/proposeEvent", async (req: Request, res: Response) => {
+  try {
+    const { event, podId } = req.body;
+
+    // Determine if there are any immediately conflicting events
+    let events: Event[] = await getPodEvents(podId);
+
+    // Filter out current event if it exists
+    if (event.id) {
+      events = events.filter((eventItem) => eventItem.id != event.id);
+    }
+
+    let conflictingEvents = getOverlappingEvents(event, events);
+    let conflictingBuffers: ConflictBuffer[] = [];
+
+    // If there are immediately conflicting events, return them
+    if (conflictingEvents.length) {
+      return res.json({
+        isConflicting: true,
+        conflictingEvents,
+        conflictingBuffers,
+      });
+    }
+
+    // Determine the next event and previous event in the schedule
+    const { previousEvent, nextEvent } = getPreviousAndNextEvent(event, events);
+
+    // Determine the travel time between those events and the proposed event
+    return res.json(
+      await determineTravelTimeConflicts(event, previousEvent, nextEvent)
+    );
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 eventRouter.get(
   "/",
   [auth],
@@ -114,6 +161,16 @@ eventRouter.get(
     }
   }
 );
+
+eventRouter.delete("/", async (req: Request, res: Response) => {
+  const eventId = req.body.id;
+  console.log("eventid", eventId);
+
+  // const id = (req as AuthRequest).user.id;
+  const event = await Event.query().deleteById(eventId);
+  console.log("event", event);
+  res.json({ event });
+});
 
 eventRouter.get(
   "/:podId",
