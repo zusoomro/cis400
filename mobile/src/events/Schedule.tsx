@@ -13,11 +13,12 @@ import {
   ActivityIndicator,
 } from "react-native";
 import apiUrl from "../config";
+import { setEvents } from "./eventsSlice";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
 import EventInSchedule from "./EventInSchedule";
 import Pod from "../types/Pod";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
   return (
@@ -59,12 +60,12 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
 };
 
 const Schedule: React.FC<{}> = ({ navigation }) => {
-  const [events, setEvents] = useState([]);
+  const events = useSelector((state: RootState) => state.events.events);
   const [map, setMap] = useState([]);
-  const [podEvents, setPodEvents] = useState([]);
   const [pod, setPod] = useState<Pod>();
   const [loading, setLoading] = useState<boolean>(true);
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
   const today = new Date();
 
   const [isToggledToUser, setIsToggledToUser] = useState(true);
@@ -89,13 +90,13 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
     if (isToggledToUser) {
       setLoading(true);
       fetchUserEvents().then((res) => {
-        setEvents(res);
+        dispatch(setEvents(res[0]));
         setLoading(false);
       });
     } else {
       setLoading(true);
       fetchPodEvents(pod.id).then((res) => {
-        setPodEvents(res);
+        dispatch(setEvents(res[0]));
         setLoading(false);
       });
     }
@@ -156,9 +157,10 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
           >
             <ActivityIndicator />
           </View>
-        ) : (isToggledToUser ? events : podEvents).length > 0 ? (
+        ) : (isToggledToUser ? events : events).length > 0 ? (
           <View>
-            {(isToggledToUser ? events : podEvents).map((event: Event) => (
+            {(isToggledToUser ? events : events).map((event: Event) => (
+              //console.log(event)
               <EventInSchedule
                 event={event}
                 showName={!isToggledToUser}

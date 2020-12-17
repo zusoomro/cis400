@@ -9,19 +9,26 @@ import {
 } from "react-native";
 import Event from "../types/Event";
 import { handleDeleteEvent } from "./eventsService";
+import { deleteEvent } from "./eventsSlice";
 import { useDispatch } from "react-redux";
 
 type Props = {
-  deleteModalVisible: boolean;
+  modalVisible: boolean;
   event: Event;
-  setDeleteModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  navigation: {
+    navigate: (screen: string) => void;
+  };
 };
 
 const DeleteEventModal: React.FC<Props> = ({
-  deleteModalVisible,
-  setDeleteModalVisible,
+  setModalVisible,
+  modalVisible,
   event,
+  navigation,
 }) => {
+  const dispatch = useDispatch();
+
   return (
     <Modal
       animationType="slide"
@@ -42,6 +49,8 @@ const DeleteEventModal: React.FC<Props> = ({
                 onPress={() => {
                   handleDeleteEvent(event).then(() => {
                     setDeleteModalVisible(false);
+                    dispatch(deleteEvent(event));
+                    navigation.navigate("ScheduleHomePage");
                   });
                 }}
                 style={{ flex: 1 }}

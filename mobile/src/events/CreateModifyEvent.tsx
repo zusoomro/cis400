@@ -14,9 +14,16 @@ import {
   ProposedEventConflicts,
   validateEventSchema,
 } from "./eventsService";
+import DeleteEventModal from "./DeleteEventModal";
+import { setEvents as reduxSetEvents } from "./eventsSlice";
+import {
+  ConflictAction,
+  eventConflictAlert,
+  isConflictingEvent,
+} from "./eventConflicts";
+import { useDispatch } from "react-redux";
 import { EventConflictModal } from "./EventConflictModal";
 import { fetchUserPod } from "./Schedule";
-import DeleteEventModal from "./DeleteEventModal";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -46,6 +53,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
     event ? event.end_time : new Date(Date.now() + 60 * 60 * 1000)
   );
 
+  const dispatch = useDispatch();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [conflictModalVisible, setConflictModalVisible] = useState(false);
   const [valuesOnSubmit, setValuesOnSubmit] = useState<Event>();
@@ -94,11 +102,21 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             setConflictModalVisible(true);
             return;
           }
-
           if (event) {
-            modifyEventOnSubmit({ ...values, id: event.id } as Event);
+            const res = await modifyEventOnSubmit({
+              ...values,
+              id: event.id,
+            } as Event);
+            if (res) {
+              const eventToAdd: Event = res.eventForReturn[0];
+              dispatch(reduxSetEvents(eventToAdd));
+            }
           } else {
-            createEventOnSubmit(values as Event);
+            const res = await createEventOnSubmit(values as Event);
+            if (res) {
+              // const eventToAdd : Event = res.event[0]
+              dispatch(reduxSetEvents(res));
+            }
           }
           navigation.navigate("ScheduleHomePage");
         }}
@@ -192,6 +210,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 deleteModalVisible={deleteModalVisible}
                 event={event}
                 setDeleteModalVisible={setDeleteModalVisible}
+                navigation={navigation}
               />
             )}
           </View>
