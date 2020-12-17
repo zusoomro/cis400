@@ -42,7 +42,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     notes,
   });
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
-  res.send({ event })
+  res.send({ event });
 });
 
 eventRouter.put("/", [auth], async (req: Request, res: Response) => {
@@ -83,9 +83,8 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     })
     .where("id", eventId);
   const eventForReturn = await Event.query().where("id", eventId);
-  res.send({ eventForReturn })
+  res.send({ eventForReturn });
 });
-
 
 eventRouter.get(
   "/apiKey",
