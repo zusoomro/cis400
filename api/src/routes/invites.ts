@@ -48,6 +48,32 @@ invitesRouter.get(
 );
 
 invitesRouter.post(
+  "/",
+  [auth],
+  async (req: express.Request, res: express.Response) => {
+    try {
+      const { user } = req as AuthRequest;
+      const currUser = (req as AuthRequest).user.id;
+      const inviteeIds: Array<number> = req.body.inviteeIds;
+      const pod = req.body.pod;
+
+      inviteeIds.forEach(async (id) => {
+        const invite = await PodInvites.query().insert({
+          inviteeUserId: id,
+          inviterUserId: currUser,
+          podId: pod.id,
+        });
+        console.log("invite", invite);
+      });
+      res.send({ message: "success" });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+invitesRouter.post(
   "/accept",
   [auth],
   async (req: express.Request, res: express.Response) => {

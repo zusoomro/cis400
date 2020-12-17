@@ -2,8 +2,16 @@ import React from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { RootState } from "../configureStore";
+import sharedStyles from "../sharedStyles";
+import Button from "../shared/Button";
 
-const PodMembers = () => {
+interface Props {
+  navigation: {
+    navigate: (screen: string) => void;
+  };
+}
+
+const PodMembers: React.FC<Props> = ({ navigation }) => {
   const firstPod = useSelector((state: RootState) => state.pods.pods[0]);
   console.log("members", firstPod.members);
 
@@ -13,12 +21,27 @@ const PodMembers = () => {
         <Text style={styles.section1TextHeader}>Members</Text>
         <Text style={styles.section1Text}>Manage the users in your pod.</Text>
       </View>
-      <View style={styles.section2}>
-        {firstPod.members.map((member) => (
-          <View key={member.id} style={styles.userCard}>
-            <Text style={styles.email}>{member.email}</Text>
-          </View>
-        ))}
+      <View>
+        <View>
+          <Button
+            title="Add New Members"
+            style={{ backgroundColor: "#3730A3", marginTop: 10 }}
+            onPress={() => {
+              navigation.navigate("InviteUsers", {
+                caller: "PodMembers",
+                pod: firstPod,
+              });
+              return;
+            }}
+          />
+        </View>
+        <View style={styles.section2}>
+          {firstPod.members.map((member) => (
+            <View key={member.id} style={styles.userCard}>
+              <Text style={styles.email}>{member.email}</Text>
+            </View>
+          ))}
+        </View>
       </View>
     </SafeAreaView>
   );

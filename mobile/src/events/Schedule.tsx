@@ -194,7 +194,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
   );
 };
 
-const fetchUserPod = async (): Promise<Pod | undefined> => {
+export const fetchUserPod = async (): Promise<Pod | undefined> => {
   try {
     const authToken = await SecureStore.getItemAsync("wigo-auth-token");
     const res = await fetch(`${apiUrl}/pods/currUsersPod`, {
@@ -203,15 +203,15 @@ const fetchUserPod = async (): Promise<Pod | undefined> => {
         "x-auth-token": authToken!,
       },
     });
-    console.log("res", res);
+    // console.log("res", res);
 
     const json = await res.json();
 
-    console.log("json", json);
+    // console.log("json", json);
 
     const returnedPod = json.pod[0];
 
-    console.log("returnedPod", returnedPod);
+    // console.log("returnedPod", returnedPod);
 
     return returnedPod;
   } catch (err) {

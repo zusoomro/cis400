@@ -28,11 +28,12 @@ const DeleteEventModal: React.FC<Props> = ({
   navigation,
 }) => {
   const dispatch = useDispatch();
+
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={modalVisible}
+      visible={deleteModalVisible}
       onRequestClose={() => {
         Alert.alert("Modal has been closed.");
       }}
@@ -47,7 +48,7 @@ const DeleteEventModal: React.FC<Props> = ({
               <TouchableHighlight
                 onPress={() => {
                   handleDeleteEvent(event).then(() => {
-                    setModalVisible(false);
+                    setDeleteModalVisible(false);
                     dispatch(deleteEvent(event));
                     navigation.navigate("ScheduleHomePage");
                   });
@@ -60,7 +61,7 @@ const DeleteEventModal: React.FC<Props> = ({
               </TouchableHighlight>
               <TouchableHighlight
                 onPress={() => {
-                  setModalVisible(false);
+                  setDeleteModalVisible(false);
                 }}
                 style={{ flex: 1, marginLeft: 10 }}
               >
