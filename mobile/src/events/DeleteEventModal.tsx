@@ -8,24 +8,26 @@ import {
   Alert,
 } from "react-native";
 import Event from "../types/Event";
-import { handleDeleteEvent } from "./eventsService"
+import { handleDeleteEvent } from "./eventsService";
+import { deleteEvent } from "./eventsSlice";
+import { useDispatch } from "react-redux";
 
 type Props = {
   modalVisible: boolean;
   event: Event;
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  // navigation: {
-  //   navigate: (screen: string) => void;
-  // };
+  navigation: {
+    navigate: (screen: string) => void;
+  };
 };
 
 const DeleteEventModal: React.FC<Props> = ({
   setModalVisible,
   modalVisible,
   event,
-  //navigation,
+  navigation,
 }) => {
-
+  const dispatch = useDispatch();
   return (
     <Modal
       animationType="slide"
@@ -44,12 +46,11 @@ const DeleteEventModal: React.FC<Props> = ({
             <View style={styles.acceptRejectButtonContainer}>
               <TouchableHighlight
                 onPress={() => {
-                  handleDeleteEvent(event).then(
-                    () => {
-                      setModalVisible(false);
-                      //navigation.navigate("ScheduleHomePage");
-                    }
-                  );
+                  handleDeleteEvent(event).then(() => {
+                    setModalVisible(false);
+                    dispatch(deleteEvent(event));
+                    navigation.navigate("ScheduleHomePage");
+                  });
                 }}
                 style={{ flex: 1 }}
               >

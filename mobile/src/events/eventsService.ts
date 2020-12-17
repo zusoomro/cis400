@@ -44,7 +44,7 @@ export const createEventOnSubmit = async (
     });
 
     const event = await res.json();
-    console.log(event)
+    console.log(event);
 
     if (!res.ok) {
       console.log("Event creation rejected by backend");
@@ -99,7 +99,9 @@ export const modifyEventOnSubmit = async (
   }
 };
 
-export const handleDeleteEvent = async (values: Event): Promise<Event | null> => {
+export const handleDeleteEvent = async (
+  values: Event
+): Promise<Event | null> => {
   const data = { id: values.id };
   try {
     const res = await fetch(`http://localhost:8000/events`, {

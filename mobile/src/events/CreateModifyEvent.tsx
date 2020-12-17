@@ -7,7 +7,11 @@ import LocationPicker from "./LocationPicker";
 import DatePicker from "./DatePicker";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
-import { createEventOnSubmit, modifyEventOnSubmit, validateEventSchema} from "./eventsService";
+import {
+  createEventOnSubmit,
+  modifyEventOnSubmit,
+  validateEventSchema,
+} from "./eventsService";
 import DeleteEventModal from "./DeleteEventModal";
 import { setEvents as reduxSetEvents } from "./eventsSlice";
 import {
@@ -16,7 +20,6 @@ import {
   isConflictingEvent,
 } from "./eventConflicts";
 import { useDispatch } from "react-redux";
-
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -94,18 +97,18 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             // TO DO: SET VALUES TO SUGGESTED TIME
           }
           if (event) {
-            const res = await modifyEventOnSubmit({ ...values, id: event.id } as Event);
-            console.log("res: " + res);
-            console.log(res)
+            const res = await modifyEventOnSubmit({
+              ...values,
+              id: event.id,
+            } as Event);
             if (res) {
-              const eventToAdd : Event = res.eventForReturn[0]
-              console.log(eventToAdd)
+              const eventToAdd: Event = res.eventForReturn[0];
               dispatch(reduxSetEvents(eventToAdd));
             }
           } else {
             const res = await createEventOnSubmit(values as Event);
-            console.log("res: " + res);
             if (res) {
+              // const eventToAdd : Event = res.event[0]
               dispatch(reduxSetEvents(res));
             }
           }
@@ -189,23 +192,23 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               title="Save"
               style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
             />
-            {event && 
+            {event && (
               <Button
                 onPress={() => setModalVisible(true)}
                 title="Delete"
                 style={{ margin: 0 }}
               />
-            }
+            )}
             {modalVisible && event && (
               <DeleteEventModal
                 modalVisible={modalVisible}
                 event={event}
                 setModalVisible={setModalVisible}
-                //navigation={navigation}
+                navigation={navigation}
               />
             )}
           </View>
-        )}   
+        )}
       </Formik>
     </ScrollView>
   );

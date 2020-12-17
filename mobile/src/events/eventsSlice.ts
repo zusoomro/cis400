@@ -22,49 +22,23 @@ const initialState: {
   error: "",
 };
 
-// export const loadUserEvents = createAsyncThunk(
-//   "events/loadUserEvents",
-//   async (
-//     data,
-//     api
-//   ): Promise<Event[] | ReturnType<typeof api.rejectWithValue>> => {
-//     try {
-//       console.log("Adding to redux")
-//       const authToken = (api.getState() as RootState).auth.token;
-//       const res = await fetch(`${apiUrl}/events`, {
-//         headers: {
-//           "Content-Type": "application/json;charset=utf-8",
-//           "x-auth-token": authToken,
-//         },
-//       });
-
-//       const json = await res.json();
-
-//       if (!res.ok) {
-//         return api.rejectWithValue(json.message);
-//       }
-
-//       return json.events;
-//     } catch (err) {
-//       return api.rejectWithValue(err.message);
-//     }
-//   }
-// );
-
 const eventSlice = createSlice({
   name: "events",
   initialState,
   reducers: {
     setEvents(state, action) {
-      console.log("reduxing events")
-      // state.events = [action.payload];
-
-      // state.events = [...state.events, action.payload]
-
-      state.events = [...state.events.filter(event => event.id != action.payload.id), action.payload]
+      state.events = [
+        ...state.events.filter((event) => event.id != action.payload.id),
+        action.payload,
+      ];
+    },
+    deleteEvent(state, action) {
+      state.events = [
+        ...state.events.filter((event) => event.id != action.payload.id),
+      ];
     },
   },
 });
 
-export const { setEvents } = eventSlice.actions;
+export const { setEvents, deleteEvent } = eventSlice.actions;
 export default eventSlice.reducer;
