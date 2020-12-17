@@ -14,6 +14,8 @@ import moment from "moment";
 import Event from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
 import { ProposedEventConflicts, ConflictBuffer } from "./eventsService";
+import { changeEvent as reduxChangeEvent } from "./eventsSlice";
+import { useDispatch } from "react-redux";
 
 type Props = {
   conflictModalVisible: boolean;
@@ -40,6 +42,8 @@ export const EventConflictModal: React.FC<Props> = ({
   navigation,
   conflicts,
 }) => {
+  const dispatch = useDispatch();
+
   // Create conflicting events array from conflicts.conflictingEvents
   const conflictingEvents: ConflictingEvent[] = conflicts.conflictingEvents.map(
     (event: Event) => {
@@ -128,9 +132,13 @@ export const EventConflictModal: React.FC<Props> = ({
                 modifyEventOnSubmit({
                   ...values,
                   id: existingEvent.id,
-                } as Event);
+                } as Event).then((res) => {
+                  dispatch(reduxChangeEvent(res.eventForReturn[0]));
+                });
               } else {
-                createEventOnSubmit(values as Event);
+                createEventOnSubmit(values as Event).then((res) => {
+                  dispatch(reduxChangeEvent(res));
+                });
               }
               navigation.navigate("ScheduleHomePage");
             }}

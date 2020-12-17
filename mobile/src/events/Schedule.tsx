@@ -90,7 +90,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
     if (isToggledToUser) {
       setLoading(true);
       fetchUserEvents().then((res) => {
-        dispatch(setEvents(res[0]));
+        dispatch(setEvents(res));
         setLoading(false);
       });
     } else {
@@ -203,15 +203,8 @@ export const fetchUserPod = async (): Promise<Pod | undefined> => {
         "x-auth-token": authToken!,
       },
     });
-    // console.log("res", res);
-
     const json = await res.json();
-
-    // console.log("json", json);
-
     const returnedPod = json.pod[0];
-
-    // console.log("returnedPod", returnedPod);
 
     return returnedPod;
   } catch (err) {
@@ -233,6 +226,8 @@ const fetchPodEvents = async (podId: number) => {
 
     const json = await res.json();
     const returnedEvents = json.events;
+    console.log("returnedEvents", returnedEvents);
+
     return returnedEvents;
   } catch (err) {
     console.log("ERROR: ", err);

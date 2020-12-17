@@ -103,14 +103,13 @@ export const createEventOnSubmit = async (
     });
 
     const event = await res.json();
-    console.log(event);
 
     if (!res.ok) {
       console.log("Event creation rejected by backend");
       console.log("Event:", event);
       throw new Error("Event creation rejected by backend");
     }
-    return event;
+    return event.event;
   } catch (error) {
     console.log(`error creating new event`, error);
     return null;

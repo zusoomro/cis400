@@ -13,17 +13,17 @@ import { deleteEvent } from "./eventsSlice";
 import { useDispatch } from "react-redux";
 
 type Props = {
-  modalVisible: boolean;
+  deleteModalVisible: boolean;
   event: Event;
-  setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  setDeleteModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   navigation: {
     navigate: (screen: string) => void;
   };
 };
 
 const DeleteEventModal: React.FC<Props> = ({
-  setModalVisible,
-  modalVisible,
+  setDeleteModalVisible,
+  deleteModalVisible,
   event,
   navigation,
 }) => {

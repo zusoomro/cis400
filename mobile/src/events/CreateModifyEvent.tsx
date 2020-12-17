@@ -15,7 +15,7 @@ import {
   validateEventSchema,
 } from "./eventsService";
 import DeleteEventModal from "./DeleteEventModal";
-import { setEvents as reduxSetEvents } from "./eventsSlice";
+import { changeEvent as reduxChangeEvent } from "./eventsSlice";
 import {
   ConflictAction,
   eventConflictAlert,
@@ -109,13 +109,12 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             } as Event);
             if (res) {
               const eventToAdd: Event = res.eventForReturn[0];
-              dispatch(reduxSetEvents(eventToAdd));
+              dispatch(reduxChangeEvent(eventToAdd));
             }
           } else {
             const res = await createEventOnSubmit(values as Event);
             if (res) {
-              // const eventToAdd : Event = res.event[0]
-              dispatch(reduxSetEvents(res));
+              dispatch(reduxChangeEvent(res));
             }
           }
           navigation.navigate("ScheduleHomePage");
