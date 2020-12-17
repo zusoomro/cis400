@@ -42,7 +42,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     notes,
   });
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
-  res.send({event})
+  res.send({ event })
 });
 
 eventRouter.put("/", [auth], async (req: Request, res: Response) => {
@@ -56,7 +56,6 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     repeat,
     notes,
   } = req.body;
-  console.log("beginning of MODIFYING EVENT")
   if (!name || !formattedAddress || !start_time || !end_time || !repeat) {
     return res
       .status(400)
@@ -84,7 +83,6 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     })
     .where("id", eventId);
   const eventForReturn = await Event.query().where("id", eventId);
-  console.log(eventForReturn)
   res.send({ eventForReturn })
 });
 
@@ -121,11 +119,7 @@ eventRouter.get(
 
 eventRouter.delete("/", async (req: Request, res: Response) => {
   const eventId = req.body.id;
-  console.log("eventid", eventId);
-
-  // const id = (req as AuthRequest).user.id;
   const event = await Event.query().deleteById(eventId);
-  console.log("event", event);
   res.json({ event });
 });
 
