@@ -61,6 +61,8 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
     ProposedEventConflicts
   >();
 
+  console.log("event", event);
+
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
       <Formik
@@ -154,7 +156,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               lngFieldName="startLng"
               formattedAddressFieldName="startFormattedAddress"
               formattedAddress={values.startFormattedAddress}
-              destinationPicker = {false}
+              destinationPicker={false}
             />
             <Text style={sharedStyles.inputError}>
               {touched.startFormattedAddress && errors.startFormattedAddress
@@ -167,7 +169,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               lngFieldName="lng"
               formattedAddressFieldName="formattedAddress"
               formattedAddress={values.formattedAddress}
-              destinationPicker = {true}
+              destinationPicker={true}
             />
             <Text style={sharedStyles.inputError}>
               {touched.formattedAddress && errors.formattedAddress

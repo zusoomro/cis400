@@ -23,9 +23,21 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     lng,
     repeat,
     notes,
+    startFormattedAddress,
+    startLat,
+    startLng,
   } = req.body;
 
-  if (!name || !formattedAddress || !start_time || !end_time || !repeat) {
+  if (
+    !name ||
+    !formattedAddress ||
+    !start_time ||
+    !end_time ||
+    !repeat ||
+    !startFormattedAddress ||
+    !startLat ||
+    !startLng
+  ) {
     return res
       .status(400)
       .json({ message: "Please fill out the required fields." });
@@ -44,6 +56,9 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     formattedAddress,
     lat,
     lng,
+    startFormattedAddress,
+    startLat,
+    startLng,
     start_time: start_time,
     end_time: end_time,
     repeat,
@@ -64,8 +79,20 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     end_time,
     repeat,
     notes,
+    startFormattedAddress,
+    startLat,
+    startLng,
   } = req.body;
-  if (!name || !formattedAddress || !start_time || !end_time || !repeat) {
+  if (
+    !name ||
+    !formattedAddress ||
+    !start_time ||
+    !end_time ||
+    !repeat ||
+    !startFormattedAddress ||
+    !startLat ||
+    !startLng
+  ) {
     return res
       .status(400)
       .json({ message: "Please fill out the required fields." });
@@ -84,6 +111,9 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
       formattedAddress,
       lat,
       lng,
+      startFormattedAddress,
+      startLat,
+      startLng,
       start_time,
       end_time,
       repeat,
