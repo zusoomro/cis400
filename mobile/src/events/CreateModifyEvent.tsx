@@ -61,8 +61,6 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
     ProposedEventConflicts
   >();
 
-  console.log("event", event);
-
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
       <Formik
