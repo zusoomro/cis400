@@ -24,6 +24,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     lng,
     repeat,
     notes,
+    priority,
   } = req.body;
 
   if (!name || !formattedAddress || !start_time || !end_time || !repeat) {
@@ -49,6 +50,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     end_time: end_time,
     repeat,
     notes,
+    priority,
   });
 
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
@@ -65,6 +67,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     end_time,
     repeat,
     notes,
+    priority,
   } = req.body;
 
   if (!name || !formattedAddress || !start_time || !end_time || !repeat) {
@@ -90,6 +93,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
       end_time,
       repeat,
       notes,
+      priority,
     })
     .where("id", eventId);
 });

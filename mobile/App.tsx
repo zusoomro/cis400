@@ -10,6 +10,7 @@ import store, { RootState } from "./src/configureStore";
 import TabNavigator from "./src/Navigator";
 import { navigationRef } from "./src/rootNavigation";
 import { setupNotificationListeners } from "./src/pushNotifications/pushNotifications";
+import * as SecureStore from 'expo-secure-store'
 
 export default function App() {
   return (

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import moment from "moment";
 
-import Event from "../types/Event";
+import Event, { Priority } from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
 import { ProposedEventConflicts, ConflictBuffer } from "./eventsService";
 
@@ -57,13 +57,16 @@ export const EventConflictModal: React.FC<Props> = ({
     title,
     conflictEvent,
     conflictBuffer,
+    priority,
   }: {
     title: string;
     conflictEvent: Event;
     conflictBuffer: ConflictBuffer | null;
+    priority: number;
   }) => (
     <View style={{ flexDirection: "row" }}>
-      <Text style={{ fontWeight: "bold" }}>{title}:</Text>
+      <Text style={{ fontWeight: "bold" }}>{title}: </Text>
+      <Text>({Priority[priority]})</Text>
       <Text style={{ textAlign: "center" }}>
         {moment(conflictEvent.start_time).format(" h:mm")}-
         {moment(conflictEvent.end_time).format(" h:mmA")}
@@ -79,6 +82,7 @@ export const EventConflictModal: React.FC<Props> = ({
       title={item.event.name}
       conflictEvent={item.event}
       conflictBuffer={item.conflictBuffer}
+      priority={item.event.priority}
     />
   );
 

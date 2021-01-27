@@ -9,6 +9,13 @@ type Event = {
   end_time: Date;
   repeat: "no_repeat" | "daily" | "weekly" | "monthly" | "yearly";
   notes: string;
+  priority: Priority;
 };
+
+export enum Priority {
+  Flexible,
+  "Semi-Flexible",
+  Inflexible,
+}
 
 export default Event;
