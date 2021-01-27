@@ -3,7 +3,6 @@ import { useFormikContext } from "formik";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import sharedStyles from "../sharedStyles";
 import { useSelector } from "react-redux";
-import { useLinkProps } from "@react-navigation/native";
 
 export interface Place {
   formatted_address: string;
