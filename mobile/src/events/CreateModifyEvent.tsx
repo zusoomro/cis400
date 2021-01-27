@@ -148,7 +148,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             <Text style={sharedStyles.inputError}>
               {touched.name && errors.name ? (errors.name as String) : ""}
             </Text>
-            <Text style={sharedStyles.inputLabelText}>Location</Text>
+            <Text style={sharedStyles.inputLabelText}>Start Location</Text>
             <LocationPicker
               latFieldName="startLat"
               lngFieldName="startLng"
@@ -156,6 +156,12 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               formattedAddress={values.startFormattedAddress}
               destinationPicker = {false}
             />
+            <Text style={sharedStyles.inputError}>
+              {touched.startFormattedAddress && errors.startFormattedAddress
+                ? (errors.startFormattedAddress as String)
+                : ""}
+            </Text>
+            <Text style={sharedStyles.inputLabelText}>Destination</Text>
             <LocationPicker
               latFieldName="lat"
               lngFieldName="lng"
