@@ -3,6 +3,7 @@ import { useFormikContext } from "formik";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import sharedStyles from "../sharedStyles";
 import { useSelector } from "react-redux";
+import { useLinkProps } from "@react-navigation/native";
 
 export interface Place {
   formatted_address: string;
@@ -14,6 +15,7 @@ interface LocationProps {
   lngFieldName: string;
   formattedAddressFieldName: string;
   formattedAddress: string;
+  destinationPicker: boolean;
 }
 
 const LocationPicker: React.FC<LocationProps> = (props) => {
@@ -37,7 +39,7 @@ const LocationPicker: React.FC<LocationProps> = (props) => {
   return (
     <GooglePlacesAutocomplete
       ref={ref}
-      placeholder="Add Location"
+      placeholder= {props.destinationPicker ? "Add Destination" : "Add Start"}
       currentLocation={true}
       fetchDetails={true} // Details in onPress should not be null
       query={{

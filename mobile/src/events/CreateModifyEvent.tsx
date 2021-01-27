@@ -71,6 +71,9 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 formattedAddress: event.formattedAddress,
                 lat: event.lat,
                 lng: event.lng,
+                startFormattedAddress: event.startFormattedAddress,
+                startLat: event.startLat,
+                startLng: event.startLng,
                 start_time: event.start_time,
                 end_time: event.end_time,
                 repeat: repetitionValues[0].value,
@@ -81,6 +84,9 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 formattedAddress: "",
                 lat: "",
                 lng: "",
+                startFormattedAddress: "",
+                startLat: "",
+                startLng: "",
                 start_time: start_time,
                 end_time: end_time,
                 repeat: repetitionValues[0].value,
@@ -144,10 +150,18 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             </Text>
             <Text style={sharedStyles.inputLabelText}>Location</Text>
             <LocationPicker
+              latFieldName="startLat"
+              lngFieldName="startLng"
+              formattedAddressFieldName="startFormattedAddress"
+              formattedAddress={values.startFormattedAddress}
+              destinationPicker = {false}
+            />
+            <LocationPicker
               latFieldName="lat"
               lngFieldName="lng"
               formattedAddressFieldName="formattedAddress"
               formattedAddress={values.formattedAddress}
+              destinationPicker = {true}
             />
             <Text style={sharedStyles.inputError}>
               {touched.formattedAddress && errors.formattedAddress
