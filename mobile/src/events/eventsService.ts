@@ -109,7 +109,7 @@ export const createEventOnSubmit = async (
       console.log("Event:", event);
       throw new Error("Event creation rejected by backend");
     }
-    return event;
+    return event.event;
   } catch (error) {
     console.log(`error creating new event`, error);
     return null;
@@ -131,7 +131,6 @@ export const modifyEventOnSubmit = async (
     notes: values.notes,
     id: values.id,
   };
-
   try {
     const res = await fetch(`${apiUrl}/events`, {
       method: "PUT",
@@ -151,7 +150,6 @@ export const modifyEventOnSubmit = async (
       console.log("Event:", event);
       throw new Error("Event modification rejected by backend");
     }
-
     return event;
   } catch (error) {
     console.log(`error updatind event`, error);
