@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
-  token: '',
-  notification: false as boolean | Notification
+  token: "",
+  notification: false as boolean | Notification,
 };
 
 const pushSlice = createSlice({
@@ -15,5 +15,5 @@ const pushSlice = createSlice({
   },
 });
 
-export const { setPushToken } = pushSlice.actions
+export const { setPushToken } = pushSlice.actions;
 export default pushSlice.reducer;

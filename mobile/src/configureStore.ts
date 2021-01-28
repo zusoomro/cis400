@@ -1,7 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import auth from "./authSlice";
 import pods from "./pods/podSlice";
-import push from './pushNotifications/pushNotificationsSlice'
+import push from "./pushNotifications/pushNotificationsSlice";
 import events from "./events/eventsSlice";
 
 const rootReducer = combineReducers({
