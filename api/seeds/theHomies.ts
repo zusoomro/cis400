@@ -55,6 +55,7 @@ export async function seed(knex: Knex): Promise<void> {
       id: 1,
       name: "The Homies",
       ownerId: 1,
+      homeAddress: "4000 Spruce St., Philadelphia PA, 19104",
     },
   ]);
 

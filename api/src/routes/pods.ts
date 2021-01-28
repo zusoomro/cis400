@@ -40,9 +40,7 @@ podsRouter.post(
     }
 
     if (!homeAddress) {
-      return res
-        .status(400)
-        .json({ message: "Pod requires a home address." });
+      return res.status(400).json({ message: "Pod requires a home address." });
     }
 
     const inviteeIds: Array<number> = req.body.inviteeIds;
@@ -51,7 +49,7 @@ podsRouter.post(
     const pod = await Pod.query().insert({
       ownerId: currUser,
       name: name,
-      homeAddress: homeAddress
+      homeAddress: homeAddress,
     });
 
     await pod.$relatedQuery("members").relate(user.id);
