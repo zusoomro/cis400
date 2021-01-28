@@ -10,12 +10,12 @@ import Event from "../types/Event";
 import {
   createEventOnSubmit,
   modifyEventOnSubmit,
-  proposeEvent,
-  ProposedEventConflicts,
   validateEventSchema,
 } from "./eventsService";
-import DeleteEventModal from "./DeleteEventModal";
-import { changeEvent as reduxChangeEvent } from "./eventsSlice";
+import {
+  proposeEvent,
+  ProposedEventConflicts,
+} from "./eventConflictService"
 import {
   ConflictAction,
   eventConflictAlert,
@@ -205,7 +205,8 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               />
             )}
             {deleteModalVisible && event && (
-              <DeleteEventModal
+              <
+              
                 deleteModalVisible={deleteModalVisible}
                 event={event}
                 setDeleteModalVisible={setDeleteModalVisible}
