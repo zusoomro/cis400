@@ -10,6 +10,7 @@ import {
 import CreatePod from "./CreatePod";
 import PodsHomeScreen from "./PodsHomeScreen";
 import InviteUsers from "./InviteUsers";
+import PodAnalytics from "./PodAnalytics";
 import { Formik } from "formik";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -52,6 +53,11 @@ const PodsNavigator = () => {
         name="PodMembers"
         component={PodMembers}
         options={{ title: "Manage members" }}
+      />
+      <Stack.Screen
+        name="PodAnalytics"
+        component={PodAnalytics}
+        options={{ title: "Pod analytics" }}
       />
     </Stack.Navigator>
   );

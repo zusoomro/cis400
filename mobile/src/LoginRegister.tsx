@@ -15,6 +15,7 @@ import { login, register } from "./authSlice";
 import { RootState } from "./configureStore";
 import Button from "./shared/Button";
 import sharedStyles from "./sharedStyles";
+import { generateAndUploadPushNotificationToken } from "./pushNotifications/pushNotifications";
 
 type AuthComponentProps = {
   isLogin?: boolean;

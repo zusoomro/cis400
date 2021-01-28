@@ -13,7 +13,8 @@ import moment from "moment";
 
 import Event, { Priority } from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
-import { ProposedEventConflicts, ConflictBuffer } from "./eventsService";
+import { ProposedEventConflicts, ConflictBuffer } from "./eventConflictService";
+import {sendPushNotification} from "../pushNotifications/pushNotifications";
 
 type Props = {
   conflictModalVisible: boolean;
@@ -52,42 +53,7 @@ export const EventConflictModal: React.FC<Props> = ({
       };
     }
   );
-
-  const ConflictEventRow = ({
-    title,
-    conflictEvent,
-    conflictBuffer,
-    priority,
-  }: {
-    title: string;
-    conflictEvent: Event;
-    conflictBuffer: ConflictBuffer | null;
-    priority: number;
-  }) => (
-    <View style={{ flexDirection: "row" }}>
-      <Text style={{ fontWeight: "bold" }}>{title}: </Text>
-      <Text>({Priority[priority]})</Text>
-      <Text style={{ textAlign: "center" }}>
-        {moment(conflictEvent.start_time).format(" h:mm")}-
-        {moment(conflictEvent.end_time).format(" h:mmA")}
-      </Text>
-      {conflictBuffer && (
-        <Text style={styles.travelTimeText}> (Travel Time) </Text>
-      )}
-    </View>
-  );
-
-  const renderRow = ({ item }: { item: ConflictingEvent }) => (
-    <ConflictEventRow
-      title={item.event.name}
-      conflictEvent={item.event}
-      conflictBuffer={item.conflictBuffer}
-      priority={item.event.priority}
-    />
-  );
-
-  console.log(conflicts);
-
+  
   return (
     <Modal
       animationType="none"
@@ -128,13 +94,25 @@ export const EventConflictModal: React.FC<Props> = ({
           {/* schedule the event anyway */}
           <TouchableOpacity
             onPress={() => {
+              // Send push notiifcations 
+              conflictingEvents.forEach(conflict => {
+                sendPushNotification({
+                  recipientId: conflict.event.ownerId, 
+                  eventId: conflict.event.id
+                });
+              });
+
               if (existingEvent) {
                 modifyEventOnSubmit({
                   ...values,
                   id: existingEvent.id,
-                } as Event);
+                } as Event).then((res) => {
+                  dispatch(reduxChangeEvent(res.eventForReturn[0]));
+                });
               } else {
-                createEventOnSubmit(values as Event);
+                createEventOnSubmit(values as Event).then((res) => {
+                  dispatch(reduxChangeEvent(res));
+                });
               }
               navigation.navigate("ScheduleHomePage");
             }}
@@ -147,6 +125,37 @@ export const EventConflictModal: React.FC<Props> = ({
     </Modal>
   );
 };
+
+// Row representing a conflict event row in the flat list
+const ConflictEventRow = ({
+  title,
+  conflictEvent,
+  conflictBuffer,
+}: {
+  title: string;
+  conflictEvent: Event;
+  conflictBuffer: ConflictBuffer | null;
+}) => (
+  <View style={{ flexDirection: "row" }}>
+    <Text style={{ fontWeight: "bold" }}>{title}: </Text>
+    <Text>({Priority[priority]})</Text>
+    <Text style={{ textAlign: "center" }}>
+      {moment(conflictEvent.start_time).format(" h:mm")}-
+      {moment(conflictEvent.end_time).format(" h:mmA")}
+    </Text>
+    {conflictBuffer && (
+      <Text style={styles.travelTimeText}> (Travel Time) </Text>
+    )}
+  </View>
+);
+
+const renderRow = ({ item }: { item: ConflictingEvent }) => (
+  <ConflictEventRow
+    title={item.event.name}
+    conflictEvent={item.event}
+    conflictBuffer={item.conflictBuffer}
+  />
+);
 
 const styles = StyleSheet.create({
   container: {

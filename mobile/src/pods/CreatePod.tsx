@@ -85,7 +85,9 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
               <Button
                 title="Invite Users to Pod"
                 onPress={() => {
-                  navigation.navigate("InviteUsers");
+                  navigation.navigate("InviteUsers", {
+                    caller: "CreatePod",
+                  });
                   return;
                 }}
               />

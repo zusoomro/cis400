@@ -10,13 +10,20 @@ import Event from "../types/Event";
 import {
   createEventOnSubmit,
   modifyEventOnSubmit,
-  proposeEvent,
-  ProposedEventConflicts,
   validateEventSchema,
 } from "./eventsService";
+import {
+  proposeEvent,
+  ProposedEventConflicts,
+} from "./eventConflictService"
+import {
+  ConflictAction,
+  eventConflictAlert,
+  isConflictingEvent,
+} from "./eventConflicts";
+import { useDispatch } from "react-redux";
 import { EventConflictModal } from "./EventConflictModal";
 import { fetchUserPod } from "./Schedule";
-import DeleteEventModal from "./DeleteEventModal";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -52,6 +59,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
     event ? event.end_time : new Date(Date.now() + 60 * 60 * 1000)
   );
 
+  const dispatch = useDispatch();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [conflictModalVisible, setConflictModalVisible] = useState(false);
   const [valuesOnSubmit, setValuesOnSubmit] = useState<Event>();
@@ -69,6 +77,9 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 formattedAddress: event.formattedAddress,
                 lat: event.lat,
                 lng: event.lng,
+                startFormattedAddress: event.startFormattedAddress,
+                startLat: event.startLat,
+                startLng: event.startLng,
                 start_time: event.start_time,
                 end_time: event.end_time,
                 repeat: repetitionValues[0].value,
@@ -80,6 +91,9 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 formattedAddress: "",
                 lat: "",
                 lng: "",
+                startFormattedAddress: "",
+                startLat: "",
+                startLng: "",
                 start_time: start_time,
                 end_time: end_time,
                 repeat: repetitionValues[0].value,
@@ -102,11 +116,20 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             setConflictModalVisible(true);
             return;
           }
-
           if (event) {
-            modifyEventOnSubmit({ ...values, id: event.id } as Event);
+            const res = await modifyEventOnSubmit({
+              ...values,
+              id: event.id,
+            } as Event);
+            if (res) {
+              const eventToAdd: Event = res.eventForReturn[0];
+              dispatch(reduxChangeEvent(eventToAdd));
+            }
           } else {
-            createEventOnSubmit(values as Event);
+            const res = await createEventOnSubmit(values as Event);
+            if (res) {
+              dispatch(reduxChangeEvent(res));
+            }
           }
           navigation.navigate("ScheduleHomePage");
         }}
@@ -133,12 +156,26 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             <Text style={sharedStyles.inputError}>
               {touched.name && errors.name ? (errors.name as String) : ""}
             </Text>
-            <Text style={sharedStyles.inputLabelText}>Location</Text>
+            <Text style={sharedStyles.inputLabelText}>Start Location</Text>
+            <LocationPicker
+              latFieldName="startLat"
+              lngFieldName="startLng"
+              formattedAddressFieldName="startFormattedAddress"
+              formattedAddress={values.startFormattedAddress}
+              destinationPicker={false}
+            />
+            <Text style={sharedStyles.inputError}>
+              {touched.startFormattedAddress && errors.startFormattedAddress
+                ? (errors.startFormattedAddress as String)
+                : ""}
+            </Text>
+            <Text style={sharedStyles.inputLabelText}>Destination</Text>
             <LocationPicker
               latFieldName="lat"
               lngFieldName="lng"
               formattedAddressFieldName="formattedAddress"
               formattedAddress={values.formattedAddress}
+              destinationPicker={true}
             />
             <Text style={sharedStyles.inputError}>
               {touched.formattedAddress && errors.formattedAddress
@@ -214,10 +251,12 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               />
             )}
             {deleteModalVisible && event && (
-              <DeleteEventModal
+              <
+              
                 deleteModalVisible={deleteModalVisible}
                 event={event}
                 setDeleteModalVisible={setDeleteModalVisible}
+                navigation={navigation}
               />
             )}
           </View>
