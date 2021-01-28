@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, register } from "./authSlice";
 import { RootState } from "./configureStore";
 import sharedStyles from "./sharedStyles";
+import { generateAndUploadPushNotificationToken } from "./pushNotifications/pushNotifications";
 
 type AuthComponentProps = {
   isLogin?: boolean;

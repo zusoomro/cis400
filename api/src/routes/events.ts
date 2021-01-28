@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import Event from "../../models/Event";
 import auth, { AuthRequest } from "../authMiddleware";
 import Pod from "../../models/Pod";
+import User from "../../models/User";
 import { getPodEvents } from "./pods";
 import {
   ConflictBuffer,
@@ -171,6 +172,23 @@ eventRouter.delete("/", async (req: Request, res: Response) => {
 });
 
 eventRouter.get(
+  "/event/:eventId",
+  [auth],
+  async (req: Request, res: Response) => {
+    const { eventId } = req.params;
+    try {
+      console.log("id", eventId);
+      const event = await Event.query().findOne({ "events.id": eventId });
+
+      res.json({ event });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Server Error" });
+    }
+  }
+);
+
+eventRouter.get(
   "/:podId",
   [auth],
   async (req: express.Request, res: express.Response) => {
@@ -185,7 +203,7 @@ eventRouter.get(
 
       const allEvents: Event[] = await Event.query().whereIn(
         "ownerId",
-        pod.members.map((m) => m.id)
+        pod.members.map((m: User) => m.id)
       );
 
       res.json({ events: allEvents });

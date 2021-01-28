@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import ScheduleNavigator from "./events/ScheduleNavigator";
 import PodsNavigator from "./pods/PodsNavigator";
 import Settings from "./Settings";
 import LoginRegister from "./LoginRegister";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./configureStore";
+import { registerForPushNotificationsAsync } from "./pushNotifications/pushNotifications";
+import { setPushToken } from "./pushNotifications/pushNotificationsSlice";
+import * as Notifications from "expo-notifications";
+import * as RootNavigation from "./rootNavigation";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const Tab = createBottomTabNavigator<TabNavigatorParamList>();
 
@@ -22,7 +34,12 @@ const TabNavigator = () => {
   const authenticated = useSelector(
     (state: RootState) => state.auth.authenticated
   );
-  console.log("authenticated", authenticated);
+  const [notification, setNotification] = useState<Notification>();
+  const notificationListener = useRef<
+    ReturnType<typeof Notifications.addNotificationReceivedListener>
+  >();
+  const responseListener = useRef();
+  const dispatch = useDispatch();
 
   return (
     <Tab.Navigator

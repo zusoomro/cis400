@@ -85,7 +85,7 @@ usersRouter.post("/", async (req, res) => {
 });
 
 usersRouter.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, notificationToken } = req.body;
 
   console.log("hit login endpoint");
 

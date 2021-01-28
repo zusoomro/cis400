@@ -6,6 +6,7 @@ export default class User extends Model {
   password!: string;
   id!: number;
   avatar!: string;
+  notificationToken!: string;
 
   static get tableName() {
     return "users";

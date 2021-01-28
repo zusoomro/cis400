@@ -6,9 +6,11 @@ import { logOut } from "./authSlice";
 import { RootState } from "./configureStore";
 import sharedStyles from "./sharedStyles";
 import { Ionicons } from "@expo/vector-icons";
+import { sendPushNotification } from "./pushNotifications/pushNotifications";
 
 const Settings: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
+  const { token } = useSelector((state: RootState) => state.push);
   const [debug, setDebug] = useState(false);
   const dispatch = useDispatch();
 
