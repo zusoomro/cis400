@@ -34,9 +34,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     !start_time ||
     !end_time ||
     !repeat ||
-    !startFormattedAddress ||
-    !startLat ||
-    !startLng
+    !startFormattedAddress
   ) {
     return res
       .status(400)
