@@ -25,6 +25,7 @@ podsRouter.post(
     const { user } = req as AuthRequest;
     const currUser = (req as AuthRequest).user.id;
     const name: string = req.body.name;
+    const homeAddress: string = req.body.homeAddress;
 
     if (!name) {
       return res
@@ -35,15 +36,22 @@ podsRouter.post(
     if (name.length < 3) {
       return res
         .status(400)
-        .json({ message: "Pod name must be more than two characters" });
+        .json({ message: "Pod name must be more than two characters." });
+    }
+
+    if (!homeAddress) {
+      return res
+        .status(400)
+        .json({ message: "Pod requires a home address." });
     }
 
     const inviteeIds: Array<number> = req.body.inviteeIds;
 
-    // add a pop to the pods database
+    // add a pod to the pods database
     const pod = await Pod.query().insert({
       ownerId: currUser,
       name: name,
+      homeAddress: homeAddress
     });
 
     await pod.$relatedQuery("members").relate(user.id);
@@ -187,32 +195,6 @@ export const getConflictingEvents = (events: Event[]): Event[] => {
       lastEndpoint = point;
     }
   }
-
-  // const conflictingEvents: Event[] = [];
-  // let latest: Date = new Date("1970-01-01Z00:00:00:000");
-  //
-  // events.sort((a, b) =>
-  //   compareDatesFromStrings(
-  //     (a.start_time as unknown) as string,
-  //     (b.start_time as unknown) as string
-  //   )
-  // );
-  //
-  // for (const event of events) {
-  //   const event_start = new Date(event.start_time);
-  //   const event_end = new Date(event.end_time);
-  //   console.log("hi");
-  //   if (event_start < latest) {
-  //     // It's overlapping
-  //     console.log("would push");
-  //     conflictingEvents.push(event);
-  //   }
-  //   if (event_end > latest) {
-  //     console.log("is later");
-  //     latest = new Date(event.end_time);
-  //   }
-  // }
-
   return conflictingEvents;
 };
 
