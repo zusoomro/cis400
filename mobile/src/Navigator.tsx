@@ -10,7 +10,7 @@ import { RootState } from "./configureStore";
 import { registerForPushNotificationsAsync } from "./pushNotifications/pushNotifications";
 import { setPushToken } from "./pushNotifications/pushNotificationsSlice";
 import * as Notifications from "expo-notifications";
-import * as RootNavigation from './rootNavigation'
+import * as RootNavigation from "./rootNavigation";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

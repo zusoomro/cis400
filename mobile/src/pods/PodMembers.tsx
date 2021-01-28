@@ -1,8 +1,9 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, Text, View, Button } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 import { RootState } from "../configureStore";
 import sharedStyles from "../sharedStyles";
+import Button from "../shared/Button";
 
 interface Props {
   navigation: {
@@ -24,6 +25,7 @@ const PodMembers: React.FC<Props> = ({ navigation }) => {
         <View>
           <Button
             title="Add New Members"
+            style={{ backgroundColor: "#3730A3", marginTop: 10 }}
             onPress={() => {
               navigation.navigate("InviteUsers", {
                 caller: "PodMembers",

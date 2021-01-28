@@ -106,9 +106,13 @@ export const EventConflictModal: React.FC<Props> = ({
                 modifyEventOnSubmit({
                   ...values,
                   id: existingEvent.id,
-                } as Event);
+                } as Event).then((res) => {
+                  dispatch(reduxChangeEvent(res.eventForReturn[0]));
+                });
               } else {
-                createEventOnSubmit(values as Event);
+                createEventOnSubmit(values as Event).then((res) => {
+                  dispatch(reduxChangeEvent(res));
+                });
               }
               navigation.navigate("ScheduleHomePage");
             }}
