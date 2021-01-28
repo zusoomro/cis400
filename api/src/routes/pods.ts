@@ -25,6 +25,8 @@ podsRouter.post(
     const { user } = req as AuthRequest;
     const currUser = (req as AuthRequest).user.id;
     const name: string = req.body.name;
+    const lat: number = req.body.lat;
+    const lng: number = req.body.lat;
     const homeAddress: string = req.body.homeAddress;
 
     if (!name) {
@@ -50,6 +52,8 @@ podsRouter.post(
       ownerId: currUser,
       name: name,
       homeAddress: homeAddress,
+      lat: lat,
+      lng: lng,
     });
 
     await pod.$relatedQuery("members").relate(user.id);

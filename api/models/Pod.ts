@@ -7,6 +7,8 @@ export default class Pod extends Model {
   ownerId?: number;
   members!: any[];
   homeAddress!: string;
+  lat!: number;
+  lng!: number;
 
   static get tableName() {
     return "pods";
