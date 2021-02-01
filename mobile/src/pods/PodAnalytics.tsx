@@ -1,5 +1,7 @@
 import React from "react";
 import { Text, View, StyleSheet, SafeAreaView } from "react-native";
+import { Icon } from "react-native-elements";
+//import Icon from "react-native-vector-icons";
 
 interface Props {
   navigation: {
@@ -15,6 +17,24 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
         <Text style={styles.section1Text}>
           View analytics of your pod to determine usage per member.
         </Text>
+        <View style={styles.statsSection}>
+          <Icon name="rowing" style={styles.icon} size="40" />
+          <View>
+            <Text style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}>
+              35 Trips
+            </Text>
+            <Text>Your Pod took 35 trips this month!</Text>
+          </View>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Icon name="rowing" style={styles.icon} size="40" />
+          <View>
+            <Text style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}>
+              300 Miles
+            </Text>
+            <Text>Your Pod traveled 300 miles this month!</Text>
+          </View>
+        </View>
       </View>
       <View>
         <Text>Pod Analytics!!!</Text>
@@ -29,19 +49,25 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   section1: {
-    backgroundColor: "#4C51BF",
+    backgroundColor: "#FFF",
     padding: 12,
     paddingTop: 24,
     paddingBottom: 24,
   },
   section1Text: {
-    color: "#FFF",
+    marginBottom: 10,
   },
   section1TextHeader: {
-    color: "#FFF",
     fontSize: 24,
     marginBottom: 5,
     fontWeight: "300",
+  },
+  icon: {
+    marginRight: 15,
+  },
+  statsSection: {
+    flexDirection: "row",
+    marginBottom: 15,
   },
 });
 
