@@ -10,12 +10,12 @@ import Event from "../types/Event";
 import {
   createEventOnSubmit,
   modifyEventOnSubmit,
-  proposeEvent,
-  ProposedEventConflicts,
   validateEventSchema,
 } from "./eventsService";
-import DeleteEventModal from "./DeleteEventModal";
-import { changeEvent as reduxChangeEvent } from "./eventsSlice";
+import {
+  proposeEvent,
+  ProposedEventConflicts,
+} from "./eventConflictService"
 import {
   ConflictAction,
   eventConflictAlert,
@@ -71,6 +71,9 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 formattedAddress: event.formattedAddress,
                 lat: event.lat,
                 lng: event.lng,
+                startFormattedAddress: event.startFormattedAddress,
+                startLat: event.startLat,
+                startLng: event.startLng,
                 start_time: event.start_time,
                 end_time: event.end_time,
                 repeat: repetitionValues[0].value,
@@ -81,6 +84,9 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 formattedAddress: "",
                 lat: "",
                 lng: "",
+                startFormattedAddress: "",
+                startLat: "",
+                startLng: "",
                 start_time: start_time,
                 end_time: end_time,
                 repeat: repetitionValues[0].value,
@@ -142,12 +148,26 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             <Text style={sharedStyles.inputError}>
               {touched.name && errors.name ? (errors.name as String) : ""}
             </Text>
-            <Text style={sharedStyles.inputLabelText}>Location</Text>
+            <Text style={sharedStyles.inputLabelText}>Start Location</Text>
+            <LocationPicker
+              latFieldName="startLat"
+              lngFieldName="startLng"
+              formattedAddressFieldName="startFormattedAddress"
+              formattedAddress={values.startFormattedAddress}
+              destinationPicker={false}
+            />
+            <Text style={sharedStyles.inputError}>
+              {touched.startFormattedAddress && errors.startFormattedAddress
+                ? (errors.startFormattedAddress as String)
+                : ""}
+            </Text>
+            <Text style={sharedStyles.inputLabelText}>Destination</Text>
             <LocationPicker
               latFieldName="lat"
               lngFieldName="lng"
               formattedAddressFieldName="formattedAddress"
               formattedAddress={values.formattedAddress}
+              destinationPicker={true}
             />
             <Text style={sharedStyles.inputError}>
               {touched.formattedAddress && errors.formattedAddress
@@ -205,7 +225,8 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               />
             )}
             {deleteModalVisible && event && (
-              <DeleteEventModal
+              <
+              
                 deleteModalVisible={deleteModalVisible}
                 event={event}
                 setDeleteModalVisible={setDeleteModalVisible}
