@@ -84,7 +84,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 formattedAddress: "",
                 lat: "",
                 lng: "",
-                startFormattedAddress: "",
+                startFormattedAddress: "", // make pod home?
                 startLat: "",
                 startLng: "",
                 start_time: start_time,

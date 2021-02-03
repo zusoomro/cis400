@@ -96,7 +96,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
     } else {
       setLoading(true);
       fetchPodEvents(pod.id).then((res) => {
-        dispatch(setEvents(res[0]));
+        dispatch(setEvents(res));
         setLoading(false);
       });
     }
