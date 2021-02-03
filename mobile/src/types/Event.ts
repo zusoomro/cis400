@@ -5,6 +5,9 @@ type Event = {
   formattedAddress: string;
   lat: number;
   lng: number;
+  startFormattedAddress: string;
+  startLat: number;
+  startLng: number;
   start_time: Date;
   end_time: Date;
   repeat: "no_repeat" | "daily" | "weekly" | "monthly" | "yearly";

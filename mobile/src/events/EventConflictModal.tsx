@@ -14,7 +14,7 @@ import moment from "moment";
 import Event from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
 import { ProposedEventConflicts, ConflictBuffer } from "./eventConflictService";
-import { sendPushNotification } from "../pushNotifications/pushNotifications";
+import {sendPushNotification} from "../pushNotifications/pushNotifications";
 
 type Props = {
   conflictModalVisible: boolean;
@@ -99,16 +99,19 @@ export const EventConflictModal: React.FC<Props> = ({
                 sendPushNotification({
                   recipientId: conflict.event.ownerId,
                   eventId: conflict.event.id,
-                });
               });
 
               if (existingEvent) {
                 modifyEventOnSubmit({
                   ...values,
                   id: existingEvent.id,
-                } as Event);
+                } as Event).then((res) => {
+                  dispatch(reduxChangeEvent(res.eventForReturn[0]));
+                });
               } else {
-                createEventOnSubmit(values as Event);
+                createEventOnSubmit(values as Event).then((res) => {
+                  dispatch(reduxChangeEvent(res));
+                });
               }
               navigation.navigate("ScheduleHomePage");
             }}
