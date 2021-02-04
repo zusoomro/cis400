@@ -1,19 +1,19 @@
+import { Formik } from "formik";
 import React from "react";
 import {
-  View,
+  ActivityIndicator,
+  Keyboard,
+  SafeAreaView,
   Text,
   TextInput,
-  SafeAreaView,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ActivityIndicator,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import Button from "./shared/Button";
-import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { login, register } from "./authSlice";
 import { RootState } from "./configureStore";
+import Button from "./shared/Button";
 import sharedStyles from "./sharedStyles";
 import { generateAndUploadPushNotificationToken } from "./pushNotifications/pushNotifications";
 

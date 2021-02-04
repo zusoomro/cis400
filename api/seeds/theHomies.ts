@@ -98,6 +98,7 @@ export async function seed(knex: Knex): Promise<void> {
       lat: 39.95034599999999,
       lng: -75.201981,
       repeat: "weekly",
+      priority: 0,
     },
     {
       id: 2,
@@ -110,6 +111,7 @@ export async function seed(knex: Knex): Promise<void> {
       lat: 39.94884270000001,
       lng: -75.1608773,
       repeat: "no_repeat",
+      priority: 0,
     },
     {
       id: 3,
@@ -122,6 +124,7 @@ export async function seed(knex: Knex): Promise<void> {
       lat: 39.951543,
       lng: -75.2032578,
       repeat: "no_repeat",
+      priority: 0,
     },
     {
       id: 4,
@@ -134,6 +137,7 @@ export async function seed(knex: Knex): Promise<void> {
       lat: 39.9577557,
       lng: -75.1590322,
       repeat: "daily",
+      priority: 0,
     },
   ]);
 }

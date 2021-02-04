@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import sharedStyles from "../sharedStyles";
-import Event from "../types/Event";
+import Event, { Priority } from "../types/Event";
 import apiUrl from "../config";
 
 interface EventProps {
@@ -27,7 +27,7 @@ const EventInSchedule: React.FC<EventProps> = ({
   showName,
   avatar,
 }) => {
-  const { name, notes, formattedAddress, id, ownerId } = event;
+  const { name, notes, formattedAddress, id, ownerId, priority } = event;
 
   // This is a hack and should be rewritten!
   const [email, setEmail] = useState<string>();
@@ -64,9 +64,12 @@ const EventInSchedule: React.FC<EventProps> = ({
           />
         )}
         <View>
+          {/* Event Name */}
           <Text style={{ fontSize: 18, fontWeight: "600", marginBottom: 5 }}>
             {name}
           </Text>
+          <Text>{Priority[priority]}</Text>
+          {/* user name */}
           {showName && (
             <Text style={styles.sub}>
               {!!email ? (
