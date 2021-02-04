@@ -11,7 +11,7 @@ const getAvatar = (email: string) => {
       d: "retro",
     },
     false
-  )
+  );
 };
 
 export async function seed(knex: Knex): Promise<void> {

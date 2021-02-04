@@ -14,7 +14,7 @@ import moment from "moment";
 import Event, { Priority } from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
 import { ProposedEventConflicts, ConflictBuffer } from "./eventConflictService";
-import {sendPushNotification} from "../pushNotifications/pushNotifications";
+import { sendPushNotification } from "../pushNotifications/pushNotifications";
 
 type Props = {
   conflictModalVisible: boolean;
@@ -53,7 +53,7 @@ export const EventConflictModal: React.FC<Props> = ({
       };
     }
   );
-  
+
   return (
     <Modal
       animationType="none"
@@ -94,11 +94,11 @@ export const EventConflictModal: React.FC<Props> = ({
           {/* schedule the event anyway */}
           <TouchableOpacity
             onPress={() => {
-              // Send push notiifcations 
-              conflictingEvents.forEach(conflict => {
+              // Send push notiifcations
+              conflictingEvents.forEach((conflict) => {
                 sendPushNotification({
-                  recipientId: conflict.event.ownerId, 
-                  eventId: conflict.event.id
+                  recipientId: conflict.event.ownerId,
+                  eventId: conflict.event.id,
                 });
               });
 

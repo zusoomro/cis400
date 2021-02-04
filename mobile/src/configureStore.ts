@@ -8,7 +8,7 @@ const rootReducer = combineReducers({
   auth,
   pods,
   push,
-  events
+  events,
 });
 
 const store = configureStore({
