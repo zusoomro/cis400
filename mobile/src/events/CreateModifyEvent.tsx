@@ -12,10 +12,7 @@ import {
   modifyEventOnSubmit,
   validateEventSchema,
 } from "./eventsService";
-import {
-  proposeEvent,
-  ProposedEventConflicts,
-} from "./eventConflictService"
+import { proposeEvent, ProposedEventConflicts } from "./eventConflictService";
 import {
   ConflictAction,
   eventConflictAlert,
@@ -224,15 +221,14 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 style={{ margin: 0 }}
               />
             )}
-            {deleteModalVisible && event && (
-              <
-              
+            {/* {deleteModalVisible && event && (
+              <DeleteEventModal
                 deleteModalVisible={deleteModalVisible}
                 event={event}
                 setDeleteModalVisible={setDeleteModalVisible}
                 navigation={navigation}
               />
-            )}
+            )} */}
           </View>
         )}
       </Formik>
