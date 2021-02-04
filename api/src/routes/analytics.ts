@@ -3,7 +3,6 @@ import Pod from "../../models/Pod";
 import fetch from "node-fetch";
 import Event from "../../models/Event";
 import auth, { AuthRequest } from "../authMiddleware";
-import { months } from "moment";
 
 let analyticsRouter = express.Router();
 
@@ -51,13 +50,9 @@ const retrievePodAndEvents = async (
     date.setDate(date.getDate() - 7);
   }
 
-  console.log(date.toISOString());
-
   events = await Event.query()
     .whereIn("ownerId", userIds)
     .where("start_time", ">", date.toISOString());
-
-  console.log("events", events);
 
   return { pod, events };
 };
@@ -200,8 +195,6 @@ analyticsRouter.get(
         event.lng
       );
 
-      console.log(data);
-
       // Update the per user stats
       const userEntry = perUserData.find(
         (entry) => entry.userId == event.ownerId
@@ -219,15 +212,12 @@ analyticsRouter.get(
       aggregatedData.gasUsage += data.route.fuelUsed * 2;
     }
 
-    console.log(aggregatedData);
-
     // Update the percentages per user
     for (const obj of perUserData) {
       obj.gasPercentage = obj.gasUsage / aggregatedData.gasUsage;
       obj.timePercentage = obj.timeUsage / aggregatedData.travelTime;
     }
 
-    console.log(perUserData);
     return res.json(perUserData);
   }
 );
