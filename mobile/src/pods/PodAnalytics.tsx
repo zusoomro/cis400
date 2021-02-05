@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, SafeAreaView } from "react-native";
+import { Text, View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { Icon, Card } from "react-native-elements";
-// import ReactDOM from "react-dom";
-// import * as d3 from "d3";
-// import Pie from "./Pie";
+
+import {
+  VictoryBar,
+  VictoryChart,
+  VictoryTheme,
+  VictoryPie,
+  VictoryLabel,
+} from "victory-native";
+
+import * as Svg from "react-native-svg";
 
 interface Props {
   navigation: {
@@ -12,14 +19,24 @@ interface Props {
 }
 
 const PodAnalytics: React.FC<Props> = ({ navigation }) => {
-  const fakeData = [
-    { userId: 1, email: "pchloe@seas.upenn,edu", gasUsage: 10, timeUsage: 15 },
-    { userId: 2, email: "caro@seas.upenn.edu", gasUsage: 20, timeUsage: 5 },
+  const fakeGasData = [
+    { user: "chloe", gallons: 10 },
+    { user: "caro", gallons: 15 },
+    { user: "ally", gallons: 25 },
+    { user: "zulfi", gallons: 5 },
   ];
 
-  const chart_wh = 250;
-  const series = [123, 321, 123, 789, 537];
-  const sliceColor = ["#F44336", "#2196F3", "#FFEB3B", "#4CAF50", "#FF9800"];
+  const fakeTimeUsageData = [];
+
+  const colors = [
+    "#252525",
+    "#525252",
+    "#737373",
+    "#969696",
+    "#bdbdbd",
+    "#d9d9d9",
+    "#f0f0f0",
+  ];
   return (
     <SafeAreaView>
       <View style={styles.section1}>
@@ -46,7 +63,7 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <View>
+      <ScrollView>
         <Card>
           <Card.Title
             style={{
@@ -59,6 +76,20 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
             Gas Usage
           </Card.Title>
           <Card.Divider />
+          <View>
+            <VictoryChart
+              domainPadding={30}
+              width={350}
+              theme={VictoryTheme.material}
+            >
+              <VictoryBar
+                data={fakeGasData}
+                x="user"
+                y="gallons"
+                style={{ data: { fill: "#434190" } }}
+              />
+            </VictoryChart>
+          </View>
         </Card>
         <Card>
           <Card.Title
@@ -71,8 +102,21 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
           >
             Time Usage
           </Card.Title>
+          <Card.Divider />
+          <View>
+            <VictoryPie
+              width={375}
+              data={[
+                { x: "chloe", y: 120 },
+                { x: "caro", y: 150 },
+                { x: "ally", y: 75 },
+                { x: "zulfi", y: 100 },
+              ]}
+              colorScale={["#434190", "#667EEA", "#319795", "navy"]}
+            />
+          </View>
         </Card>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -102,6 +146,15 @@ const styles = StyleSheet.create({
   statsSection: {
     flexDirection: "row",
     marginBottom: 15,
+  },
+  chartcontainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f5fcff",
+  },
+  chart: {
+    flex: 1,
   },
 });
 
