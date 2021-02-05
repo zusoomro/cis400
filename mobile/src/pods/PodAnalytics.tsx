@@ -26,17 +26,6 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
     { user: "zulfi", gallons: 5 },
   ];
 
-  const fakeTimeUsageData = [];
-
-  const colors = [
-    "#252525",
-    "#525252",
-    "#737373",
-    "#969696",
-    "#bdbdbd",
-    "#d9d9d9",
-    "#f0f0f0",
-  ];
   return (
     <SafeAreaView>
       <View style={styles.section1}>
@@ -64,58 +53,67 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
         </View>
       </View>
       <ScrollView>
-        <Card>
-          <Card.Title
-            style={{
-              fontSize: 24,
-              fontWeight: "600",
-              color: "#434190",
-              alignSelf: "flex-start",
-            }}
-          >
-            Gas Usage
-          </Card.Title>
-          <Card.Divider />
-          <View>
-            <VictoryChart
-              domainPadding={30}
-              width={350}
-              theme={VictoryTheme.material}
+        <View>
+          <Card>
+            <Card.Title
+              style={{
+                fontSize: 24,
+                fontWeight: "600",
+                color: "#434190",
+                alignSelf: "flex-start",
+              }}
             >
-              <VictoryBar
-                data={fakeGasData}
-                x="user"
-                y="gallons"
-                style={{ data: { fill: "#434190" } }}
+              Gas Usage
+            </Card.Title>
+            <Card.Divider />
+            <View>
+              <VictoryChart
+                domainPadding={30}
+                width={350}
+                theme={VictoryTheme.material}
+              >
+                <VictoryBar
+                  data={fakeGasData}
+                  x="user"
+                  y="gallons"
+                  style={{ data: { fill: "#434190" } }}
+                />
+              </VictoryChart>
+            </View>
+          </Card>
+          <Card>
+            <Card.Title
+              style={{
+                fontSize: 24,
+                fontWeight: "600",
+                color: "#434190",
+                alignSelf: "flex-start",
+              }}
+            >
+              Time Usage
+            </Card.Title>
+            <Card.Divider />
+            <View>
+              <VictoryPie
+                width={375}
+                height={375}
+                data={[
+                  { x: "chloe", y: 120 },
+                  { x: "caro", y: 150 },
+                  { x: "ally", y: 75 },
+                  { x: "zulfi", y: 100 },
+                ]}
+                colorScale={[
+                  "#312E81",
+                  "#4338CA",
+                  "#6366F1",
+                  "#818CF8",
+                  "#C7D2FE",
+                ]}
               />
-            </VictoryChart>
-          </View>
-        </Card>
-        <Card>
-          <Card.Title
-            style={{
-              fontSize: 24,
-              fontWeight: "600",
-              color: "#434190",
-              alignSelf: "flex-start",
-            }}
-          >
-            Time Usage
-          </Card.Title>
-          <Card.Divider />
-          <View>
-            <VictoryPie
-              width={375}
-              data={[
-                { x: "chloe", y: 120 },
-                { x: "caro", y: 150 },
-                { x: "ally", y: 75 },
-                { x: "zulfi", y: 100 },
-              ]}
-              colorScale={["#434190", "#667EEA", "#319795", "navy"]}
-            />
-          </View>
-        </Card>
+            </View>
+          </Card>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
