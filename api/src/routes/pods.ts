@@ -7,6 +7,7 @@ import auth, { AuthRequest } from "../authMiddleware";
 import Event from "../../models/Event";
 import eventRouter from "./events";
 import { compare } from "bcrypt";
+import moment from "moment";
 
 const podsRouter = express.Router();
 
@@ -99,6 +100,27 @@ export const getPodEvents = async (podId: number) => {
     "ownerId",
     pod.members.map((m) => m.id)
   );
+
+  return allEvents;
+};
+
+/** Returns pod events between 8am and 6pm of the day given  */
+export const getPodEventsOfDay = async (podId: number, date: Date) => {
+  const pod = await Pod.query()
+    .findOne({ "pods.id": podId })
+    .withGraphFetched("members");
+
+  const dateAsMoment = moment(date);
+  const startOfDay = moment(dateAsMoment).hour(8).minute(0);
+  const endOfDay = moment(dateAsMoment).hour(18).minute(0); //6pm = 12 + 6
+
+  const allEvents: Event[] = await Event.query()
+    .whereIn(
+      "ownerId",
+      pod.members.map((m) => m.id)
+    )
+    .andWhere("start_time", ">", startOfDay.valueOf()) // after 8 am on date
+    .andWhere("end_time", "<", endOfDay.valueOf()); // before 6pm on date
 
   return allEvents;
 };
