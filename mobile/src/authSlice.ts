@@ -8,6 +8,7 @@ import {
   generateAndUploadPushNotificationToken,
   deletePushNotificationToken,
 } from "./pushNotifications/pushNotifications";
+import analytics from "./analytics/analytics";
 
 const initialState = {
   authenticated: true,
@@ -88,6 +89,10 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
 
     await generateAndUploadPushNotificationToken();
 
+    analytics.register({ email: "zusoomro@seas.upenn.edu" });
+    analytics.identify("1");
+    analytics.track("Log in", { userId: json.user.id });
+    console.log("Sent to analytics");
     return json;
   } catch (ex) {
     console.log(`error logging in with this user`, ex);
