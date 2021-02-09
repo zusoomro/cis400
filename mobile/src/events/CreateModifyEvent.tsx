@@ -19,6 +19,7 @@ import {
 import { useDispatch } from "react-redux";
 import { EventConflictModal } from "./EventConflictModal";
 import { fetchUserPod } from "./Schedule";
+import DeleteEventModal from "./DeleteEventModal";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -220,8 +221,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               />
             )}
             {deleteModalVisible && event && (
-              <
-              
+              <DeleteEventModal
                 deleteModalVisible={deleteModalVisible}
                 event={event}
                 setDeleteModalVisible={setDeleteModalVisible}
