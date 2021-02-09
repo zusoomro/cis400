@@ -9,10 +9,7 @@ import {
   findSuggestedTimes,
   SuggestedTime,
 } from "./suggestedTimesFunctions";
-import { start } from "repl";
 
-// Need to test createNonConflictingTime
-// Test findSuggestedTimes
 
 let knex: Knex;
 
@@ -64,14 +61,48 @@ const eventsOfTheDay: Event[] = [
   } as Event,
 ];
 
-// type RoundedEvent = {
-//     originalEvent: Event;
+// 1 - 2 pm
+const proposedEvent1: Event = {
+  id: 1,
+  ownerId: 1,
+  formattedAddress: "3934 Pine St, Philadelphia, PA 19104, USA",
+  start_time: new Date("2019-11-13T13:00:00.44"),
+  end_time: new Date("2021-11-13T14:00:00.44"),
+  notes: "Bike ride time.",
+  name: "Go for a bike ride",
+  lat: 39.95034599999999,
+  lng: -75.201981,
+  repeat: "weekly",
+} as Event;
 
-//     roundedStartHour: number; // 0-24 for hour of the day
-//     startOnHalfHour: boolean; // 1 if rounded event starts on half hour, 0 otherwise
-//     roundedEndHour: number; // 0-24 for hour of the day
-//     endOnHalfHour: boolean; // 0 if rounded event end on half hour
-//   };
+// 10-11:30
+const proposedEvent2: Event = {
+  id: 1,
+  ownerId: 1,
+  formattedAddress: "3934 Pine St, Philadelphia, PA 19104, USA",
+  start_time: new Date("2019-11-13T10:00:00.44"),
+  end_time: new Date("2021-11-13T11:30:00.44"),
+  notes: "Bike ride time.",
+  name: "Go for a bike ride",
+  lat: 39.95034599999999,
+  lng: -75.201981,
+  repeat: "weekly",
+} as Event;
+
+// 10 - 12:30
+const proposedEvent3: Event = {
+  id: 1,
+  ownerId: 1,
+  formattedAddress: "3934 Pine St, Philadelphia, PA 19104, USA",
+  start_time: new Date("2019-11-13T10:00:00.44"),
+  end_time: new Date("2021-11-13T12:30:00.44"),
+  notes: "Bike ride time.",
+  name: "Go for a bike ride",
+  lat: 39.95034599999999,
+  lng: -75.201981,
+  repeat: "weekly",
+} as Event;
+
 describe("getRoundedEventsTest", () => {
   const roundedEvents = getRoundedEvents(eventsOfTheDay);
   const re1 = roundedEvents[0];
@@ -109,6 +140,12 @@ describe("getRoundedEventsTest", () => {
   it("event3 end time is rounded up to hour", () => {
     expect(re3.roundedEndHour).toBe(18);
     expect(re3.endOnHalfHour).toBeFalsy();
+  });
+
+  it("ProposedEvent1 shouldnt change", () => {
+    const roundedEvent = getRoundedEvents([proposedEvent1])[0];
+    expect(roundedEvent.roundedStartHour).toBe(13);
+    expect(roundedEvent.roundedEndHour).toBe(14);
   });
 });
 
@@ -178,66 +215,216 @@ describe("isIntervalFree", () => {
   });
 });
 
-// /**
-//  * CreateNonConflictingTime creates the moment
-//  * that does not conflict with existing events
-//  * based on the size of the interval and current
-//  * index.
-//  *
-//  * @param date contains information about the date
-//  * (excluding the time of day)
-//  */
-// export const createNonConflictingTime = (
-//     date: Date,
-//     leftIndex: number,
-//     numChunks: number,
-//     additionToIndex: number,
-//     chunksInHour: number,
-//     startingHour: number
-//   ): SuggestedTime => {
-//     const start =  moment(date)
-//       .hour((leftIndex - additionToIndex) / chunksInHour + startingHour)
-//       .minute(additionToIndex * 30);
-  
-//       const end =  moment(date)
-//       .hour((leftIndex + numChunks - additionToIndex) / chunksInHour + startingHour)
-//       .minute(additionToIndex * 30);
-  
-//       return {start, end};
-//   };
-  
-
 describe("createNonConflictingTime Tests", () => {
+  const date = eventsOfTheDay[0].start_time;
+  const chunksInHour = 2; // 30 second intervals
+  const startingHour = 8; // start at 8am
 
-    const date = eventsOfTheDay[0].start_time;
-    const chunksInHour = 2; // 30 second intervals 
-    const startingHour = 8; // start at 8am 
-
-    it("create time chunk on half hour", () => {
-      const suggestedTime = createNonConflictingTime(
-          date, 5, 4, 1, chunksInHour, startingHour
-      );
-
-      console.log(suggestedTime);
-      // 10:30 - 12:30
-    });
-
-    it("create time chunk not on half hour", () => {
-        const suggestedTime = createNonConflictingTime(
-            date, 0, 1, 0, chunksInHour, startingHour
-        );
-  
-        console.log(suggestedTime); // Should be 8 - 8:30 (didnt work)
-      });
-
-    it("create time chunk on half hour", () => {
+  it("Time chunk starts and ends on half hour with > 1 chunk", () => {
     const suggestedTime = createNonConflictingTime(
-        date, 0, 1, 1, chunksInHour, startingHour
+      date,
+      5,
+      4,
+      chunksInHour,
+      startingHour
     );
 
-    console.log(suggestedTime); // Should be 8 - 8:30 (didnt work)
-    });
+    // 10:30 - 12:30
+    const start = suggestedTime.start;
+    const end = suggestedTime.end;
 
+    expect(start.hour()).toBe(10);
+    expect(start.minutes()).toBe(30);
 
+    expect(end.hour()).toBe(12);
+    expect(end.minutes()).toBe(30);
   });
-  
+
+  it("Time chunk starts on half hour ends on hour with > 1 chunk", () => {
+    const suggestedTime = createNonConflictingTime(
+      date,
+      5,
+      3,
+      chunksInHour,
+      startingHour
+    );
+
+    // 10:30 - 12:00
+    const start = suggestedTime.start;
+    const end = suggestedTime.end;
+
+    expect(start.hour()).toBe(10);
+    expect(start.minutes()).toBe(30);
+
+    expect(end.hour()).toBe(12);
+    expect(end.minutes()).toBe(0);
+  });
+
+  it("Time chunk starts on hour ends on hour with > 1 chunk", () => {
+    const suggestedTime = createNonConflictingTime(
+      date,
+      0,
+      2,
+      chunksInHour,
+      startingHour
+    );
+
+    // Should be 8 - 9:00
+    const start = suggestedTime.start;
+    const end = suggestedTime.end;
+
+    expect(start.hour()).toBe(8);
+    expect(start.minutes()).toBe(0);
+
+    expect(end.hour()).toBe(9);
+    expect(end.minutes()).toBe(0);
+  });
+
+  it("Time chunk starts on hour ends on half hour 1 chunk", () => {
+    const suggestedTime = createNonConflictingTime(
+      date,
+      0,
+      1,
+      chunksInHour,
+      startingHour
+    );
+
+    // Should be 8 - 8:30
+    const start = suggestedTime.start;
+    const end = suggestedTime.end;
+
+    expect(start.hour()).toBe(8);
+    expect(start.minutes()).toBe(0);
+
+    expect(end.hour()).toBe(8);
+    expect(end.minutes()).toBe(30);
+  });
+
+  it("Time chunk starts on hour ends on half hour 1 chunk", () => {
+    const suggestedTime = createNonConflictingTime(
+      date,
+      12,
+      1,
+      chunksInHour,
+      startingHour
+    );
+
+    // Should be 2 - 2:30
+    const start = suggestedTime.start;
+    const end = suggestedTime.end;
+
+    expect(start.hour()).toBe(14);
+    expect(start.minutes()).toBe(0);
+
+    expect(end.hour()).toBe(14);
+    expect(end.minutes()).toBe(30);
+  });
+
+  it("create time chunk on starts on half hour ends on hour 1 chunk", () => {
+    const suggestedTime = createNonConflictingTime(
+      date,
+      7,
+      1,
+      chunksInHour,
+      startingHour
+    );
+
+    // 11:30 - 12
+
+    const start = suggestedTime.start;
+    const end = suggestedTime.end;
+
+    expect(start.hour()).toBe(11);
+    expect(start.minutes()).toBe(30);
+
+    expect(end.hour()).toBe(12);
+    expect(end.minutes()).toBe(0);
+  });
+});
+
+describe("findSuggestedTimes Tests", () => {
+  it("Gets the 4 closest times for propsedEvent1: 1 hour long", () => {
+    const suggestedTimes = findSuggestedTimes(
+      proposedEvent1,
+      eventsOfTheDay,
+      4
+    );
+
+    suggestedTimes.then((response) => {
+      const nonConflictingTimes = response.nonConflictingTimes;
+      const time1 = nonConflictingTimes[0];
+      expect(time1.start.hour()).toBe(13);
+      expect(time1.start.minutes()).toBe(30);
+      expect(time1.end.hour()).toBe(14);
+      expect(time1.end.minutes()).toBe(30);
+
+      const time2 = nonConflictingTimes[1];
+      expect(time2.start.hour()).toBe(14);
+      expect(time2.start.minutes()).toBe(0);
+      expect(time2.end.hour()).toBe(15);
+      expect(time2.end.minutes()).toBe(0);
+
+      const time3 = nonConflictingTimes[2];
+      expect(time3.start.hour()).toBe(11);
+      expect(time3.start.minutes()).toBe(30);
+      expect(time3.end.hour()).toBe(12);
+      expect(time3.end.minutes()).toBe(30);
+
+      const time4 = nonConflictingTimes[3];
+      expect(time4.start.hour()).toBe(11);
+      expect(time4.start.minutes()).toBe(0);
+      expect(time4.end.hour()).toBe(12);
+      expect(time4.end.minutes()).toBe(0);
+    });
+  });
+
+  it("Only return max number of possibilities", () => {
+    const suggestedTimes = findSuggestedTimes(
+      proposedEvent1,
+      eventsOfTheDay,
+      20
+    );
+
+    suggestedTimes.then((response) => {
+      const nonConflictingTimes = response.nonConflictingTimes;
+      expect(nonConflictingTimes.length).toBe(6);
+    });
+  });
+
+  it("Gets the 2 closest times for propsedEvent2: 1.5 hour long", () => {
+    const suggestedTimes = findSuggestedTimes(
+      proposedEvent2,
+      eventsOfTheDay,
+      2
+    );
+
+    suggestedTimes.then((response) => {
+      const nonConflictingTimes = response.nonConflictingTimes;
+      const time1 = nonConflictingTimes[0]; //10:30-12
+      const time2 = nonConflictingTimes[1]; // 11-12:30
+
+      expect(time1.start.hour()).toBe(10);
+      expect(time1.start.minutes()).toBe(30);
+      expect(time1.end.hour()).toBe(12);
+      expect(time1.end.minutes()).toBe(0);
+
+      expect(time2.start.hour()).toBe(11);
+      expect(time2.start.minutes()).toBe(0);
+      expect(time2.end.hour()).toBe(12);
+      expect(time2.end.minutes()).toBe(30);
+    });
+  });
+
+  it("Gets no times for propsedEvent3: no space works", () => {
+    const suggestedTimes = findSuggestedTimes(
+      proposedEvent3,
+      eventsOfTheDay,
+      2
+    );
+
+    suggestedTimes.then((response) => {
+      const nonConflictingTimes = response.nonConflictingTimes;
+      expect(nonConflictingTimes.length).toBe(0);
+    });
+  });
+});

@@ -15,7 +15,6 @@ export type SuggestedTime = {
   end: moment.Moment; // 1 if rounded event starts on half hour, 0 otherwise
 };
 
-
 /**
  * getRoundedEvents transforms each event into a Rounded Event.
  * The start time of the event is rounded DOWN to the nearest half hour chunk.
@@ -32,7 +31,9 @@ export const getRoundedEvents = (eventsOfTheDay: Event[]): RoundedEvent[] => {
 
     // RIGHT NOW - the idea of the half hour is baked into the algorithm, but can
     // be changed in the future.
-    const endOnHalfHour = end_time.minutes() <= 30; // Round up if end time is over 30 min
+    // Round up if end time is under 30 min'=
+    const originallyEndedOnHour = end_time.minutes() == 0;
+    const endOnHalfHour = end_time.minutes() <= 30 && !originallyEndedOnHour;
 
     return {
       originalEvent: event,
@@ -40,7 +41,7 @@ export const getRoundedEvents = (eventsOfTheDay: Event[]): RoundedEvent[] => {
       startOnHalfHour: start_time.minutes() >= 30, // Round down to half hour mark over 30
       //  If it does NOT end on the half half, the hour was rounded up unless the minute was already 0
       roundedEndHour:
-        end_time.hour() + (!endOnHalfHour && end_time.minutes() != 0 ? 1 : 0),
+        end_time.hour() + (!endOnHalfHour && !originallyEndedOnHour ? 1 : 0),
       endOnHalfHour: endOnHalfHour,
     };
   });
@@ -117,19 +118,22 @@ export const createNonConflictingTime = (
   date: Date,
   leftIndex: number,
   numChunks: number,
-  additionToIndex: number, // Whether date starts on half hour or not
   chunksInHour: number,
   startingHour: number
 ): SuggestedTime => {
-  const start =  moment(date)
-    .hour((leftIndex - additionToIndex) / chunksInHour + startingHour)
-    .minute(additionToIndex * 30);
+  const startsOnHalfHour = leftIndex % chunksInHour == 1 ? 1 : 0;
+  const start = moment(date)
+    .hour((leftIndex - startsOnHalfHour) / chunksInHour + startingHour)
+    .minute(startsOnHalfHour * 30);
 
-    const end =  moment(date)
-    .hour((leftIndex + numChunks - additionToIndex) / chunksInHour + startingHour)
-    .minute(additionToIndex * 30);
+  const endsOnHalfHour = (leftIndex + numChunks) % chunksInHour == 1 ? 1 : 0;
+  const end = moment(date)
+    .hour(
+      (leftIndex + numChunks - endsOnHalfHour) / chunksInHour + startingHour
+    )
+    .minute(endsOnHalfHour * 30);
 
-    return {start, end};
+  return { start, end };
 };
 
 export const findSuggestedTimes = async (
@@ -139,6 +143,8 @@ export const findSuggestedTimes = async (
 ): Promise<{
   nonConflictingTimes: SuggestedTime[];
 }> => {
+  // nonConflictingTimes are ordered by closests to the proposed event
+  // by  sliding a window to the left and right and adding events found first
   const nonConflictingTimes: SuggestedTime[] = [];
   // TO DO LATER (NOT INCLUDED FOR NOW BECAUSE THE DATA ISNT THERE -- start and end places)
   // Determine buffers time for each event --
@@ -165,7 +171,11 @@ export const findSuggestedTimes = async (
 
   let leftIndex = startingIndexOfProposedEvent - 1;
   let rightIndex = startingIndexOfProposedEvent + 1;
-  const numChunks = rightIndex - leftIndex + 1;
+  let numChunks =
+    (roundedEvent.roundedEndHour - roundedEvent.roundedStartHour) *
+      chunksInHour -
+    (roundedEvent.startOnHalfHour ? 1 : 0) +
+    (roundedEvent.endOnHalfHour ? 1 : 0);
 
   // Starting from original index of event, move to the left
   // and right to find free times until all chunks are found
@@ -182,7 +192,6 @@ export const findSuggestedTimes = async (
           proposedEvent.start_time,
           leftIndex,
           numChunks,
-          additionToIndex,
           chunksInHour,
           startingHour
         );
@@ -202,7 +211,6 @@ export const findSuggestedTimes = async (
           proposedEvent.start_time,
           rightIndex,
           numChunks,
-          additionToIndex,
           chunksInHour,
           startingHour
         );
