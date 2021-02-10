@@ -13,6 +13,7 @@ import {
   validateEventSchema,
 } from "./eventsService";
 import { proposeEvent, ProposedEventConflicts } from "./eventConflictService";
+
 import { EventConflictModal } from "./EventConflictModal";
 import { fetchUserPod } from "./Schedule";
 import DeleteEventModal from "./DeleteEventModal";
