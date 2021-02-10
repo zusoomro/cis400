@@ -14,7 +14,10 @@ import moment from "moment";
 import Event from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
 import { ProposedEventConflicts, ConflictBuffer } from "./eventConflictService";
-import {sendPushNotification} from "../pushNotifications/pushNotifications";
+import { sendPushNotification } from "../pushNotifications/pushNotifications";
+
+import { useDispatch } from "react-redux";
+import { changeEvent as reduxChangeEvent } from "./eventsSlice";
 
 type Props = {
   conflictModalVisible: boolean;
@@ -41,6 +44,7 @@ export const EventConflictModal: React.FC<Props> = ({
   navigation,
   conflicts,
 }) => {
+  const dispatch = useDispatch();
   // Create conflicting events array from conflicts.conflictingEvents
   const conflictingEvents: ConflictingEvent[] = conflicts.conflictingEvents.map(
     (event: Event) => {
@@ -69,7 +73,7 @@ export const EventConflictModal: React.FC<Props> = ({
               <FlatList
                 style={{ flexGrow: 0 }}
                 data={conflictingEvents}
-                renderItem={renderRow}
+                renderItem={renderRowConflictingEvent}
                 keyExtractor={(item) => item.event.id.toString()}
               />
             </SafeAreaView>
@@ -99,21 +103,22 @@ export const EventConflictModal: React.FC<Props> = ({
                 sendPushNotification({
                   recipientId: conflict.event.ownerId,
                   eventId: conflict.event.id,
-              });
+                });
 
-              if (existingEvent) {
-                modifyEventOnSubmit({
-                  ...values,
-                  id: existingEvent.id,
-                } as Event).then((res) => {
-                  dispatch(reduxChangeEvent(res.eventForReturn[0]));
-                });
-              } else {
-                createEventOnSubmit(values as Event).then((res) => {
-                  dispatch(reduxChangeEvent(res));
-                });
-              }
-              navigation.navigate("ScheduleHomePage");
+                if (existingEvent) {
+                  modifyEventOnSubmit({
+                    ...values,
+                    id: existingEvent.id,
+                  } as Event).then((res) => {
+                    dispatch(reduxChangeEvent(res.eventForReturn[0]));
+                  });
+                } else {
+                  createEventOnSubmit(values as Event).then((res) => {
+                    dispatch(reduxChangeEvent(res));
+                  });
+                }
+                navigation.navigate("ScheduleHomePage");
+              });
             }}
             style={styles.modalButton}
           >
@@ -147,7 +152,7 @@ const ConflictEventRow = ({
   </View>
 );
 
-const renderRow = ({ item }: { item: ConflictingEvent }) => (
+const renderRowConflictingEvent = ({ item }: { item: ConflictingEvent }) => (
   <ConflictEventRow
     title={item.event.name}
     conflictEvent={item.event}

@@ -12,14 +12,13 @@ import {
   modifyEventOnSubmit,
   validateEventSchema,
 } from "./eventsService";
-import {
-  proposeEvent,
-  ProposedEventConflicts,
-} from "./eventConflictService"
-import { useDispatch } from "react-redux";
+import { proposeEvent, ProposedEventConflicts } from "./eventConflictService";
 import { EventConflictModal } from "./EventConflictModal";
 import { fetchUserPod } from "./Schedule";
 import DeleteEventModal from "./DeleteEventModal";
+
+import { useDispatch } from "react-redux";
+import { changeEvent as reduxChangeEvent } from "./eventsSlice";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
