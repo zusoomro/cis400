@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { Icon, Card } from "react-native-elements";
+import apiUrl from "../config";
+import * as SecureStore from "expo-secure-store";
+import { RootState } from "../configureStore";
+import { useSelector } from "react-redux";
 
 import {
   VictoryBar,
@@ -25,6 +29,36 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
     { user: "ally", gallons: 25 },
     { user: "zulfi", gallons: 5 },
   ];
+
+  const podId = useSelector((state: RootState) => state.pods.pods[0].id);
+  console.log("first pod", podId);
+
+  React.useEffect(() => {
+    async function fetcher() {
+      try {
+        // const authToken = (api.getState() as RootState).auth.token;
+        const res = await fetch(
+          `${apiUrl}/analytics/pods/${podId}?time=month`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json;charset=utf-8",
+              "x-auth-token": (await SecureStore.getItemAsync(
+                "wigo-auth-token"
+              ))!,
+            },
+          }
+        );
+
+        const json = await res.json();
+        console.log("analytics json", json);
+      } catch (err) {
+        console.log("error loading analytics", err);
+      }
+    }
+
+    fetcher();
+  }, []);
 
   return (
     <SafeAreaView>
