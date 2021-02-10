@@ -100,6 +100,7 @@ export const createEventOnSubmit = async (
     end_time: values.end_time,
     repeat: values.repeat,
     notes: values.notes,
+    priority: values.priority,
   };
 
   try {
@@ -145,6 +146,7 @@ export const modifyEventOnSubmit = async (
     repeat: values.repeat,
     notes: values.notes,
     id: values.id,
+    priority: values.priority,
   };
   try {
     const res = await fetch(`${apiUrl}/events`, {

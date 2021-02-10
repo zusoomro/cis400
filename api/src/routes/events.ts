@@ -26,6 +26,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     lng,
     repeat,
     notes,
+    priority,
     startFormattedAddress,
     startLat,
     startLng,
@@ -64,6 +65,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     end_time: end_time,
     repeat,
     notes,
+    priority,
   });
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
   res.send({ event });
@@ -80,6 +82,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     end_time,
     repeat,
     notes,
+    priority,
     startFormattedAddress,
     startLat,
     startLng,
@@ -117,6 +120,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
       end_time,
       repeat,
       notes,
+      priority,
     })
     .where("id", eventId);
   const eventForReturn = await Event.query().where("id", eventId);

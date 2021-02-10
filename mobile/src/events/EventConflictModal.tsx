@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import moment from "moment";
 
-import Event from "../types/Event";
+import Event, { Priority } from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
 import { ProposedEventConflicts, ConflictBuffer } from "./eventConflictService";
 import { sendPushNotification } from "../pushNotifications/pushNotifications";
@@ -141,7 +141,8 @@ const ConflictEventRow = ({
   conflictBuffer: ConflictBuffer | null;
 }) => (
   <View style={{ flexDirection: "row" }}>
-    <Text style={{ fontWeight: "bold" }}>{title}:</Text>
+    <Text style={{ fontWeight: "bold" }}>{title}: </Text>
+    <Text>({Priority[priority]})</Text>
     <Text style={{ textAlign: "center" }}>
       {moment(conflictEvent.start_time).format(" h:mm")}-
       {moment(conflictEvent.end_time).format(" h:mmA")}
