@@ -104,21 +104,21 @@ export const EventConflictModal: React.FC<Props> = ({
                   recipientId: conflict.event.ownerId,
                   eventId: conflict.event.id,
                 });
-
-                if (existingEvent) {
-                  modifyEventOnSubmit({
-                    ...values,
-                    id: existingEvent.id,
-                  } as Event).then((res) => {
-                    dispatch(reduxChangeEvent(res.eventForReturn[0]));
-                  });
-                } else {
-                  createEventOnSubmit(values as Event).then((res) => {
-                    dispatch(reduxChangeEvent(res));
-                  });
-                }
-                navigation.navigate("ScheduleHomePage");
               });
+
+              if (existingEvent) {
+                modifyEventOnSubmit({
+                  ...values,
+                  id: existingEvent.id,
+                } as Event).then((res) => {
+                  dispatch(reduxChangeEvent(res.eventForReturn[0]));
+                });
+              } else {
+                createEventOnSubmit(values as Event).then((res) => {
+                  dispatch(reduxChangeEvent(res));
+                });
+              }
+              navigation.navigate("ScheduleHomePage");
             }}
             style={styles.modalButton}
           >
