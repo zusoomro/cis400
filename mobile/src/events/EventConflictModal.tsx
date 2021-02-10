@@ -16,6 +16,9 @@ import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
 import { ProposedEventConflicts, ConflictBuffer } from "./eventConflictService";
 import { sendPushNotification } from "../pushNotifications/pushNotifications";
 
+import { useDispatch } from "react-redux";
+import { changeEvent as reduxChangeEvent } from "./eventsSlice";
+
 type Props = {
   conflictModalVisible: boolean;
   setConflictModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,6 +44,7 @@ export const EventConflictModal: React.FC<Props> = ({
   navigation,
   conflicts,
 }) => {
+  const dispatch = useDispatch();
   // Create conflicting events array from conflicts.conflictingEvents
   const conflictingEvents: ConflictingEvent[] = conflicts.conflictingEvents.map(
     (event: Event) => {
