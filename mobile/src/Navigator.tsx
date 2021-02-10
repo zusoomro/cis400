@@ -80,31 +80,31 @@ const TabNavigator = () => {
           />
         </React.Fragment>
       ) : (
-          <React.Fragment>
-            <Tab.Screen
-              name="Login"
-              options={{
-                tabBarIcon: ({ color, size }) => (
-                  <Ionicons name="ios-people" color={color} size={size} />
-                ),
-                tabBarVisible: false,
-              }}
-            >
-              {(props) => <LoginRegister isLogin={true} {...props} />}
-            </Tab.Screen>
-            <Tab.Screen
-              name="Register"
-              options={{
-                tabBarIcon: ({ color, size }) => (
-                  <Ionicons name="ios-people" color={color} size={size} />
-                ),
-                tabBarVisible: false,
-              }}
-            >
-              {(props) => <LoginRegister isLogin={false} {...props} />}
-            </Tab.Screen>
-          </React.Fragment>
-        )}
+        <React.Fragment>
+          <Tab.Screen
+            name="Login"
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="ios-people" color={color} size={size} />
+              ),
+              tabBarVisible: false,
+            }}
+          >
+            {(props) => <LoginRegister isLogin={true} {...props} />}
+          </Tab.Screen>
+          <Tab.Screen
+            name="Register"
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="ios-people" color={color} size={size} />
+              ),
+              tabBarVisible: false,
+            }}
+          >
+            {(props) => <LoginRegister isLogin={false} {...props} />}
+          </Tab.Screen>
+        </React.Fragment>
+      )}
     </Tab.Navigator>
   );
 };
