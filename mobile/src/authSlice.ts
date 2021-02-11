@@ -8,6 +8,7 @@ import {
   generateAndUploadPushNotificationToken,
   deletePushNotificationToken,
 } from "./pushNotifications/pushNotifications";
+import analytics from "./analytics/analytics";
 
 const initialState = {
   authenticated: true,
@@ -29,12 +30,11 @@ export const loadUser = createAsyncThunk("auth/loadUser", async (data, api) => {
 
     const json = await res.json();
 
-    console.log(res);
-
     if (!res.ok) {
       return api.rejectWithValue(json.message);
     }
 
+    analytics.identify(json.user.id.toString());
     return json;
   } catch (ex) {
     console.log(`error loading user`, ex);
@@ -46,6 +46,8 @@ export const logOut = createAsyncThunk(
   "auth/logout",
   async (data, api): Promise<string> => {
     try {
+      analytics.track("Log out");
+      analytics.reset();
       await deletePushNotificationToken();
       await SecureStore.deleteItemAsync("wigo-auth-token");
     } catch (ex) {
@@ -88,6 +90,8 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
 
     await generateAndUploadPushNotificationToken();
 
+    analytics.identify(json.user.id.toString());
+    analytics.track("Log in");
     return json;
   } catch (ex) {
     console.log(`error logging in with this user`, ex);
@@ -139,7 +143,13 @@ export const register = createAsyncThunk("auth/register", async (data, api) => {
 
     await SecureStore.setItemAsync("wigo-auth-token", json.token);
 
-    console.log("json", json);
+    analytics.identify(json.user.id.toString());
+    analytics.people_set({
+      $email: json.user.email,
+      $avatar: json.user.avatar,
+    });
+    console.log("json.user.id" + json.user.id);
+    analytics.track("Register");
 
     return json;
   } catch (ex) {

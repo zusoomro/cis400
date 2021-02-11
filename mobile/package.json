@@ -10,6 +10,7 @@
     "formatAll": "prettier --write \"*/**/*.{ts,tsx}\""
   },
   "dependencies": {
+    "@benawad/expo-mixpanel-analytics": "^0.1.7",
     "@expo-google-fonts/bebas-neue": "^0.1.0",
     "@expo/vector-icons": "^10.2.1",
     "@react-native-community/datetimepicker": "3.0.0",

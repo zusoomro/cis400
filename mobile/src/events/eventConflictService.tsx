@@ -69,7 +69,7 @@ export const proposeEvent = async (
     return null;
   }
 };
-
+  
 export const getSuggestedTimes = async (
   proposedEvent: Event,
   podId: number,

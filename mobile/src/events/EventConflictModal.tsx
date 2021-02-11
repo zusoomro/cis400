@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   TouchableOpacity,
   FlatList,
@@ -177,7 +177,7 @@ const ConflictEventRow = ({
   conflictBuffer: ConflictBuffer | null;
 }) => (
   <View style={{ flexDirection: "row" }}>
-    <Text style={{ fontWeight: "bold" }}>{title}: </Text>
+    <Text style={{ fontWeight: "bold" }}>{title}:</Text>
     <Text>({Priority[conflictEvent.priority]})</Text>
     <Text style={{ textAlign: "center" }}>
       {moment(conflictEvent.start_time).format(" h:mm")}-
