@@ -74,11 +74,11 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
   const toggleSwitch = () => {
     setIsToggledToUser((previousState) => !previousState);
     if (isToggledToUser) {
-      analytics.track("Viewing user's events")
+      analytics.track("Viewing user's events");
     } else {
-      analytics.track("Viewing pod's events")
+      analytics.track("Viewing pod's events");
     }
-  }
+  };
 
   React.useEffect(() => {
     setLoading(true);
