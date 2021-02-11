@@ -19,6 +19,7 @@ import Event from "../types/Event";
 import EventInSchedule from "./EventInSchedule";
 import Pod from "../types/Pod";
 import { useDispatch, useSelector } from "react-redux";
+import analytics from "../analytics/analytics";
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
   return (
@@ -70,8 +71,14 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
 
   const [isToggledToUser, setIsToggledToUser] = useState(true);
 
-  const toggleSwitch = () =>
+  const toggleSwitch = () => {
     setIsToggledToUser((previousState) => !previousState);
+    if (isToggledToUser) {
+      analytics.track("Viewing user's events")
+    } else {
+      analytics.track("Viewing pod's events")
+    }
+  }
 
   React.useEffect(() => {
     setLoading(true);

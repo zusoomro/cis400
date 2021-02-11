@@ -2,6 +2,7 @@ import Event from "../types/Event";
 import apiUrl from "../config";
 import * as SecureStore from "expo-secure-store";
 import * as Yup from "yup";
+import analytics from "../analytics/analytics";
 
 export const validateEventSchema = () => {
   return Yup.object().shape({
@@ -71,7 +72,7 @@ export const proposeEvent = async (
       console.log("Conflicts", conflicts);
       throw new Error("Event proposal rejected by backend");
     }
-
+    analytics.track("User entered conflicting event");
     return conflicts;
   } catch (error) {
     console.log("error proposing new event", error);
@@ -117,6 +118,7 @@ export const createEventOnSubmit = async (
       console.log("Event:", event);
       throw new Error("Event creation rejected by backend");
     }
+    analytics.track("Event created");
     return event.event;
   } catch (error) {
     console.log(`error creating new event`, error);
@@ -162,6 +164,7 @@ export const modifyEventOnSubmit = async (
       console.log("Event:", event);
       throw new Error("Event modification rejected by backend");
     }
+    analytics.track("Event modified");
     return event;
   } catch (error) {
     console.log(`error updatind event`, error);
@@ -185,6 +188,7 @@ export const handleDeleteEvent = async (
       body: JSON.stringify(data),
     });
     console.log("event deleted");
+    analytics.track("Event deleted");
     return await res.json();
   } catch (error) {
     console.log(`error deleting event`, error);
