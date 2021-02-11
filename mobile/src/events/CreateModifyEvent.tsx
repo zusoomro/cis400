@@ -186,7 +186,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             <Text style={sharedStyles.inputLabelText}>End Time</Text>
             {/* End Time input */}
             <DatePicker name="end_time" date={end_time} />
-            {errors.end_time && (
+            {!!errors.end_time && (
               <Text style={sharedStyles.inputError}>{errors.end_time}</Text>
             )}
             {/* Pick repetition value*/}
@@ -238,26 +238,26 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               title="Save"
               style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
             />
-            {event && (
+            {!!event && (
               <Button
                 onPress={() => setDeleteModalVisible(true)}
                 title="Delete"
                 style={{ margin: 0 }}
               />
             )}
-            {deleteModalVisible && event && (
+            {!!deleteModalVisible && !!event && (
               <DeleteEventModal
                 deleteModalVisible={deleteModalVisible}
                 event={event}
                 setDeleteModalVisible={setDeleteModalVisible}
                 navigation={navigation}
               />
-            )} */}
+            )}
           </View>
         )}
       </Formik>
       <SafeAreaView>
-        {conflictModalVisible && (
+        {!!conflictModalVisible && (
           <EventConflictModal
             setConflictModalVisible={setConflictModalVisible}
             conflictModalVisible={conflictModalVisible}
