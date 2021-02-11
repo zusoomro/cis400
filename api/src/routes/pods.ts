@@ -26,7 +26,7 @@ podsRouter.post(
     const currUser = (req as AuthRequest).user.id;
     const name: string = req.body.name;
     const lat: number = req.body.lat;
-    const lng: number = req.body.lat;
+    const lng: number = req.body.lng;
     const homeAddress: string = req.body.homeAddress;
 
     if (!name) {

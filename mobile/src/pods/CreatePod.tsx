@@ -8,11 +8,15 @@ import { setPod as reduxSetPod } from "./podSlice";
 import sharedStyles from "../sharedStyles";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+import LocationPicker from "../events/LocationPicker";
 
 interface Pod {
   id: number;
   ownerId: number;
   name: string;
+  homeAddress: string;
+  lat: number;
+  lng: number;
 }
 
 interface Props {
@@ -40,7 +44,7 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
         <View />
       ) : (
         <Formik
-          initialValues={{ podname: "" }}
+          initialValues={{ podname: "", homeAddress: "", lat: "", lng: "" }}
           validationSchema={validatePodSchema}
           onSubmit={async (values) => {
             const res: Pod = await createPodOnSubmit(values, invitees);
@@ -82,6 +86,20 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
               {errors.podname && touched.podname && (
                 <Text style={sharedStyles.inputError}>{errors.podname}</Text>
               )}
+              <Text style={sharedStyles.inputLabelText}>Home Address</Text>
+              <LocationPicker
+                latFieldName="lat"
+                lngFieldName="lng"
+                formattedAddressFieldName="homeAddress"
+                formattedAddress={values.homeAddress}
+                destinationPicker={true}
+              />
+              {/* the line below is wonky take a look */}
+              <Text style={sharedStyles.inputError}>
+                {touched.homeAddress && errors.homeAddress
+                  ? (errors.homeAddress as String)
+                  : ""}
+              </Text>
               <Button
                 title="Invite Users to Pod"
                 onPress={() => {
@@ -105,7 +123,11 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
 };
 
 const createPodOnSubmit = async (values, invitees) => {
-  const data = { name: values.podname, inviteeIds: invitees };
+  const data = { name: values.podname, 
+                 homeAddress: values.homeAddress, 
+                 lat: values.lat, 
+                 lng: values.lng, 
+                 inviteeIds: invitees };
   try {
     const res = await fetch(`${apiUrl}/pods`, {
       method: "POST",
@@ -127,6 +149,7 @@ const validatePodSchema = () => {
     podname: Yup.string()
       .min(3, ({ min }) => "Pod name must be at least 3 characters")
       .required("Pod name required"),
+    homeAddress: Yup.string().required("Pod home address required")
   });
 };
 
