@@ -29,11 +29,6 @@ export interface ProposedEventConflicts {
   conflictingBuffers: ConflictBuffer[];
 }
 
-export interface SuggestedTime {
-  start: moment.Moment; // 0-24 for hour of the day
-  end: moment.Moment; // 1 if rounded event starts on half hour, 0 otherwise
-}
-
 export const proposeEvent = async (
   values: Event,
   podId: number,
@@ -193,50 +188,6 @@ export const handleDeleteEvent = async (
     return await res.json();
   } catch (error) {
     console.log(`error deleting event`, error);
-    return null;
-  }
-};
-
-export const suggestedTimes = async (
-  proposedEvent: Event,
-  podId: number,
-  existingEvent: Event
-): Promise<SuggestedTime[] | null> => {
-  const data = {
-    podId: podId,
-    event: {
-      id: existingEvent ? existingEvent.id : null,
-      name: proposedEvent.name,
-      formattedAddress: proposedEvent.formattedAddress,
-      lat: proposedEvent.lat,
-      lng: proposedEvent.lng,
-      startFormattedAddress: proposedEvent.startFormattedAddress,
-      startLat: proposedEvent.startLng,
-      startLng: proposedEvent.startLng,
-      start_time: proposedEvent.start_time,
-      end_time: proposedEvent.end_time,
-      repeat: proposedEvent.repeat,
-      notes: proposedEvent.notes,
-    },
-  };
-
-  try {
-    const res = await fetch(`${apiUrl}/events/getSuggestedTimes`, {
-      method: "POST",
-      headers: new Headers({
-        "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": (await SecureStore.getItemAsync(
-          "wigo-auth-token"
-        )) as string,
-      }),
-      body: JSON.stringify(data),
-    });
-
-    const suggestedTimes: SuggestedTime[] = await res.json();
-
-    return suggestedTimes;
-  } catch (error) {
-    console.log("error proposing new event", error);
     return null;
   }
 };

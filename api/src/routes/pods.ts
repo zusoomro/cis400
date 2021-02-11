@@ -119,8 +119,10 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
       "ownerId",
       pod.members.map((m) => m.id)
     )
-    .andWhere("start_time", ">", startOfDay.valueOf()) // after 8 am on date
-    .andWhere("end_time", "<", endOfDay.valueOf()); // before 6pm on date
+    // Need to use .toISOString to compare dates because the dates are stored 
+    // In UTC time and then converted to local time only when displayed. 
+    .andWhere("start_time", ">", startOfDay.toISOString()) // after 8 am on date
+    .andWhere("end_time", "<", endOfDay.toISOString()); // before 6pm on date
 
   return allEvents;
 };
@@ -149,16 +151,12 @@ podsRouter.get(
         pod.members.map((m) => m.id)
       );
 
-      console.log("allevents", allEvents);
-
       const podMemberDict: { [key: string]: string } = {};
       for (const member of pod.members) {
         podMemberDict[member.id] = member.email;
       }
 
       const conflictingEvents: Event[] = getConflictingEvents(allEvents);
-
-      console.log("conflictingEvents", conflictingEvents);
 
       res.json({ events: conflictingEvents, members: podMemberDict });
     } catch (err) {
