@@ -17,7 +17,7 @@ import {
   ProposedEventConflicts,
   SuggestedTime,
   getSuggestedTimes,
-} from "./eventConflictService"
+} from "./eventConflictService";
 
 import { EventConflictModal } from "./EventConflictModal";
 import { fetchUserPod } from "./Schedule";

@@ -100,7 +100,7 @@ export const EventConflictModal: React.FC<Props> = ({
               <FlatList
                 style={{ flexGrow: 0 }}
                 data={conflictingEvents}
-                renderItem={renderRow}
+                renderItem={renderRowConflictingEvent}
                 keyExtractor={(item) => item.event.id.toString()}
               />
             </SafeAreaView>
@@ -189,7 +189,7 @@ const ConflictEventRow = ({
   </View>
 );
 
-const renderRow = ({ item }: { item: ConflictingEvent }) => (
+const renderRowConflictingEvent = ({ item }: { item: ConflictingEvent }) => (
   <ConflictEventRow
     title={item.event.name}
     conflictEvent={item.event}

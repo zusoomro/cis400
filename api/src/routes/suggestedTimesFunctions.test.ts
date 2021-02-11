@@ -10,7 +10,6 @@ import {
   SuggestedTime,
 } from "./suggestedTimesFunctions";
 
-
 let knex: Knex;
 
 beforeEach(async () => {
