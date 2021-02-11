@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import apiUrl from "../config";
 import sharedStyles from "../sharedStyles";
 import * as SecureStore from "expo-secure-store";
+import analytics from "../analytics/analytics";
 
 interface User {
   id: number;
@@ -112,6 +113,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
           });
           const message = await res.json();
           console.log("message", message);
+          analytics.track("Users invited to pod");
           navigation.navigate("PodMembers");
         } catch (error) {
           console.log(`error sending invites`, error);
