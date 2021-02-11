@@ -21,13 +21,6 @@ interface Props {
 }
 
 const PodAnalytics: React.FC<Props> = ({ navigation }) => {
-  const fakegasTotalData = [
-    { user: "chloe", gallons: 10 },
-    { user: "caro", gallons: 15 },
-    { user: "ally", gallons: 25 },
-    { user: "zulfi", gallons: 5 },
-  ];
-
   // State for Pod totals
   const [milesTraveled, setMilesTraveled] = useState(0);
   const [numTrips, setNumTrips] = useState(0);
@@ -36,7 +29,7 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
   // State for gas breakdown
   const gasButtons = ["Percentage", "Total"];
   const [selectedGasIndex, setSelectedGasIndex] = useState(0);
-  const [gasTotalData, setgasTotalData] = useState(fakegasTotalData);
+  const [gasTotalData, setgasTotalData] = useState([]);
   const [gasPercentageData, setGasPercentageData] = useState([]);
 
   // State for time breakdown
@@ -111,11 +104,6 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
     fetchAnalyticsBreakdown();
   }, []);
 
-  // Questions for Zulfi
-  /** What is going on with breakdown? only getting breakdown for first user?
-   * What does travelTime represent? Time in car or time the car was like in use?
-   * It doesn't make sense that travelTime is 880 and miles traveled is 4.534
-   */
   return (
     <SafeAreaView>
       <View style={styles.headerSection}>
