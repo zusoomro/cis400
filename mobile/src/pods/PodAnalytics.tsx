@@ -66,7 +66,6 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
         setNumTrips(json.numTrips);
         setMilesTraveled(json.milesTraveled);
         setTravelTime(json.travelTime);
-        console.log("analytics json", json);
       } catch (err) {
         console.log("error loading analytics", err);
       }
