@@ -119,8 +119,8 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
       "ownerId",
       pod.members.map((m) => m.id)
     )
-    // Need to use .toISOString to compare dates because the dates are stored 
-    // In UTC time and then converted to local time only when displayed. 
+    // Need to use .toISOString to compare dates because the dates are stored
+    // In UTC time and then converted to local time only when displayed.
     .andWhere("start_time", ">", startOfDay.toISOString()) // after 8 am on date
     .andWhere("end_time", "<", endOfDay.toISOString()); // before 6pm on date
 
