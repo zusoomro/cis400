@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   TouchableOpacity,
   FlatList,
@@ -13,8 +13,15 @@ import moment from "moment";
 
 import Event from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
-import { ProposedEventConflicts, ConflictBuffer } from "./eventConflictService";
-import {sendPushNotification} from "../pushNotifications/pushNotifications";
+import {
+  ProposedEventConflicts,
+  ConflictBuffer,
+  SuggestedTime,
+} from "./eventConflictService";
+import { sendPushNotification } from "../pushNotifications/pushNotifications";
+
+import { useDispatch } from "react-redux";
+import { changeEvent as reduxChangeEvent } from "./eventsSlice";
 
 type Props = {
   conflictModalVisible: boolean;
@@ -25,6 +32,7 @@ type Props = {
     navigate: (screen: string) => void;
   };
   conflicts: ProposedEventConflicts;
+  suggestedTimes: SuggestedTime[];
 };
 
 type ConflictingEvent = {
@@ -40,7 +48,30 @@ export const EventConflictModal: React.FC<Props> = ({
   existingEvent,
   navigation,
   conflicts,
+  suggestedTimes,
 }) => {
+  const sortedSuggestedTimes = suggestedTimes.sort((time1, time2) => {
+    return moment(time1.start).valueOf() - moment(time2.start).valueOf();
+  });
+
+  // Creates/modifies event after a time is picked the event is scheduled anyway
+  const scheduleEvent = () => {
+    if (existingEvent) {
+      modifyEventOnSubmit({
+        ...values,
+        id: existingEvent.id,
+      } as Event).then((res) => {
+        dispatch(reduxChangeEvent(res.eventForReturn[0]));
+      });
+    } else {
+      createEventOnSubmit(values as Event).then((res) => {
+        dispatch(reduxChangeEvent(res));
+      });
+    }
+    navigation.navigate("ScheduleHomePage");
+  };
+
+  const dispatch = useDispatch();
   // Create conflicting events array from conflicts.conflictingEvents
   const conflictingEvents: ConflictingEvent[] = conflicts.conflictingEvents.map(
     (event: Event) => {
@@ -73,13 +104,34 @@ export const EventConflictModal: React.FC<Props> = ({
                 keyExtractor={(item) => item.event.id.toString()}
               />
             </SafeAreaView>
-            {/* <Text style={{ marginVertical: 10 }}>Suggested times</Text> */}
           </View>
 
           {/* Choose a suggested time */}
-          {/* <TouchableOpacity style={styles.modalButton} onPress={() => {}}>
-            <Text style={styles.modalButtonText}>Choose a Suggested Time</Text>
-          </TouchableOpacity> */}
+          <SafeAreaView>
+            {suggestedTimes.length != 0 && (
+              <Text style={styles.subtitle}>Schedule at a Suggested Time</Text>
+            )}
+            <FlatList
+              style={{ flexGrow: 0 }}
+              data={sortedSuggestedTimes}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    values.start_time = moment(item.start).toDate();
+                    values.end_time = moment(item.end).toDate();
+                    scheduleEvent();
+                  }}
+                  style={styles.modalButton}
+                >
+                  <Text style={{ textAlign: "center", padding: 5 }}>
+                    {moment(item.start).format(" h:mm")}-
+                    {moment(item.end).format("h:mmA")}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              keyExtractor={(_, index) => index.toString()}
+            />
+          </SafeAreaView>
 
           {/* Return to editing the event*/}
           <TouchableOpacity
@@ -101,19 +153,7 @@ export const EventConflictModal: React.FC<Props> = ({
                   eventId: conflict.event.id,
               });
 
-              if (existingEvent) {
-                modifyEventOnSubmit({
-                  ...values,
-                  id: existingEvent.id,
-                } as Event).then((res) => {
-                  dispatch(reduxChangeEvent(res.eventForReturn[0]));
-                });
-              } else {
-                createEventOnSubmit(values as Event).then((res) => {
-                  dispatch(reduxChangeEvent(res));
-                });
-              }
-              navigation.navigate("ScheduleHomePage");
+              scheduleEvent();
             }}
             style={styles.modalButton}
           >
@@ -137,9 +177,10 @@ const ConflictEventRow = ({
 }) => (
   <View style={{ flexDirection: "row" }}>
     <Text style={{ fontWeight: "bold" }}>{title}:</Text>
+    <Text>({Priority[conflictEvent.priority]})</Text>
     <Text style={{ textAlign: "center" }}>
       {moment(conflictEvent.start_time).format(" h:mm")}-
-      {moment(conflictEvent.end_time).format(" h:mmA")}
+      {moment(conflictEvent.end_time).format("h:mmA")}
     </Text>
     {conflictBuffer && (
       <Text style={styles.travelTimeText}> (Travel Time) </Text>
@@ -188,6 +229,12 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     textAlign: "center",
     fontWeight: "bold",
+  },
+  subtitle: {
+    fontSize: 18,
+    textAlign: "center",
+    marginVertical: 10,
+    paddingHorizontal: 10,
   },
   modalButton: {
     borderTopColor: "#DCDCDC",

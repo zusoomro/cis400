@@ -15,8 +15,11 @@ import {
 import {
   proposeEvent,
   ProposedEventConflicts,
+  SuggestedTime,
+  getSuggestedTimes,
 } from "./eventConflictService"
 import { useDispatch } from "react-redux";
+
 import { EventConflictModal } from "./EventConflictModal";
 import { fetchUserPod } from "./Schedule";
 import DeleteEventModal from "./DeleteEventModal";
@@ -56,6 +59,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   const [conflictValues, setConflictValues] = useState<
     ProposedEventConflicts
   >();
+  const [suggestedTimes, setSuggestedTimes] = useState<SuggestedTime[]>();
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -99,8 +103,14 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
 
           // If event is in a pod && If event has conflicts, show the conflict modal
           if (conflicts && conflicts.isConflicting) {
+            const suggestedTimes: SuggestedTime[] | false =
+              pod != undefined &&
+              (await getSuggestedTimes(values as Event, pod.id, event))!;
             setValuesOnSubmit(values as Event);
             setConflictValues(conflicts);
+            if (suggestedTimes) {
+              setSuggestedTimes(suggestedTimes);
+            }
             setConflictModalVisible(true);
             return;
           }
@@ -240,6 +250,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             navigation={navigation}
             existingEvent={event}
             conflicts={conflictValues!}
+            suggestedTimes={suggestedTimes!}
           />
         )}
       </SafeAreaView>
