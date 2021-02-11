@@ -18,11 +18,13 @@ import {
   SuggestedTime,
   getSuggestedTimes,
 } from "./eventConflictService"
-import { useDispatch } from "react-redux";
 
 import { EventConflictModal } from "./EventConflictModal";
 import { fetchUserPod } from "./Schedule";
 import DeleteEventModal from "./DeleteEventModal";
+
+import { useDispatch } from "react-redux";
+import { changeEvent as reduxChangeEvent } from "./eventsSlice";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -30,6 +32,12 @@ export const repetitionValues = [
   { label: "Every week", value: "weekly" },
   { label: "Every month", value: "monthly" },
   { label: "Every year", value: "yearly" },
+];
+
+export const priorityValues = [
+  { label: "Flexible", value: 0 },
+  { label: "SemiFlexible", value: 1 },
+  { label: "Inflexible", value: 2 },
 ];
 
 type Props = {
@@ -78,6 +86,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 end_time: event.end_time,
                 repeat: repetitionValues[0].value,
                 notes: event.notes,
+                priority: event.priority,
               }
             : {
                 name: "",
@@ -91,6 +100,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 end_time: end_time,
                 repeat: repetitionValues[0].value,
                 notes: "",
+                priority: 0,
               }
         }
         validationSchema={validateEventSchema}
@@ -198,6 +208,24 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               items={repetitionValues}
               defaultValue={values.repeat}
               onChangeItem={(item) => setFieldValue("repeat", item.value)}
+              itemStyle={{ justifyContent: "flex-start" }}
+              containerStyle={{ borderRadius: 15 }}
+              style={[
+                sharedStyles.input,
+                {
+                  borderRadius: 15,
+                  borderWidth: 0,
+                  paddingLeft: 15,
+                },
+              ]}
+              labelStyle={sharedStyles.inputText}
+            />
+            {/* Priority */}
+            <Text style={sharedStyles.inputLabelText}>Priority</Text>
+            <DropDownPicker
+              items={priorityValues}
+              defaultValue={values.priority}
+              onChangeItem={(item) => setFieldValue("priority", item.value)}
               itemStyle={{ justifyContent: "flex-start" }}
               containerStyle={{ borderRadius: 15 }}
               style={[

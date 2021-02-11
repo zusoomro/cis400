@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import moment from "moment";
 
-import Event from "../types/Event";
+import Event, { Priority } from "../types/Event";
 import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
 import {
   ProposedEventConflicts,
@@ -151,6 +151,7 @@ export const EventConflictModal: React.FC<Props> = ({
                 sendPushNotification({
                   recipientId: conflict.event.ownerId,
                   eventId: conflict.event.id,
+                });
               });
 
               scheduleEvent();

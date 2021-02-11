@@ -15,6 +15,5 @@ const pushSlice = createSlice({
   },
 });
 
-
 export const { setPushToken } = pushSlice.actions;
 export default pushSlice.reducer;
