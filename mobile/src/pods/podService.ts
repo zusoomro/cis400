@@ -1,4 +1,5 @@
 import * as SecureStore from "expo-secure-store";
+import analytics from "../analytics/analytics";
 import apiUrl from "../config";
 
 export const fetchUsersInvites = async () => {
@@ -33,6 +34,7 @@ export const handleRejectInvite = async (id: number) => {
     });
     const json = await res.json();
     if (json.message == "success") {
+      analytics.track("User rejected invite")
       console.log("success rejecting invite");
     }
   } catch (err) {
@@ -51,6 +53,7 @@ export const handleAcceptInvite = async (podId: number, inviteId: number) => {
       body: JSON.stringify({ podId, inviteId }),
     });
     const json = await res.json();
+    analytics.track("User accepted invite")
     return json.pod;
   } catch (error) {
     console.log(`error accepting invite`, error);

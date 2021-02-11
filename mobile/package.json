@@ -13,6 +13,7 @@
     "@ant-design/icons": "4.0.0",
     "@ant-design/icons-react-native": "^2.2.1",
     "@babel/runtime": "^7.12.13",
+    "@benawad/expo-mixpanel-analytics": "^0.1.7",
     "@expo-google-fonts/bebas-neue": "^0.1.0",
     "@expo/vector-icons": "^10.2.1",
     "@react-native-community/datetimepicker": "3.0.0",
