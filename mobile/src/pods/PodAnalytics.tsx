@@ -127,7 +127,7 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
       </View>
       <View style={styles.section1}>
         <View style={styles.statsSection}>
-          <Icon name="rowing" style={styles.icon} size={40} />
+          <Icon name="work" style={styles.icon} size={40} />
           <View>
             <Text style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}>
               {numTrips} Trips
@@ -136,7 +136,7 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
           </View>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <Icon name="rowing" style={styles.icon} size={40} />
+          <Icon name="car" type="font-awesome" style={styles.icon} size={35} />
           <View>
             <Text style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}>
               {milesTraveled} Miles
