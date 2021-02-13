@@ -6,8 +6,18 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest",
-    "formatAll": "prettier --write \"*/**/*.{ts,tsx}\""
+    "formatAll": "prettier --write \"*/**/*.{ts,tsx}\"",
+    "test": "node_modules/.bin/jest",
+    "test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --runInBand"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
+    ],
+    "setupFiles": [
+      "./setupJest.ts"
+    ]
   },
   "dependencies": {
     "@expo-google-fonts/bebas-neue": "^0.1.0",
@@ -39,7 +49,7 @@
     "expo-status-bar": "~1.0.2",
     "fetch-mock": "^9.10.7",
     "formik": "^2.2.0",
-    "jest-expo": "^39.0.0",
+    "jest-expo": "^40.0.2",
     "jest-fetch-mock": "^3.0.3",
     "moment": "^2.29.1",
     "react": "16.13.1",
@@ -75,15 +85,6 @@
     "react-native-web": "~0.13.7",
     "redux-mock-store": "^1.5.4",
     "typescript": "~3.9.5"
-  },
-  "jest": {
-    "preset": "jest-expo",
-    "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*)"
-    ],
-    "setupFiles": [
-      "./setupJest.ts"
-    ]
   },
   "private": true
 }

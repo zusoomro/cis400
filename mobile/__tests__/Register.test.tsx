@@ -1,9 +1,8 @@
 import React from "react";
 import { Provider } from "react-redux";
-import store from "./configureStore";
-import LoginRegister from "./LoginRegister";
+import LoginRegister from "../src/LoginRegister";
 import { render, fireEvent, act } from "@testing-library/react-native";
-import { register } from "./authSlice";
+import { register } from "../src/authSlice";
 import configureStore from "redux-mock-store";
 import { Middleware } from "redux";
 
@@ -16,7 +15,7 @@ const component = (
   </Provider>
 );
 
-jest.mock("./authSlice", () => ({
+jest.mock("../src/authSlice", () => ({
   register: jest.fn(),
 }));
 
