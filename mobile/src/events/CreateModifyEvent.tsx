@@ -89,7 +89,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 formattedAddress: "",
                 lat: "",
                 lng: "",
-                startFormattedAddress: pod.homeAddress, // WONKY - fetchUserPod().homeAddress
+                startFormattedAddress: pod.homeAddress,
                 startLat: "",
                 startLng: "",
                 start_time: start_time,
