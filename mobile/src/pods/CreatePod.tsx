@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, SafeAreaView, StyleSheet } from "react-native";
+import { View, Text, TextInput, SafeAreaView, StyleSheet, ScrollView } from "react-native";
 import Button from "../shared/Button";
 import { Formik } from "formik";
 import * as SecureStore from "expo-secure-store";
@@ -39,7 +39,7 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
   }, [route.params?.invitees]);
 
   return (
-    <SafeAreaView style={{ margin: 15 }}>
+    <ScrollView keyboardShouldPersistTaps="handled">
       {loading ? (
         <View />
       ) : (
@@ -118,7 +118,7 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
           )}
         </Formik>
       )}
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
