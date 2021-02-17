@@ -1,5 +1,11 @@
 import { Model, Modifiers } from "objection";
 
+export enum Priority {
+  Flexible,
+  SemiFlexible,
+  Inflexible,
+}
+
 export default class Event extends Model {
   id!: number;
   name!: string;
@@ -14,6 +20,7 @@ export default class Event extends Model {
   end_time!: Date;
   repeat!: "no_repeat" | "daily" | "weekly" | "monthly" | "yearly";
   notes!: string;
+  priority!: Priority;
 
   static get tableName() {
     return "events";

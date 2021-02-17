@@ -19,6 +19,7 @@ import Event from "../types/Event";
 import EventInSchedule from "./EventInSchedule";
 import Pod from "../types/Pod";
 import { useDispatch, useSelector } from "react-redux";
+import analytics from "../analytics/analytics";
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
   const [pod, setPod] = useState<Pod>();
@@ -54,7 +55,6 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
           sharedStyles.shadow,
         ]}
         onPress={() => {
-          console.log("Create New Event button clicked");
           navigation.navigate("CreateEvent", {pod: pod});
           return;
         }}
@@ -76,8 +76,14 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
 
   const [isToggledToUser, setIsToggledToUser] = useState(true);
 
-  const toggleSwitch = () =>
+  const toggleSwitch = () => {
     setIsToggledToUser((previousState) => !previousState);
+    if (isToggledToUser) {
+      analytics.track("Viewing user's events");
+    } else {
+      analytics.track("Viewing pod's events");
+    }
+  };
 
   React.useEffect(() => {
     setLoading(true);
@@ -102,7 +108,9 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
     } else {
       setLoading(true);
       fetchPodEvents(pod.id).then((res) => {
-        dispatch(setEvents(res[0]));
+        // Line below should be dispatch(setEvents(res)
+        // NOT setEvents(res[0]) for the schedule toggle to work
+        dispatch(setEvents(res));
         setLoading(false);
       });
     }
@@ -166,13 +174,12 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
         ) : (isToggledToUser ? events : events).length > 0 ? (
           <View>
             {(isToggledToUser ? events : events).map((event: Event) => (
-              //console.log(event)
               <EventInSchedule
                 event={event}
                 showName={!isToggledToUser}
                 navigation={navigation}
                 key={event.id}
-                avatar={isToggledToUser ? user.avatar : undefined}
+                avatar={isToggledToUser ? user.avatar : map[event.ownerId]}
               />
             ))}
           </View>
@@ -232,7 +239,6 @@ const fetchPodEvents = async (podId: number) => {
 
     const json = await res.json();
     const returnedEvents = json.events;
-    console.log("returnedEvents", returnedEvents);
 
     return returnedEvents;
   } catch (err) {
@@ -253,11 +259,9 @@ const fetchUserEvents = async () => {
     const json = await res.json();
     const returnedEvents = json.events;
 
-    console.log("returnedEvents", returnedEvents);
-
     return returnedEvents;
   } catch (err) {
-    console.log("ERROR: ", err);
+    console.log("ERROR in fetchUserEvents: ", err);
     console.log("error loading events for current user");
   }
 };
@@ -266,6 +270,7 @@ const fetchAvatarsAndEmails = async (ids: number[]) => {
   try {
     const authToken = await SecureStore.getItemAsync("wigo-auth-token");
     const res = await fetch(`${apiUrl}/users/avatars`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
         "x-auth-token": authToken!,
@@ -275,7 +280,7 @@ const fetchAvatarsAndEmails = async (ids: number[]) => {
     const json = await res.json();
     return json.map;
   } catch (err) {
-    console.log("ERROR: ", err);
+    console.log("Error in fetchAvatorsAndEmails: ", err);
     console.log("error loading events for current user");
   }
 };

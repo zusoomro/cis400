@@ -7,6 +7,7 @@ import auth, { AuthRequest } from "../authMiddleware";
 import Event from "../../models/Event";
 import eventRouter from "./events";
 import { compare } from "bcrypt";
+import moment from "moment";
 
 const podsRouter = express.Router();
 
@@ -103,6 +104,29 @@ export const getPodEvents = async (podId: number) => {
   return allEvents;
 };
 
+/** Returns pod events between 8am and 6pm of the day given  */
+export const getPodEventsOfDay = async (podId: number, date: Date) => {
+  const pod = await Pod.query()
+    .findOne({ "pods.id": podId })
+    .withGraphFetched("members");
+
+  const dateAsMoment = moment(date);
+  const startOfDay = moment(dateAsMoment).hour(8).minute(0);
+  const endOfDay = moment(dateAsMoment).hour(18).minute(0); //6pm = 12 + 6
+
+  const allEvents: Event[] = await Event.query()
+    .whereIn(
+      "ownerId",
+      pod.members.map((m) => m.id)
+    )
+    // Need to use .toISOString to compare dates because the dates are stored
+    // In UTC time and then converted to local time only when displayed.
+    .andWhere("start_time", ">", startOfDay.toISOString()) // after 8 am on date
+    .andWhere("end_time", "<", endOfDay.toISOString()); // before 6pm on date
+
+  return allEvents;
+};
+
 podsRouter.get(
   "/:podId/conflictingEvents",
   [auth],
@@ -127,16 +151,12 @@ podsRouter.get(
         pod.members.map((m) => m.id)
       );
 
-      console.log("allevents", allEvents);
-
       const podMemberDict: { [key: string]: string } = {};
       for (const member of pod.members) {
         podMemberDict[member.id] = member.email;
       }
 
       const conflictingEvents: Event[] = getConflictingEvents(allEvents);
-
-      console.log("conflictingEvents", conflictingEvents);
 
       res.json({ events: conflictingEvents, members: podMemberDict });
     } catch (err) {
