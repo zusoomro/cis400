@@ -55,7 +55,7 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
           sharedStyles.shadow,
         ]}
         onPress={() => {
-          navigation.navigate("CreateEvent", {pod: pod});
+          navigation.navigate("CreateEvent", { pod: pod });
           return;
         }}
       >
