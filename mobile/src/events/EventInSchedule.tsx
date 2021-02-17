@@ -33,7 +33,7 @@ const EventInSchedule: React.FC<EventProps> = ({
   const [email, setEmail] = useState<string>();
 
   useEffect(() => {
-    getUserEmail(id).then((res) => setEmail(res));
+    getUserEmail().then((res) => setEmail(res));
   });
 
   return (
@@ -102,10 +102,10 @@ const generateDateString = (event: Event): string => {
   })}`;
 };
 
-const getUserEmail = async (id) => {
+const getUserEmail = async () => {
   try {
     const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-    const res = await fetch(`${apiUrl}/users/email/${id}`, {
+    const res = await fetch(`${apiUrl}/users/email`, {
       headers: {
         "Content-Type": "application/json;charset=utf-8",
         "x-auth-token": authToken!,
