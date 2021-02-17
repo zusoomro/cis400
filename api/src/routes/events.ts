@@ -3,13 +3,15 @@ import Event from "../../models/Event";
 import auth, { AuthRequest } from "../authMiddleware";
 import Pod from "../../models/Pod";
 import User from "../../models/User";
-import { getPodEvents } from "./pods";
+import { getPodEvents, getPodEventsOfDay } from "./pods";
 import {
   ConflictBuffer,
   determineTravelTimeConflicts,
   getOverlappingEvents,
   getPreviousAndNextEvent,
 } from "./eventConflictFunctions";
+
+import { findSuggestedTimes } from "./suggestedTimesFunctions";
 
 let eventRouter = express.Router();
 
@@ -24,6 +26,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     lng,
     repeat,
     notes,
+    priority,
     startFormattedAddress,
     startLat,
     startLng,
@@ -62,6 +65,7 @@ eventRouter.post("/", [auth], async (req: Request, res: Response) => {
     end_time: end_time,
     repeat,
     notes,
+    priority,
   });
   console.log(`Creating event with name '${event.name}' and id '${event.id}'`);
   res.send({ event });
@@ -78,6 +82,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
     end_time,
     repeat,
     notes,
+    priority,
     startFormattedAddress,
     startLat,
     startLng,
@@ -115,6 +120,7 @@ eventRouter.put("/", [auth], async (req: Request, res: Response) => {
       end_time,
       repeat,
       notes,
+      priority,
     })
     .where("id", eventId);
   const eventForReturn = await Event.query().where("id", eventId);
@@ -175,6 +181,31 @@ eventRouter.post("/proposeEvent", async (req: Request, res: Response) => {
   }
 });
 
+// Find alternative times for suggested event
+eventRouter.post("/getSuggestedTimes", async (req: Request, res: Response) => {
+  try {
+    const { event, podId } = req.body;
+
+    // Determine if there are any immediately conflicting events
+    let eventsOfTheDay: Event[] = await getPodEventsOfDay(
+      podId,
+      event.start_time
+    );
+
+    // Filter out current event if it exists
+    if (event.id) {
+      eventsOfTheDay = eventsOfTheDay.filter(
+        (eventItem) => eventItem.id != event.id
+      );
+    }
+
+    return res.json(await findSuggestedTimes(event, eventsOfTheDay, 4));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
 eventRouter.get(
   "/",
   [auth],
@@ -224,8 +255,6 @@ eventRouter.get(
       const pod = await Pod.query()
         .findOne({ "pods.id": podId })
         .withGraphFetched("members");
-
-      console.log("pod", pod);
 
       const allEvents: Event[] = await Event.query().whereIn(
         "ownerId",

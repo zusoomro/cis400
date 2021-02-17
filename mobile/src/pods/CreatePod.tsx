@@ -16,6 +16,7 @@ import sharedStyles from "../sharedStyles";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import LocationPicker from "../events/LocationPicker";
+import analytics from "../analytics/analytics";
 
 interface Pod {
   id: number;
@@ -146,6 +147,7 @@ const createPodOnSubmit = async (values, invitees) => {
       },
       body: JSON.stringify(data),
     });
+    analytics.track("Pod created");
     return res;
   } catch (error) {
     console.log(`error creating pod`, error);

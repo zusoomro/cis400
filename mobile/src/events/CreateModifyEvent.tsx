@@ -12,18 +12,20 @@ import {
   modifyEventOnSubmit,
   validateEventSchema,
 } from "./eventsService";
-import { proposeEvent, ProposedEventConflicts } from "./eventConflictService";
 import {
-  ConflictAction,
-  eventConflictAlert,
-  isConflictingEvent,
-} from "./eventConflicts";
-import { useDispatch } from "react-redux";
+  proposeEvent,
+  ProposedEventConflicts,
+  SuggestedTime,
+  getSuggestedTimes,
+} from "./eventConflictService";
+
 import { EventConflictModal } from "./EventConflictModal";
 import { fetchUserPod } from "./Schedule";
 import DeleteEventModal from "./DeleteEventModal";
 import podSlice from "../pods/podSlice";
 import Pod from "../types/Pod";
+import { useDispatch } from "react-redux";
+import { changeEvent as reduxChangeEvent } from "./eventsSlice";
 
 export const repetitionValues = [
   { label: "Does not repeat", value: "no_repeat" },
@@ -31,6 +33,12 @@ export const repetitionValues = [
   { label: "Every week", value: "weekly" },
   { label: "Every month", value: "monthly" },
   { label: "Every year", value: "yearly" },
+];
+
+export const priorityValues = [
+  { label: "Flexible", value: 0 },
+  { label: "SemiFlexible", value: 1 },
+  { label: "Inflexible", value: 2 },
 ];
 
 type Props = {
@@ -62,6 +70,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   const [conflictValues, setConflictValues] = useState<
     ProposedEventConflicts
   >();
+  const [suggestedTimes, setSuggestedTimes] = useState<SuggestedTime[]>();
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -80,6 +89,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 end_time: event.end_time,
                 repeat: repetitionValues[0].value,
                 notes: event.notes,
+                priority: event.priority,
               }
             : {
                 name: "",
@@ -93,6 +103,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 end_time: end_time,
                 repeat: repetitionValues[0].value,
                 notes: "",
+                priority: 0,
               }
         }
         validationSchema={validateEventSchema}
@@ -105,8 +116,14 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
 
           // If event is in a pod && If event has conflicts, show the conflict modal
           if (conflicts && conflicts.isConflicting) {
+            const suggestedTimes: SuggestedTime[] | false =
+              pod != undefined &&
+              (await getSuggestedTimes(values as Event, pod.id, event))!;
             setValuesOnSubmit(values as Event);
             setConflictValues(conflicts);
+            if (suggestedTimes) {
+              setSuggestedTimes(suggestedTimes);
+            }
             setConflictModalVisible(true);
             return;
           }
@@ -185,7 +202,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             <Text style={sharedStyles.inputLabelText}>End Time</Text>
             {/* End Time input */}
             <DatePicker name="end_time" date={end_time} />
-            {errors.end_time && (
+            {!!errors.end_time && (
               <Text style={sharedStyles.inputError}>{errors.end_time}</Text>
             )}
             {/* Pick repetition value*/}
@@ -194,6 +211,24 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               items={repetitionValues}
               defaultValue={values.repeat}
               onChangeItem={(item) => setFieldValue("repeat", item.value)}
+              itemStyle={{ justifyContent: "flex-start" }}
+              containerStyle={{ borderRadius: 15 }}
+              style={[
+                sharedStyles.input,
+                {
+                  borderRadius: 15,
+                  borderWidth: 0,
+                  paddingLeft: 15,
+                },
+              ]}
+              labelStyle={sharedStyles.inputText}
+            />
+            {/* Priority */}
+            <Text style={sharedStyles.inputLabelText}>Priority</Text>
+            <DropDownPicker
+              items={priorityValues}
+              defaultValue={values.priority}
+              onChangeItem={(item) => setFieldValue("priority", item.value)}
               itemStyle={{ justifyContent: "flex-start" }}
               containerStyle={{ borderRadius: 15 }}
               style={[
@@ -219,14 +254,14 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
               title="Save"
               style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
             />
-            {event && (
+            {!!event && (
               <Button
                 onPress={() => setDeleteModalVisible(true)}
                 title="Delete"
                 style={{ margin: 0 }}
               />
             )}
-            {deleteModalVisible && event && (
+            {!!deleteModalVisible && !!event && (
               <DeleteEventModal
                 deleteModalVisible={deleteModalVisible}
                 event={event}
@@ -238,7 +273,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
         )}
       </Formik>
       <SafeAreaView>
-        {conflictModalVisible && (
+        {!!conflictModalVisible && (
           <EventConflictModal
             setConflictModalVisible={setConflictModalVisible}
             conflictModalVisible={conflictModalVisible}
@@ -246,6 +281,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
             navigation={navigation}
             existingEvent={event}
             conflicts={conflictValues!}
+            suggestedTimes={suggestedTimes!}
           />
         )}
       </SafeAreaView>

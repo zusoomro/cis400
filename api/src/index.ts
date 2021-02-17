@@ -4,6 +4,7 @@ import podsRouter from "./routes/pods";
 import eventRouter from "./routes/events";
 import invitesRouter from "./routes/invites";
 import notificationsRouter from "./routes/notifications";
+import analyticsRouter from "./routes/analytics";
 import initializeDb from "./initializeDb";
 
 initializeDb();
@@ -20,6 +21,8 @@ app.use("/pods", podsRouter);
 app.use("/events", eventRouter);
 
 app.use("/invites", invitesRouter);
+
+app.use("/analytics", analyticsRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
