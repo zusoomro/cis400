@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { ScrollView, TextInput, View, Text, SafeAreaView } from "react-native";
+import { ScrollView, TextInput, View, SafeAreaView } from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import sharedStyles from "../sharedStyles";
