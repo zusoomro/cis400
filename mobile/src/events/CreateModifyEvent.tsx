@@ -27,11 +27,12 @@ import {
   populatedFormEventValues,
   submitCreateModifyEventForm,
 } from "./createModifyEventHelpers";
+import { useDispatch } from "react-redux";
 
 /***
- * CreateModifyEvent contains the component for the CreateModifyEvent page. 
- * 
- * It also shows the the EventConflictsModal and DeleteEventModal in case of needed use. 
+ * CreateModifyEvent contains the component for the CreateModifyEvent page.
+ *
+ * It also shows the the EventConflictsModal and DeleteEventModal in case of needed use.
  */
 const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
   navigation,
@@ -56,6 +57,12 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
   >();
   const [suggestedTimes, setSuggestedTimes] = useState<SuggestedTime[]>();
 
+  const dispatch = useDispatch();
+  // Allows you to pass dispatch into helper functions
+  const helperDispatch = (thingToDispatch: any) => {
+    dispatch(thingToDispatch);
+  };
+  
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
       <Formik
@@ -73,7 +80,8 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
             setValuesOnSubmit,
             setConflictValues,
             setSuggestedTimes,
-            setConflictModalVisible
+            setConflictModalVisible,
+            helperDispatch
           );
         }}
       >

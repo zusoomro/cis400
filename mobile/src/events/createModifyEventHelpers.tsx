@@ -146,20 +146,19 @@ type SetConflictModalVisibleFunction = React.Dispatch<
 export const scheduleEvent = (
   values: eventFormikValues,
   existingEvent: Event | null,
-  navigation: NavigationProp
+  navigation: NavigationProp,
+  helperDispatch
 ) => {
-  const dispatch = useDispatch();
-
   if (existingEvent) {
     modifyEventOnSubmit({
       ...values,
       id: existingEvent.id,
     } as Event).then((res) => {
-      dispatch(reduxChangeEvent(res.eventForReturn[0]));
+      helperDispatch(reduxChangeEvent(res.eventForReturn[0]));
     });
   } else {
     createEventOnSubmit(values as Event).then((res) => {
-      dispatch(reduxChangeEvent(res));
+      helperDispatch(reduxChangeEvent(res));
     });
   }
   navigation.navigate("ScheduleHomePage");
@@ -182,6 +181,7 @@ export const scheduleEvent = (
  * @param setSuggestedTimes: sets suggestedTimes state which is sent to the EventConflictModal
  * if there are conflits.
  * @param setConflictModalVisible: sets conflictModalVisible to true or false.
+ * @param helperDispatch: wraps dispatch to call within helper function
  */
 export const submitCreateModifyEventForm = async (
   values: eventFormikValues,
@@ -190,7 +190,8 @@ export const submitCreateModifyEventForm = async (
   setValuesOnSubmit: SetValuesOnSubmitFunction,
   setConflictValues: SetConflictValuesFunction,
   setSuggestedTimes: SetSuggestedTimesFunction,
-  setConflictModalVisible: SetConflictModalVisibleFunction
+  setConflictModalVisible: SetConflictModalVisibleFunction,
+  helperDispatch
 ) => {
   const pod = await fetchUserPod();
 
@@ -211,5 +212,5 @@ export const submitCreateModifyEventForm = async (
     setConflictModalVisible(true);
     return;
   }
-  scheduleEvent(values, existingEvent, navigation);
+  scheduleEvent(values, existingEvent, navigation, helperDispatch);
 };

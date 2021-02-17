@@ -20,6 +20,7 @@ import {
 import { sendPushNotification } from "../pushNotifications/pushNotifications";
 
 import { scheduleEvent } from "./createModifyEventHelpers";
+import { useDispatch } from "react-redux";
 
 type Props = {
   conflictModalVisible: boolean;
@@ -65,6 +66,12 @@ export const EventConflictModal: React.FC<Props> = ({
     }
   );
 
+  const dispatch = useDispatch();
+  // Allows you to pass dispatch into helper functions
+  const helperDispatch = (thingToDispatch: any) => {
+    dispatch(thingToDispatch);
+  };
+
   return (
     <Modal
       animationType="none"
@@ -99,7 +106,12 @@ export const EventConflictModal: React.FC<Props> = ({
                   onPress={() => {
                     values.start_time = moment(item.start).toDate();
                     values.end_time = moment(item.end).toDate();
-                    scheduleEvent(values, existingEvent, navigation);
+                    scheduleEvent(
+                      values,
+                      existingEvent,
+                      navigation,
+                      helperDispatch
+                    );
                   }}
                   style={styles.modalButton}
                 >
@@ -134,7 +146,7 @@ export const EventConflictModal: React.FC<Props> = ({
                 });
               });
 
-              scheduleEvent(values, existingEvent, navigation);
+              scheduleEvent(values, existingEvent, navigation, helperDispatch);
             }}
             style={styles.modalButton}
           >
