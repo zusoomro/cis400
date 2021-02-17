@@ -4,6 +4,7 @@ import { ScrollView, TextInput, View, Text, SafeAreaView } from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import sharedStyles from "../sharedStyles";
+import { useDispatch } from "react-redux";
 
 /** Import Custom Components */
 import LocationPicker from "./LocationPicker";
@@ -27,7 +28,6 @@ import {
   populatedFormEventValues,
   submitCreateModifyEventForm,
 } from "./createModifyEventHelpers";
-import { useDispatch } from "react-redux";
 
 /***
  * CreateModifyEvent contains the component for the CreateModifyEvent page.
@@ -62,7 +62,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
   const helperDispatch = (thingToDispatch: any) => {
     dispatch(thingToDispatch);
   };
-  
+
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
       <Formik
