@@ -56,7 +56,6 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
         );
 
         const json = await res.json();
-        console.log("analytics", json);
         setNumTrips(json.numTrips);
         setMilesTraveled(json.milesTraveled);
         setTravelTime(json.travelTime);
@@ -81,7 +80,6 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
         );
 
         const json = await res.json();
-        console.log("analytics breakdown", json);
         let gasReport = [];
         let gasPercentage = [];
         let timeTotalReport = [];
@@ -101,12 +99,8 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
           timePercentageReport.push({ x: emailShort, y: data.timePercentage });
         });
         setgasTotalData(gasReport);
-        console.log("gas total report", gasReport);
-        console.log("gas total data", gasTotalData);
         setGasPercentageData(gasPercentage);
         setTimeTotalData(timeTotalReport);
-        console.log("time total report", timeTotalReport);
-        console.log("time total data", timeTotalData);
         setTimePercentageData(timePercentageReport);
       } catch (err) {
         console.log("error loading analytics", err);
