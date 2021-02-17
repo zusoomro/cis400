@@ -3,53 +3,41 @@ import React, { useState } from "react";
 import { ScrollView, TextInput, View, Text, SafeAreaView } from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
+import sharedStyles from "../sharedStyles";
+
+/** Import Custom Components */
 import LocationPicker from "./LocationPicker";
 import DatePicker from "./DatePicker";
-import sharedStyles from "../sharedStyles";
+
+/** Import Types  */
 import Event from "../types/Event";
-import {
-  createEventOnSubmit,
-  modifyEventOnSubmit,
-  validateEventSchema,
-} from "./eventsService";
-import {
-  proposeEvent,
-  ProposedEventConflicts,
-  SuggestedTime,
-  getSuggestedTimes,
-} from "./eventConflictService";
+import { ProposedEventConflicts, SuggestedTime } from "./eventConflictService";
 
 import { EventConflictModal } from "./EventConflictModal";
-import { fetchUserPod } from "./Schedule";
 import DeleteEventModal from "./DeleteEventModal";
 
-import { useDispatch } from "react-redux";
-import { changeEvent as reduxChangeEvent } from "./eventsSlice";
+/** Import Helpers */
+import {
+  validateEventSchema,
+  eventFormikValues,
+  CreateModifyEventProps,
+  repetitionValues,
+  priorityValues,
+  emptyFormEventValues,
+  populatedFormEventValues,
+  submitCreateModifyEventForm,
+} from "./createModifyEventHelpers";
 
-export const repetitionValues = [
-  { label: "Does not repeat", value: "no_repeat" },
-  { label: "Every day", value: "daily" },
-  { label: "Every week", value: "weekly" },
-  { label: "Every month", value: "monthly" },
-  { label: "Every year", value: "yearly" },
-];
-
-export const priorityValues = [
-  { label: "Flexible", value: 0 },
-  { label: "SemiFlexible", value: 1 },
-  { label: "Inflexible", value: 2 },
-];
-
-type Props = {
-  event?: Event;
-  navigation: {
-    navigate: (screen: string) => void;
-  };
-  route: Object;
-};
-
-const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
-  const event: Event = route?.params?.event;
+/***
+ * CreateModifyEvent contains the component for the CreateModifyEvent page. 
+ * 
+ * It also shows the the EventConflictsModal and DeleteEventModal in case of needed use. 
+ */
+const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
+  navigation,
+  route,
+}) => {
+  const event: Event | null = route?.params?.event;
 
   // Start time = current time
   const [start_time, setStartTime] = useState(
@@ -60,7 +48,6 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
     event ? event.end_time : new Date(Date.now() + 60 * 60 * 1000)
   );
 
-  const dispatch = useDispatch();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [conflictModalVisible, setConflictModalVisible] = useState(false);
   const [valuesOnSubmit, setValuesOnSubmit] = useState<Event>();
@@ -74,72 +61,20 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
       <Formik
         initialValues={
           event
-            ? {
-                name: event.name,
-                formattedAddress: event.formattedAddress,
-                lat: event.lat,
-                lng: event.lng,
-                startFormattedAddress: event.startFormattedAddress,
-                startLat: event.startLat,
-                startLng: event.startLng,
-                start_time: event.start_time,
-                end_time: event.end_time,
-                repeat: repetitionValues[0].value,
-                notes: event.notes,
-                priority: event.priority,
-              }
-            : {
-                name: "",
-                formattedAddress: "",
-                lat: "",
-                lng: "",
-                startFormattedAddress: "",
-                startLat: "",
-                startLng: "",
-                start_time: start_time,
-                end_time: end_time,
-                repeat: repetitionValues[0].value,
-                notes: "",
-                priority: 0,
-              }
+            ? populatedFormEventValues(event)
+            : emptyFormEventValues(start_time, end_time)
         }
         validationSchema={validateEventSchema}
-        onSubmit={async (values) => {
-          const pod = await fetchUserPod();
-
-          const conflicts: ProposedEventConflicts | false =
-            pod != undefined &&
-            (await proposeEvent(values as Event, pod.id, event))!;
-
-          // If event is in a pod && If event has conflicts, show the conflict modal
-          if (conflicts && conflicts.isConflicting) {
-            const suggestedTimes: SuggestedTime[] | false =
-              pod != undefined &&
-              (await getSuggestedTimes(values as Event, pod.id, event))!;
-            setValuesOnSubmit(values as Event);
-            setConflictValues(conflicts);
-            if (suggestedTimes) {
-              setSuggestedTimes(suggestedTimes);
-            }
-            setConflictModalVisible(true);
-            return;
-          }
-          if (event) {
-            const res = await modifyEventOnSubmit({
-              ...values,
-              id: event.id,
-            } as Event);
-            if (res) {
-              const eventToAdd: Event = res.eventForReturn[0];
-              dispatch(reduxChangeEvent(eventToAdd));
-            }
-          } else {
-            const res = await createEventOnSubmit(values as Event);
-            if (res) {
-              dispatch(reduxChangeEvent(res));
-            }
-          }
-          navigation.navigate("ScheduleHomePage");
+        onSubmit={async (values: eventFormikValues) => {
+          submitCreateModifyEventForm(
+            values,
+            event,
+            navigation,
+            setValuesOnSubmit,
+            setConflictValues,
+            setSuggestedTimes,
+            setConflictModalVisible
+          );
         }}
       >
         {({
