@@ -38,7 +38,7 @@ export const repetitionValues = [
 
 type Props = {
   event?: Event;
-  pod?: Pod;
+  pod: Pod;
   navigation: {
     navigate: (screen: string) => void;
   };
