@@ -159,7 +159,7 @@ usersRouter.post("/avatars", [auth], async (req: Request, res: Response) => {
   }
 });
 
-// Get email of current user 
+// Get email of current user
 usersRouter.get("/email", [auth], async (req: Request, res: Response) => {
   try {
     const userId = (req as AuthRequest).user.id;

@@ -103,7 +103,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
       setLoading(true);
       fetchPodEvents(pod.id).then((res) => {
         // Line below should be dispatch(setEvents(res)
-        // NOT setEvents(res[0]) for the schedule toggle to work 
+        // NOT setEvents(res[0]) for the schedule toggle to work
         dispatch(setEvents(res));
         setLoading(false);
       });
@@ -264,7 +264,7 @@ const fetchAvatarsAndEmails = async (ids: number[]) => {
   try {
     const authToken = await SecureStore.getItemAsync("wigo-auth-token");
     const res = await fetch(`${apiUrl}/users/avatars`, {
-      method: "POST", 
+      method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
         "x-auth-token": authToken!,
