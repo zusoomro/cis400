@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, SafeAreaView, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import Button from "../shared/Button";
 import { Formik } from "formik";
 import * as SecureStore from "expo-secure-store";
@@ -123,11 +130,13 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
 };
 
 const createPodOnSubmit = async (values, invitees) => {
-  const data = { name: values.podname, 
-                 homeAddress: values.homeAddress, 
-                 lat: values.lat, 
-                 lng: values.lng, 
-                 inviteeIds: invitees };
+  const data = {
+    name: values.podname,
+    homeAddress: values.homeAddress,
+    lat: values.lat,
+    lng: values.lng,
+    inviteeIds: invitees,
+  };
   try {
     const res = await fetch(`${apiUrl}/pods`, {
       method: "POST",
@@ -149,7 +158,7 @@ const validatePodSchema = () => {
     podname: Yup.string()
       .min(3, ({ min }) => "Pod name must be at least 3 characters")
       .required("Pod name required"),
-    homeAddress: Yup.string().required("Pod home address required")
+    homeAddress: Yup.string().required("Pod home address required"),
   });
 };
 

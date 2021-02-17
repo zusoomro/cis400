@@ -55,7 +55,7 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
         ]}
         onPress={() => {
           console.log("Create New Event button clicked");
-          navigation.navigate("CreateEvent", {pod: pod});
+          navigation.navigate("CreateEvent", { pod: pod });
           return;
         }}
       >

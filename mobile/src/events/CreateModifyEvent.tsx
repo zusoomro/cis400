@@ -12,10 +12,7 @@ import {
   modifyEventOnSubmit,
   validateEventSchema,
 } from "./eventsService";
-import {
-  proposeEvent,
-  ProposedEventConflicts,
-} from "./eventConflictService"
+import { proposeEvent, ProposedEventConflicts } from "./eventConflictService";
 import {
   ConflictAction,
   eventConflictAlert,
