@@ -94,12 +94,19 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
           gasReport.push({ user: emailShort, gallons: data.gasUsage });
           gasPercentage.push({ x: emailShort, y: data.gasPercentage });
 
-          timeTotalReport.push({ x: emailShort, y: data.timeUsage });
+          timeTotalReport.push({
+            user: emailShort,
+            seconds: data.timeUsage,
+          });
           timePercentageReport.push({ x: emailShort, y: data.timePercentage });
         });
         setgasTotalData(gasReport);
+        console.log("gas total report", gasReport);
+        console.log("gas total data", gasTotalData);
         setGasPercentageData(gasPercentage);
         setTimeTotalData(timeTotalReport);
+        console.log("time total report", timeTotalReport);
+        console.log("time total data", timeTotalData);
         setTimePercentageData(timePercentageReport);
       } catch (err) {
         console.log("error loading analytics", err);
@@ -237,7 +244,7 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
                   <VictoryBar
                     data={timeTotalData}
                     x="user"
-                    y="gallons"
+                    y="seconds"
                     style={{ data: { fill: "#434190" } }}
                   />
                 </VictoryChart>
