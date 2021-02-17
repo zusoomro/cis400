@@ -102,7 +102,9 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
     } else {
       setLoading(true);
       fetchPodEvents(pod.id).then((res) => {
-        dispatch(setEvents(res[0]));
+        // Line below should be dispatch(setEvents(res)
+        // NOT setEvents(res[0]) for the schedule toggle to work 
+        dispatch(setEvents(res));
         setLoading(false);
       });
     }
@@ -171,7 +173,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
                 showName={!isToggledToUser}
                 navigation={navigation}
                 key={event.id}
-                avatar={isToggledToUser ? user.avatar : undefined}
+                avatar={isToggledToUser ? user.avatar : map[event.ownerId]}
               />
             ))}
           </View>

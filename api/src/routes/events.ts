@@ -256,8 +256,6 @@ eventRouter.get(
         .findOne({ "pods.id": podId })
         .withGraphFetched("members");
 
-      console.log("pod", pod);
-
       const allEvents: Event[] = await Event.query().whereIn(
         "ownerId",
         pod.members.map((m: User) => m.id)
