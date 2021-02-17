@@ -49,7 +49,6 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
           sharedStyles.shadow,
         ]}
         onPress={() => {
-          console.log("Create New Event button clicked");
           navigation.navigate("CreateEvent");
           return;
         }}
@@ -167,7 +166,6 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
         ) : (isToggledToUser ? events : events).length > 0 ? (
           <View>
             {(isToggledToUser ? events : events).map((event: Event) => (
-              //console.log(event)
               <EventInSchedule
                 event={event}
                 showName={!isToggledToUser}
@@ -233,7 +231,6 @@ const fetchPodEvents = async (podId: number) => {
 
     const json = await res.json();
     const returnedEvents = json.events;
-    console.log("returnedEvents", returnedEvents);
 
     return returnedEvents;
   } catch (err) {
@@ -254,11 +251,9 @@ const fetchUserEvents = async () => {
     const json = await res.json();
     const returnedEvents = json.events;
 
-    console.log("returnedEvents", returnedEvents);
-
     return returnedEvents;
   } catch (err) {
-    console.log("ERROR: ", err);
+    console.log("ERROR in fetchUserEvents: ", err);
     console.log("error loading events for current user");
   }
 };
@@ -267,6 +262,7 @@ const fetchAvatarsAndEmails = async (ids: number[]) => {
   try {
     const authToken = await SecureStore.getItemAsync("wigo-auth-token");
     const res = await fetch(`${apiUrl}/users/avatars`, {
+      method: "POST", 
       headers: {
         "Content-Type": "application/json;charset=utf-8",
         "x-auth-token": authToken!,
@@ -276,7 +272,7 @@ const fetchAvatarsAndEmails = async (ids: number[]) => {
     const json = await res.json();
     return json.map;
   } catch (err) {
-    console.log("ERROR: ", err);
+    console.log("Error in fetchAvatorsAndEmails: ", err);
     console.log("error loading events for current user");
   }
 };
