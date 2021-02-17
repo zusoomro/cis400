@@ -1,8 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import * as SecureStore from "expo-secure-store";
 import React, { useState } from "react";
 import {
-  Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -12,7 +10,6 @@ import {
   View,
   ActivityIndicator,
 } from "react-native";
-import apiUrl from "../config";
 import { setEvents } from "./eventsSlice";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
@@ -20,34 +17,19 @@ import EventInSchedule from "./EventInSchedule";
 import Pod from "../types/Pod";
 import { useDispatch, useSelector } from "react-redux";
 import analytics from "../analytics/analytics";
+import {
+  fetchAvatarsAndEmails,
+  fetchPodEvents,
+  fetchUserEvents,
+  fetchUserPod,
+} from "./scheduleService";
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
   return (
-    <SafeAreaView
-      style={{
-        display: "flex",
-        flex: 1,
-        justifyContent: "space-between",
-        flexDirection: "column",
-      }}
-    >
+    <SafeAreaView style={styles.scheduleHomePageContainer}>
       <Schedule navigation={navigation} />
       <TouchableOpacity
-        style={[
-          {
-            position: "absolute",
-            bottom: 15,
-            right: 15,
-            height: 50,
-            width: 50,
-            borderRadius: 100,
-            backgroundColor: "#5A67D8",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          },
-          sharedStyles.shadow,
-        ]}
+        style={[styles.createEventButton, sharedStyles.shadow]}
         onPress={() => {
           navigation.navigate("CreateEvent");
           return;
@@ -79,6 +61,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
     }
   };
 
+  // Get Pod Information
   React.useEffect(() => {
     setLoading(true);
     fetchUserPod().then((res) => {
@@ -92,6 +75,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
     });
   }, []);
 
+  // Get Events depending on toggle state
   React.useEffect(() => {
     if (isToggledToUser) {
       setLoading(true);
@@ -121,15 +105,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
         <Text style={[sharedStyles.h1, { marginBottom: 5, marginLeft: 15 }]}>
           Schedule
         </Text>
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            marginLeft: 15,
-            marginBottom: 20,
-            alignItems: "center",
-          }}
-        >
+        <View style={styles.scheduleContainer}>
           <Text style={{ fontSize: 16, marginRight: "auto" }}>
             View personal schedule
           </Text>
@@ -139,30 +115,12 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleSwitch}
             value={isToggledToUser}
-            style={{
-              transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
-              marginRight: 15,
-            }}
+            style={styles.scheduleToggle}
           />
         </View>
-        <Text
-          style={{
-            marginLeft: 15,
-            fontSize: 18,
-            marginBottom: 15,
-          }}
-        >
-          Today, {todayString}
-        </Text>
+        <Text style={styles.todaysDateTitle}>Today, {todayString}</Text>
         {loading ? (
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flex: 1,
-            }}
-          >
+          <View style={styles.activityIndicator}>
             <ActivityIndicator />
           </View>
         ) : (isToggledToUser ? events : events).length > 0 ? (
@@ -178,19 +136,8 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
             ))}
           </View>
         ) : (
-          <View
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              flex: 1,
-              marginTop: "auto",
-              marginBottom: "auto",
-            }}
-          >
-            <Text
-              style={{ color: "#3C366B", fontSize: 16, marginHorizontal: 30 }}
-            >
+          <View style={styles.emptyScheduleContainer}>
+            <Text style={styles.emptyScheduleMessage}>
               You've got nothing scheduled today! Press the button below to add
               more events.
             </Text>
@@ -201,131 +148,59 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
   );
 };
 
-export const fetchUserPod = async (): Promise<Pod | undefined> => {
-  try {
-    const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-    const res = await fetch(`${apiUrl}/pods/currUsersPod`, {
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": authToken!,
-      },
-    });
-    const json = await res.json();
-    const returnedPod = json.pod[0];
-
-    return returnedPod;
-  } catch (err) {
-    console.log("ERROR: ", err);
-    console.log("error loading pod for current user");
-    return undefined;
-  }
-};
-
-const fetchPodEvents = async (podId: number) => {
-  try {
-    const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-    const res = await fetch(`${apiUrl}/events/${podId}`, {
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": authToken!,
-      },
-    });
-
-    const json = await res.json();
-    const returnedEvents = json.events;
-
-    return returnedEvents;
-  } catch (err) {
-    console.log("ERROR: ", err);
-    console.log("error loading events for current pod");
-  }
-};
-
-const fetchUserEvents = async () => {
-  try {
-    const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-    const res = await fetch(`${apiUrl}/events`, {
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": authToken!,
-      },
-    });
-    const json = await res.json();
-    const returnedEvents = json.events;
-
-    return returnedEvents;
-  } catch (err) {
-    console.log("ERROR in fetchUserEvents: ", err);
-    console.log("error loading events for current user");
-  }
-};
-
-const fetchAvatarsAndEmails = async (ids: number[]) => {
-  try {
-    const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-    const res = await fetch(`${apiUrl}/users/avatars`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": authToken!,
-      },
-      body: JSON.stringify(ids),
-    });
-    const json = await res.json();
-    return json.map;
-  } catch (err) {
-    console.log("Error in fetchAvatorsAndEmails: ", err);
-    console.log("error loading events for current user");
-  }
-};
-
 const styles = StyleSheet.create({
-  container: {
+  scheduleHomePageContainer: {
     display: "flex",
     flex: 1,
+    justifyContent: "space-between",
     flexDirection: "column",
-    justifyContent: "space-around",
+  },
+  scheduleContainer: {
+    display: "flex",
+    flexDirection: "row",
+    marginLeft: 15,
+    marginBottom: 20,
     alignItems: "center",
-    paddingTop: 80,
   },
-  heading: {
-    fontSize: 30,
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  normal: {
-    fontSize: 20,
-    textAlign: "left",
-    marginBottom: 20,
-  },
-  sub: {
-    fontSize: 10,
-    textAlign: "left",
-    marginBottom: 10,
-  },
-  scheduleItem: {
+  emptyScheduleContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     flex: 1,
-    marginTop: 16,
-    paddingVertical: 8,
-    borderWidth: 4,
-    borderColor: "#20232a",
-    borderRadius: 6,
-    backgroundColor: "#61dafb",
+    marginTop: "auto",
+    marginBottom: "auto",
   },
-  card: {
-    borderRadius: 10,
-    backgroundColor: "#FFF",
-    margin: 10,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: "#CCC",
+  emptyScheduleMessage: {
+    color: "#3C366B",
+    fontSize: 16,
+    marginHorizontal: 30,
   },
-  title: {
-    fontSize: 20,
-    marginBottom: 5,
+  activityIndicator: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
   },
-  sectionOne: {
-    backgroundColor: "#434190",
+  todaysDateTitle: {
+    marginLeft: 15,
+    fontSize: 18,
+    marginBottom: 15,
+  },
+  scheduleToggle: {
+    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
+    marginRight: 15,
+  },
+  createEventButton: {
+    position: "absolute",
+    bottom: 15,
+    right: 15,
+    height: 50,
+    width: 50,
+    borderRadius: 100,
+    backgroundColor: "#5A67D8",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

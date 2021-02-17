@@ -10,8 +10,8 @@ import {
 } from "react-native";
 import sharedStyles from "../sharedStyles";
 import Event, { Priority } from "../types/Event";
-import apiUrl from "../config";
-
+import { fetchUserEmail } from "./scheduleService";
+ 
 interface EventProps {
   event: Event;
   navigation: {
@@ -27,42 +27,19 @@ const EventInSchedule: React.FC<EventProps> = ({
   showName,
   avatar,
 }) => {
-  const { name, notes, formattedAddress, id, ownerId, priority } = event;
+  const { name, notes, formattedAddress, ownerId, priority } = event;
 
   // This is a hack and should be rewritten!
   const [email, setEmail] = useState<string>();
 
   useEffect(() => {
-    getUserEmail().then((res) => setEmail(res));
+    fetchUserEmail(ownerId).then((res) => setEmail(res));
   });
 
   return (
     <Pressable onPress={() => navigation.navigate("ModifyEvent", { event })}>
-      <View
-        style={[
-          {
-            padding: 15,
-            backgroundColor: "#FFF",
-            margin: 15,
-            marginTop: 0,
-            borderRadius: 10,
-            display: "flex",
-            flexDirection: "row",
-          },
-          sharedStyles.shadow,
-        ]}
-      >
-        {avatar && (
-          <Image
-            source={{ uri: avatar }}
-            style={{
-              width: 50,
-              height: 50,
-              marginRight: 15,
-              borderRadius: 100,
-            }}
-          />
-        )}
+      <View style={[styles.eventContainer, sharedStyles.shadow]}>
+        {avatar && <Image source={{ uri: avatar }} style={styles.avatar} />}
         <View>
           {/* Event Name */}
           <Text style={{ fontSize: 18, fontWeight: "600", marginBottom: 5 }}>
@@ -102,55 +79,26 @@ const generateDateString = (event: Event): string => {
   })}`;
 };
 
-const getUserEmail = async () => {
-  try {
-    const authToken = await SecureStore.getItemAsync("wigo-auth-token");
-    const res = await fetch(`${apiUrl}/users/email`, {
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": authToken!,
-      },
-    });
-    const json = await res.json();
-    return json.email;
-  } catch (err) {
-    console.log("ERROR: ", err);
-    console.log("error loading events for current user");
-  }
-};
-
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-around",
-    alignItems: "center",
-    marginTop: 80,
-  },
-  heading: {
-    fontSize: 30,
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  normal: {
-    fontSize: 20,
-    textAlign: "left",
-    marginBottom: 20,
-  },
   sub: {
     fontSize: 14,
     textAlign: "left",
     marginBottom: 10,
   },
-  scheduleItem: {
-    flex: 1,
-    marginTop: 16,
-    paddingVertical: 8,
-    borderWidth: 4,
-    borderColor: "#20232a",
-    borderRadius: 6,
-    backgroundColor: "#61dafb",
+  eventContainer: {
+    padding: 15,
+    backgroundColor: "#FFF",
+    margin: 15,
+    marginTop: 0,
+    borderRadius: 10,
+    display: "flex",
+    flexDirection: "row",
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    marginRight: 15,
+    borderRadius: 100,
   },
 });
 
