@@ -9,12 +9,13 @@ import { useDispatch } from "react-redux";
 /** Import Custom Components */
 import LocationPicker from "./LocationPicker";
 import DatePicker from "./DatePicker";
+import GeneralEventInput from "./GeneralEventInput";
 
 /** Import Types  */
 import Event from "../types/Event";
 import { ProposedEventConflicts, SuggestedTime } from "./eventConflictService";
 
-import { EventConflictModal } from "./EventConflictModal";
+import EventConflictModal from "./EventConflictModal";
 import DeleteEventModal from "./DeleteEventModal";
 
 /** Import Helpers */
@@ -96,98 +97,140 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
           values,
         }) => (
           <View style={{ margin: 15 }}>
-            <Text style={sharedStyles.inputLabelText}>Event Name</Text>
-            <TextInput
-              onChangeText={handleChange("name")}
-              onBlur={handleBlur("name")}
-              value={values.name}
-              placeholder="event name"
-              style={[sharedStyles.input, { marginBottom: 0 }]}
+            {/* Event Name */}
+            <GeneralEventInput
+              inputTitle="Event Name"
+              GeneralInputComponent={
+                <TextInput
+                  onChangeText={handleChange("name")}
+                  onBlur={handleBlur("name")}
+                  value={values.name}
+                  placeholder="event name"
+                  style={[sharedStyles.input, { marginBottom: 0 }]}
+                />
+              }
+              error={touched.name && errors.name ? (errors.name as String) : ""}
             />
-            <Text style={sharedStyles.inputError}>
-              {touched.name && errors.name ? (errors.name as String) : ""}
-            </Text>
-            <Text style={sharedStyles.inputLabelText}>Start Location</Text>
-            <LocationPicker
-              latFieldName="startLat"
-              lngFieldName="startLng"
-              formattedAddressFieldName="startFormattedAddress"
-              formattedAddress={values.startFormattedAddress}
-              destinationPicker={false}
+
+            {/* Start Location */}
+            <GeneralEventInput
+              inputTitle="Start Location"
+              GeneralInputComponent={
+                <LocationPicker
+                  latFieldName="startLat"
+                  lngFieldName="startLng"
+                  formattedAddressFieldName="startFormattedAddress"
+                  formattedAddress={values.startFormattedAddress}
+                  destinationPicker={false}
+                />
+              }
+              error={
+                touched.startFormattedAddress && errors.startFormattedAddress
+                  ? (errors.startFormattedAddress as String)
+                  : ""
+              }
             />
-            <Text style={sharedStyles.inputError}>
-              {touched.startFormattedAddress && errors.startFormattedAddress
-                ? (errors.startFormattedAddress as String)
-                : ""}
-            </Text>
-            <Text style={sharedStyles.inputLabelText}>Destination</Text>
-            <LocationPicker
-              latFieldName="lat"
-              lngFieldName="lng"
-              formattedAddressFieldName="formattedAddress"
-              formattedAddress={values.formattedAddress}
-              destinationPicker={true}
-            />
-            <Text style={sharedStyles.inputError}>
-              {touched.formattedAddress && errors.formattedAddress
+
+            {/* Destination */}
+            <GeneralEventInput
+              inputTitle="Destination"
+              GeneralInputComponent={
+                <LocationPicker
+                  latFieldName="lat"
+                  lngFieldName="lng"
+                  formattedAddressFieldName="formattedAddress"
+                  formattedAddress={values.formattedAddress}
+                  destinationPicker={true}
+                />
+              }
+              error={
+                touched.formattedAddress && errors.formattedAddress
                 ? (errors.formattedAddress as String)
-                : ""}
-            </Text>
+                : ""
+              }
+            />
+
             {/* Start Time input */}
-            <Text style={sharedStyles.inputLabelText}>Start Time</Text>
-            <DatePicker name="start_time" date={start_time} />
-            {touched.start_time && errors.start_time && (
-              <Text>{errors.start_time}</Text>
-            )}
-            <Text style={sharedStyles.inputLabelText}>End Time</Text>
+            <GeneralEventInput
+              inputTitle="Start Time"
+              GeneralInputComponent={
+                <DatePicker name="start_time" date={start_time} />
+              }
+              error = {
+                touched.start_time && errors.start_time ? errors.start_time as String: ""
+              }
+            />
+
             {/* End Time input */}
-            <DatePicker name="end_time" date={end_time} />
-            {!!errors.end_time && (
-              <Text style={sharedStyles.inputError}>{errors.end_time}</Text>
-            )}
+            <GeneralEventInput
+              inputTitle="End Time"
+              GeneralInputComponent={
+                <DatePicker name="end_time" date={end_time} />
+              }
+              error = {
+                !!errors.end_time ? errors.end_time as String: ""
+              }
+            />
+
             {/* Pick repetition value*/}
-            <Text style={sharedStyles.inputLabelText}>Repeat</Text>
-            <DropDownPicker
-              items={repetitionValues}
-              defaultValue={values.repeat}
-              onChangeItem={(item) => setFieldValue("repeat", item.value)}
-              itemStyle={{ justifyContent: "flex-start" }}
-              containerStyle={{ borderRadius: 15 }}
-              style={[
-                sharedStyles.input,
-                {
-                  borderRadius: 15,
-                  borderWidth: 0,
-                  paddingLeft: 15,
-                },
-              ]}
-              labelStyle={sharedStyles.inputText}
+            <GeneralEventInput
+              inputTitle="Repeat"
+              GeneralInputComponent={
+                <DropDownPicker
+                  items={repetitionValues}
+                  defaultValue={values.repeat}
+                  onChangeItem={(item) => setFieldValue("repeat", item.value)}
+                  itemStyle={{ justifyContent: "flex-start" }}
+                  containerStyle={{ borderRadius: 15 }}
+                  style={[
+                    sharedStyles.input,
+                    {
+                      borderRadius: 15,
+                      borderWidth: 0,
+                      paddingLeft: 15,
+                    },
+                  ]}
+                  labelStyle={sharedStyles.inputText}
+                />
+              }
+              error=""
             />
             {/* Priority */}
-            <Text style={sharedStyles.inputLabelText}>Priority</Text>
-            <DropDownPicker
-              items={priorityValues}
-              defaultValue={values.priority}
-              onChangeItem={(item) => setFieldValue("priority", item.value)}
-              itemStyle={{ justifyContent: "flex-start" }}
-              containerStyle={{ borderRadius: 15 }}
-              style={[
-                sharedStyles.input,
-                {
-                  borderRadius: 15,
-                  borderWidth: 0,
-                  paddingLeft: 15,
-                },
-              ]}
-              labelStyle={sharedStyles.inputText}
+            <GeneralEventInput
+              inputTitle="Priority"
+              GeneralInputComponent={
+                <DropDownPicker
+                  items={priorityValues}
+                  defaultValue={values.priority}
+                  onChangeItem={(item) => setFieldValue("priority", item.value)}
+                  itemStyle={{ justifyContent: "flex-start" }}
+                  containerStyle={{ borderRadius: 15 }}
+                  style={[
+                    sharedStyles.input,
+                    {
+                      borderRadius: 15,
+                      borderWidth: 0,
+                      paddingLeft: 15,
+                    },
+                  ]}
+                  labelStyle={sharedStyles.inputText}
+                />
+              }
+              error=""
             />
-            <Text style={sharedStyles.inputLabelText}>Description</Text>
-            <TextInput
-              onChangeText={handleChange("notes")}
-              onBlur={handleBlur("notes")}
-              value={values.notes}
-              placeholder="Add description"
-              style={[sharedStyles.input, { marginBottom: 24 }]}
+            {/* Description */}
+            <GeneralEventInput
+              inputTitle="Description"
+              GeneralInputComponent={
+                <TextInput
+                  onChangeText={handleChange("notes")}
+                  onBlur={handleBlur("notes")}
+                  value={values.notes}
+                  placeholder="Add description"
+                  style={[sharedStyles.input]}
+                />
+              }
+              error=""
             />
             <Button
               onPress={handleSubmit}

@@ -248,3 +248,5 @@ const styles = StyleSheet.create({
     color: "#FF0000",
   },
 });
+
+export default EventConflictModal;
