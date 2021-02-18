@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { SecureStore } from "expo/build/removed.web";
+import { Storage } from "expo/build/removed.web";
 import React from "react";
 import { RootState } from "../configureStore";
 import Pod from "../../../api/models/Pod";

@@ -1,6 +1,6 @@
 import Event from "../types/Event";
 import apiUrl from "../config";
-import * as SecureStore from "expo-secure-store";
+import * as Storage from "expo-secure-store";
 
 export interface ConflictBuffer {
   otherEventId: number;
@@ -39,7 +39,7 @@ export const proposeEvent = async (
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": (await SecureStore.getItemAsync(
+        "x-auth-token": (await Storage.getItemAsync(
           "wigo-auth-token"
         )) as string,
       }),

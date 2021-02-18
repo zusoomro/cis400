@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import * as SecureStore from "expo-secure-store";
+import * as Storage from "expo-secure-store";
 import { TextInput } from "react-native";
 import React from "react";
 import apiUrl from "./config";
@@ -23,7 +23,7 @@ export const loadUser = createAsyncThunk("auth/loadUser", async (data, api) => {
     const res = await fetch(apiUrl + "/users/loadUser", {
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": await SecureStore.getItemAsync("wigo-auth-token"),
+        "x-auth-token": await Storage.getItemAsync("wigo-auth-token"),
       },
     });
 
@@ -47,7 +47,7 @@ export const logOut = createAsyncThunk(
   async (data, api): Promise<string> => {
     try {
       await deletePushNotificationToken();
-      await SecureStore.deleteItemAsync("wigo-auth-token");
+      await Storage.deleteItemAsync("wigo-auth-token");
     } catch (ex) {
       console.error(`error in logout`, ex);
     }
@@ -58,7 +58,7 @@ export const logOut = createAsyncThunk(
 export const loadToken = createAsyncThunk(
   "users/loadToken",
   async (data, api) => {
-    const token = await SecureStore.getItemAsync("wigo-auth-token");
+    const token = await Storage.getItemAsync("wigo-auth-token");
 
     if (token) {
       return token;
@@ -84,7 +84,7 @@ export const login = createAsyncThunk("auth/login", async (data, api) => {
       return api.rejectWithValue(json.message);
     }
 
-    await SecureStore.setItemAsync("wigo-auth-token", json.token);
+    await Storage.setItemAsync("wigo-auth-token", json.token);
 
     await generateAndUploadPushNotificationToken();
 
@@ -102,7 +102,7 @@ export const getApiKey = createAsyncThunk(
       const res = await fetch(apiUrl + "/events/apiKey", {
         headers: {
           "Content-Type": "application/json;charset=utf-8",
-          "x-auth-token": await SecureStore.getItemAsync("wigo-auth-token"),
+          "x-auth-token": await Storage.getItemAsync("wigo-auth-token"),
         },
       });
 
@@ -137,7 +137,7 @@ export const register = createAsyncThunk("auth/register", async (data, api) => {
       return api.rejectWithValue(json.message);
     }
 
-    await SecureStore.setItemAsync("wigo-auth-token", json.token);
+    await Storage.setItemAsync("wigo-auth-token", json.token);
 
     console.log("json", json);
 

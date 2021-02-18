@@ -45,7 +45,7 @@ const ContextApp = () => {
   useEffect(() => {
     dispatch(loadToken());
     // In case you need to delete the user token, uncomment this line
-    // SecureStore.deleteItemAsync("wigo-auth-token");
+    // Storage.deleteItemAsync("wigo-auth-token");
   }, []);
 
   useEffect(() => {

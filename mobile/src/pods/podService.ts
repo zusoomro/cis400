@@ -1,9 +1,9 @@
-import * as SecureStore from "expo-secure-store";
+import * as Storage from "../storage";
 import apiUrl from "../config";
 
 export const fetchUsersInvites = async () => {
   try {
-    const authToken = await SecureStore.getItemAsync("wigo-auth-token");
+    const authToken = await Storage.getItemAsync("wigo-auth-token");
     const res = await fetch(`${apiUrl}/invites`, {
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -46,7 +46,7 @@ export const handleAcceptInvite = async (podId: number, inviteId: number) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": (await SecureStore.getItemAsync("wigo-auth-token"))!,
+        "x-auth-token": (await Storage.getItemAsync("wigo-auth-token"))!,
       },
       body: JSON.stringify({ podId, inviteId }),
     });

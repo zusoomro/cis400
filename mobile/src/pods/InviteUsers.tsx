@@ -15,7 +15,7 @@ import { List, ListItem, SearchBar } from "react-native-elements";
 import { useSelector } from "react-redux";
 import apiUrl from "../config";
 import sharedStyles from "../sharedStyles";
-import * as SecureStore from "expo-secure-store";
+import * as Storage from "expo-secure-store";
 
 interface User {
   id: number;
@@ -104,7 +104,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
             method: "POST",
             headers: {
               "Content-Type": "application/json;charset=utf-8",
-              "x-auth-token": (await SecureStore.getItemAsync(
+              "x-auth-token": (await Storage.getItemAsync(
                 "wigo-auth-token"
               ))!,
             },

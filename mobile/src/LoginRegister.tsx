@@ -29,7 +29,9 @@ const LoginRegister: React.FC<AuthComponentProps> = ({
   const { loading, error } = useSelector((state: RootState) => state.auth);
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    <TouchableWithoutFeedback
+      onPress={() => console.log("would have dismissed keyboard")}
+    >
       <SafeAreaView
         style={{
           display: "flex",
@@ -94,7 +96,7 @@ const LoginRegister: React.FC<AuthComponentProps> = ({
                 <ActivityIndicator />
               ) : (
                 <Button
-                  testID="Submit"
+                  nativeId="Submit"
                   style={{ backgroundColor: "#667EEA" }}
                   onPress={handleSubmit}
                   title={isLogin ? "Login" : "Register"}

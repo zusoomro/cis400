@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import * as SecureStore from "expo-secure-store";
+import * as Storage from "../storage";
 import React, { useState } from "react";
 import {
   Image,
@@ -196,7 +196,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
 
 export const fetchUserPod = async (): Promise<Pod | undefined> => {
   try {
-    const authToken = await SecureStore.getItemAsync("wigo-auth-token");
+    const authToken = await Storage.getItemAsync("wigo-auth-token");
     const res = await fetch(`${apiUrl}/pods/currUsersPod`, {
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -216,7 +216,7 @@ export const fetchUserPod = async (): Promise<Pod | undefined> => {
 
 const fetchPodEvents = async (podId: number) => {
   try {
-    const authToken = await SecureStore.getItemAsync("wigo-auth-token");
+    const authToken = await Storage.getItemAsync("wigo-auth-token");
     const res = await fetch(`${apiUrl}/events/${podId}`, {
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -237,7 +237,7 @@ const fetchPodEvents = async (podId: number) => {
 
 const fetchUserEvents = async () => {
   try {
-    const authToken = await SecureStore.getItemAsync("wigo-auth-token");
+    const authToken = await Storage.getItemAsync("wigo-auth-token");
     const res = await fetch(`${apiUrl}/events`, {
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -258,7 +258,7 @@ const fetchUserEvents = async () => {
 
 const fetchAvatarsAndEmails = async (ids: number[]) => {
   try {
-    const authToken = await SecureStore.getItemAsync("wigo-auth-token");
+    const authToken = await Storage.getItemAsync("wigo-auth-token");
     const res = await fetch(`${apiUrl}/users/avatars`, {
       headers: {
         "Content-Type": "application/json;charset=utf-8",

@@ -1,4 +1,4 @@
-import * as SecureStore from "expo-secure-store";
+import * as Storage from "expo-secure-store";
 import React, { useEffect, useState } from "react";
 import {
   Image,
@@ -104,7 +104,7 @@ const generateDateString = (event: Event): string => {
 
 const getUserEmail = async (id) => {
   try {
-    const authToken = await SecureStore.getItemAsync("wigo-auth-token");
+    const authToken = await Storage.getItemAsync("wigo-auth-token");
     const res = await fetch(`${apiUrl}/users/email/${id}`, {
       headers: {
         "Content-Type": "application/json;charset=utf-8",

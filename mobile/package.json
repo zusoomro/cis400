@@ -5,6 +5,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "cypress:open": "cypress open",
     "eject": "expo eject",
     "formatAll": "prettier --write \"*/**/*.{ts,tsx}\"",
     "test": "node_modules/.bin/jest",
@@ -22,6 +23,7 @@
   "dependencies": {
     "@expo-google-fonts/bebas-neue": "^0.1.0",
     "@expo/vector-icons": "^10.2.1",
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/datetimepicker": "3.0.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.9.2",
@@ -38,6 +40,7 @@
     "@types/yup": "^0.29.9",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
+    "cypress": "^6.4.0",
     "eslint": "^7.11.0",
     "eslint-plugin-react": "^7.21.5",
     "expo": "^39.0.3",

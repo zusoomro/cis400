@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, SafeAreaView, StyleSheet } from "react-native";
 import Button from "../shared/Button";
 import { Formik } from "formik";
-import * as SecureStore from "expo-secure-store";
+import * as Storage from "expo-secure-store";
 import apiUrl from "../config";
 import { setPod as reduxSetPod } from "./podSlice";
 import sharedStyles from "../sharedStyles";
@@ -111,7 +111,7 @@ const createPodOnSubmit = async (values, invitees) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": (await SecureStore.getItemAsync("wigo-auth-token"))!,
+        "x-auth-token": (await Storage.getItemAsync("wigo-auth-token"))!,
       },
       body: JSON.stringify(data),
     });

@@ -4,7 +4,7 @@ import * as Permissions from "expo-permissions";
 import apiUrl from "../config";
 import * as RootNavigation from "../rootNavigation";
 import Event from "../types/Event";
-import * as SecureStore from "expo-secure-store";
+import * as Storage from "expo-secure-store";
 import { useRef } from "react";
 
 export const setupNotificationListeners = async (
@@ -68,7 +68,7 @@ export const generateAndUploadPushNotificationToken = async () => {
     method: "POST",
     headers: new Headers({
       "Content-Type": "application/json;charset=utf-8",
-      "x-auth-token": (await SecureStore.getItemAsync(
+      "x-auth-token": (await Storage.getItemAsync(
         "wigo-auth-token"
       )) as string,
     }),
@@ -92,7 +92,7 @@ export const sendPushNotification = async ({ recipientId, eventId }: Props) => {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": (await SecureStore.getItemAsync(
+        "x-auth-token": (await Storage.getItemAsync(
           "wigo-auth-token"
         )) as string,
       }),
@@ -118,7 +118,7 @@ export const deletePushNotificationToken = async () => {
       method: "DELETE",
       headers: new Headers({
         "Content-Type": "application/json;charset=utf-8",
-        "x-auth-token": (await SecureStore.getItemAsync(
+        "x-auth-token": (await Storage.getItemAsync(
           "wigo-auth-token"
         )) as string,
       }),
