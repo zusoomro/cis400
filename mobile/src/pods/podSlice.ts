@@ -13,21 +13,18 @@ if (__DEV__) {
 }
 
 const initialState: {
-  pods: Pod[];
+  pod: Pod | undefined;
   loading: boolean;
   error: string;
 } = {
-  pods: [],
+  pod: undefined,
   loading: true,
   error: "",
 };
 
 export const loadUserPods = createAsyncThunk(
   "pods/loadUserPods",
-  async (
-    data,
-    api
-  ): Promise<Pod[] | ReturnType<typeof api.rejectWithValue>> => {
+  async (data, api): Promise<Pod | ReturnType<typeof api.rejectWithValue>> => {
     try {
       const authToken = (api.getState() as RootState).auth.token;
       const res = await fetch(`${apiUrl}/pods/currUsersPod`, {
@@ -55,7 +52,7 @@ const podSlice = createSlice({
   initialState,
   reducers: {
     setPod(state, action) {
-      state.pods = [action.payload];
+      state.pod = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -66,12 +63,12 @@ const podSlice = createSlice({
     // Fulfilled
     builder.addCase(loadUserPods.fulfilled, (state, action) => {
       state.loading = false;
-      state.pods = action.payload;
+      state.pod = action.payload;
     });
 
     // Rejected
     builder.addCase(loadUserPods.rejected, (state, action) => {
-      state.pods = [];
+      state.pod = undefined;
       state.loading = false;
       state.error = action.payload as string;
     });

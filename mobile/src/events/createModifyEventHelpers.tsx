@@ -14,8 +14,7 @@ import {
   getSuggestedTimes,
 } from "./eventConflictService";
 
-// NOTE THIS NEEDS TO CHANGE AFTER MERGING OTHER PR
-import { fetchUserPod } from "./Schedule";
+import { fetchUserPod } from "./scheduleService";
 
 /**
  * File that contains types, constants, and helper

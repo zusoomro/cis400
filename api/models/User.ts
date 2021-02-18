@@ -7,6 +7,7 @@ export default class User extends Model {
   id!: number;
   avatar!: string;
   notificationToken!: string;
+  inPod!: boolean;
 
   static get tableName() {
     return "users";

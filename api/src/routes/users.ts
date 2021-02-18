@@ -62,6 +62,7 @@ usersRouter.post("/", async (req, res) => {
       email,
       password: hashedPassword,
       avatar,
+      inPod: false,
     });
 
     console.log(`Creating user with email '${email}'`);
@@ -159,11 +160,11 @@ usersRouter.post("/avatars", [auth], async (req: Request, res: Response) => {
   }
 });
 
-// Get email of current user
-usersRouter.get("/email", [auth], async (req: Request, res: Response) => {
+// Get email of user with id (used to find email of event owner)
+usersRouter.get("/email/:id", [auth], async (req: Request, res: Response) => {
   try {
-    const userId = (req as AuthRequest).user.id;
-    const user = await User.query().findOne("id", userId);
+    const id = req.params.id;
+    const user = await User.query().findOne("id", id);
     return res.json({ email: user.email });
   } catch (err) {
     console.error(err);
