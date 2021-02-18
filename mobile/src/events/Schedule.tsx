@@ -22,6 +22,12 @@ import { useDispatch, useSelector } from "react-redux";
 import analytics from "../analytics/analytics";
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
+  const [pod, setPod] = useState<Pod>();
+  React.useEffect(() => {
+    fetchUserPod().then((res) => {
+      setPod(res);
+    });
+  }, []);
   return (
     <SafeAreaView
       style={{
@@ -49,7 +55,7 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
           sharedStyles.shadow,
         ]}
         onPress={() => {
-          navigation.navigate("CreateEvent");
+          navigation.navigate("CreateEvent", { pod: pod });
           return;
         }}
       >
