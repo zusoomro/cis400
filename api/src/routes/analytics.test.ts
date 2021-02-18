@@ -70,11 +70,13 @@ describe("the analytics api", () => {
         .expect(400);
     });
 
-    it.only("returns the corrent information where there are multiple events and users", async () => {
-      await request(app)
-        .get("/analytics/breakdown/1?time=week")
+    it("returns the corrent information where there are multiple events and users", async () => {
+      const res = await request(app)
+        .get("/analytics/breakdown/1?time=month")
         .set("x-auth-token", token)
         .expect(200);
+
+      console.log("res", res.body);
     });
   });
 });

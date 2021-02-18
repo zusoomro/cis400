@@ -38,6 +38,10 @@ const retrievePodAndEvents = async (
     .findOne({ "pods.id": podId })
     .withGraphFetched("members");
 
+  if (!pod) {
+    throw new Error();
+  }
+
   const userIds = pod.members.map((user) => user.id);
 
   let events;
@@ -104,43 +108,47 @@ analyticsRouter.get(
   [auth],
   async (req: Request, res: Response) => {
     const time = req.query.time == "week" ? timeOption.Week : timeOption.Month;
-    const { pod, events } = await retrievePodAndEvents(req.params.podId, time);
 
-    if (!pod) {
+    try {
+      const { pod, events } = await retrievePodAndEvents(
+        req.params.podId,
+        time
+      );
+
+      const returnVal: podsReturnType = {
+        milesTraveled: 0,
+        numTrips: events.length,
+        travelTime: 0,
+      };
+
+      // Use mapquest api to get the miles traveled and travel time
+      for (let event of events) {
+        if (!event.startLat || !event.startLng || !event.lat || !event.lng) {
+          return res.status(500).json({
+            msg:
+              "An event does not have correct location information. This api endpoint expects" +
+              "start and end lats and lngs.",
+          });
+        }
+
+        const data = await getMapquestData(
+          event.startLat,
+          event.startLng,
+          event.lat,
+          event.lng
+        );
+
+        // Round trip, so multiply distance and time by two
+        returnVal.travelTime += data.route.time * 2;
+        returnVal.milesTraveled += data.route.distance * 2;
+      }
+
+      return res.json(returnVal);
+    } catch (err) {
       return res
         .status(400)
         .json({ msg: "We could not find the specified pod." });
     }
-
-    const returnVal: podsReturnType = {
-      milesTraveled: 0,
-      numTrips: events.length,
-      travelTime: 0,
-    };
-
-    // Use mapquest api to get the miles traveled and travel time
-    for (let event of events) {
-      if (!event.startLat || !event.startLng || !event.lat || !event.lng) {
-        return res.status(500).json({
-          msg:
-            "An event does not have correct location information. This api endpoint expects" +
-            "start and end lats and lngs.",
-        });
-      }
-
-      const data = await getMapquestData(
-        event.startLat,
-        event.startLng,
-        event.lat,
-        event.lng
-      );
-
-      // Round trip, so multiply distance and time by two
-      returnVal.travelTime += data.route.time * 2;
-      returnVal.milesTraveled += data.route.distance * 2;
-    }
-
-    return res.json(returnVal);
   }
 );
 
@@ -149,76 +157,82 @@ analyticsRouter.get(
   [auth],
   async (req: Request, res: Response) => {
     const time = req.query.time == "week" ? timeOption.Week : timeOption.Month;
-    const { pod, events } = await retrievePodAndEvents(req.params.podId, time);
 
-    if (!pod) {
+    try {
+      const { pod, events } = await retrievePodAndEvents(
+        req.params.podId,
+        time
+      );
+
+      let aggregatedData = {
+        milesTraveled: 0,
+        travelTime: 0,
+        gasUsage: 0,
+      };
+
+      const perUserData: breakdownReturnType = [];
+
+      // Use mapquest api to get the miles traveled and travel time
+      for (let event of events) {
+        // If the user does not already have an entry in the array
+        if (
+          perUserData.filter((entry) => entry.userId == event.ownerId).length ==
+          0
+        ) {
+          perUserData.push({
+            userId: event.ownerId,
+            email: pod.members.find((member) => member.id == event.ownerId)
+              .email,
+            numTrips: 0,
+            gasUsage: 0,
+            timeUsage: 0,
+            gasPercentage: 0,
+            timePercentage: 0,
+          });
+        }
+
+        if (!event.startLat || !event.startLng || !event.lat || !event.lng) {
+          return res.status(500).json({
+            msg: "Some events do not have correct location information",
+          });
+        }
+
+        const data = await getMapquestData(
+          event.startLat,
+          event.startLng,
+          event.lat,
+          event.lng
+        );
+
+        // Update the per user stats
+        const userEntry = perUserData.find(
+          (entry) => entry.userId == event.ownerId
+        )!;
+
+        // Multiply by two because of the round trip
+        userEntry.numTrips += 1;
+        userEntry.gasUsage += data.route.fuelUsed * 2;
+        userEntry.timeUsage += data.route.time * 2;
+
+        // Update the aggregate stats. Again, multiply by two because of the round
+        // trip
+        aggregatedData.travelTime += data.route.time * 2;
+        aggregatedData.milesTraveled += data.route.distance * 2;
+        aggregatedData.gasUsage += data.route.fuelUsed * 2;
+      }
+
+      // Update the percentages per user
+      for (const obj of perUserData) {
+        obj.gasPercentage = obj.gasUsage / aggregatedData.gasUsage;
+        obj.timePercentage = obj.timeUsage / aggregatedData.travelTime;
+      }
+
+      return res.json(perUserData);
+    } catch (err) {
       return res
         .status(400)
         .json({ msg: "We could not find the specified pod." });
     }
-
-    let aggregatedData = {
-      milesTraveled: 0,
-      travelTime: 0,
-      gasUsage: 0,
-    };
-
-    const perUserData: breakdownReturnType = [];
-
-    // Use mapquest api to get the miles traveled and travel time
-    for (let event of events) {
-      // If the user does not already have an entry in the array
-      if (
-        perUserData.filter((entry) => entry.userId == event.ownerId).length == 0
-      ) {
-        perUserData.push({
-          userId: event.ownerId,
-          email: pod.members.find((member) => member.id == event.ownerId).email,
-          numTrips: 0,
-          gasUsage: 0,
-          timeUsage: 0,
-          gasPercentage: 0,
-          timePercentage: 0,
-        });
-      }
-
-      if (!event.startLat || !event.startLng || !event.lat || !event.lng) {
-        return res.status(500).json({
-          msg: "Some events do not have correct location information",
-        });
-      }
-
-      const data = await getMapquestData(
-        event.startLat,
-        event.startLng,
-        event.lat,
-        event.lng
-      );
-
-      // Update the per user stats
-      const userEntry = perUserData.find(
-        (entry) => entry.userId == event.ownerId
-      )!;
-
-      // Multiply by two because of the round trip
-      userEntry.numTrips += 1;
-      userEntry.gasUsage += data.route.fuelUsed * 2;
-      userEntry.timeUsage += data.route.time * 2;
-
-      // Update the aggregate stats. Again, multiply by two because of the round
-      // trip
-      aggregatedData.travelTime += data.route.time * 2;
-      aggregatedData.milesTraveled += data.route.distance * 2;
-      aggregatedData.gasUsage += data.route.fuelUsed * 2;
-    }
-
-    // Update the percentages per user
-    for (const obj of perUserData) {
-      obj.gasPercentage = obj.gasUsage / aggregatedData.gasUsage;
-      obj.timePercentage = obj.timeUsage / aggregatedData.travelTime;
-    }
-
-    return res.json(perUserData);
   }
 );
 
