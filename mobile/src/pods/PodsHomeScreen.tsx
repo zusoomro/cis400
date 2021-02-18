@@ -34,7 +34,7 @@ type Props = {
 };
 
 const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
-  const firstPod = useSelector((state: RootState) => state.pods.pods[0]);
+  const pod = useSelector((state: RootState) => state.pods.pod);
   const { loading } = useSelector((state: RootState) => state.pods);
   const [invites, setInvites] = useState<Invite[]>();
   const [modalVisible, setModalVisible] = useState(false);
@@ -69,7 +69,7 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
   ) : (
     <SafeAreaView style={{ display: "flex", flex: 1 }}>
       <Text style={[sharedStyles.h1, { marginHorizontal: 15 }]}>Pods</Text>
-      {firstPod == null ? (
+      {pod == null ? (
         <View
           style={{
             display: "center",
@@ -118,9 +118,9 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
               sharedStyles.shadow,
             ]}
           >
-            <PodVisual pod={firstPod} />
+            <PodVisual pod={pod} />
             <Text style={{ fontSize: 24, fontWeight: "600", marginBottom: 5 }}>
-              {firstPod?.name ? firstPod.name : "Your Pod"}
+              {pod?.name ? pod.name : "Your Pod"}
             </Text>
             <TouchableOpacity onPress={() => navigation.navigate("PodMembers")}>
               <Text style={{ fontSize: 16, color: "#667EEA", marginBottom: 5 }}>

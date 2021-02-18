@@ -59,6 +59,9 @@ podsRouter.post(
 
     await pod.$relatedQuery("members").relate(user.id);
 
+    // Set curr user to have inPod field be true
+    await User.query().where("id", currUser).patch({ inPod: true });
+
     inviteeIds.forEach(async (id) => {
       const invite = await PodInvites.query().insert({
         inviteeUserId: id,
@@ -78,11 +81,12 @@ podsRouter.get(
   async (req: express.Request, res: express.Response) => {
     try {
       const userId = (req as AuthRequest).user.id;
-      const podsList = await Pod.query()
+      const pod = await Pod.query()
         .joinRelated("members")
         .where("members.id", userId)
         .withGraphFetched("members");
-      res.json({ pod: podsList });
+
+      res.json({ pod: pod[0] });
     } catch (err) {
       console.error(err);
       res.status(500).send("Server Error");

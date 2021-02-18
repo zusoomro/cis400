@@ -62,6 +62,7 @@ usersRouter.post("/", async (req, res) => {
       email,
       password: hashedPassword,
       avatar,
+      inPod: false,
     });
 
     console.log(`Creating user with email '${email}'`);

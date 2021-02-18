@@ -217,7 +217,7 @@ export const fetchUserPod = async (): Promise<Pod | undefined> => {
       },
     });
     const json = await res.json();
-    const returnedPod = json.pod[0];
+    const returnedPod = json.pod;
 
     return returnedPod;
   } catch (err) {
