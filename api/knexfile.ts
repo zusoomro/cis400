@@ -1,6 +1,6 @@
 // Update with your config settings.
 
-var pg = require("pg");
+const pg = require("pg");
 pg.defaults.ssl = { rejectUnauthorized: false };
 
 const config = {

@@ -28,24 +28,28 @@ export async function seed(knex: Knex): Promise<void> {
       email: "zusoomro@seas.upenn.edu",
       password: hashedPassword,
       avatar: getAvatar("zusoomro@seas.upenn.edu"),
+      inPod: true,
     },
     {
       id: 2,
       email: "caromurp@seas.upenn.edu",
       password: hashedPassword,
       avatar: getAvatar("caromurp@seas.upenn.edu"),
+      inPod: true,
     },
     {
       id: 3,
       email: "pchloe@seas.upenn.edu",
       password: hashedPassword,
       avatar: getAvatar("pchloe@seas.upenn.edu"),
+      inPod: true,
     },
     {
       id: 4,
       email: "name8@seas.upenn.edu",
       password: hashedPassword,
       avatar: getAvatar("name8@seas.upenn.edu"),
+      inPod: true,
     },
   ]);
 
