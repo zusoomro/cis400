@@ -85,11 +85,18 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
         let timeTotalReport = [];
         let timePercentageReport = [];
         json.forEach(async function (data) {
-          gasReport.push({ user: data.email, gallons: data.gasUsage });
-          gasPercentage.push({ x: data.email, y: data.gasPercentage });
+          let emailShort: String = data.email.substring(
+            0,
+            data.email.indexOf("@")
+          );
+          gasReport.push({ user: emailShort, gallons: data.gasUsage });
+          gasPercentage.push({ x: emailShort, y: data.gasPercentage });
 
-          timeTotalReport.push({ x: data.email, y: data.timeUsage });
-          timePercentageReport.push({ x: data.email, y: data.timePercentage });
+          timeTotalReport.push({
+            user: emailShort,
+            seconds: data.timeUsage,
+          });
+          timePercentageReport.push({ x: emailShort, y: data.timePercentage });
         });
         setgasTotalData(gasReport);
         setGasPercentageData(gasPercentage);
@@ -132,7 +139,7 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <ScrollView>
+      <ScrollView height="67%">
         <View>
           <Card>
             <Card.Title
@@ -170,8 +177,10 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
                 </VictoryChart>
               ) : (
                 <VictoryPie
-                  width={355}
+                  width={350}
                   height={375}
+                  padding={60}
+                  labelPosition="startAngle"
                   data={gasPercentageData}
                   colorScale={[
                     "#312E81",
@@ -209,6 +218,8 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
                 <VictoryPie
                   width={355}
                   height={375}
+                  padding={60}
+                  labelPosition="startAngle"
                   data={timePercentageData}
                   colorScale={[
                     "#312E81",
@@ -227,7 +238,7 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
                   <VictoryBar
                     data={timeTotalData}
                     x="user"
-                    y="gallons"
+                    y="seconds"
                     style={{ data: { fill: "#434190" } }}
                   />
                 </VictoryChart>
