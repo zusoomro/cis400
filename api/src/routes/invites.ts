@@ -4,6 +4,7 @@ import Pod from "../../models/Pod";
 import PodInvites from "../../models/PodInvites";
 import User from "../../models/User";
 import auth, { AuthRequest } from "../authMiddleware";
+import usersRouter from "./users";
 
 let invitesRouter = express.Router();
 
@@ -92,6 +93,9 @@ invitesRouter.post(
       }
 
       await pod.$relatedQuery("members").relate(userId);
+
+      // Setting the user field "inPod" to be true (since they are now in a pod)
+      await User.query().where("id", userId).patch({ inPod: true });
 
       const numDeleted = await PodInvites.query().deleteById(inviteId);
       const acceptedPod = await Pod.query().findById(podId);

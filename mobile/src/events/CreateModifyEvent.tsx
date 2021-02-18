@@ -22,7 +22,8 @@ import {
 import { EventConflictModal } from "./EventConflictModal";
 import { fetchUserPod } from "./scheduleService";
 import DeleteEventModal from "./DeleteEventModal";
-
+import podSlice from "../pods/podSlice";
+import Pod from "../types/Pod";
 import { useDispatch } from "react-redux";
 import { changeEvent as reduxChangeEvent } from "./eventsSlice";
 
@@ -42,6 +43,7 @@ export const priorityValues = [
 
 type Props = {
   event?: Event;
+  pod: Pod;
   navigation: {
     navigate: (screen: string) => void;
   };
@@ -50,6 +52,7 @@ type Props = {
 
 const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   const event: Event = route?.params?.event;
+  const pod: Pod = route?.params?.pod;
 
   // Start time = current time
   const [start_time, setStartTime] = useState(
@@ -93,7 +96,7 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
                 formattedAddress: "",
                 lat: "",
                 lng: "",
-                startFormattedAddress: "",
+                startFormattedAddress: pod.homeAddress,
                 startLat: "",
                 startLng: "",
                 start_time: start_time,

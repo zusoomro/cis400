@@ -12,8 +12,8 @@ interface Props {
 }
 
 const PodMembers: React.FC<Props> = ({ navigation }) => {
-  const firstPod = useSelector((state: RootState) => state.pods.pods[0]);
-  console.log("members", firstPod.members);
+  const pod = useSelector((state: RootState) => state.pods.pod);
+  console.log("members", pod.members);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -29,14 +29,14 @@ const PodMembers: React.FC<Props> = ({ navigation }) => {
             onPress={() => {
               navigation.navigate("InviteUsers", {
                 caller: "PodMembers",
-                pod: firstPod,
+                pod: pod,
               });
               return;
             }}
           />
         </View>
         <View style={styles.section2}>
-          {firstPod.members.map((member) => (
+          {pod.members.map((member) => (
             <View key={member.id} style={styles.userCard}>
               <Text style={styles.email}>{member.email}</Text>
             </View>

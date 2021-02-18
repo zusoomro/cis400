@@ -25,13 +25,19 @@ import {
 } from "./scheduleService";
 
 const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
+  const [pod, setPod] = useState<Pod>();
+  React.useEffect(() => {
+    fetchUserPod().then((res) => {
+      setPod(res);
+    });
+  }, []);
   return (
     <SafeAreaView style={styles.scheduleHomePageContainer}>
       <Schedule navigation={navigation} />
       <TouchableOpacity
         style={[styles.createEventButton, sharedStyles.shadow]}
         onPress={() => {
-          navigation.navigate("CreateEvent");
+          navigation.navigate("CreateEvent", { pod: pod });
           return;
         }}
       >

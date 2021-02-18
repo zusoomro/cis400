@@ -81,7 +81,7 @@ const InviteUsers: React.FC<{}> = ({ navigation, route }) => {
           }
         }}
         title="Select"
-        disabled={invitees.includes(user.id)}
+        disabled={invitees.includes(user.id) || user.inPod}
       />
     </View>
   );
