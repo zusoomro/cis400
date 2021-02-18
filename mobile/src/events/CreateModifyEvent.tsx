@@ -20,7 +20,7 @@ import {
 } from "./eventConflictService";
 
 import { EventConflictModal } from "./EventConflictModal";
-import { fetchUserPod } from "./Schedule";
+import { fetchUserPod } from "./scheduleService";
 import DeleteEventModal from "./DeleteEventModal";
 import podSlice from "../pods/podSlice";
 import Pod from "../types/Pod";
