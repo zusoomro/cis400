@@ -11,7 +11,7 @@ import Button from "../shared/Button";
 import { Formik } from "formik";
 import * as SecureStore from "expo-secure-store";
 import apiUrl from "../config";
-import { setPod as reduxSetPod } from "./podSlice";
+import { setPod as reduxSetPod, loadUserPods } from "./podSlice";
 import sharedStyles from "../sharedStyles";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -69,6 +69,7 @@ const CreatePod: React.FC<Props> = ({ navigation, route }) => {
                 dispatch(reduxSetPod(pod));
                 setPod(pod);
               }
+              dispatch(loadUserPods());
               navigation.navigate("PodsHomeScreen", { pod: pod });
             }
           }}
