@@ -12,6 +12,7 @@ import {
   VictoryTheme,
   VictoryPie,
   VictoryLabel,
+  VictoryAxis,
 } from "victory-native";
 
 interface Props {
@@ -37,7 +38,7 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
   const [selectedTimeIndex, setSelectedTimeIndex] = useState(0);
   const [timePercentageData, setTimePercentageData] = useState([]);
 
-  const podId = useSelector((state: RootState) => state.pods.pods[0].id);
+  const podId = useSelector((state: RootState) => state.pods.pod.id);
 
   React.useEffect(() => {
     async function fetchAnalytics() {
@@ -174,6 +175,15 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
                     y="gallons"
                     style={{ data: { fill: "#434190" } }}
                   />
+                  <VictoryAxis
+                    dependentAxis
+                    label="Gas (gallons)"
+                    style={{
+                      axisLabel: {
+                        padding: 40,
+                      },
+                    }}
+                  />
                 </VictoryChart>
               ) : (
                 <VictoryPie
@@ -240,6 +250,15 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
                     x="user"
                     y="seconds"
                     style={{ data: { fill: "#434190" } }}
+                  />
+                  <VictoryAxis
+                    dependentAxis
+                    label="Time (seconds)"
+                    style={{
+                      axisLabel: {
+                        padding: 40,
+                      },
+                    }}
                   />
                 </VictoryChart>
               )}
