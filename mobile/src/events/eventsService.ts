@@ -1,22 +1,7 @@
 import Event from "../types/Event";
 import apiUrl from "../config";
 import * as SecureStore from "expo-secure-store";
-import * as Yup from "yup";
 import analytics from "../analytics/analytics";
-
-export const validateEventSchema = () => {
-  return Yup.object().shape({
-    name: Yup.string().required("Name required"),
-    formattedAddress: Yup.string().required("Destination location Required"),
-    startFormattedAddress: Yup.string().required("Start location Required"),
-    // Make sure end_time > start_time
-    start_time: Yup.date().required(),
-    end_time: Yup.date().min(
-      Yup.ref("start_time"),
-      "End time needs to be after start time"
-    ),
-  });
-};
 
 export interface ConflictBuffer {
   otherEventId: number;

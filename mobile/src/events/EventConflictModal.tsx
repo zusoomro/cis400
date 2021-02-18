@@ -12,7 +12,6 @@ import {
 import moment from "moment";
 
 import Event, { Priority } from "../types/Event";
-import { createEventOnSubmit, modifyEventOnSubmit } from "./eventsService";
 import {
   ProposedEventConflicts,
   ConflictBuffer,
@@ -20,14 +19,14 @@ import {
 } from "./eventConflictService";
 import { sendPushNotification } from "../pushNotifications/pushNotifications";
 
+import { scheduleEvent } from "./createModifyEventHelpers";
 import { useDispatch } from "react-redux";
-import { changeEvent as reduxChangeEvent } from "./eventsSlice";
 
 type Props = {
   conflictModalVisible: boolean;
   setConflictModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   values: Event;
-  existingEvent: Event;
+  existingEvent: Event | null;
   navigation: {
     navigate: (screen: string) => void;
   };
@@ -54,24 +53,6 @@ export const EventConflictModal: React.FC<Props> = ({
     return moment(time1.start).valueOf() - moment(time2.start).valueOf();
   });
 
-  // Creates/modifies event after a time is picked the event is scheduled anyway
-  const scheduleEvent = () => {
-    if (existingEvent) {
-      modifyEventOnSubmit({
-        ...values,
-        id: existingEvent.id,
-      } as Event).then((res) => {
-        dispatch(reduxChangeEvent(res.eventForReturn[0]));
-      });
-    } else {
-      createEventOnSubmit(values as Event).then((res) => {
-        dispatch(reduxChangeEvent(res));
-      });
-    }
-    navigation.navigate("ScheduleHomePage");
-  };
-
-  const dispatch = useDispatch();
   // Create conflicting events array from conflicts.conflictingEvents
   const conflictingEvents: ConflictingEvent[] = conflicts.conflictingEvents.map(
     (event: Event) => {
@@ -84,6 +65,12 @@ export const EventConflictModal: React.FC<Props> = ({
       };
     }
   );
+
+  const dispatch = useDispatch();
+  // Allows you to pass dispatch into helper functions
+  const helperDispatch = (thingToDispatch: any) => {
+    dispatch(thingToDispatch);
+  };
 
   return (
     <Modal
@@ -119,7 +106,12 @@ export const EventConflictModal: React.FC<Props> = ({
                   onPress={() => {
                     values.start_time = moment(item.start).toDate();
                     values.end_time = moment(item.end).toDate();
-                    scheduleEvent();
+                    scheduleEvent(
+                      values,
+                      existingEvent,
+                      navigation,
+                      helperDispatch
+                    );
                   }}
                   style={styles.modalButton}
                 >
@@ -154,7 +146,7 @@ export const EventConflictModal: React.FC<Props> = ({
                 });
               });
 
-              scheduleEvent();
+              scheduleEvent(values, existingEvent, navigation, helperDispatch);
             }}
             style={styles.modalButton}
           >
@@ -256,3 +248,5 @@ const styles = StyleSheet.create({
     color: "#FF0000",
   },
 });
+
+export default EventConflictModal;

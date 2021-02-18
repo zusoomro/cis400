@@ -1,58 +1,45 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { ScrollView, TextInput, View, Text, SafeAreaView } from "react-native";
+import { ScrollView, TextInput, View, SafeAreaView } from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
+import sharedStyles from "../sharedStyles";
+import { useDispatch } from "react-redux";
+
+/** Import Custom Components */
 import LocationPicker from "./LocationPicker";
 import DatePicker from "./DatePicker";
-import sharedStyles from "../sharedStyles";
+import GeneralEventInput from "./GeneralEventInput";
+
+/** Import Types  */
 import Event from "../types/Event";
-import {
-  createEventOnSubmit,
-  modifyEventOnSubmit,
-  validateEventSchema,
-} from "./eventsService";
-import {
-  proposeEvent,
-  ProposedEventConflicts,
-  SuggestedTime,
-  getSuggestedTimes,
-} from "./eventConflictService";
+import { ProposedEventConflicts, SuggestedTime } from "./eventConflictService";
 
-import { EventConflictModal } from "./EventConflictModal";
-import { fetchUserPod } from "./scheduleService";
+import EventConflictModal from "./EventConflictModal";
 import DeleteEventModal from "./DeleteEventModal";
-import podSlice from "../pods/podSlice";
-import Pod from "../types/Pod";
-import { useDispatch } from "react-redux";
-import { changeEvent as reduxChangeEvent } from "./eventsSlice";
 
-export const repetitionValues = [
-  { label: "Does not repeat", value: "no_repeat" },
-  { label: "Every day", value: "daily" },
-  { label: "Every week", value: "weekly" },
-  { label: "Every month", value: "monthly" },
-  { label: "Every year", value: "yearly" },
-];
+/** Import Helpers */
+import {
+  validateEventSchema,
+  eventFormikValues,
+  CreateModifyEventProps,
+  repetitionValues,
+  priorityValues,
+  emptyFormEventValues,
+  populatedFormEventValues,
+  submitCreateModifyEventForm,
+} from "./createModifyEventHelpers";
 
-export const priorityValues = [
-  { label: "Flexible", value: 0 },
-  { label: "SemiFlexible", value: 1 },
-  { label: "Inflexible", value: 2 },
-];
-
-type Props = {
-  event?: Event;
-  pod: Pod;
-  navigation: {
-    navigate: (screen: string) => void;
-  };
-  route: Object;
-};
-
-const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
-  const event: Event = route?.params?.event;
-  const pod: Pod = route?.params?.pod;
+/***
+ * CreateModifyEvent contains the component for the CreateModifyEvent page.
+ *
+ * It also shows the the EventConflictsModal and DeleteEventModal in case of needed use.
+ */
+const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
+  navigation,
+  route,
+}) => {
+  const event: Event | null = route?.params?.event;
 
   // Start time = current time
   const [start_time, setStartTime] = useState(
@@ -63,7 +50,6 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
     event ? event.end_time : new Date(Date.now() + 60 * 60 * 1000)
   );
 
-  const dispatch = useDispatch();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [conflictModalVisible, setConflictModalVisible] = useState(false);
   const [valuesOnSubmit, setValuesOnSubmit] = useState<Event>();
@@ -72,77 +58,32 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
   >();
   const [suggestedTimes, setSuggestedTimes] = useState<SuggestedTime[]>();
 
+  const dispatch = useDispatch();
+  // Allows you to pass dispatch into helper functions
+  const helperDispatch = (thingToDispatch: any) => {
+    dispatch(thingToDispatch);
+  };
+
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
       <Formik
         initialValues={
           event
-            ? {
-                name: event.name,
-                formattedAddress: event.formattedAddress,
-                lat: event.lat,
-                lng: event.lng,
-                startFormattedAddress: event.startFormattedAddress,
-                startLat: event.startLat,
-                startLng: event.startLng,
-                start_time: event.start_time,
-                end_time: event.end_time,
-                repeat: repetitionValues[0].value,
-                notes: event.notes,
-                priority: event.priority,
-              }
-            : {
-                name: "",
-                formattedAddress: "",
-                lat: "",
-                lng: "",
-                startFormattedAddress: pod.homeAddress,
-                startLat: "",
-                startLng: "",
-                start_time: start_time,
-                end_time: end_time,
-                repeat: repetitionValues[0].value,
-                notes: "",
-                priority: 0,
-              }
+            ? populatedFormEventValues(event)
+            : emptyFormEventValues(start_time, end_time)
         }
         validationSchema={validateEventSchema}
-        onSubmit={async (values) => {
-          const pod = await fetchUserPod();
-
-          const conflicts: ProposedEventConflicts | false =
-            pod != undefined &&
-            (await proposeEvent(values as Event, pod.id, event))!;
-
-          // If event is in a pod && If event has conflicts, show the conflict modal
-          if (conflicts && conflicts.isConflicting) {
-            const suggestedTimes: SuggestedTime[] | false =
-              pod != undefined &&
-              (await getSuggestedTimes(values as Event, pod.id, event))!;
-            setValuesOnSubmit(values as Event);
-            setConflictValues(conflicts);
-            if (suggestedTimes) {
-              setSuggestedTimes(suggestedTimes);
-            }
-            setConflictModalVisible(true);
-            return;
-          }
-          if (event) {
-            const res = await modifyEventOnSubmit({
-              ...values,
-              id: event.id,
-            } as Event);
-            if (res) {
-              const eventToAdd: Event = res.eventForReturn[0];
-              dispatch(reduxChangeEvent(eventToAdd));
-            }
-          } else {
-            const res = await createEventOnSubmit(values as Event);
-            if (res) {
-              dispatch(reduxChangeEvent(res));
-            }
-          }
-          navigation.navigate("ScheduleHomePage");
+        onSubmit={async (values: eventFormikValues) => {
+          submitCreateModifyEventForm(
+            values,
+            event,
+            navigation,
+            setValuesOnSubmit,
+            setConflictValues,
+            setSuggestedTimes,
+            setConflictModalVisible,
+            helperDispatch
+          );
         }}
       >
         {({
@@ -156,98 +97,140 @@ const CreateModifyEvent: React.FC<Props> = ({ navigation, route }) => {
           values,
         }) => (
           <View style={{ margin: 15 }}>
-            <Text style={sharedStyles.inputLabelText}>Event Name</Text>
-            <TextInput
-              onChangeText={handleChange("name")}
-              onBlur={handleBlur("name")}
-              value={values.name}
-              placeholder="event name"
-              style={[sharedStyles.input, { marginBottom: 0 }]}
+            {/* Event Name */}
+            <GeneralEventInput
+              inputTitle="Event Name"
+              GeneralInputComponent={
+                <TextInput
+                  onChangeText={handleChange("name")}
+                  onBlur={handleBlur("name")}
+                  value={values.name}
+                  placeholder="event name"
+                  style={[sharedStyles.input, { marginBottom: 0 }]}
+                />
+              }
+              error={touched.name && errors.name ? (errors.name as String) : ""}
             />
-            <Text style={sharedStyles.inputError}>
-              {touched.name && errors.name ? (errors.name as String) : ""}
-            </Text>
-            <Text style={sharedStyles.inputLabelText}>Start Location</Text>
-            <LocationPicker
-              latFieldName="startLat"
-              lngFieldName="startLng"
-              formattedAddressFieldName="startFormattedAddress"
-              formattedAddress={values.startFormattedAddress}
-              destinationPicker={false}
+
+            {/* Start Location */}
+            <GeneralEventInput
+              inputTitle="Start Location"
+              GeneralInputComponent={
+                <LocationPicker
+                  latFieldName="startLat"
+                  lngFieldName="startLng"
+                  formattedAddressFieldName="startFormattedAddress"
+                  formattedAddress={values.startFormattedAddress}
+                  destinationPicker={false}
+                />
+              }
+              error={
+                touched.startFormattedAddress && errors.startFormattedAddress
+                  ? (errors.startFormattedAddress as String)
+                  : ""
+              }
             />
-            <Text style={sharedStyles.inputError}>
-              {touched.startFormattedAddress && errors.startFormattedAddress
-                ? (errors.startFormattedAddress as String)
-                : ""}
-            </Text>
-            <Text style={sharedStyles.inputLabelText}>Destination</Text>
-            <LocationPicker
-              latFieldName="lat"
-              lngFieldName="lng"
-              formattedAddressFieldName="formattedAddress"
-              formattedAddress={values.formattedAddress}
-              destinationPicker={true}
-            />
-            <Text style={sharedStyles.inputError}>
-              {touched.formattedAddress && errors.formattedAddress
+
+            {/* Destination */}
+            <GeneralEventInput
+              inputTitle="Destination"
+              GeneralInputComponent={
+                <LocationPicker
+                  latFieldName="lat"
+                  lngFieldName="lng"
+                  formattedAddressFieldName="formattedAddress"
+                  formattedAddress={values.formattedAddress}
+                  destinationPicker={true}
+                />
+              }
+              error={
+                touched.formattedAddress && errors.formattedAddress
                 ? (errors.formattedAddress as String)
-                : ""}
-            </Text>
+                : ""
+              }
+            />
+
             {/* Start Time input */}
-            <Text style={sharedStyles.inputLabelText}>Start Time</Text>
-            <DatePicker name="start_time" date={start_time} />
-            {touched.start_time && errors.start_time && (
-              <Text>{errors.start_time}</Text>
-            )}
-            <Text style={sharedStyles.inputLabelText}>End Time</Text>
+            <GeneralEventInput
+              inputTitle="Start Time"
+              GeneralInputComponent={
+                <DatePicker name="start_time" date={start_time} />
+              }
+              error = {
+                touched.start_time && errors.start_time ? errors.start_time as String: ""
+              }
+            />
+
             {/* End Time input */}
-            <DatePicker name="end_time" date={end_time} />
-            {!!errors.end_time && (
-              <Text style={sharedStyles.inputError}>{errors.end_time}</Text>
-            )}
+            <GeneralEventInput
+              inputTitle="End Time"
+              GeneralInputComponent={
+                <DatePicker name="end_time" date={end_time} />
+              }
+              error = {
+                !!errors.end_time ? errors.end_time as String: ""
+              }
+            />
+
             {/* Pick repetition value*/}
-            <Text style={sharedStyles.inputLabelText}>Repeat</Text>
-            <DropDownPicker
-              items={repetitionValues}
-              defaultValue={values.repeat}
-              onChangeItem={(item) => setFieldValue("repeat", item.value)}
-              itemStyle={{ justifyContent: "flex-start" }}
-              containerStyle={{ borderRadius: 15 }}
-              style={[
-                sharedStyles.input,
-                {
-                  borderRadius: 15,
-                  borderWidth: 0,
-                  paddingLeft: 15,
-                },
-              ]}
-              labelStyle={sharedStyles.inputText}
+            <GeneralEventInput
+              inputTitle="Repeat"
+              GeneralInputComponent={
+                <DropDownPicker
+                  items={repetitionValues}
+                  defaultValue={values.repeat}
+                  onChangeItem={(item) => setFieldValue("repeat", item.value)}
+                  itemStyle={{ justifyContent: "flex-start" }}
+                  containerStyle={{ borderRadius: 15 }}
+                  style={[
+                    sharedStyles.input,
+                    {
+                      borderRadius: 15,
+                      borderWidth: 0,
+                      paddingLeft: 15,
+                    },
+                  ]}
+                  labelStyle={sharedStyles.inputText}
+                />
+              }
+              error=""
             />
             {/* Priority */}
-            <Text style={sharedStyles.inputLabelText}>Priority</Text>
-            <DropDownPicker
-              items={priorityValues}
-              defaultValue={values.priority}
-              onChangeItem={(item) => setFieldValue("priority", item.value)}
-              itemStyle={{ justifyContent: "flex-start" }}
-              containerStyle={{ borderRadius: 15 }}
-              style={[
-                sharedStyles.input,
-                {
-                  borderRadius: 15,
-                  borderWidth: 0,
-                  paddingLeft: 15,
-                },
-              ]}
-              labelStyle={sharedStyles.inputText}
+            <GeneralEventInput
+              inputTitle="Priority"
+              GeneralInputComponent={
+                <DropDownPicker
+                  items={priorityValues}
+                  defaultValue={values.priority}
+                  onChangeItem={(item) => setFieldValue("priority", item.value)}
+                  itemStyle={{ justifyContent: "flex-start" }}
+                  containerStyle={{ borderRadius: 15 }}
+                  style={[
+                    sharedStyles.input,
+                    {
+                      borderRadius: 15,
+                      borderWidth: 0,
+                      paddingLeft: 15,
+                    },
+                  ]}
+                  labelStyle={sharedStyles.inputText}
+                />
+              }
+              error=""
             />
-            <Text style={sharedStyles.inputLabelText}>Description</Text>
-            <TextInput
-              onChangeText={handleChange("notes")}
-              onBlur={handleBlur("notes")}
-              value={values.notes}
-              placeholder="Add description"
-              style={[sharedStyles.input, { marginBottom: 24 }]}
+            {/* Description */}
+            <GeneralEventInput
+              inputTitle="Description"
+              GeneralInputComponent={
+                <TextInput
+                  onChangeText={handleChange("notes")}
+                  onBlur={handleBlur("notes")}
+                  value={values.notes}
+                  placeholder="Add description"
+                  style={[sharedStyles.input]}
+                />
+              }
+              error=""
             />
             <Button
               onPress={handleSubmit}

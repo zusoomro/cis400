@@ -26,7 +26,7 @@ export type SuggestedTime = {
 export const proposeEvent = async (
   values: Event,
   podId: number,
-  existingEvent: Event
+  existingEvent: Event | null
 ): Promise<ProposedEventConflicts | null> => {
   const data = {
     podId: podId,
@@ -73,7 +73,7 @@ export const proposeEvent = async (
 export const getSuggestedTimes = async (
   proposedEvent: Event,
   podId: number,
-  existingEvent: Event
+  existingEvent: Event | null
 ): Promise<SuggestedTime[]> => {
   const data = {
     podId: podId,
