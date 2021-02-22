@@ -4,7 +4,7 @@
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node-dev src/index.ts",
+    "start": "knex migrate:latest && yarn && source .env && ts-node-dev src/index.ts",
     "test": "jest",
     "formatAll": "prettier --write \"*/**/*.{ts,tsx}\"",
     "resetDb": "rm -rf mydb.sqlite && knex migrate:latest && knex seed:run"
