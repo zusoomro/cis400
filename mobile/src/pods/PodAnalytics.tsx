@@ -95,7 +95,7 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
 
           timeTotalReport.push({
             user: emailShort,
-            seconds: data.timeUsage,
+            seconds: data.timeUsage / 3600,
           });
           timePercentageReport.push({ x: emailShort, y: data.timePercentage });
         });
@@ -182,8 +182,10 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
                       axisLabel: {
                         padding: 40,
                       },
+                      grid: { strokeWidth: 0.0 },
                     }}
                   />
+                  <VictoryAxis style={{ grid: { strokeWidth: 0.0 } }} />
                 </VictoryChart>
               ) : (
                 <VictoryPie
@@ -253,13 +255,15 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
                   />
                   <VictoryAxis
                     dependentAxis
-                    label="Time (seconds)"
+                    label="Time (hours)"
                     style={{
                       axisLabel: {
                         padding: 40,
                       },
+                      grid: { strokeWidth: 0.0 },
                     }}
                   />
+                  <VictoryAxis style={{ grid: { strokeWidth: 0.0 } }} />
                 </VictoryChart>
               )}
             </View>
