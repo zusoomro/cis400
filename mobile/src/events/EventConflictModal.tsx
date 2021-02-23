@@ -21,6 +21,7 @@ import { sendPushNotification } from "../pushNotifications/pushNotifications";
 
 import { scheduleEvent } from "./createModifyEventHelpers";
 import { useDispatch } from "react-redux";
+import analytics from "../analytics/analytics";
 
 type Props = {
   conflictModalVisible: boolean;
@@ -106,6 +107,7 @@ export const EventConflictModal: React.FC<Props> = ({
                   onPress={() => {
                     values.start_time = moment(item.start).toDate();
                     values.end_time = moment(item.end).toDate();
+                    analytics.track("Conflict: user scheduled at suggested time");
                     scheduleEvent(
                       values,
                       existingEvent,
@@ -129,6 +131,7 @@ export const EventConflictModal: React.FC<Props> = ({
           <TouchableOpacity
             onPress={() => {
               setConflictModalVisible(false);
+              analytics.track("Conflict: user edits thier event");
             }}
             style={styles.modalButton}
           >
@@ -145,7 +148,7 @@ export const EventConflictModal: React.FC<Props> = ({
                   eventId: conflict.event.id,
                 });
               });
-
+              analytics.track("Conflict: user schedules event anyway");
               scheduleEvent(values, existingEvent, navigation, helperDispatch);
             }}
             style={styles.modalButton}
