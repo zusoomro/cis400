@@ -15,6 +15,7 @@ import {
 } from "./eventConflictService";
 
 import { fetchUserPod } from "./scheduleService";
+import Pod from "../types/Pod";
 
 /**
  * File that contains types, constants, and helper
@@ -24,6 +25,7 @@ import { fetchUserPod } from "./scheduleService";
 /************ TYPES ******************/
 export type CreateModifyEventProps = {
   event?: Event;
+  pod: Pod;
   navigation: {
     navigate: (screen: string) => void;
   };
@@ -65,14 +67,15 @@ export const priorityValues = [
 // Create initial values for an empty create event form
 export const emptyFormEventValues = (
   start_time: Date,
-  end_time: Date
+  end_time: Date,
+  homeAddress: string,
 ): eventFormikValues => {
   return {
     name: "",
     formattedAddress: "",
     lat: "",
     lng: "",
-    startFormattedAddress: "",
+    startFormattedAddress: homeAddress,
     startLat: "",
     startLng: "",
     start_time: start_time,

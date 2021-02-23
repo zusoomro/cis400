@@ -14,9 +14,10 @@ import GeneralEventInput from "./GeneralEventInput";
 /** Import Types  */
 import Event from "../types/Event";
 import { ProposedEventConflicts, SuggestedTime } from "./eventConflictService";
-
 import EventConflictModal from "./EventConflictModal";
 import DeleteEventModal from "./DeleteEventModal";
+import podSlice from "../pods/podSlice";
+import Pod from "../types/Pod";
 
 /** Import Helpers */
 import {
@@ -40,6 +41,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
   route,
 }) => {
   const event: Event | null = route?.params?.event;
+  const pod: Pod = route?.params?.pod;
 
   // Start time = current time
   const [start_time, setStartTime] = useState(
@@ -70,7 +72,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
         initialValues={
           event
             ? populatedFormEventValues(event)
-            : emptyFormEventValues(start_time, end_time)
+            : emptyFormEventValues(start_time, end_time, pod.homeAddress)
         }
         validationSchema={validateEventSchema}
         onSubmit={async (values: eventFormikValues) => {
