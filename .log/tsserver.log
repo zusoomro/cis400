@@ -1,130 +1,53 @@
-Info 0    [22:14:52.603] Starting TS Server
-Info 1    [22:14:52.604] Version: 3.9.7
-Info 2    [22:14:52.604] Arguments: /Users/zusoomro/.nvm/versions/node/v10.21.0/bin/node /Users/zusoomro/code/wigo/mobile/node_modules/.bin/tsserver --logFile /Users/zusoomro/code/wigo/.log/tsserver.log --logVerbosity info --cancellationPipeName /private/var/folders/rl/fdyxxd493bs_y1_mszc1z_2c0000gn/T/196dc69b08280344aaf58a9d7b78cc00/tscancellation*
-Info 3    [22:14:52.604] Platform: darwin NodeVersion: 10 CaseSensitive: false
-Info 4    [22:14:52.616] Search path: /Users/zusoomro/code/wigo/mobile/src/events
-Info 5    [22:14:52.618] For info: /Users/zusoomro/code/wigo/mobile/src/events/ModifyEvent.tsx :: Config file name: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 6    [22:14:52.618] Opened configuration file /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 7    [22:14:52.640] Config: /Users/zusoomro/code/wigo/mobile/tsconfig.json : {
+Info 0    [13:7:42.303] Starting TS Server
+Info 1    [13:7:42.306] Version: 4.0.3
+Info 2    [13:7:42.306] Arguments: /Users/zusoomro/.nvm/versions/node/v10.21.0/bin/node /Users/zusoomro/code/wigo/api/node_modules/.bin/tsserver --logFile /Users/zusoomro/code/wigo/.log/tsserver.log --logVerbosity info --cancellationPipeName /private/var/folders/rl/fdyxxd493bs_y1_mszc1z_2c0000gn/T/fd2395e518c1abbc2e9683b3dcc5ea2b/tscancellation*
+Info 3    [13:7:42.306] Platform: darwin NodeVersion: 10 CaseSensitive: false
+Info 4    [13:7:42.306] ServerMode: undefined syntaxOnly: false hasUnknownServerMode: undefined
+Info 5    [13:7:42.763] Search path: /Users/zusoomro/code/wigo/api/src/routes
+Info 6    [13:7:42.766] For info: /Users/zusoomro/code/wigo/api/src/routes/users.ts :: Config file name: /Users/zusoomro/code/wigo/api/tsconfig.json
+Info 7    [13:7:42.766] Opened configuration file /Users/zusoomro/code/wigo/api/tsconfig.json
+Info 8    [13:7:42.785] Config: /Users/zusoomro/code/wigo/api/tsconfig.json : {
  "rootNames": [
-  "/Users/zusoomro/code/wigo/mobile/App.tsx",
-  "/Users/zusoomro/code/wigo/mobile/setupJest.ts",
-  "/Users/zusoomro/code/wigo/mobile/src/Login.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/Navigator.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/Register.test.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/Register.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/Settings.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/authSlice.ts",
-  "/Users/zusoomro/code/wigo/mobile/src/configureStore.ts",
-  "/Users/zusoomro/code/wigo/mobile/src/setAuthToken.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/sharedStyles.ts",
-  "/Users/zusoomro/code/wigo/mobile/src/events/CreateEvent.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/events/DatePicker.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/events/ModifyEvent.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/pods/CreatePod.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/pods/PodsHomeScreen.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/pods/PodsNavigator.tsx",
-  "/Users/zusoomro/code/wigo/mobile/src/users/UsersNavigator.tsx"
+  "/Users/zusoomro/code/wigo/api/src/authMiddleware.ts",
+  "/Users/zusoomro/code/wigo/api/src/index.ts",
+  "/Users/zusoomro/code/wigo/api/src/initializeDb.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/analytics.test.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/analytics.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/eventConflictFunctions.test.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/eventConflictFunctions.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/events.test.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/events.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/invites.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/notifications.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/pods.test.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/pods.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/suggestedTimesFunctions.test.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/suggestedTimesFunctions.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/users.test.ts",
+  "/Users/zusoomro/code/wigo/api/src/routes/users.ts"
  ],
  "options": {
-  "allowSyntheticDefaultImports": true,
-  "jsx": 3,
-  "lib": [
-   "lib.dom.d.ts",
-   "lib.esnext.d.ts"
-  ],
-  "moduleResolution": 2,
-  "noEmit": true,
-  "skipLibCheck": true,
-  "resolveJsonModule": true,
+  "sourceMap": true,
+  "target": 2,
+  "module": 1,
+  "outDir": "/Users/zusoomro/code/wigo/api/dist",
+  "baseUrl": "/Users/zusoomro/code/wigo/api/src",
   "strict": true,
-  "configFilePath": "/Users/zusoomro/code/wigo/mobile/tsconfig.json"
+  "esModuleInterop": true,
+  "configFilePath": "/Users/zusoomro/code/wigo/api/tsconfig.json"
  }
 }
-Info 8    [22:14:52.686] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 9    [22:14:54.987] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 1 structureChanged: true Elapsed: 2301ms
-Info 10   [22:14:54.987] Project '/Users/zusoomro/code/wigo/mobile/tsconfig.json' (Configured)
-Info 11   [22:14:54.988] 	Files (372)
+Info 9    [13:7:42.885] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/api/tsconfig.json
+Info 10   [13:7:44.754] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/api/tsconfig.json Version: 1 structureChanged: true Elapsed: 1869ms
+Info 11   [13:7:44.754] Project '/Users/zusoomro/code/wigo/api/tsconfig.json' (Configured)
+Info 12   [13:7:44.754] 	Files (171)
 
-Info 12   [22:14:54.988] -----------------------------------------------
-Info 13   [22:15:14.268] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 14   [22:15:14.308] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 2 structureChanged: false Elapsed: 40ms
-Info 15   [22:15:14.308] Different program with same set of files:: oldProgram.structureIsReused:: 2
-Info 16   [22:15:37.567] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 17   [22:15:37.596] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 3 structureChanged: false Elapsed: 29ms
-Info 18   [22:15:37.596] Different program with same set of files:: oldProgram.structureIsReused:: 2
-Info 19   [22:15:38.677] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 20   [22:15:38.702] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 4 structureChanged: false Elapsed: 25ms
-Info 21   [22:15:38.702] Different program with same set of files:: oldProgram.structureIsReused:: 2
-Info 22   [22:15:38.956] Format host information updated
-Info 23   [22:15:39.199] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 24   [22:15:39.224] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 5 structureChanged: false Elapsed: 25ms
-Info 25   [22:15:39.224] Different program with same set of files:: oldProgram.structureIsReused:: 2
-Info 26   [22:15:55.114] Format host information updated
-Info 27   [22:16:24.502] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 28   [22:16:24.527] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 6 structureChanged: false Elapsed: 25ms
-Info 29   [22:16:24.527] Different program with same set of files:: oldProgram.structureIsReused:: 2
-Info 30   [22:16:27.479] Format host information updated
-Info 31   [22:16:28.444] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 32   [22:16:28.472] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 7 structureChanged: false Elapsed: 28ms
-Info 33   [22:16:28.472] Different program with same set of files:: oldProgram.structureIsReused:: 2
-Info 34   [22:16:33.88] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 35   [22:16:33.113] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 8 structureChanged: false Elapsed: 25ms
-Info 36   [22:16:33.113] Different program with same set of files:: oldProgram.structureIsReused:: 2
-Info 37   [22:16:34.984] Format host information updated
-Info 38   [22:16:35.831] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 39   [22:16:35.849] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 9 structureChanged: false Elapsed: 18ms
-Info 40   [22:16:35.849] Different program with same set of files:: oldProgram.structureIsReused:: 2
-Info 41   [22:20:28.782] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 42   [22:20:28.812] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 10 structureChanged: false Elapsed: 29ms
-Info 43   [22:20:28.812] Different program with same set of files:: oldProgram.structureIsReused:: 2
-Info 44   [22:20:29.661] Format host information updated
-Info 45   [22:20:29.860] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 46   [22:20:29.882] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 11 structureChanged: false Elapsed: 22ms
-Info 47   [22:20:29.882] Different program with same set of files:: oldProgram.structureIsReused:: 2
-Info 48   [22:21:52.494] DirectoryWatcher:: Triggered with /users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx :: WatchInfo: /users/zusoomro/code/wigo/mobile 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Wild card directory
-Info 49   [22:21:52.495] Elapsed:: 1ms DirectoryWatcher:: Triggered with /users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx :: WatchInfo: /users/zusoomro/code/wigo/mobile 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Wild card directory
-Info 50   [22:21:52.495] DirectoryWatcher:: Triggered with /users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx :: WatchInfo: /users/zusoomro/code/wigo/mobile 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Wild card directory
-Info 51   [22:21:52.495] Elapsed:: 0ms DirectoryWatcher:: Triggered with /users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx :: WatchInfo: /users/zusoomro/code/wigo/mobile 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Wild card directory
-Info 52   [22:21:52.496] DirectoryWatcher:: Triggered with /users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx :: WatchInfo: /users/zusoomro/code/wigo/mobile 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Wild card directory
-Info 53   [22:21:52.496] Elapsed:: 0ms DirectoryWatcher:: Triggered with /users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx :: WatchInfo: /users/zusoomro/code/wigo/mobile 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Wild card directory
-Info 54   [22:21:52.496] DirectoryWatcher:: Triggered with /users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx :: WatchInfo: /users/zusoomro/code/wigo/mobile 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Wild card directory
-Info 55   [22:21:52.496] Elapsed:: 0ms DirectoryWatcher:: Triggered with /users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx :: WatchInfo: /users/zusoomro/code/wigo/mobile 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Wild card directory
-Info 56   [22:21:52.496] DirectoryWatcher:: Triggered with /Users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx :: WatchInfo: /Users/zusoomro/code/wigo/mobile/src 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Failed Lookup Locations
-Info 57   [22:21:52.526] Elapsed:: 30ms DirectoryWatcher:: Triggered with /Users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx :: WatchInfo: /Users/zusoomro/code/wigo/mobile/src 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Failed Lookup Locations
-Info 58   [22:21:52.526] DirectoryWatcher:: Triggered with /Users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx :: WatchInfo: /Users/zusoomro/code/wigo/mobile/src 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Failed Lookup Locations
-Info 59   [22:21:52.548] Elapsed:: 22ms DirectoryWatcher:: Triggered with /Users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx :: WatchInfo: /Users/zusoomro/code/wigo/mobile/src 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Failed Lookup Locations
-Info 60   [22:21:52.548] DirectoryWatcher:: Triggered with /Users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx :: WatchInfo: /Users/zusoomro/code/wigo/mobile/src 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Failed Lookup Locations
-Info 61   [22:21:52.569] Elapsed:: 21ms DirectoryWatcher:: Triggered with /Users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx :: WatchInfo: /Users/zusoomro/code/wigo/mobile/src 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Failed Lookup Locations
-Info 62   [22:21:52.569] DirectoryWatcher:: Triggered with /Users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx :: WatchInfo: /Users/zusoomro/code/wigo/mobile/src 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Failed Lookup Locations
-Info 63   [22:21:52.589] Elapsed:: 20ms DirectoryWatcher:: Triggered with /Users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx :: WatchInfo: /Users/zusoomro/code/wigo/mobile/src 1 undefined Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json WatchType: Failed Lookup Locations
-Info 64   [22:21:52.748] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 65   [22:21:52.751] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 12 structureChanged: false Elapsed: 3ms
-Info 66   [22:21:53.255] FileWatcher:: Triggered with /Users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx 1:: WatchInfo: /Users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx 500 undefined Project:  WatchType: Closed Script info
-Info 67   [22:21:53.255] Elapsed:: 0ms FileWatcher:: Triggered with /Users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx 1:: WatchInfo: /Users/zusoomro/code/wigo/mobile/src/events/Schedule.tsx 500 undefined Project:  WatchType: Closed Script info
-Info 68   [22:21:53.255] FileWatcher:: Triggered with /Users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx 1:: WatchInfo: /Users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx 500 undefined Project:  WatchType: Closed Script info
-Info 69   [22:21:53.255] Elapsed:: 0ms FileWatcher:: Triggered with /Users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx 1:: WatchInfo: /Users/zusoomro/code/wigo/mobile/src/events/ScheduleNavigator.tsx 500 undefined Project:  WatchType: Closed Script info
-Info 70   [22:21:53.509] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 71   [22:21:53.586] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 13 structureChanged: true Elapsed: 77ms
-Info 72   [22:21:53.586] Different program with same set of files:: oldProgram.structureIsReused:: 1
-Info 73   [22:21:55.758] Before ensureProjectForOpenFiles:
-Info 74   [22:21:55.758] After ensureProjectForOpenFiles:
-Info 75   [22:21:55.759] got projects updated in background, updating diagnostics for /Users/zusoomro/code/wigo/mobile/src/events/ModifyEvent.tsx
-Info 76   [22:22:5.179] Starting updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 77   [22:22:5.201] Finishing updateGraphWorker: Project: /Users/zusoomro/code/wigo/mobile/tsconfig.json Version: 14 structureChanged: false Elapsed: 22ms
-Info 78   [22:22:5.201] Different program with same set of files:: oldProgram.structureIsReused:: 2
-Info 79   [22:22:52.42] Search path: /Users/zusoomro/code/wigo/mobile/src/events
-Info 80   [22:22:52.42] For info: /Users/zusoomro/code/wigo/mobile/src/events/hello.js :: Config file name: /Users/zusoomro/code/wigo/mobile/tsconfig.json
-Info 81   [22:22:52.46] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
-Info 82   [22:22:53.406] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 1 structureChanged: true Elapsed: 1360ms
-Info 83   [22:22:53.406] Project '/dev/null/inferredProject1*' (Inferred)
-Info 84   [22:22:53.406] 	Files (176)
+Info 13   [13:7:44.754] -----------------------------------------------
+Info 14   [13:7:44.796] Starting updateGraphWorker: Project: /dev/null/autoImportProviderProject1*
+Info 15   [13:7:45.635] Finishing updateGraphWorker: Project: /dev/null/autoImportProviderProject1* Version: 1 structureChanged: true Elapsed: 839ms
+Info 16   [13:7:45.635] Project '/dev/null/autoImportProviderProject1*' (AutoImportProvider)
+Info 17   [13:7:45.635] 	Files (177)
 
-Info 85   [22:22:53.406] -----------------------------------------------
-Info 86   [22:22:53.829] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
-Info 87   [22:22:53.831] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 2 structureChanged: false Elapsed: 2ms
-Info 88   [22:22:56.75] Before ensureProjectForOpenFiles:
-Info 89   [22:22:56.76] After ensureProjectForOpenFiles:
-Info 90   [22:22:56.76] got projects updated in background, updating diagnostics for /Users/zusoomro/code/wigo/mobile/src/events/ModifyEvent.tsx,/Users/zusoomro/code/wigo/mobile/src/events/hello.js
+Info 18   [13:7:45.635] -----------------------------------------------
+Info 19   [13:28:42.65] FileWatcher:: Triggered with /users/zusoomro/code/wigo/api/package.json 1:: WatchInfo: /users/zusoomro/code/wigo/api/package.json 250 undefined Project:  WatchType: package.json file for import suggestions
+Info 20   [13:28:42.66] Elapsed:: 0ms FileWatcher:: Triggered with /users/zusoomro/code/wigo/api/package.json 1:: WatchInfo: /users/zusoomro/code/wigo/api/package.json 250 undefined Project:  WatchType: package.json file for import suggestions
