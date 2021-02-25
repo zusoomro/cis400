@@ -83,10 +83,6 @@ const Settings: React.FC = () => {
         style={{ marginTop: 0, backgroundColor: "#7F9CF5" }}
         onPress={() => dispatch(logOut())}
       />
-      <Button
-        title="Send push notification"
-        onPress={() => sendPushNotification({ recipientId: 1, eventId: 1 })}
-      />
       <Text
         style={{
           position: "absolute",
