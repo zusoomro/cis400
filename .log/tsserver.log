@@ -51,3 +51,5 @@ Info 17   [13:7:45.635] 	Files (177)
 Info 18   [13:7:45.635] -----------------------------------------------
 Info 19   [13:28:42.65] FileWatcher:: Triggered with /users/zusoomro/code/wigo/api/package.json 1:: WatchInfo: /users/zusoomro/code/wigo/api/package.json 250 undefined Project:  WatchType: package.json file for import suggestions
 Info 20   [13:28:42.66] Elapsed:: 0ms FileWatcher:: Triggered with /users/zusoomro/code/wigo/api/package.json 1:: WatchInfo: /users/zusoomro/code/wigo/api/package.json 250 undefined Project:  WatchType: package.json file for import suggestions
+Info 21   [13:31:54.757] FileWatcher:: Triggered with /users/zusoomro/code/wigo/api/package.json 1:: WatchInfo: /users/zusoomro/code/wigo/api/package.json 250 undefined Project:  WatchType: package.json file for import suggestions
+Info 22   [13:31:54.757] Elapsed:: 0ms FileWatcher:: Triggered with /users/zusoomro/code/wigo/api/package.json 1:: WatchInfo: /users/zusoomro/code/wigo/api/package.json 250 undefined Project:  WatchType: package.json file for import suggestions
