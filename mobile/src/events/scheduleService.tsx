@@ -67,7 +67,7 @@ export const fetchUserEvents = async () => {
       },
     });
     const json = await res.json();
-    const returnedEvents = json.events;
+    const returnedEvents = json.events.sort(compareEvents);
 
     return returnedEvents;
   } catch (err) {
