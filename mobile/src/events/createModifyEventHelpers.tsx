@@ -68,7 +68,7 @@ export const priorityValues = [
 export const emptyFormEventValues = (
   start_time: Date,
   end_time: Date,
-  homeAddress: string,
+  homeAddress: string
 ): eventFormikValues => {
   return {
     name: "",

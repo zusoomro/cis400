@@ -11,7 +11,7 @@ import {
 import sharedStyles from "../sharedStyles";
 import Event, { Priority } from "../types/Event";
 import { fetchUserEmail } from "./scheduleService";
- 
+
 interface EventProps {
   event: Event;
   navigation: {

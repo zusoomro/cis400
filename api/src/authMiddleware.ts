@@ -24,9 +24,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
     (req as AuthRequest).user = decoded.user;
     next();
   } catch (err) {
-    return res.status(401).json(
-        { message: "Invalid token." }
-    );
+    return res.status(401).json({ message: "Invalid token." });
   }
 };
 
