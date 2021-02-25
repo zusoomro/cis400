@@ -27,6 +27,15 @@ export const fetchUserPod = async (): Promise<Pod | undefined> => {
   }
 };
 
+function compareEvents(eventA, eventB) {
+  if (eventA.start_time < eventB.start_time) {
+    return -1;
+  } else if (eventA.start_time > eventB.start_time) {
+    return 1;
+  }
+  return 0;
+}
+
 export const fetchPodEvents = async (podId: number) => {
   try {
     const authToken = await SecureStore.getItemAsync("wigo-auth-token");
@@ -38,7 +47,8 @@ export const fetchPodEvents = async (podId: number) => {
     });
 
     const json = await res.json();
-    const returnedEvents = json.events;
+    const sortedEvents = json.events.sort(compareEvents);
+    const returnedEvents = sortedEvents;
 
     return returnedEvents;
   } catch (err) {
