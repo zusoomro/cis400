@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { ScrollView, TextInput, View, SafeAreaView } from "react-native";
+import { ScrollView, TextInput, Text, View, SafeAreaView } from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import sharedStyles from "../sharedStyles";
@@ -24,7 +24,6 @@ import {
   validateEventSchema,
   eventFormikValues,
   CreateModifyEventProps,
-  repetitionValues,
   priorityValues,
   emptyFormEventValues,
   populatedFormEventValues,
@@ -174,52 +173,25 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
               }
             />
 
-            {/* Pick repetition value*/}
-            <GeneralEventInput
-              inputTitle="Repeat"
-              GeneralInputComponent={
-                <DropDownPicker
-                  items={repetitionValues}
-                  defaultValue={values.repeat}
-                  onChangeItem={(item) => setFieldValue("repeat", item.value)}
-                  itemStyle={{ justifyContent: "flex-start" }}
-                  containerStyle={{ borderRadius: 15 }}
-                  style={[
-                    sharedStyles.input,
-                    {
-                      borderRadius: 15,
-                      borderWidth: 0,
-                      paddingLeft: 15,
-                    },
-                  ]}
-                  labelStyle={sharedStyles.inputText}
-                />
-              }
-              error=""
+           <Text style={sharedStyles.inputLabelText}>Priority</Text>
+
+            <DropDownPicker
+              items={priorityValues}
+              defaultValue={values.priority}
+              onChangeItem={(item) => setFieldValue("priority", item.value)}
+              itemStyle={{ justifyContent: "flex-start" }}
+              containerStyle={{ borderRadius: 15, marginBottom: 15 }}
+              style={[
+                sharedStyles.input,
+                {
+                  borderRadius: 15,
+                  borderWidth: 0,
+                  paddingLeft: 15,
+                },
+              ]}
+              labelStyle={sharedStyles.inputText}
             />
-            {/* Priority */}
-            <GeneralEventInput
-              inputTitle="Priority"
-              GeneralInputComponent={
-                <DropDownPicker
-                  items={priorityValues}
-                  defaultValue={values.priority}
-                  onChangeItem={(item) => setFieldValue("priority", item.value)}
-                  itemStyle={{ justifyContent: "flex-start" }}
-                  containerStyle={{ borderRadius: 15 }}
-                  style={[
-                    sharedStyles.input,
-                    {
-                      borderRadius: 15,
-                      borderWidth: 0,
-                      paddingLeft: 15,
-                    },
-                  ]}
-                  labelStyle={sharedStyles.inputText}
-                />
-              }
-              error=""
-            />
+
             {/* Description */}
             <GeneralEventInput
               inputTitle="Description"
