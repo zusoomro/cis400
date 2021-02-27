@@ -128,13 +128,6 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate("ResolveConflicts")}
-            >
-              <Text style={{ fontSize: 16, color: "#667EEA", marginBottom: 5 }}>
-                Resolve Conflicts
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
               onPress={() => navigation.navigate("PodAnalytics")}
             >
               <Text style={{ fontSize: 16, color: "#667EEA", marginBottom: 5 }}>
