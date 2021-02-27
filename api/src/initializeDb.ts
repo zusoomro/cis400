@@ -6,7 +6,7 @@ const initializeDb = () => {
   let environment;
   if (process.env.ENVIRONMENT) {
     environment = knexConfig.production;
-    } else if (process.env.NODE_ENV == "test") {
+  } else if (process.env.NODE_ENV == "test") {
     environment = knexConfig.testing;
   } else {
     environment = knexConfig.development;
