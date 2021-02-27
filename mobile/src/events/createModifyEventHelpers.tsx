@@ -68,7 +68,9 @@ export const priorityValues = [
 export const emptyFormEventValues = (
   start_time: Date,
   end_time: Date,
-  homeAddress: string
+  homeAddress: string,
+  homeLat: number,
+  homeLng: number
 ): eventFormikValues => {
   return {
     name: "",
@@ -76,8 +78,8 @@ export const emptyFormEventValues = (
     lat: "",
     lng: "",
     startFormattedAddress: homeAddress,
-    startLat: "",
-    startLng: "",
+    startLat: homeLat,
+    startLng: homeLng,
     start_time: start_time,
     end_time: end_time,
     repeat: repetitionValues[0].value,

@@ -70,7 +70,12 @@ const EventInSchedule: React.FC<EventProps> = ({
 };
 
 const generateDateString = (event: Event): string => {
-  return `${new Date(event.start_time).toLocaleTimeString([], {
+  var days = ['Sun','Mon','Tues','Wed','Thurs','Friday','Sat'];
+  const date: Date = new Date(event.start_time);
+  const dd = String(date.getDate()).padStart(2, "0");
+  const mm = String(date.getMonth() + 1);
+  const todayString = days[date.getDay()] + " " + mm + "/" + dd;
+  return `${todayString} ${new Date(event.start_time).toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",
   })} - ${new Date(event.end_time).toLocaleTimeString([], {
