@@ -71,7 +71,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
         initialValues={
           event
             ? populatedFormEventValues(event)
-            : emptyFormEventValues(start_time, end_time, pod.homeAddress)
+            : emptyFormEventValues(start_time, end_time, pod.homeAddress, pod.lat, pod.lng)
         }
         validationSchema={validateEventSchema}
         onSubmit={async (values: eventFormikValues) => {
