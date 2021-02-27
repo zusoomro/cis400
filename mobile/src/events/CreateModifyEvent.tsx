@@ -179,7 +179,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
               error={!!errors.end_time ? (errors.end_time as String) : ""}
             />
 
-            <Text style={sharedStyles.inputLabelText}>Priority</Text>
+           <Text style={sharedStyles.inputLabelText}>Priority</Text>
 
             <DropDownPicker
               items={priorityValues}
