@@ -69,7 +69,7 @@ export const emptyFormEventValues = (
   start_time: Date,
   end_time: Date,
   homeAddress: string,
-  homeLat: number, 
+  homeLat: number,
   homeLng: number
 ): eventFormikValues => {
   return {

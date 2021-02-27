@@ -107,7 +107,9 @@ export const EventConflictModal: React.FC<Props> = ({
                   onPress={() => {
                     values.start_time = moment(item.start).toDate();
                     values.end_time = moment(item.end).toDate();
-                    analytics.track("Conflict: user scheduled at suggested time");
+                    analytics.track(
+                      "Conflict: user scheduled at suggested time"
+                    );
                     scheduleEvent(
                       values,
                       existingEvent,
