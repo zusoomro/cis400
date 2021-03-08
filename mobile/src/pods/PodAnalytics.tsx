@@ -5,6 +5,7 @@ import apiUrl from "../config";
 import * as SecureStore from "expo-secure-store";
 import { RootState } from "../configureStore";
 import { useSelector } from "react-redux";
+import { Picker } from "@react-native-picker/picker";
 
 import {
   VictoryBar,
@@ -22,6 +23,7 @@ interface Props {
 }
 
 const PodAnalytics: React.FC<Props> = ({ navigation }) => {
+  const [timeFrame, setTimeFrame] = useState("month");
   // State for Pod totals
   const [milesTraveled, setMilesTraveled] = useState(0);
   const [numTrips, setNumTrips] = useState(0);
@@ -40,35 +42,66 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
 
   const podId = useSelector((state: RootState) => state.pods.pod.id);
 
-  React.useEffect(() => {
-    async function fetchAnalytics() {
-      try {
-        const res = await fetch(
-          `${apiUrl}/analytics/pods/${podId}?time=month`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-              "x-auth-token": (await SecureStore.getItemAsync(
-                "wigo-auth-token"
-              ))!,
-            },
-          }
-        );
+  async function fetchAnalytics() {
+    console.log("fetch analytics called");
+    try {
+      const res = await fetch(
+        `${apiUrl}/analytics/pods/${podId}?time=${timeFrame}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+            "x-auth-token": (await SecureStore.getItemAsync(
+              "wigo-auth-token"
+            ))!,
+          },
+        }
+      );
 
-        const json = await res.json();
-        setNumTrips(json.numTrips);
-        setMilesTraveled(json.milesTraveled.toFixed(2));
-        setTravelTime(json.travelTime);
-      } catch (err) {
-        console.log("error loading analytics", err);
-      }
+      const json = await res.json();
+      console.log("json", json);
+      console.log("timeFrame", timeFrame);
+      setNumTrips(json.numTrips);
+      setMilesTraveled(json.milesTraveled.toFixed(2));
+      setTravelTime(json.travelTime);
+    } catch (err) {
+      console.log("error loading analytics", err);
     }
+  }
+
+  React.useEffect(() => {
+    fetchAnalytics();
+  }, [timeFrame]);
+
+  React.useEffect(() => {
+    // async function fetchAnalytics() {
+    //   try {
+    //     const res = await fetch(
+    //       `${apiUrl}/analytics/pods/${podId}?time=${timeFrame}`,
+    //       {
+    //         method: "GET",
+    //         headers: {
+    //           "Content-Type": "application/json;charset=utf-8",
+    //           "x-auth-token": (await SecureStore.getItemAsync(
+    //             "wigo-auth-token"
+    //           ))!,
+    //         },
+    //       }
+    //     );
+
+    //     const json = await res.json();
+    //     setNumTrips(json.numTrips);
+    //     setMilesTraveled(json.milesTraveled.toFixed(2));
+    //     setTravelTime(json.travelTime);
+    //   } catch (err) {
+    //     console.log("error loading analytics", err);
+    //   }
+    // }
 
     async function fetchAnalyticsBreakdown() {
       try {
         const res = await fetch(
-          `${apiUrl}/analytics/breakdown/${podId}?time=month`,
+          `${apiUrl}/analytics/breakdown/${podId}?time=${timeFrame}`,
           {
             method: "GET",
             headers: {
@@ -119,6 +152,18 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
         <Text style={styles.section1Text}>
           View analytics of your pod to determine usage per member.
         </Text>
+        <View>
+          <Picker
+            selectedValue={timeFrame}
+            onValueChange={(itemValue, itemIndex) => {
+              setTimeFrame(itemValue);
+              //fetchAnalytics();
+            }}
+          >
+            <Picker.Item label="Month" value="month" />
+            <Picker.Item label="Week" value="week" />
+          </Picker>
+        </View>
       </View>
       <View style={styles.section1}>
         <View style={styles.statsSection}>
