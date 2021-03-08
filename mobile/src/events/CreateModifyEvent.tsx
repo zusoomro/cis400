@@ -71,7 +71,13 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
         initialValues={
           event
             ? populatedFormEventValues(event)
-            : emptyFormEventValues(start_time, end_time, pod.homeAddress)
+            : emptyFormEventValues(
+                start_time,
+                end_time,
+                pod.homeAddress,
+                pod.lat,
+                pod.lng
+              )
         }
         validationSchema={validateEventSchema}
         onSubmit={async (values: eventFormikValues) => {
@@ -146,8 +152,8 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
               }
               error={
                 touched.formattedAddress && errors.formattedAddress
-                ? (errors.formattedAddress as String)
-                : ""
+                  ? (errors.formattedAddress as String)
+                  : ""
               }
             />
 
@@ -157,8 +163,10 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
               GeneralInputComponent={
                 <DatePicker name="start_time" date={start_time} />
               }
-              error = {
-                touched.start_time && errors.start_time ? errors.start_time as String: ""
+              error={
+                touched.start_time && errors.start_time
+                  ? (errors.start_time as String)
+                  : ""
               }
             />
 
@@ -168,12 +176,10 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
               GeneralInputComponent={
                 <DatePicker name="end_time" date={end_time} />
               }
-              error = {
-                !!errors.end_time ? errors.end_time as String: ""
-              }
+              error={!!errors.end_time ? (errors.end_time as String) : ""}
             />
 
-           <Text style={sharedStyles.inputLabelText}>Priority</Text>
+            <Text style={sharedStyles.inputLabelText}>Priority</Text>
 
             <DropDownPicker
               items={priorityValues}

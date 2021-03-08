@@ -124,7 +124,6 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
             style={styles.scheduleToggle}
           />
         </View>
-        <Text style={styles.todaysDateTitle}>Today, {todayString}</Text>
         {loading ? (
           <View style={styles.activityIndicator}>
             <ActivityIndicator />
