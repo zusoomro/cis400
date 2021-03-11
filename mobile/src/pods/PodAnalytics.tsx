@@ -156,170 +156,201 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <ScrollView height="83%">
-        <View style={styles.section1}>
-          <View style={styles.statsSection}>
-            <Icon name="work" style={styles.icon} size={40} />
-            <View>
-              <Text
-                style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}
-              >
-                {numTrips} Trips
-              </Text>
-              <Text>
-                Your Pod took {numTrips} trips this {timeFrame}!
-              </Text>
-            </View>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <Icon
-              name="car"
-              type="font-awesome"
-              style={styles.icon}
-              size={35}
-            />
-            <View>
-              <Text
-                style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}
-              >
-                {milesTraveled} Miles
-              </Text>
-              <Text>
-                Your Pod traveled {milesTraveled} miles this {timeFrame}!
-              </Text>
-            </View>
-          </View>
+      {numTrips == 0 ? (
+        <View
+          style={{
+            backgroundColor: "#FFF",
+            display: "flex",
+            height: 615,
+          }}
+        >
+          <Text
+            style={{
+              textAlign: "center",
+              paddingTop: 200,
+              fontSize: 20,
+              color: "#312E81",
+            }}
+          >
+            Your Pod has not scheduled any trips this {timeFrame} :(
+          </Text>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 20,
+              color: "#312E81",
+              paddingTop: 15,
+            }}
+          >
+            Go to the events page to schedule upcoming trips!
+          </Text>
         </View>
+      ) : (
+        <ScrollView height="83%">
+          <View style={styles.section1}>
+            <View style={styles.statsSection}>
+              <Icon name="work" style={styles.icon} size={40} />
+              <View>
+                <Text
+                  style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}
+                >
+                  {numTrips} Trips
+                </Text>
+                <Text>
+                  Your Pod took {numTrips} trips this {timeFrame}!
+                </Text>
+              </View>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <Icon
+                name="car"
+                type="font-awesome"
+                style={styles.icon}
+                size={35}
+              />
+              <View>
+                <Text
+                  style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}
+                >
+                  {milesTraveled} Miles
+                </Text>
+                <Text>
+                  Your Pod traveled {milesTraveled} miles this {timeFrame}!
+                </Text>
+              </View>
+            </View>
+          </View>
 
-        <View>
-          <Card>
-            <Card.Title
-              style={{
-                fontSize: 24,
-                fontWeight: "600",
-                color: "#434190",
-                alignSelf: "flex-start",
-              }}
-            >
-              Gas Usage
-            </Card.Title>
-            <Card.Divider />
-            <ButtonGroup
-              onPress={(index) => {
-                setSelectedGasIndex(index);
-              }}
-              selectedIndex={selectedGasIndex}
-              buttons={gasButtons}
-              containerStyle={styles.buttonGroup}
-            />
-            <View>
-              {selectedGasIndex == 1 ? (
-                <VictoryChart
-                  domainPadding={30}
-                  width={350}
-                  theme={VictoryTheme.material}
-                >
-                  <VictoryBar
-                    data={gasTotalData}
-                    x="user"
-                    y="gallons"
-                    style={{ data: { fill: "#434190" } }}
+          <View>
+            <Card>
+              <Card.Title
+                style={{
+                  fontSize: 24,
+                  fontWeight: "600",
+                  color: "#434190",
+                  alignSelf: "flex-start",
+                }}
+              >
+                Gas Usage
+              </Card.Title>
+              <Card.Divider />
+              <ButtonGroup
+                onPress={(index) => {
+                  setSelectedGasIndex(index);
+                }}
+                selectedIndex={selectedGasIndex}
+                buttons={gasButtons}
+                containerStyle={styles.buttonGroup}
+              />
+              <View>
+                {selectedGasIndex == 1 ? (
+                  <VictoryChart
+                    domainPadding={30}
+                    width={350}
+                    theme={VictoryTheme.material}
+                  >
+                    <VictoryBar
+                      data={gasTotalData}
+                      x="user"
+                      y="gallons"
+                      style={{ data: { fill: "#434190" } }}
+                    />
+                    <VictoryAxis
+                      dependentAxis
+                      label="Gas (gallons)"
+                      style={{
+                        axisLabel: {
+                          padding: 40,
+                        },
+                        grid: { strokeWidth: 0.0 },
+                      }}
+                    />
+                    <VictoryAxis style={{ grid: { strokeWidth: 0.0 } }} />
+                  </VictoryChart>
+                ) : (
+                  <VictoryPie
+                    width={350}
+                    height={375}
+                    padding={60}
+                    labelPosition="startAngle"
+                    data={gasPercentageData}
+                    colorScale={[
+                      "#312E81",
+                      "#4338CA",
+                      "#6366F1",
+                      "#818CF8",
+                      "#C7D2FE",
+                    ]}
                   />
-                  <VictoryAxis
-                    dependentAxis
-                    label="Gas (gallons)"
-                    style={{
-                      axisLabel: {
-                        padding: 40,
-                      },
-                      grid: { strokeWidth: 0.0 },
-                    }}
+                )}
+              </View>
+            </Card>
+            <Card>
+              <Card.Title
+                style={{
+                  fontSize: 24,
+                  fontWeight: "600",
+                  color: "#434190",
+                  alignSelf: "flex-start",
+                }}
+              >
+                Time Usage
+              </Card.Title>
+              <Card.Divider />
+              <ButtonGroup
+                onPress={(index) => {
+                  setSelectedTimeIndex(index);
+                }}
+                selectedIndex={selectedTimeIndex}
+                buttons={gasButtons}
+                containerStyle={styles.buttonGroup}
+              />
+              <View>
+                {selectedTimeIndex == 0 ? (
+                  <VictoryPie
+                    width={355}
+                    height={375}
+                    padding={60}
+                    labelPosition="startAngle"
+                    data={timePercentageData}
+                    colorScale={[
+                      "#312E81",
+                      "#4338CA",
+                      "#6366F1",
+                      "#818CF8",
+                      "#C7D2FE",
+                    ]}
                   />
-                  <VictoryAxis style={{ grid: { strokeWidth: 0.0 } }} />
-                </VictoryChart>
-              ) : (
-                <VictoryPie
-                  width={350}
-                  height={375}
-                  padding={60}
-                  labelPosition="startAngle"
-                  data={gasPercentageData}
-                  colorScale={[
-                    "#312E81",
-                    "#4338CA",
-                    "#6366F1",
-                    "#818CF8",
-                    "#C7D2FE",
-                  ]}
-                />
-              )}
-            </View>
-          </Card>
-          <Card>
-            <Card.Title
-              style={{
-                fontSize: 24,
-                fontWeight: "600",
-                color: "#434190",
-                alignSelf: "flex-start",
-              }}
-            >
-              Time Usage
-            </Card.Title>
-            <Card.Divider />
-            <ButtonGroup
-              onPress={(index) => {
-                setSelectedTimeIndex(index);
-              }}
-              selectedIndex={selectedTimeIndex}
-              buttons={gasButtons}
-              containerStyle={styles.buttonGroup}
-            />
-            <View>
-              {selectedTimeIndex == 0 ? (
-                <VictoryPie
-                  width={355}
-                  height={375}
-                  padding={60}
-                  labelPosition="startAngle"
-                  data={timePercentageData}
-                  colorScale={[
-                    "#312E81",
-                    "#4338CA",
-                    "#6366F1",
-                    "#818CF8",
-                    "#C7D2FE",
-                  ]}
-                />
-              ) : (
-                <VictoryChart
-                  domainPadding={30}
-                  width={350}
-                  theme={VictoryTheme.material}
-                >
-                  <VictoryBar
-                    data={timeTotalData}
-                    x="user"
-                    y="seconds"
-                    style={{ data: { fill: "#434190" } }}
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    label="Time (hours)"
-                    style={{
-                      axisLabel: {
-                        padding: 40,
-                      },
-                      grid: { strokeWidth: 0.0 },
-                    }}
-                  />
-                  <VictoryAxis style={{ grid: { strokeWidth: 0.0 } }} />
-                </VictoryChart>
-              )}
-            </View>
-          </Card>
-        </View>
-      </ScrollView>
+                ) : (
+                  <VictoryChart
+                    domainPadding={30}
+                    width={350}
+                    theme={VictoryTheme.material}
+                  >
+                    <VictoryBar
+                      data={timeTotalData}
+                      x="user"
+                      y="seconds"
+                      style={{ data: { fill: "#434190" } }}
+                    />
+                    <VictoryAxis
+                      dependentAxis
+                      label="Time (hours)"
+                      style={{
+                        axisLabel: {
+                          padding: 40,
+                        },
+                        grid: { strokeWidth: 0.0 },
+                      }}
+                    />
+                    <VictoryAxis style={{ grid: { strokeWidth: 0.0 } }} />
+                  </VictoryChart>
+                )}
+              </View>
+            </Card>
+          </View>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };
