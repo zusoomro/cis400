@@ -5,7 +5,6 @@ import apiUrl from "../config";
 import * as SecureStore from "expo-secure-store";
 import { RootState } from "../configureStore";
 import { useSelector } from "react-redux";
-import { Picker } from "@react-native-picker/picker";
 import { RadioButton } from "react-native-paper";
 
 import {
@@ -44,7 +43,6 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
   const podId = useSelector((state: RootState) => state.pods.pod.id);
 
   async function fetchAnalytics() {
-    console.log("fetch analytics called");
     try {
       const res = await fetch(
         `${apiUrl}/analytics/pods/${podId}?time=${timeFrame}`,
@@ -60,8 +58,6 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
       );
 
       const json = await res.json();
-      console.log("json", json);
-      console.log("timeFrame", timeFrame);
       setNumTrips(json.numTrips);
       setMilesTraveled(json.milesTraveled.toFixed(2));
       setTravelTime(json.travelTime);
