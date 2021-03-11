@@ -15,7 +15,6 @@ import { Formik } from "formik";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import PodMembers from "./PodMembers";
-import ResolveConflicts from "./ResolveConflicts";
 
 const Stack = createStackNavigator();
 
@@ -38,11 +37,6 @@ const PodsNavigator = () => {
         name="CreatePod"
         component={CreatePod}
         options={{ title: "Create a Pod" }}
-      />
-      <Stack.Screen
-        name="ResolveConflicts"
-        component={ResolveConflicts}
-        options={{ title: "Resolve conflicts" }}
       />
       <Stack.Screen
         name="InviteUsers"
