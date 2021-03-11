@@ -6,6 +6,7 @@ import * as SecureStore from "expo-secure-store";
 import { RootState } from "../configureStore";
 import { useSelector } from "react-redux";
 import { Picker } from "@react-native-picker/picker";
+import { RadioButton } from "react-native-paper";
 
 import {
   VictoryBar,
@@ -69,78 +70,55 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
     }
   }
 
+  async function fetchAnalyticsBreakdown() {
+    try {
+      const res = await fetch(
+        `${apiUrl}/analytics/breakdown/${podId}?time=${timeFrame}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+            "x-auth-token": (await SecureStore.getItemAsync(
+              "wigo-auth-token"
+            ))!,
+          },
+        }
+      );
+
+      const json = await res.json();
+      let gasReport = [];
+      let gasPercentage = [];
+      let timeTotalReport = [];
+      let timePercentageReport = [];
+      json.forEach(async function (data) {
+        let emailShort: String = data.email.substring(
+          0,
+          data.email.indexOf("@")
+        );
+        gasReport.push({ user: emailShort, gallons: data.gasUsage });
+        gasPercentage.push({ x: emailShort, y: data.gasPercentage });
+
+        timeTotalReport.push({
+          user: emailShort,
+          seconds: data.timeUsage / 3600,
+        });
+        timePercentageReport.push({ x: emailShort, y: data.timePercentage });
+      });
+      setgasTotalData(gasReport);
+      setGasPercentageData(gasPercentage);
+      setTimeTotalData(timeTotalReport);
+      setTimePercentageData(timePercentageReport);
+    } catch (err) {
+      console.log("error loading analytics", err);
+    }
+  }
+
   React.useEffect(() => {
     fetchAnalytics();
+    fetchAnalyticsBreakdown();
   }, [timeFrame]);
 
   React.useEffect(() => {
-    // async function fetchAnalytics() {
-    //   try {
-    //     const res = await fetch(
-    //       `${apiUrl}/analytics/pods/${podId}?time=${timeFrame}`,
-    //       {
-    //         method: "GET",
-    //         headers: {
-    //           "Content-Type": "application/json;charset=utf-8",
-    //           "x-auth-token": (await SecureStore.getItemAsync(
-    //             "wigo-auth-token"
-    //           ))!,
-    //         },
-    //       }
-    //     );
-
-    //     const json = await res.json();
-    //     setNumTrips(json.numTrips);
-    //     setMilesTraveled(json.milesTraveled.toFixed(2));
-    //     setTravelTime(json.travelTime);
-    //   } catch (err) {
-    //     console.log("error loading analytics", err);
-    //   }
-    // }
-
-    async function fetchAnalyticsBreakdown() {
-      try {
-        const res = await fetch(
-          `${apiUrl}/analytics/breakdown/${podId}?time=${timeFrame}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-              "x-auth-token": (await SecureStore.getItemAsync(
-                "wigo-auth-token"
-              ))!,
-            },
-          }
-        );
-
-        const json = await res.json();
-        let gasReport = [];
-        let gasPercentage = [];
-        let timeTotalReport = [];
-        let timePercentageReport = [];
-        json.forEach(async function (data) {
-          let emailShort: String = data.email.substring(
-            0,
-            data.email.indexOf("@")
-          );
-          gasReport.push({ user: emailShort, gallons: data.gasUsage });
-          gasPercentage.push({ x: emailShort, y: data.gasPercentage });
-
-          timeTotalReport.push({
-            user: emailShort,
-            seconds: data.timeUsage / 3600,
-          });
-          timePercentageReport.push({ x: emailShort, y: data.timePercentage });
-        });
-        setgasTotalData(gasReport);
-        setGasPercentageData(gasPercentage);
-        setTimeTotalData(timeTotalReport);
-        setTimePercentageData(timePercentageReport);
-      } catch (err) {
-        console.log("error loading analytics", err);
-      }
-    }
-
     fetchAnalytics();
     fetchAnalyticsBreakdown();
   }, []);
@@ -152,17 +130,30 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
         <Text style={styles.section1Text}>
           View analytics of your pod to determine usage per member.
         </Text>
-        <View>
-          <Picker
-            selectedValue={timeFrame}
-            onValueChange={(itemValue, itemIndex) => {
-              setTimeFrame(itemValue);
-              //fetchAnalytics();
-            }}
-          >
-            <Picker.Item label="Month" value="month" />
-            <Picker.Item label="Week" value="week" />
-          </Picker>
+      </View>
+      <View style={{ backgroundColor: "#FFF" }}>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={{ paddingTop: 10, paddingLeft: 5, paddingRight: 10 }}>
+            View anayltics for the past:{" "}
+          </Text>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{ paddingTop: 10 }}>Month</Text>
+            <RadioButton.Android
+              value="month"
+              color="#312E81"
+              status={timeFrame === "month" ? "checked" : "unchecked"}
+              onPress={() => setTimeFrame("month")}
+            />
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{ paddingTop: 10 }}>Week</Text>
+            <RadioButton.Android
+              value="week"
+              color="#312E81"
+              status={timeFrame === "week" ? "checked" : "unchecked"}
+              onPress={() => setTimeFrame("week")}
+            />
+          </View>
         </View>
       </View>
       <View style={styles.section1}>
@@ -172,7 +163,9 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
             <Text style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}>
               {numTrips} Trips
             </Text>
-            <Text>Your Pod took {numTrips} trips this month!</Text>
+            <Text>
+              Your Pod took {numTrips} trips this {timeFrame}!
+            </Text>
           </View>
         </View>
         <View style={{ flexDirection: "row" }}>
@@ -181,7 +174,9 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
             <Text style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}>
               {milesTraveled} Miles
             </Text>
-            <Text>Your Pod traveled {milesTraveled} miles this month!</Text>
+            <Text>
+              Your Pod traveled {milesTraveled} miles this {timeFrame}!
+            </Text>
           </View>
         </View>
       </View>
@@ -326,8 +321,8 @@ const styles = StyleSheet.create({
   },
   headerSection: {
     backgroundColor: "#C7D2FE",
-    padding: 12,
-    paddingTop: 24,
+    padding: 5,
+    paddingTop: 20,
   },
   section1: {
     backgroundColor: "#FFF",
