@@ -156,31 +156,41 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <View style={styles.section1}>
-        <View style={styles.statsSection}>
-          <Icon name="work" style={styles.icon} size={40} />
-          <View>
-            <Text style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}>
-              {numTrips} Trips
-            </Text>
-            <Text>
-              Your Pod took {numTrips} trips this {timeFrame}!
-            </Text>
+      <ScrollView height="83%">
+        <View style={styles.section1}>
+          <View style={styles.statsSection}>
+            <Icon name="work" style={styles.icon} size={40} />
+            <View>
+              <Text
+                style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}
+              >
+                {numTrips} Trips
+              </Text>
+              <Text>
+                Your Pod took {numTrips} trips this {timeFrame}!
+              </Text>
+            </View>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Icon
+              name="car"
+              type="font-awesome"
+              style={styles.icon}
+              size={35}
+            />
+            <View>
+              <Text
+                style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}
+              >
+                {milesTraveled} Miles
+              </Text>
+              <Text>
+                Your Pod traveled {milesTraveled} miles this {timeFrame}!
+              </Text>
+            </View>
           </View>
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <Icon name="car" type="font-awesome" style={styles.icon} size={35} />
-          <View>
-            <Text style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}>
-              {milesTraveled} Miles
-            </Text>
-            <Text>
-              Your Pod traveled {milesTraveled} miles this {timeFrame}!
-            </Text>
-          </View>
-        </View>
-      </View>
-      <ScrollView height="67%">
+
         <View>
           <Card>
             <Card.Title
