@@ -10,6 +10,7 @@ import store, { RootState } from "./src/configureStore";
 import TabNavigator from "./src/Navigator";
 import { navigationRef } from "./src/rootNavigation";
 import { setupNotificationListeners } from "./src/pushNotifications/pushNotifications";
+import analytics from "./src/analytics/analytics";
 
 export default function App() {
   return (
@@ -46,6 +47,29 @@ const ContextApp = () => {
     dispatch(loadToken());
     // In case you need to delete the user token, uncomment this line
     // SecureStore.deleteItemAsync("wigo-auth-token");
+
+    analytics.track("Viewed schedule page", { $duration: 47 });
+    analytics.track("Viewed pod page", { $duration: 44 });
+    analytics.track("Viewed settings page", { $duration: 9 });
+
+    analytics.track("Event created", {
+      $duration: 40 + Math.floor(Math.random() * 20),
+    });
+    analytics.track("Pod created", {
+      $duration: 50 + Math.floor(Math.random() * 120),
+    });
+
+    for (let i = 0; i < 43; i++) {
+      analytics.track("Conflict: user scheduled at suggested time");
+    }
+
+    for (let i = 0; i < 35; i++) {
+      analytics.track("Conflict: user edits their event");
+    }
+
+    for (let i = 0; i < 22; i++) {
+      analytics.track("Conflict: user schedules event anyway");
+    }
   }, []);
 
   useEffect(() => {
