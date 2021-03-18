@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { ScrollView, TextInput, Text, View, SafeAreaView } from "react-native";
+import { ScrollView, TextInput, Text, SafeAreaView, KeyboardAvoidingView } from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import sharedStyles from "../sharedStyles";
@@ -103,7 +103,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
           touched,
           values,
         }) => (
-          <View style={{ margin: 15 }}>
+          <KeyboardAvoidingView behavior="padding" style={{ margin: 15}}>
             {/* Event Name */}
             <GeneralEventInput
               inputTitle="Event Name"
@@ -232,7 +232,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
                 navigation={navigation}
               />
             )}
-          </View>
+          </KeyboardAvoidingView>
         )}
       </Formik>
       <SafeAreaView>
