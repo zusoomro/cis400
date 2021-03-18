@@ -119,6 +119,28 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
               error={touched.name && errors.name ? (errors.name as String) : ""}
             />
 
+            {/* Start Time input */}
+            <GeneralEventInput
+              inputTitle="Start Time"
+              GeneralInputComponent={
+                <DatePicker name="start_time" date={start_time} />
+              }
+              error={
+                touched.start_time && errors.start_time
+                  ? (errors.start_time as String)
+                  : ""
+              }
+            />
+
+            {/* End Time input */}
+            <GeneralEventInput
+              inputTitle="End Time"
+              GeneralInputComponent={
+                <DatePicker name="end_time" date={end_time} />
+              }
+              error={!!errors.end_time ? (errors.end_time as String) : ""}
+            />
+
             {/* Start Location */}
             <GeneralEventInput
               inputTitle="Start Location"
@@ -155,28 +177,6 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
                   ? (errors.formattedAddress as String)
                   : ""
               }
-            />
-
-            {/* Start Time input */}
-            <GeneralEventInput
-              inputTitle="Start Time"
-              GeneralInputComponent={
-                <DatePicker name="start_time" date={start_time} />
-              }
-              error={
-                touched.start_time && errors.start_time
-                  ? (errors.start_time as String)
-                  : ""
-              }
-            />
-
-            {/* End Time input */}
-            <GeneralEventInput
-              inputTitle="End Time"
-              GeneralInputComponent={
-                <DatePicker name="end_time" date={end_time} />
-              }
-              error={!!errors.end_time ? (errors.end_time as String) : ""}
             />
 
             <Text style={sharedStyles.inputLabelText}>Priority</Text>
