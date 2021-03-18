@@ -72,17 +72,20 @@ const DatePicker: React.FC<Props> = (props) => {
         </View>
       </View>
       {state !== State.Hidden && (
+        <View style={{ alignItems: 'center', width: '100%' }}>
         <DateTimePicker
           {...field}
           {...props}
           testID="dateTimePicker"
           value={date}
           mode={state === State.Time ? "time" : "date"}
-          display="inline"
+          display="default"
           onChange={onChange}
           minuteInterval={5}
           minimumDate={new Date()}
+          style={{ width: 230 }}
         />
+        </View>
       )}
     </View>
   );
