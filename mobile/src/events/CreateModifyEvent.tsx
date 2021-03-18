@@ -65,6 +65,8 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
     dispatch(thingToDispatch);
   };
 
+  const [clickDescription, setClickDescription] =useState<boolean>(false);;
+
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
       <Formik
@@ -103,7 +105,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
           touched,
           values,
         }) => (
-          <KeyboardAvoidingView behavior="padding" style={{ margin: 15}}>
+          <KeyboardAvoidingView style={{ margin: 15}} behavior="padding" enabled={clickDescription}>
             {/* Event Name */}
             <GeneralEventInput
               inputTitle="Event Name"
@@ -208,6 +210,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
                   value={values.notes}
                   placeholder="Add description"
                   style={[sharedStyles.input]}
+                  onFocus={() => setClickDescription(true)}
                 />
               }
               error=""
