@@ -142,7 +142,6 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
       <Button
         title="Show Invites"
         onPress={() => {
-          console.log("invites button pressed");
           setModalVisible(true);
         }}
         style={{
