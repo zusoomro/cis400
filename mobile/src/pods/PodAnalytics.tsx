@@ -44,10 +44,11 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
   const podId = useSelector((state: RootState) => state.pods.pod.id);
   const pieChartColorScale = [
     "#312E81",
-    "#4338CA",
+    "#BFDBFE",
     "#6366F1",
     "#818CF8",
     "#C7D2FE",
+    "#C4B5FD",
   ];
 
   React.useEffect(() => {
