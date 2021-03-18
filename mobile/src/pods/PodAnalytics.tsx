@@ -5,6 +5,7 @@ import apiUrl from "../config";
 import * as SecureStore from "expo-secure-store";
 import { RootState } from "../configureStore";
 import { useSelector } from "react-redux";
+import { RadioButton } from "react-native-paper";
 
 import {
   VictoryBar,
@@ -23,6 +24,7 @@ interface Props {
 }
 
 const PodAnalytics: React.FC<Props> = ({ navigation }) => {
+  const [timeFrame, setTimeFrame] = useState("month");
   // State for Pod totals
   const [milesTraveled, setMilesTraveled] = useState(0);
   const [numTrips, setNumTrips] = useState(0);
@@ -50,78 +52,79 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
     "#C7D2FE",
   ];
 
-  React.useEffect(() => {
-    async function fetchAnalytics() {
-      try {
-        const res = await fetch(
-          `${apiUrl}/analytics/pods/${podId}?time=month`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-              "x-auth-token": (await SecureStore.getItemAsync(
-                "wigo-auth-token"
-              ))!,
-            },
-          }
-        );
+  async function fetchAnalytics() {
+    try {
+      const res = await fetch(
+        `${apiUrl}/analytics/pods/${podId}?time=${timeFrame}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+            "x-auth-token": (await SecureStore.getItemAsync(
+              "wigo-auth-token"
+            ))!,
+          },
+        }
+      );
 
-        const json = await res.json();
-        setNumTrips(json.numTrips);
-        setMilesTraveled(json.milesTraveled);
-        setTravelTime(json.travelTime);
-      } catch (err) {
-        console.log("error loading analytics", err);
-      }
+      const json = await res.json();
+      setNumTrips(json.numTrips);
+      setMilesTraveled(json.milesTraveled.toFixed(2));
+      setTravelTime(json.travelTime);
+    } catch (err) {
+      console.log("error loading analytics", err);
     }
+  }
 
-    async function fetchAnalyticsBreakdown() {
-      try {
-        const res = await fetch(
-          `${apiUrl}/analytics/breakdown/${podId}?time=month`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json;charset=utf-8",
-              "x-auth-token": (await SecureStore.getItemAsync(
-                "wigo-auth-token"
-              ))!,
-            },
-          }
+  async function fetchAnalyticsBreakdown() {
+    try {
+      const res = await fetch(
+        `${apiUrl}/analytics/breakdown/${podId}?time=${timeFrame}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+            "x-auth-token": (await SecureStore.getItemAsync(
+              "wigo-auth-token"
+            ))!,
+          },
+        }
+      );
+
+      const json = await res.json();
+      let gasReport = [];
+      let gasPercentage = [];
+      let timeTotalReport = [];
+      let timePercentageReport = [];
+      json.forEach(async function (data) {
+        let emailShort: String = data.email.substring(
+          0,
+          data.email.indexOf("@")
         );
+        gasReport.push({ user: emailShort, gallons: data.gasUsage });
+        gasPercentage.push({ x: emailShort, y: data.gasPercentage });
 
-        const json = await res.json();
-        let gasReport = [];
-        let gasPercentage = [];
-        let timeTotalReport = [];
-        let timePercentageReport = [];
-        let pieLabels = [];
-        json.forEach(async function (data) {
-          let emailShort: String = data.email.substring(
-            0,
-            data.email.indexOf("@")
-          );
-          gasReport.push({ user: emailShort, gallons: data.gasUsage });
-          gasPercentage.push({ x: emailShort, y: data.gasPercentage });
-
-          timeTotalReport.push({
-            user: emailShort,
-            seconds: data.timeUsage / 3600,
-          });
-          timePercentageReport.push({ x: emailShort, y: data.timePercentage });
-
-          pieLabels.push({ name: emailShort });
+        timeTotalReport.push({
+          user: emailShort,
+          seconds: data.timeUsage / 3600,
         });
-        setgasTotalData(gasReport);
-        setGasPercentageData(gasPercentage);
-        setTimeTotalData(timeTotalReport);
-        setTimePercentageData(timePercentageReport);
-        setPieLegendLabels(pieLabels);
-      } catch (err) {
-        console.log("error loading analytics", err);
-      }
+        timePercentageReport.push({ x: emailShort, y: data.timePercentage });
+      });
+      setgasTotalData(gasReport);
+      setGasPercentageData(gasPercentage);
+      setTimeTotalData(timeTotalReport);
+      setTimePercentageData(timePercentageReport);
+    } catch (err) {
+      console.log("error loading analytics", err);
     }
+  }
 
+  React.useEffect(() => {
+    fetchAnalytics();
+    fetchAnalyticsBreakdown();
+  }, [timeFrame]);
+
+  React.useEffect(() => {
     fetchAnalytics();
     fetchAnalyticsBreakdown();
   }, []);
@@ -134,171 +137,226 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
           View analytics of your pod to determine usage per member.
         </Text>
       </View>
-      <View style={styles.section1}>
-        <View style={styles.statsSection}>
-          <Icon name="work" style={styles.icon} size={40} />
-          <View>
-            <Text style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}>
-              {numTrips} Trips
-            </Text>
-            <Text>Your Pod took {numTrips} trips this month!</Text>
-          </View>
-        </View>
+      <View style={{ backgroundColor: "#FFF" }}>
         <View style={{ flexDirection: "row" }}>
-          <Icon name="car" type="font-awesome" style={styles.icon} size={35} />
-          <View>
-            <Text style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}>
-              {milesTraveled} Miles
-            </Text>
-            <Text>Your Pod traveled {milesTraveled} miles this month!</Text>
+          <Text style={{ paddingTop: 10, paddingLeft: 5, paddingRight: 10 }}>
+            View anayltics for the past:{" "}
+          </Text>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{ paddingTop: 10 }}>Month</Text>
+            <RadioButton.Android
+              value="month"
+              color="#312E81"
+              status={timeFrame === "month" ? "checked" : "unchecked"}
+              onPress={() => setTimeFrame("month")}
+            />
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text style={{ paddingTop: 10 }}>Week</Text>
+            <RadioButton.Android
+              value="week"
+              color="#312E81"
+              status={timeFrame === "week" ? "checked" : "unchecked"}
+              onPress={() => setTimeFrame("week")}
+            />
           </View>
         </View>
       </View>
-      <ScrollView height="67%">
-        <View>
-          <Card>
-            <Card.Title
-              style={{
-                fontSize: 24,
-                fontWeight: "600",
-                color: "#434190",
-                alignSelf: "flex-start",
-              }}
-            >
-              Gas Usage
-            </Card.Title>
-            <Card.Divider />
-            <ButtonGroup
-              onPress={(index) => {
-                setSelectedGasIndex(index);
-              }}
-              selectedIndex={selectedGasIndex}
-              buttons={gasButtons}
-              containerStyle={styles.buttonGroup}
-            />
-            <View>
-              {selectedGasIndex == 1 ? (
-                <VictoryChart
-                  domainPadding={30}
-                  width={350}
-                  theme={VictoryTheme.material}
+      {numTrips == 0 ? (
+        <View
+          style={{
+            backgroundColor: "#FFF",
+            display: "flex",
+            height: 615,
+          }}
+        >
+          <Text
+            style={{
+              textAlign: "center",
+              paddingTop: 200,
+              fontSize: 20,
+              color: "#312E81",
+            }}
+          >
+            Your Pod has not scheduled any trips this {timeFrame} :(
+          </Text>
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 20,
+              color: "#312E81",
+              paddingTop: 15,
+            }}
+          >
+            Go to the events page to schedule upcoming trips!
+          </Text>
+        </View>
+      ) : (
+        <ScrollView height="83%">
+          <View style={styles.section1}>
+            <View style={styles.statsSection}>
+              <Icon name="work" style={styles.icon} size={40} />
+              <View>
+                <Text
+                  style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}
                 >
-                  <VictoryBar
-                    data={gasTotalData}
-                    x="user"
-                    y="gallons"
-                    style={{ data: { fill: "#434190" } }}
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    label="Gas (gallons)"
-                    style={{
-                      axisLabel: {
-                        padding: 40,
-                      },
-                      grid: { strokeWidth: 0.0 },
-                    }}
-                  />
-                  <VictoryAxis style={{ grid: { strokeWidth: 0.0 } }} />
-                </VictoryChart>
-              ) : (
-                <View>
+                  {numTrips} Trips
+                </Text>
+                <Text>
+                  Your Pod took {numTrips} trips this {timeFrame}!
+                </Text>
+              </View>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <Icon
+                name="car"
+                type="font-awesome"
+                style={styles.icon}
+                size={35}
+              />
+              <View>
+                <Text
+                  style={{ fontSize: 24, fontWeight: "600", color: "#434190" }}
+                >
+                  {milesTraveled} Miles
+                </Text>
+                <Text>
+                  Your Pod traveled {milesTraveled} miles this {timeFrame}!
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          <View>
+            <Card>
+              <Card.Title
+                style={{
+                  fontSize: 24,
+                  fontWeight: "600",
+                  color: "#434190",
+                  alignSelf: "flex-start",
+                }}
+              >
+                Gas Usage
+              </Card.Title>
+              <Card.Divider />
+              <ButtonGroup
+                onPress={(index) => {
+                  setSelectedGasIndex(index);
+                }}
+                selectedIndex={selectedGasIndex}
+                buttons={gasButtons}
+                containerStyle={styles.buttonGroup}
+              />
+              <View>
+                {selectedGasIndex == 1 ? (
+                  <VictoryChart
+                    domainPadding={30}
+                    width={350}
+                    theme={VictoryTheme.material}
+                  >
+                    <VictoryBar
+                      data={gasTotalData}
+                      x="user"
+                      y="gallons"
+                      style={{ data: { fill: "#434190" } }}
+                    />
+                    <VictoryAxis
+                      dependentAxis
+                      label="Gas (gallons)"
+                      style={{
+                        axisLabel: {
+                          padding: 40,
+                        },
+                        grid: { strokeWidth: 0.0 },
+                      }}
+                    />
+                    <VictoryAxis style={{ grid: { strokeWidth: 0.0 } }} />
+                  </VictoryChart>
+                ) : (
                   <VictoryPie
                     width={350}
                     height={375}
-                    padding={10}
+                    padding={60}
                     labelPosition="startAngle"
                     data={gasPercentageData}
-                    colorScale={pieChartColorScale}
-                    labels={() => null}
+                    colorScale={[
+                      "#312E81",
+                      "#4338CA",
+                      "#6366F1",
+                      "#818CF8",
+                      "#C7D2FE",
+                    ]}
                   />
-                  <VictoryLegend
-                    colorScale={pieChartColorScale}
-                    orientation="horizontal"
-                    gutter={20}
-                    title="Legend"
-                    height={100}
-                    centerTitle
-                    style={{ border: { stroke: "black" } }}
-                    data={pieLegendLabels}
-                    itemsPerRow={3}
-                  />
-                </View>
-              )}
-            </View>
-          </Card>
-          <Card>
-            <Card.Title
-              style={{
-                fontSize: 24,
-                fontWeight: "600",
-                color: "#434190",
-                alignSelf: "flex-start",
-              }}
-            >
-              Time Usage
-            </Card.Title>
-            <Card.Divider />
-            <ButtonGroup
-              onPress={(index) => {
-                setSelectedTimeIndex(index);
-              }}
-              selectedIndex={selectedTimeIndex}
-              buttons={gasButtons}
-              containerStyle={styles.buttonGroup}
-            />
-            <View>
-              {selectedTimeIndex == 0 ? (
-                <View>
+                )}
+              </View>
+            </Card>
+            <Card>
+              <Card.Title
+                style={{
+                  fontSize: 24,
+                  fontWeight: "600",
+                  color: "#434190",
+                  alignSelf: "flex-start",
+                }}
+              >
+                Time Usage
+              </Card.Title>
+              <Card.Divider />
+              <ButtonGroup
+                onPress={(index) => {
+                  setSelectedTimeIndex(index);
+                }}
+                selectedIndex={selectedTimeIndex}
+                buttons={gasButtons}
+                containerStyle={styles.buttonGroup}
+              />
+              <View>
+                {selectedTimeIndex == 0 ? (
                   <VictoryPie
                     width={355}
                     height={375}
-                    padding={10}
+                    padding={60}
+                    labelPosition="startAngle"
                     data={timePercentageData}
-                    colorScale={pieChartColorScale}
-                    labels={() => null}
+                    colorScale={[
+                      "#312E81",
+                      "#4338CA",
+                      "#6366F1",
+                      "#818CF8",
+                      "#C7D2FE",
+                    ]}
                   />
-                  <VictoryLegend
-                    colorScale={pieChartColorScale}
-                    orientation="horizontal"
-                    gutter={20}
-                    title="Legend"
-                    height={100}
-                    centerTitle
-                    style={{ border: { stroke: "black" } }}
-                    data={pieLegendLabels}
-                    itemsPerRow={3}
-                  />
-                </View>
-              ) : (
-                <VictoryChart
-                  domainPadding={30}
-                  width={350}
-                  theme={VictoryTheme.material}
-                >
-                  <VictoryBar
-                    data={timeTotalData}
-                    x="user"
-                    y="seconds"
-                    style={{ data: { fill: "#434190" } }}
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    label="Time (hours)"
-                    style={{
-                      axisLabel: {
-                        padding: 40,
-                      },
-                      grid: { strokeWidth: 0.0 },
-                    }}
-                  />
-                  <VictoryAxis style={{ grid: { strokeWidth: 0.0 } }} />
-                </VictoryChart>
-              )}
-            </View>
-          </Card>
-        </View>
-      </ScrollView>
+                ) : (
+                  <VictoryChart
+                    domainPadding={30}
+                    width={350}
+                    theme={VictoryTheme.material}
+                  >
+                    <VictoryBar
+                      data={timeTotalData}
+                      x="user"
+                      y="seconds"
+                      style={{ data: { fill: "#434190" } }}
+                    />
+                    <VictoryAxis
+                      dependentAxis
+                      label="Time (hours)"
+                      style={{
+                        axisLabel: {
+                          padding: 40,
+                        },
+                        grid: { strokeWidth: 0.0 },
+                      }}
+                    />
+                    <VictoryAxis style={{ grid: { strokeWidth: 0.0 } }} />
+                  </VictoryChart>
+                )}
+              </View>
+            </Card>
+          </View>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };
@@ -310,8 +368,8 @@ const styles = StyleSheet.create({
   },
   headerSection: {
     backgroundColor: "#C7D2FE",
-    padding: 12,
-    paddingTop: 24,
+    padding: 5,
+    paddingTop: 20,
   },
   section1: {
     backgroundColor: "#FFF",
