@@ -1,6 +1,12 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { ScrollView, TextInput, Text, SafeAreaView, KeyboardAvoidingView} from "react-native";
+import {
+  ScrollView,
+  TextInput,
+  Text,
+  SafeAreaView,
+  KeyboardAvoidingView,
+} from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import sharedStyles from "../sharedStyles";
@@ -65,7 +71,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
     dispatch(thingToDispatch);
   };
 
-  const [clickDescription, setClickDescription] =useState<boolean>(false);
+  const [clickDescription, setClickDescription] = useState<boolean>(false);
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -105,7 +111,11 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
           touched,
           values,
         }) => (
-          <KeyboardAvoidingView style={{ margin: 15}} behavior="padding" enabled={clickDescription}>
+          <KeyboardAvoidingView
+            style={{ margin: 15 }}
+            behavior="padding"
+            enabled={clickDescription}
+          >
             {/* Event Name */}
             <GeneralEventInput
               inputTitle="Event Name"
