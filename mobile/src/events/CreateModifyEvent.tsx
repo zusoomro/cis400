@@ -1,6 +1,12 @@
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { ScrollView, TextInput, Text, View, SafeAreaView } from "react-native";
+import {
+  ScrollView,
+  TextInput,
+  Text,
+  SafeAreaView,
+  KeyboardAvoidingView,
+} from "react-native";
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import sharedStyles from "../sharedStyles";
@@ -74,6 +80,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
       moment(newStartTime).add(duration.asMinutes(), "minutes").toDate()
     );
   };
+  const [clickDescription, setClickDescription] = useState<boolean>(false);
 
   return (
     <ScrollView keyboardShouldPersistTaps="handled">
@@ -113,7 +120,11 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
           touched,
           values,
         }) => (
-          <View style={{ margin: 15 }}>
+          <KeyboardAvoidingView
+            style={{ margin: 15 }}
+            behavior="padding"
+            enabled={clickDescription}
+          >
             {/* Event Name */}
             <GeneralEventInput
               inputTitle="Event Name"
@@ -127,6 +138,27 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
                 />
               }
               error={touched.name && errors.name ? (errors.name as String) : ""}
+            />
+
+            {/* Start Time input */}
+            <GeneralEventInput
+              inputTitle="Start Time"
+              GeneralInputComponent={
+                <DatePicker name="start_time" date={start_time} />
+              }
+              error={
+                touched.start_time && errors.start_time
+                  ? (errors.start_time as String)
+                  : ""
+              }
+            />
+            {/* End Time input */}
+            <GeneralEventInput
+              inputTitle="End Time"
+              GeneralInputComponent={
+                <DatePicker name="end_time" date={end_time} />
+              }
+              error={!!errors.end_time ? (errors.end_time as String) : ""}
             />
 
             {/* Start Location */}
@@ -167,38 +199,6 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
               }
             />
 
-            {/* Start Time input */}
-            <GeneralEventInput
-              inputTitle="Start Time"
-              GeneralInputComponent={
-                <DatePicker
-                  name="start_time"
-                  date={start_time}
-                  startTimeChange={startTimeChange}
-                  endTimeChange={setEndTime}
-                />
-              }
-              error={
-                touched.start_time && errors.start_time
-                  ? (errors.start_time as String)
-                  : ""
-              }
-            />
-
-            {/* End Time input */}
-            <GeneralEventInput
-              inputTitle="End Time"
-              GeneralInputComponent={
-                <DatePicker
-                  name="end_time"
-                  date={end_time}
-                  startTimeChange={startTimeChange}
-                  endTimeChange={setEndTime}
-                />
-              }
-              error={!!errors.end_time ? (errors.end_time as String) : ""}
-            />
-
             <Text style={sharedStyles.inputLabelText}>Priority</Text>
 
             <DropDownPicker
@@ -228,6 +228,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
                   value={values.notes}
                   placeholder="Add description"
                   style={[sharedStyles.input]}
+                  onFocus={() => setClickDescription(true)}
                 />
               }
               error=""
@@ -252,7 +253,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
                 navigation={navigation}
               />
             )}
-          </View>
+          </KeyboardAvoidingView>
         )}
       </Formik>
       <SafeAreaView>
