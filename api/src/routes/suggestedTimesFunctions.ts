@@ -171,11 +171,8 @@ export const findSuggestedTimes = async (
 
   let leftIndex = startingIndexOfProposedEvent - 1;
   let rightIndex = startingIndexOfProposedEvent + 1;
-  let numChunks =
-    (roundedEvent.roundedEndHour - roundedEvent.roundedStartHour) *
-      chunksInHour -
-    (roundedEvent.startOnHalfHour ? 1 : 0) +
-    (roundedEvent.endOnHalfHour ? 1 : 0);
+  let eventLength = moment(proposedEvent.end_time).diff(moment(proposedEvent.start_time), 'minutes');
+  let numChunks = eventLength % 30 == 0 ? eventLength / 30 : (eventLength / 30) + 1;
 
   // Starting from original index of event, move to the left
   // and right to find free times until all chunks are found
