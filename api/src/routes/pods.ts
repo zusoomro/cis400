@@ -118,6 +118,9 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
   const startOfDay = moment(dateAsMoment).hour(8).minute(0);
   const endOfDay = moment(dateAsMoment).hour(18).minute(0); //6pm = 12 + 6
 
+  console.log("start of the day", startOfDay);
+  console.log("end of the day", endOfDay);
+
   const allEvents: Event[] = await Event.query()
     .whereIn(
       "ownerId",
@@ -125,8 +128,8 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
     )
     // Need to use .toISOString to compare dates because the dates are stored
     // In UTC time and then converted to local time only when displayed.
-    .andWhere("start_time", ">", startOfDay.toISOString()) // after 8 am on date
-    .andWhere("end_time", "<", endOfDay.toISOString()); // before 6pm on date
+    .andWhere("start_time", ">", __DEV__ ? startOfDay.toISOString() : startOfDay.toDate())  // after 8 am on date
+    .andWhere("end_time", "<", __DEV__ ? endOfDay.toISOString(): endOfDay.toDate()); // before 6pm on date
 
   return allEvents;
 };
