@@ -69,7 +69,7 @@ export const getBusyTimesArray = (
   startingHour: number
 ): boolean[] => {
   console.log("roundedEvents", roundedEvents);
-  let busyTimes: boolean[] = [];
+  let busyTimes: boolean[] = Array.from({length: 20}, () => false);
   roundedEvents.forEach((e) => {
     const startIndex =
       (e.roundedStartHour - startingHour) * chunksInHour +
@@ -190,7 +190,7 @@ export const findSuggestedTimes = async (
   // or the numTimesToReturn is found
   while (
     nonConflictingTimes.length < numTimesToReturn &&
-    (leftIndex >= 0 || rightIndex + numChunks < endingHour)
+    (leftIndex >= 0 || rightIndex + numChunks <= endingHour)
   ) {
     if (leftIndex >= 0) {
       let allFree = isIntervalFree(busyTimes, leftIndex, numChunks);
@@ -211,7 +211,7 @@ export const findSuggestedTimes = async (
     console.log("checking right interval");
     console.log("right index", rightIndex);
     if (
-      rightIndex + numChunks < endingHour &&
+      rightIndex + numChunks <= endingHour &&
       nonConflictingTimes.length < numTimesToReturn
     ) {
       let allFree = isIntervalFree(busyTimes, rightIndex, numChunks);
