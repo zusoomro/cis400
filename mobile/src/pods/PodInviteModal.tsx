@@ -27,6 +27,10 @@ const PodInviteModal: React.FC<Props> = ({
 }) => {
   const dispatch = useDispatch();
 
+  if (invites) {
+    setModalVisible(true);
+  }
+
   return (
     <Modal
       animationType="slide"
@@ -37,55 +41,87 @@ const PodInviteModal: React.FC<Props> = ({
       }}
     >
       <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Text style={{ fontSize: 18, marginBottom: 15 }}>
-            You've been invited to {invites![0].podName}!
-          </Text>
-          <View>
+        {invites ? (
+          <View style={styles.modalView}>
+            <Text style={{ fontSize: 18, marginBottom: 15 }}>
+              You've been invited to {invites![0].podName}!
+            </Text>
+            <View>
+              <View style={styles.acceptRejectButtonContainer}>
+                <TouchableHighlight
+                  onPress={() => {
+                    handleAcceptInvite(invites[0].podId, invites[0].id).then(
+                      (res) => {
+                        dispatch(setPod(res));
+                        setModalVisible(false);
+                        invites?.shift();
+                        setInvites([...invites]);
+                      }
+                    );
+                  }}
+                  style={{ flex: 1 }}
+                >
+                  <View style={styles.acceptButton}>
+                    <Text style={{ color: "#2F855A", fontSize: 16 }}>
+                      Accept
+                    </Text>
+                  </View>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  onPress={() => {
+                    handleRejectInvite(invites[0].id).then(() => {
+                      setInvites([...invites]);
+                      setModalVisible(false);
+                    });
+                  }}
+                  style={{ flex: 1, marginLeft: 10 }}
+                >
+                  <View style={styles.rejectButton}>
+                    <Text style={{ color: "#9B2C2C", fontSize: 16 }}>
+                      Reject
+                    </Text>
+                  </View>
+                </TouchableHighlight>
+              </View>
+            </View>
+
+            <TouchableHighlight
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={{ color: "#5A67D8", textAlign: "center" }}>
+                Hide Modal
+              </Text>
+            </TouchableHighlight>
+          </View>
+        ) : (
+          <View style={styles.modalView}>
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 40,
+              }}
+            >
+              <Text style={{ fontSize: 18 }}>You have no pod invites :(</Text>
+            </View>
+
             <View style={styles.acceptRejectButtonContainer}>
               <TouchableHighlight
                 onPress={() => {
-                  handleAcceptInvite(invites[0].podId, invites[0].id).then(
-                    (res) => {
-                      dispatch(setPod(res));
-                      setModalVisible(false);
-                      invites?.shift();
-                      setInvites([...invites]);
-                    }
-                  );
+                  setModalVisible(!modalVisible);
                 }}
                 style={{ flex: 1 }}
               >
-                <View style={styles.acceptButton}>
-                  <Text style={{ color: "#2F855A", fontSize: 16 }}>Accept</Text>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight
-                onPress={() => {
-                  handleRejectInvite(invites[0].id).then(() => {
-                    setInvites([...invites]);
-                    setModalVisible(false);
-                  });
-                }}
-                style={{ flex: 1, marginLeft: 10 }}
-              >
-                <View style={styles.rejectButton}>
-                  <Text style={{ color: "#9B2C2C", fontSize: 16 }}>Reject</Text>
-                </View>
+                <Text style={{ color: "#5A67D8", textAlign: "center" }}>
+                  Hide Modal
+                </Text>
               </TouchableHighlight>
             </View>
           </View>
-
-          <TouchableHighlight
-            onPress={() => {
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <Text style={{ color: "#5A67D8", textAlign: "center" }}>
-              Hide Modal
-            </Text>
-          </TouchableHighlight>
-        </View>
+        )}
       </View>
     </Modal>
   );
