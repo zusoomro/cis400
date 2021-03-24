@@ -200,8 +200,6 @@ export const getOverlappingEvents = (
     endpointTimes.push(new Endpoint(new Date(event.end_time), event));
   });
 
-  console.log("endpoint times", endpointTimes);
-  console.log("propopsed event", proposedEvent);
   // Seeing if any end point is in between the proposed start and end time 
   for (const endpoint of endpointTimes) {
     if (
