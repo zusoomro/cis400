@@ -144,7 +144,12 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
             <GeneralEventInput
               inputTitle="Start Time"
               GeneralInputComponent={
-                <DatePicker name="start_time" date={start_time} />
+                <DatePicker
+                  name="start_time"
+                  date={start_time}
+                  startTimeChange={startTimeChange}
+                  endTimeChange={setEndTime}
+                />
               }
               error={
                 touched.start_time && errors.start_time
@@ -156,7 +161,12 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
             <GeneralEventInput
               inputTitle="End Time"
               GeneralInputComponent={
-                <DatePicker name="end_time" date={end_time} />
+                <DatePicker
+                  name="end_time"
+                  date={end_time}
+                  startTimeChange={startTimeChange}
+                  endTimeChange={setEndTime}
+                />
               }
               error={!!errors.end_time ? (errors.end_time as String) : ""}
             />
