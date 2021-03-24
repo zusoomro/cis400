@@ -162,7 +162,7 @@ export const handleDeleteEvent = async (
 ): Promise<Event | null> => {
   const data = { id: values.id };
   try {
-    const res = await fetch(`http://localhost:8000/events`, {
+    const res = await fetch(`${apiUrl}/events`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
