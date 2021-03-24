@@ -81,6 +81,8 @@ const DatePicker: React.FC<Props> = (props) => {
           is24Hour={true}
           display="default"
           onChange={onChange}
+          minuteInterval={5}
+          minimumDate={new Date()}
         />
       )}
     </View>
