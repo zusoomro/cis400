@@ -26,8 +26,8 @@ export type SuggestedTime = {
 export const getRoundedEvents = (eventsOfTheDay: Event[]): RoundedEvent[] => {
   // Round events to nearest half hour blocks
   const roundedEvents = eventsOfTheDay.map((event) => {
-    const start_time = moment(event.start_time);
-    const end_time = moment(event.end_time);
+    const start_time = moment.utc(event.start_time);
+    const end_time = moment.utc(event.end_time);
 
     // RIGHT NOW - the idea of the half hour is baked into the algorithm, but can
     // be changed in the future.
