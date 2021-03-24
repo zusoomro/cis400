@@ -68,6 +68,7 @@ export const getBusyTimesArray = (
   chunksInHour: number,
   startingHour: number
 ): boolean[] => {
+  console.log("roundedEvents", roundedEvents);
   let busyTimes: boolean[] = [];
   roundedEvents.forEach((e) => {
     const startIndex =
