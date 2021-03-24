@@ -14,6 +14,7 @@ import {
   VictoryPie,
   VictoryLabel,
   VictoryAxis,
+  VictoryLegend,
 } from "victory-native";
 
 interface Props {
@@ -40,6 +41,15 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
   const [selectedTimeIndex, setSelectedTimeIndex] = useState(0);
   const [timePercentageData, setTimePercentageData] = useState([]);
 
+  const [pieLegendLabels, setPieLegendLabels] = useState([]);
+  const pieChartColorScale = [
+    "#312E81",
+    "#BFDBFE",
+    "#4338CA",
+    "#818CF8",
+    "#3B82F6",
+    "#C7D2FE",
+  ];
   const podId = useSelector((state: RootState) => state.pods.pod.id);
 
   async function fetchAnalytics() {
@@ -86,6 +96,7 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
       let gasPercentage = [];
       let timeTotalReport = [];
       let timePercentageReport = [];
+      let pieLabels = [];
       json.forEach(async function (data) {
         let emailShort: String = data.email.substring(
           0,
@@ -99,11 +110,14 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
           seconds: data.timeUsage / 3600,
         });
         timePercentageReport.push({ x: emailShort, y: data.timePercentage });
+
+        pieLabels.push({ name: emailShort });
       });
       setgasTotalData(gasReport);
       setGasPercentageData(gasPercentage);
       setTimeTotalData(timeTotalReport);
       setTimePercentageData(timePercentageReport);
+      setPieLegendLabels(pieLabels);
     } catch (err) {
       console.log("error loading analytics", err);
     }
@@ -264,20 +278,28 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
                     <VictoryAxis style={{ grid: { strokeWidth: 0.0 } }} />
                   </VictoryChart>
                 ) : (
-                  <VictoryPie
-                    width={350}
-                    height={375}
-                    padding={60}
-                    labelPosition="startAngle"
-                    data={gasPercentageData}
-                    colorScale={[
-                      "#312E81",
-                      "#4338CA",
-                      "#6366F1",
-                      "#818CF8",
-                      "#C7D2FE",
-                    ]}
-                  />
+                  <View>
+                    <VictoryPie
+                      width={350}
+                      height={375}
+                      padding={10}
+                      labelPosition="startAngle"
+                      data={gasPercentageData}
+                      colorScale={pieChartColorScale}
+                      labels={() => null}
+                    />
+                    <VictoryLegend
+                      colorScale={pieChartColorScale}
+                      orientation="horizontal"
+                      gutter={20}
+                      title="Legend"
+                      height={100}
+                      centerTitle
+                      style={{ border: { stroke: "black" } }}
+                      data={pieLegendLabels}
+                      itemsPerRow={3}
+                    />
+                  </View>
                 )}
               </View>
             </Card>
@@ -303,20 +325,27 @@ const PodAnalytics: React.FC<Props> = ({ navigation }) => {
               />
               <View>
                 {selectedTimeIndex == 0 ? (
-                  <VictoryPie
-                    width={355}
-                    height={375}
-                    padding={60}
-                    labelPosition="startAngle"
-                    data={timePercentageData}
-                    colorScale={[
-                      "#312E81",
-                      "#4338CA",
-                      "#6366F1",
-                      "#818CF8",
-                      "#C7D2FE",
-                    ]}
-                  />
+                  <View>
+                    <VictoryPie
+                      width={355}
+                      height={375}
+                      padding={10}
+                      data={timePercentageData}
+                      colorScale={pieChartColorScale}
+                      labels={() => null}
+                    />
+                    <VictoryLegend
+                      colorScale={pieChartColorScale}
+                      orientation="horizontal"
+                      gutter={20}
+                      title="Legend"
+                      height={100}
+                      centerTitle
+                      style={{ border: { stroke: "black" } }}
+                      data={pieLegendLabels}
+                      itemsPerRow={3}
+                    />
+                  </View>
                 ) : (
                   <VictoryChart
                     domainPadding={30}
