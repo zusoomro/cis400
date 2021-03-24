@@ -125,9 +125,11 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
     )
     // Need to use .toISOString to compare dates because the dates are stored
     // In UTC time and then converted to local time only when displayed.
-    .andWhere("start_time", ">", typeof(__DEV__) != undefined ? startOfDay.toISOString() : startOfDay.toDate())  // after 8 am on date
-    .andWhere("end_time", "<", typeof(__DEV__) != undefined ? endOfDay.toISOString(): endOfDay.toDate()); // before 6pm on date
+    .andWhere("start_time", ">", typeof(__DEV__) == undefined ? startOfDay.toDate() : startOfDay.toISOString())  // after 8 am on date
+    .andWhere("end_time", "<", typeof(__DEV__) == undefined ?  endOfDay.toDate(): endOfDay.toISOString()); // before 6pm on date
 
+    console.log("startOfDay.toDate()", startOfDay.toDate());
+    console.log("endOfDay.toDate()", startOfDay.toDate());
     console.log("allEvents", allEvents);
   return allEvents;
 };
