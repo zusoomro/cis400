@@ -40,7 +40,7 @@ const EventInSchedule: React.FC<EventProps> = ({
     <Pressable onPress={() => navigation.navigate("ModifyEvent", { event })}>
       <View style={[styles.eventContainer, sharedStyles.shadow]}>
         {avatar && <Image source={{ uri: avatar }} style={styles.avatar} />}
-        <View>
+        <View style={{ flexShrink: 2 }}>
           {/* Event Name */}
           <Text style={{ fontSize: 18, fontWeight: "600", marginBottom: 5 }}>
             {name}
@@ -59,10 +59,14 @@ const EventInSchedule: React.FC<EventProps> = ({
           <Text style={{ color: "#718096", marginBottom: 5 }}>
             {generateDateString(event)}
           </Text>
-          <Text style={{ color: "#319795", marginBottom: 5 }}>
+          <Text
+            style={{ color: "#319795", marginBottom: 5 }}
+            numberOfLines={1}
+            ellipsizeMode="clip"
+          >
             {formattedAddress}
           </Text>
-          <Text style={{ color: "#4A5568" }}>{notes}</Text>
+          {notes != "" && <Text style={{ color: "#4A5568" }}>{notes}</Text>}
         </View>
       </View>
     </Pressable>
@@ -70,7 +74,7 @@ const EventInSchedule: React.FC<EventProps> = ({
 };
 
 const generateDateString = (event: Event): string => {
-  var days = ['Sun','Mon','Tues','Wed','Thurs','Friday','Sat'];
+  var days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Friday", "Sat"];
   const date: Date = new Date(event.start_time);
   const dd = String(date.getDate()).padStart(2, "0");
   const mm = String(date.getMonth() + 1);
