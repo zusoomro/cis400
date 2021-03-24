@@ -144,6 +144,7 @@ export const findSuggestedTimes = async (
 ): Promise<{
   nonConflictingTimes: SuggestedTime[];
 }> => {
+  console.log("events of the day", eventsOfTheDay);
   // nonConflictingTimes are ordered by closests to the proposed event
   // by  sliding a window to the left and right and adding events found first
   const nonConflictingTimes: SuggestedTime[] = [];
@@ -162,6 +163,10 @@ export const findSuggestedTimes = async (
     chunksInHour,
     startingHour
   );
+
+  console.log("roundedEvents", roundedEvents);
+  console.log("busyTimes", busyTimes);
+
 
   // Find all free times in the busy array
   const roundedEvent = getRoundedEvents([proposedEvent])[0];
@@ -198,14 +203,13 @@ export const findSuggestedTimes = async (
       leftIndex--;
     }
 
-    console.log("busyTimes", busyTimes);
+    console.log("checking right interval");
+    console.log("right index", rightIndex);
+    console.log("numChunks", numChunks);
     if (
       rightIndex + numChunks < endingHour &&
       nonConflictingTimes.length < numTimesToReturn
     ) {
-      console.log("checking right interval");
-      console.log("right index", rightIndex);
-      console.log("numChunks", numChunks);
       let allFree = isIntervalFree(busyTimes, rightIndex, numChunks);
 
       if (allFree) {
