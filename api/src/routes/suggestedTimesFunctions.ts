@@ -197,10 +197,14 @@ export const findSuggestedTimes = async (
       leftIndex--;
     }
 
+    console.log("busyTimes", busyTimes);
     if (
       rightIndex + numChunks < endingHour &&
       nonConflictingTimes.length < numTimesToReturn
     ) {
+      console.log("checking right interval");
+      console.log("right index", rightIndex);
+      console.log("numChunks", numChunks);
       let allFree = isIntervalFree(busyTimes, rightIndex, numChunks);
 
       if (allFree) {
