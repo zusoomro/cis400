@@ -170,7 +170,7 @@ export const findSuggestedTimes = async (
 
   // Find all free times in the busy array
   const roundedEvent = getRoundedEvents([proposedEvent])[0];
-  console.log("roundedEvent", roundedEvents);
+  console.log("roundedEvent", roundedEvent);
 
   const additionToIndex = roundedEvent.startOnHalfHour ? 1 : 0;
   const startingIndexOfProposedEvent =
