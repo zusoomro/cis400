@@ -75,7 +75,7 @@ const LoginRegister: React.FC<AuthComponentProps> = ({
                 onBlur={handleBlur("email")}
                 value={values.email}
                 placeholder="email"
-                style={[sharedStyles.input, {marginBottom: 15}]}
+                style={[sharedStyles.input, { marginBottom: 15 }]}
                 textContentType="username"
                 autoCapitalize="none"
                 autoCorrect={false}
@@ -85,7 +85,7 @@ const LoginRegister: React.FC<AuthComponentProps> = ({
                 onBlur={handleBlur("password")}
                 value={values.password}
                 placeholder="password"
-                style={[sharedStyles.input, {marginBottom: 15}]}
+                style={[sharedStyles.input, { marginBottom: 15 }]}
                 secureTextEntry
                 textContentType="password"
                 autoCorrect={false}
