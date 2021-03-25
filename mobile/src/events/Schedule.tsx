@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { setEvents } from "./eventsSlice";
+import { setPod } from "../pods/podSlice";
 import sharedStyles from "../sharedStyles";
 import Event from "../types/Event";
 import Pod from "../types/Pod";
@@ -62,13 +63,14 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
   const events = useSelector((state: RootState) => state.events.events);
   //const pod = useSelector((state: RootState) => state.pods.pod.id);
   const [map, setMap] = useState([]);
-  const [pod, setPod] = useState<Pod>();
+  // const [pod, setPod] = useState<Pod>();
+  const pod = useSelector((state: RootState) => state.pods.pod);
   const [loading, setLoading] = useState<boolean>(true);
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const today = new Date();
 
-  const [isToggledToUser, setIsToggledToUser] = useState(true);
+  const [isToggledToUser, setIsToggledToUser] = useState(false);
 
   const processedEvents: CalendarEvent[] = events.map((event: Event) => {
     return {
@@ -101,7 +103,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
   React.useEffect(() => {
     setLoading(true);
     fetchUserPod().then((res) => {
-      setPod(res);
+      dispatch(setPod(res));
       if (res) {
         fetchAvatarsAndEmails(res.members.map((m) => m.id)).then((map) => {
           setMap(map);
@@ -121,11 +123,15 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
       });
     } else {
       setLoading(true);
-      fetchPodEvents(pod.id).then((res) => {
-        // Line below should be dispatch(setEvents(res)
-        // NOT setEvents(res[0]) for the schedule toggle to work
-        dispatch(setEvents(res));
-        setLoading(false);
+      fetchUserPod().then((res) => {
+        if (res) {
+          fetchPodEvents(res.id).then((res2) => {
+            // Line below should be dispatch(setEvents(res)
+            // NOT setEvents(res[0]) for the schedule toggle to work
+            dispatch(setEvents(res2));
+          })
+          setLoading(false);
+        }
       });
     }
   }, [isToggledToUser, pod]);
@@ -142,9 +148,15 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
           Schedule
         </Text>
         <View style={styles.scheduleContainer}>
-          <Text style={{ fontSize: 16, marginRight: "auto" }}>
-            View personal schedule
-          </Text>
+          {isToggledToUser ? (
+            <Text style={{ fontSize: 16, marginRight: "auto" }}>
+              Personal schedule
+            </Text>
+          ) : (
+            <Text style={{ fontSize: 16, marginRight: "auto" }}>
+              Pod schedule
+            </Text>
+          )}
           <Switch
             trackColor={{ false: "#5A67D8", true: "#7F9CF5" }}
             thumbColor={"#FFF"}
