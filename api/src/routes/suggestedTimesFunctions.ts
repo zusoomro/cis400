@@ -24,6 +24,7 @@ export type SuggestedTime = {
  * @returns array where each event is rounded
  */
 export const getRoundedEvents = (eventsOfTheDay: Event[]): RoundedEvent[] => {
+  console.log("eventsOfTheDay", eventsOfTheDay);
   // Round events to nearest half hour blocks
   const roundedEvents = eventsOfTheDay.map((event) => {
     const start_time = moment(event.start_time);
@@ -46,6 +47,7 @@ export const getRoundedEvents = (eventsOfTheDay: Event[]): RoundedEvent[] => {
     };
   });
 
+  console.log("roundedEvents",  roundedEvents);
   return roundedEvents;
 };
 
