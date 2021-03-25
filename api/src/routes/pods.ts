@@ -1,4 +1,5 @@
 import express from "express";
+import { isConstructorDeclaration } from "typescript";
 import Pod from "../../models/Pod";
 import User from "../../models/User";
 import PodInvites from "../../models/PodInvites";
@@ -7,6 +8,7 @@ import Event from "../../models/Event";
 import eventRouter from "./events";
 import { compare } from "bcrypt";
 import moment from "moment";
+import { start } from "repl";
 
 const podsRouter = express.Router();
 
@@ -121,6 +123,9 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
     "ownerId",
     pod.members.map((m) => m.id)
   );
+
+  console.log("allEvents");
+  console.log("startOfDay", startOfDay);
   // Need to use .toISOString to compare dates because the dates are stored
   // In UTC time and then converted to local time only when displayed.
   // .andWhere("start_time", ">", typeof(__DEV__) == undefined ? startOfDay.toDate() : startOfDay.toISOString())  // after 8 am on date
@@ -130,8 +135,8 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
 
   allEvents.forEach((event) => {
     if (
-      moment(event.start_time).isAfter(startOfDay) &&
-      moment(event.end_time).isBefore(endOfDay)
+      moment(event.start_time).isSame(startOfDay, "day") &&
+      moment(event.end_time).isSame(endOfDay, "day")
     ) {
       eventsOfDay.push(event);
     }
