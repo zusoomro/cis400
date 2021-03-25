@@ -42,7 +42,6 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
       setPod(res);
     });
   }, []);
-  // const pod = useSelector((state: RootState) => state.pods.pod);
   return (
     <SafeAreaView style={styles.scheduleHomePageContainer}>
       <Schedule navigation={navigation} />
@@ -61,7 +60,6 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
 
 const Schedule: React.FC<{}> = ({ navigation }) => {
   const events = useSelector((state: RootState) => state.events.events);
-  //const pod = useSelector((state: RootState) => state.pods.pod.id);
   const [map, setMap] = useState([]);
   // const [pod, setPod] = useState<Pod>();
   const pod = useSelector((state: RootState) => state.pods.pod);
