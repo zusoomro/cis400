@@ -124,7 +124,7 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
     pod.members.map((m) => m.id)
   );
 
-  console.log("allEvents");
+  console.log("allEvents", allEvents);
   console.log("startOfDay", startOfDay);
   // Need to use .toISOString to compare dates because the dates are stored
   // In UTC time and then converted to local time only when displayed.
