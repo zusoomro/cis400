@@ -1,5 +1,4 @@
 import express from "express";
-import { isConstructorDeclaration } from "typescript";
 import Pod from "../../models/Pod";
 import User from "../../models/User";
 import PodInvites from "../../models/PodInvites";
@@ -118,20 +117,29 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
   const startOfDay = moment(dateAsMoment).hour(8).minute(0);
   const endOfDay = moment(dateAsMoment).hour(18).minute(0); //6pm = 12 + 6
 
-  const allEvents: Event[] = await Event.query()
-    .whereIn(
-      "ownerId",
-      pod.members.map((m) => m.id)
-    )
-    // Need to use .toISOString to compare dates because the dates are stored
-    // In UTC time and then converted to local time only when displayed.
-    .andWhere("start_time", ">", typeof(__DEV__) == undefined ? startOfDay.toDate() : startOfDay.toISOString())  // after 8 am on date
-    .andWhere("end_time", "<", typeof(__DEV__) == undefined ?  endOfDay.toDate(): endOfDay.toISOString()); // before 6pm on date
+  const allEvents: Event[] = await Event.query().whereIn(
+    "ownerId",
+    pod.members.map((m) => m.id)
+  );
+  // Need to use .toISOString to compare dates because the dates are stored
+  // In UTC time and then converted to local time only when displayed.
+  // .andWhere("start_time", ">", typeof(__DEV__) == undefined ? startOfDay.toDate() : startOfDay.toISOString())  // after 8 am on date
+  // .andWhere("end_time", "<", typeof(__DEV__) == undefined ?  endOfDay.toDate(): endOfDay.toISOString()); // before 6pm on date
 
-    console.log("startOfDay.toDate()", startOfDay.toDate());
-    console.log("endOfDay.toDate()", startOfDay.toDate());
-    console.log("allEvents", allEvents);
-  return allEvents;
+  const eventsOfDay: Event[] = [];
+
+  allEvents.forEach((event) => {
+    if (
+      moment(event.start_time).isAfter(startOfDay) &&
+      moment(event.end_time).isBefore(endOfDay)
+    ) {
+      eventsOfDay.push(event);
+    }
+  });
+
+  console.log("eventsOfDay  in getPodEvents of day", eventsOfDay);
+
+  return eventsOfDay;
 };
 
 podsRouter.get(

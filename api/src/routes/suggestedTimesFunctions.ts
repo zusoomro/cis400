@@ -69,7 +69,7 @@ export const getBusyTimesArray = (
   startingHour: number
 ): boolean[] => {
   console.log("roundedEvents", roundedEvents);
-  let busyTimes: boolean[] = Array.from({length: 20}, () => false);
+  let busyTimes: boolean[] = Array.from({ length: 20 }, () => false);
   roundedEvents.forEach((e) => {
     const startIndex =
       (e.roundedStartHour - startingHour) * chunksInHour +
@@ -167,7 +167,6 @@ export const findSuggestedTimes = async (
   console.log("roundedEvents", roundedEvents);
   console.log("busyTimes", busyTimes);
 
-
   // Find all free times in the busy array
   const roundedEvent = getRoundedEvents([proposedEvent])[0];
   console.log("roundedEvent", roundedEvent);
@@ -177,12 +176,16 @@ export const findSuggestedTimes = async (
     (roundedEvent.roundedStartHour - startingHour) * chunksInHour +
     additionToIndex;
 
-    console.log("startingIndexOfProposedEvent",startingIndexOfProposedEvent);
+  console.log("startingIndexOfProposedEvent", startingIndexOfProposedEvent);
 
   let leftIndex = startingIndexOfProposedEvent - 1;
   let rightIndex = startingIndexOfProposedEvent + 1;
-  let eventLength = moment(proposedEvent.end_time).diff(moment(proposedEvent.start_time), 'minutes');
-  let numChunks = eventLength % 30 == 0 ? eventLength / 30 : (eventLength / 30) + 1;
+  let eventLength = moment(proposedEvent.end_time).diff(
+    moment(proposedEvent.start_time),
+    "minutes"
+  );
+  let numChunks =
+    eventLength % 30 == 0 ? eventLength / 30 : eventLength / 30 + 1;
   console.log("numChunks", numChunks);
 
   // Starting from original index of event, move to the left

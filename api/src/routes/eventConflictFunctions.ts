@@ -187,7 +187,7 @@ export const getOverlappingEvents = (
   const eventsAdded = new Set();
   const conflictingEvents = [];
 
-  // Checking if proposed event exists inside any existing events 
+  // Checking if proposed event exists inside any existing events
   existingEvents.forEach((event) => {
     // Can compare events this way as both will always be the same type
     if (
@@ -200,7 +200,7 @@ export const getOverlappingEvents = (
     endpointTimes.push(new Endpoint(new Date(event.end_time), event));
   });
 
-  // Seeing if any end point is in between the proposed start and end time 
+  // Seeing if any end point is in between the proposed start and end time
   for (const endpoint of endpointTimes) {
     if (
       endpoint.time >= new Date(proposedEvent.start_time) &&
