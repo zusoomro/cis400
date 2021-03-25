@@ -26,8 +26,8 @@ export type SuggestedTime = {
 export const getRoundedEvents = (eventsOfTheDay: Event[]): RoundedEvent[] => {
   // Round events to nearest half hour blocks
   const roundedEvents = eventsOfTheDay.map((event) => {
-    const start_time = moment.utc(event.start_time);
-    const end_time = moment.utc(event.end_time);
+    const start_time = moment(event.start_time);
+    const end_time = moment(event.end_time);
 
     // RIGHT NOW - the idea of the half hour is baked into the algorithm, but can
     // be changed in the future.
@@ -68,7 +68,6 @@ export const getBusyTimesArray = (
   chunksInHour: number,
   startingHour: number
 ): boolean[] => {
-  console.log("roundedEvents", roundedEvents);
   let busyTimes: boolean[] = Array.from({ length: 20 }, () => false);
   roundedEvents.forEach((e) => {
     const startIndex =
@@ -144,7 +143,6 @@ export const findSuggestedTimes = async (
 ): Promise<{
   nonConflictingTimes: SuggestedTime[];
 }> => {
-  console.log("events of the day", eventsOfTheDay);
   // nonConflictingTimes are ordered by closests to the proposed event
   // by  sliding a window to the left and right and adding events found first
   const nonConflictingTimes: SuggestedTime[] = [];
@@ -164,19 +162,17 @@ export const findSuggestedTimes = async (
     startingHour
   );
 
-  console.log("roundedEvents", roundedEvents);
   console.log("busyTimes", busyTimes);
 
   // Find all free times in the busy array
   const roundedEvent = getRoundedEvents([proposedEvent])[0];
-  console.log("roundedEvent", roundedEvent);
 
   const additionToIndex = roundedEvent.startOnHalfHour ? 1 : 0;
   const startingIndexOfProposedEvent =
     (roundedEvent.roundedStartHour - startingHour) * chunksInHour +
     additionToIndex;
 
-  console.log("startingIndexOfProposedEvent", startingIndexOfProposedEvent);
+  console.log("startIndex", startingIndexOfProposedEvent);
 
   let leftIndex = startingIndexOfProposedEvent - 1;
   let rightIndex = startingIndexOfProposedEvent + 1;
@@ -186,7 +182,6 @@ export const findSuggestedTimes = async (
   );
   let numChunks =
     eventLength % 30 == 0 ? eventLength / 30 : eventLength / 30 + 1;
-  console.log("numChunks", numChunks);
 
   // Starting from original index of event, move to the left
   // and right to find free times until all chunks are found
@@ -211,8 +206,6 @@ export const findSuggestedTimes = async (
       leftIndex--;
     }
 
-    console.log("checking right interval");
-    console.log("right index", rightIndex);
     if (
       rightIndex + numChunks <= endingHour &&
       nonConflictingTimes.length < numTimesToReturn
