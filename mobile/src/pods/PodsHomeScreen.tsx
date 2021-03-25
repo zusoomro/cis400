@@ -157,8 +157,6 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
         title="Refresh Invites"
         onPress={() => {
           fetchUsersInvites().then((invites) => {
-            console.log("refreshed invites!")
-            console.log("invites:", invites)
             setInvites(invites);
           });
         }}
