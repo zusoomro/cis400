@@ -27,8 +27,8 @@ export const getRoundedEvents = (eventsOfTheDay: Event[]): RoundedEvent[] => {
   console.log("eventsOfTheDay", eventsOfTheDay);
   // Round events to nearest half hour blocks
   const roundedEvents = eventsOfTheDay.map((event) => {
-    const start_time = moment(event.start_time);
-    const end_time = moment(event.end_time);
+    const start_time = moment(event.start_time).local();
+    const end_time = moment(event.end_time).local();
 
     // RIGHT NOW - the idea of the half hour is baked into the algorithm, but can
     // be changed in the future.
@@ -173,17 +173,19 @@ export const findSuggestedTimes = async (
   const startingIndexOfProposedEvent =
     (roundedEvent.roundedStartHour - startingHour) * chunksInHour +
     additionToIndex;
+  const eventLength = moment(proposedEvent.end_time).diff(
+    moment(proposedEvent.start_time),
+    "minutes"
+  );
+  
+  const numChunks =
+    eventLength % 30 == 0 ? eventLength / 30 : eventLength / 30 + 1;
 
   console.log("startIndex", startingIndexOfProposedEvent);
 
   let leftIndex = startingIndexOfProposedEvent - 1;
-  let rightIndex = startingIndexOfProposedEvent + 1;
-  let eventLength = moment(proposedEvent.end_time).diff(
-    moment(proposedEvent.start_time),
-    "minutes"
-  );
-  let numChunks =
-    eventLength % 30 == 0 ? eventLength / 30 : eventLength / 30 + 1;
+  let rightIndex = startingIndexOfProposedEvent + numChunks;
+
 
   // Starting from original index of event, move to the left
   // and right to find free times until all chunks are found
