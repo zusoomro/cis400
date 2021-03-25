@@ -215,13 +215,13 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
               error=""
             />
             {(event == null || user.id == event.ownerId) && (
-                <Button
-                  onPress={handleSubmit}
-                  title="Save"
-                  style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
-                />
+              <Button
+                onPress={handleSubmit}
+                title="Save"
+                style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
+              />
             )}
-            {!!event && user.id == event.ownerId &&(
+            {!!event && user.id == event.ownerId && (
               <Button
                 onPress={() => setDeleteModalVisible(true)}
                 title="Delete"

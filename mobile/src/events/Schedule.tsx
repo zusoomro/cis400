@@ -23,9 +23,9 @@ import {
   fetchUserPod,
   fetchUserEmail,
 } from "./scheduleService";
-import { BaseEvent, Calendar } from 'react-native-big-calendar'
-import { Dimensions } from 'react-native';
-import {RootState} from "../configureStore";
+import { BaseEvent, Calendar } from "react-native-big-calendar";
+import { Dimensions } from "react-native";
+import { RootState } from "../configureStore";
 
 interface CalendarEvent extends BaseEvent {
   wigoEvent: Event;
@@ -62,7 +62,6 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
 const Schedule: React.FC<{}> = ({ navigation }) => {
   const events = useSelector((state: RootState) => state.events.events);
   const [map, setMap] = useState([]);
-  // const [pod, setPod] = useState<Pod>();
   const pod = useSelector((state: RootState) => state.pods.pod);
   const [loading, setLoading] = useState<boolean>(true);
   const user = useSelector((state) => state.auth.user);
@@ -72,12 +71,19 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
 
   const [isToggledToUser, setIsToggledToUser] = useState(false);
 
-
-  const calendarEventColors = ["#818cf8", "#4f46e5", "#3730a3", "#2dd4bf", "#0D9488", "#115E59"]
-  const podMemberIdToColor: { [key: number]: string } = {}
+  const calendarEventColors = [
+    "#818cf8",
+    "#4f46e5",
+    "#3730a3",
+    "#2dd4bf",
+    "#0D9488",
+    "#115E59",
+  ];
+  const podMemberIdToColor: { [key: number]: string } = {};
   if (pod) {
     for (let i = 0; i < pod.members.length; i++) {
-      podMemberIdToColor[pod.members[i].id] = calendarEventColors[i % calendarEventColors.length];
+      podMemberIdToColor[pod.members[i].id] =
+        calendarEventColors[i % calendarEventColors.length];
     }
   }
 
@@ -116,11 +122,11 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
       setLoading(true);
       fetchUserPod().then((res) => {
         if (res) {
-          fetchPodEvents(res.id).then((res2) => {
+          fetchPodEvents(res.id).then((podEvents) => {
             // Line below should be dispatch(setEvents(res)
             // NOT setEvents(res[0]) for the schedule toggle to work
-            dispatch(setEvents(res2));
-          })
+            dispatch(setEvents(podEvents));
+          });
           setLoading(false);
         }
       });
@@ -129,10 +135,8 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
 
   // If events change, process them into calendar events
   React.useEffect(() => {
-
     const PromiseArray = events.map(async (event) => {
       const email = await fetchUserEmail(event.ownerId);
-      console.log("event in forEach loop:" ,event)
       return {
         title: event.name,
         ownerEmail: email,
@@ -140,15 +144,20 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
         end: event.end_time,
         id: event.id,
         wigoEvent: event,
-        children: <View><Text style={{color: "#FFFFFF", fontSize: 11}} numberOfLines={1}>{email.split("@")[0]}</Text></View>
-      }
-    })
+        children: (
+          <View>
+            <Text style={{ color: "#FFFFFF", fontSize: 11 }} numberOfLines={1}>
+              {email.split("@")[0]}
+            </Text>
+          </View>
+        ),
+      };
+    });
 
     Promise.all(PromiseArray).then((values) => {
-      console.log("processed events:", values)
-      setProcessedEvents(values)
-    })
-  }, [events])
+      setProcessedEvents(values);
+    });
+  }, [events]);
 
   const dd = String(today.getDate()).padStart(2, "0");
   const mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -186,27 +195,32 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
           </View>
         ) : (isToggledToUser ? events : events).length > 0 ? (
           <View>
-            {processedEvents && processedEvents.length != 0 &&
-
-            (<Calendar events={processedEvents!} mode="day" scrollOffsetMinutes={480}
-              height={Dimensions.get('window').height - 130} ampm={true} onPressEvent={(event: CalendarEvent) => { 
-                console.log(`Clicked on event with id: ${event.id}`); 
-                navigation.navigate("ModifyEvent", { event: events.find((eventObject: Event) => eventObject.id == event.id), pod })
-              }} 
-              swipeEnabled={true}
-              eventCellStyle={(event: BaseEvent) => {
-                const fixedEvent = event as CalendarEvent;
-                const userId = fixedEvent.id
-                console.log(podMemberIdToColor[fixedEvent.wigoEvent.ownerId]);
-                console.log(podMemberIdToColor);
-                console.log(fixedEvent.wigoEvent.ownerId);
-                fetchUserEmail(fixedEvent.wigoEvent.ownerId).then((res) => {
-                  console.log(res);
-                });
-                return {
-                  backgroundColor: podMemberIdToColor[fixedEvent.wigoEvent.ownerId],
-                }
-              }}/>)}
+            {processedEvents && processedEvents.length != 0 && (
+              <Calendar
+                events={processedEvents!}
+                mode="day"
+                scrollOffsetMinutes={480}
+                height={Dimensions.get("window").height - 130}
+                ampm={true}
+                onPressEvent={(event: CalendarEvent) => {
+                  console.log(`Clicked on event with id: ${event.id}`);
+                  navigation.navigate("ModifyEvent", {
+                    event: events.find(
+                      (eventObject: Event) => eventObject.id == event.id
+                    ),
+                    pod,
+                  });
+                }}
+                swipeEnabled={true}
+                eventCellStyle={(event: BaseEvent) => {
+                  const fixedEvent = event as CalendarEvent;
+                  return {
+                    backgroundColor:
+                      podMemberIdToColor[fixedEvent.wigoEvent.ownerId],
+                  };
+                }}
+              />
+            )}
           </View>
         ) : (
           <View style={styles.emptyScheduleContainer}>
