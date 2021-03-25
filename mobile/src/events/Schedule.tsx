@@ -41,7 +41,7 @@ const ScheduleHomePage: React.FC<{}> = ({ navigation }) => {
       setPod(res);
     });
   }, []);
-  const pod = useSelector((state: RootState) => state.pods.pod);
+  // const pod = useSelector((state: RootState) => state.pods.pod);
   return (
     <SafeAreaView style={styles.scheduleHomePageContainer}>
       <Schedule navigation={navigation} />
@@ -68,7 +68,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
   const dispatch = useDispatch();
   const today = new Date();
 
-  const [isToggledToUser, setIsToggledToUser] = useState(false);
+  const [isToggledToUser, setIsToggledToUser] = useState(true);
 
   const processedEvents: CalendarEvent[] = events.map((event: Event) => {
     return {
