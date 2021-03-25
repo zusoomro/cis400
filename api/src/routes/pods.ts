@@ -115,7 +115,6 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
     .findOne({ "pods.id": podId })
     .withGraphFetched("members");
 
-  console.log("date that we're converting to moment", date);
   const allEvents: Event[] = await Event.query().whereIn(
     "ownerId",
     pod.members.map((m) => m.id)
@@ -131,8 +130,6 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
       eventsOfDay.push(event);
     }
   });
-
-  console.log("eventsOfDay  in getPodEvents of day", eventsOfDay);
 
   return eventsOfDay;
 };
