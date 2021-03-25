@@ -140,7 +140,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
         end: event.end_time,
         id: event.id,
         wigoEvent: event,
-        children: <View><Text style={{color: "#FFFFFF", fontSize: 12}} numberOfLines={1}>{email.split("@")[0]}</Text></View>
+        children: <View><Text style={{color: "#FFFFFF", fontSize: 11}} numberOfLines={1}>{email.split("@")[0]}</Text></View>
       }
     })
 

@@ -214,7 +214,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
               }
               error=""
             />
-            {!!event && user.id == event.ownerId && (
+            {(event == null || user.id == event.ownerId) && (
                 <Button
                   onPress={handleSubmit}
                   title="Save"
