@@ -8,6 +8,8 @@ import sharedStyles from "../sharedStyles";
 type Props = {
   name: string;
   date: Date;
+  startTimeChange: (startDate: Date) => void;
+  endTimeChange: React.Dispatch<React.SetStateAction<Date>>;
 };
 
 enum State {
@@ -25,11 +27,25 @@ const DatePicker: React.FC<Props> = (props) => {
   const { setFieldValue } = useFormikContext();
   const [field] = useField(props.name);
 
+  // If prop date changes because of updates in other date picker
+  React.useEffect(() => {
+    setDate(props.date);
+    setFieldValue(props.name, props.date);
+  }, [props.date]);
+
+  // If user changes date on this date time picker
   const onChange = (event, selectedDate) => {
     // Set date on calendar UI
     setDate(selectedDate);
     // Set date in form
     setFieldValue(props.name, selectedDate);
+
+    // Send new time up to parent
+    if (props.name == "start_time") {
+      props.startTimeChange(selectedDate);
+    } else {
+      props.endTimeChange(selectedDate);
+    }
   };
 
   const handleDatePress = () => {
@@ -81,6 +97,8 @@ const DatePicker: React.FC<Props> = (props) => {
           is24Hour={true}
           display="default"
           onChange={onChange}
+          minuteInterval={5}
+          minimumDate={new Date()}
         />
       )}
     </View>
