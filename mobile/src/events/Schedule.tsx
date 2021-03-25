@@ -24,6 +24,7 @@ import {
 } from "./scheduleService";
 import { BaseEvent, Calendar } from 'react-native-big-calendar'
 import { Dimensions } from 'react-native';
+import {RootState} from "../configureStore";
 
 interface CalendarEvent extends BaseEvent {
   wigoEvent: Event;
@@ -67,20 +68,12 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const today = new Date();
+  const [processedEvents, setProcessedEvents] = useState<CalendarEvent[]>();
 
   const [isToggledToUser, setIsToggledToUser] = useState(true);
 
-  const processedEvents: CalendarEvent[] = events.map((event: Event) => {
-    return {
-      title: event.name,
-      ownerEmail: fetchUserEmail(event.ownerId),
-      start: event.start_time,
-      end: event.end_time,
-      id: event.id,
-      wigoEvent: event
-    }
-  });
-  const calendarEventColors = ["#818CF8", "#4F46E5", "#3730A3", "#2DD4BF", "#0D9488", "#115E59"]
+
+  const calendarEventColors = ["#818cf8", "#4f46e5", "#3730a3", "#2dd4bf", "#0D9488", "#115E59"]
   const podMemberIdToColor: { [key: number]: string } = {}
   if (pod) {
     for (let i = 0; i < pod.members.length; i++) {
@@ -130,6 +123,29 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
     }
   }, [isToggledToUser, pod]);
 
+  // If events change, process them into calendar events
+  React.useEffect(() => {
+
+    const PromiseArray = events.map(async (event) => {
+      const email = await fetchUserEmail(event.ownerId);
+      console.log("event in forEach loop:" ,event)
+      return {
+        title: event.name,
+        ownerEmail: email,
+        start: event.start_time,
+        end: event.end_time,
+        id: event.id,
+        wigoEvent: event,
+        children: <View><Text style={{color: "#FFFFFF", fontSize: 12}} numberOfLines={1}>{email.split("@")[0]}</Text></View>
+      }
+    })
+
+    Promise.all(PromiseArray).then((values) => {
+      console.log("processed events:", values)
+      setProcessedEvents(values)
+    })
+  }, [events])
+
   const dd = String(today.getDate()).padStart(2, "0");
   const mm = String(today.getMonth() + 1).padStart(2, "0");
   const yyyy = today.getFullYear();
@@ -160,7 +176,9 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
           </View>
         ) : (isToggledToUser ? events : events).length > 0 ? (
           <View>
-            <Calendar events={processedEvents} mode="day" scrollOffsetMinutes={480} 
+            {processedEvents && processedEvents.length != 0 &&
+
+            (<Calendar events={processedEvents!} mode="day" scrollOffsetMinutes={480}
               height={Dimensions.get('window').height - 130} ampm={true} onPressEvent={(event: CalendarEvent) => { 
                 console.log(`Clicked on event with id: ${event.id}`); 
                 navigation.navigate("ModifyEvent", { event: events.find((eventObject: Event) => eventObject.id == event.id), pod })
@@ -178,20 +196,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
                 return {
                   backgroundColor: podMemberIdToColor[fixedEvent.wigoEvent.ownerId],
                 }
-              }
-              // <View>
-              //   <Text>{fixedEvent.ownerEmail}</Text>
-              // </View>
-            }/>
-            {/* {(isToggledToUser ? events : events).map((event: Event) => (
-              <EventInSchedule
-                event={event}
-                showName={!isToggledToUser}
-                navigation={navigation}
-                key={event.id}
-                avatar={isToggledToUser ? user.avatar : map[event.ownerId]}
-              />
-            ))} */}
+              }}/>)}
           </View>
         ) : (
           <View style={styles.emptyScheduleContainer}>
