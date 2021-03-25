@@ -115,28 +115,18 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
     .findOne({ "pods.id": podId })
     .withGraphFetched("members");
 
-  const dateAsMoment = moment(date);
-  const startOfDay = moment(dateAsMoment).hour(8).minute(0);
-  const endOfDay = moment(dateAsMoment).hour(18).minute(0); //6pm = 12 + 6
-
+  console.log("date that we're converting to moment", date);
   const allEvents: Event[] = await Event.query().whereIn(
     "ownerId",
     pod.members.map((m) => m.id)
   );
-
-  console.log("allEvents", allEvents);
-  console.log("startOfDay", startOfDay);
-  // Need to use .toISOString to compare dates because the dates are stored
-  // In UTC time and then converted to local time only when displayed.
-  // .andWhere("start_time", ">", typeof(__DEV__) == undefined ? startOfDay.toDate() : startOfDay.toISOString())  // after 8 am on date
-  // .andWhere("end_time", "<", typeof(__DEV__) == undefined ?  endOfDay.toDate(): endOfDay.toISOString()); // before 6pm on date
-
+  
   const eventsOfDay: Event[] = [];
 
   allEvents.forEach((event) => {
     if (
-      moment(event.start_time).isSame(startOfDay, "day") &&
-      moment(event.end_time).isSame(endOfDay, "day")
+      moment(event.start_time).isSame(date, "day") &&
+      moment(event.end_time).isSame(date, "day")
     ) {
       eventsOfDay.push(event);
     }
