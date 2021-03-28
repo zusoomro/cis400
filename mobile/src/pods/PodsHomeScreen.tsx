@@ -45,7 +45,9 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
 
     fetchUsersInvites().then((invites) => {
       setInvites(invites);
-      setModalVisible(true);
+      if (invites && invites.length > 0) {
+        setModalVisible(true);
+      }
     });
   }, []);
 
@@ -151,7 +153,7 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
         }}
         disabled={invites == undefined || invites.length <= 0}
       />
-      {modalVisible && invites && (
+      {modalVisible && (
         <PodInviteModal
           modalVisible={modalVisible}
           invites={invites}

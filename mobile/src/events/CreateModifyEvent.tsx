@@ -10,7 +10,7 @@ import {
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import sharedStyles from "../sharedStyles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
 /** Import Custom Components */
@@ -35,6 +35,7 @@ import {
   populatedFormEventValues,
   submitCreateModifyEventForm,
 } from "./createModifyEventHelpers";
+import { RootState } from "../configureStore";
 
 /***
  * CreateModifyEvent contains the component for the CreateModifyEvent page.
@@ -47,6 +48,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
 }) => {
   const event: Event | null = route?.params?.event;
   const pod: Pod = route?.params?.pod;
+  const user: User = useSelector((state: RootState) => state.auth.user);
 
   // Start time = current time
   const [start_time, setStartTime] = useState(
@@ -243,12 +245,14 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
               }
               error=""
             />
-            <Button
-              onPress={handleSubmit}
-              title="Save"
-              style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
-            />
-            {!!event && (
+            {(event == null || user.id == event.ownerId) && (
+              <Button
+                onPress={handleSubmit}
+                title="Save"
+                style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
+              />
+            )}
+            {!!event && user.id == event.ownerId && (
               <Button
                 onPress={() => setDeleteModalVisible(true)}
                 title="Delete"
