@@ -24,7 +24,6 @@ export type SuggestedTime = {
  * @returns array where each event is rounded
  */
 export const getRoundedEvents = (eventsOfTheDay: Event[]): RoundedEvent[] => {
-  console.log("eventsOfTheDay", eventsOfTheDay);
   var moment = require('moment-timezone');
   // Round events to nearest half hour blocks
   const roundedEvents = eventsOfTheDay.map((event) => {
@@ -48,7 +47,6 @@ export const getRoundedEvents = (eventsOfTheDay: Event[]): RoundedEvent[] => {
     };
   });
 
-  console.log("roundedEvents",  roundedEvents);
   return roundedEvents;
 };
 
@@ -165,7 +163,6 @@ export const findSuggestedTimes = async (
     startingHour
   );
 
-  console.log("busyTimes", busyTimes);
 
   // Find all free times in the busy array
   const roundedEvent = getRoundedEvents([proposedEvent])[0];
@@ -182,10 +179,8 @@ export const findSuggestedTimes = async (
   const numChunks =
     eventLength % 30 == 0 ? eventLength / 30 : eventLength / 30 + 1;
 
-  console.log("startIndex", startingIndexOfProposedEvent);
-
   let leftIndex = startingIndexOfProposedEvent - 1;
-  let rightIndex = startingIndexOfProposedEvent + numChunks;
+  let rightIndex = startingIndexOfProposedEvent + (numChunks - 1);
 
 
   // Starting from original index of event, move to the left
@@ -193,7 +188,7 @@ export const findSuggestedTimes = async (
   // or the numTimesToReturn is found
   while (
     nonConflictingTimes.length < numTimesToReturn &&
-    (leftIndex >= 0 || rightIndex + numChunks <= endingHour)
+    (leftIndex >= 0 || rightIndex + numChunks < endingHour)
   ) {
     if (leftIndex >= 0) {
       let allFree = isIntervalFree(busyTimes, leftIndex, numChunks);
@@ -212,7 +207,7 @@ export const findSuggestedTimes = async (
     }
 
     if (
-      rightIndex + numChunks <= endingHour &&
+      rightIndex + numChunks < endingHour &&
       nonConflictingTimes.length < numTimesToReturn
     ) {
       let allFree = isIntervalFree(busyTimes, rightIndex, numChunks);
