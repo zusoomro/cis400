@@ -25,10 +25,11 @@ export type SuggestedTime = {
  */
 export const getRoundedEvents = (eventsOfTheDay: Event[]): RoundedEvent[] => {
   console.log("eventsOfTheDay", eventsOfTheDay);
+  var moment = require('moment-timezone');
   // Round events to nearest half hour blocks
   const roundedEvents = eventsOfTheDay.map((event) => {
-    const start_time = moment(event.start_time).local();
-    const end_time = moment(event.end_time).local();
+    const start_time = moment(event.start_time).tz("America/New_York");
+    const end_time = moment(event.end_time).tz("America/New_York");
 
     // RIGHT NOW - the idea of the half hour is baked into the algorithm, but can
     // be changed in the future.

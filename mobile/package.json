@@ -47,6 +47,7 @@
     "jest-expo": "^39.0.0",
     "jest-fetch-mock": "^3.0.3",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.33",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.3.tar.gz",
