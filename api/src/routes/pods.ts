@@ -114,21 +114,24 @@ export const getPodEventsOfDay = async (podId: number, date: Date) => {
     .findOne({ "pods.id": podId })
     .withGraphFetched("members");
 
-  const dateAsMoment = moment(date);
-  const startOfDay = moment(dateAsMoment).hour(8).minute(0);
-  const endOfDay = moment(dateAsMoment).hour(18).minute(0); //6pm = 12 + 6
+  const allEvents: Event[] = await Event.query().whereIn(
+    "ownerId",
+    pod.members.map((m) => m.id)
+  );
 
-  const allEvents: Event[] = await Event.query()
-    .whereIn(
-      "ownerId",
-      pod.members.map((m) => m.id)
-    )
-    // Need to use .toISOString to compare dates because the dates are stored
-    // In UTC time and then converted to local time only when displayed.
-    .andWhere("start_time", ">", startOfDay.toISOString()) // after 8 am on date
-    .andWhere("end_time", "<", endOfDay.toISOString()); // before 6pm on date
+  const eventsOfDay: Event[] = [];
 
-  return allEvents;
+  // Return events of same day as inputted date
+  allEvents.forEach((event) => {
+    if (
+      moment(event.start_time).isSame(date, "day") &&
+      moment(event.end_time).isSame(date, "day")
+    ) {
+      eventsOfDay.push(event);
+    }
+  });
+
+  return eventsOfDay;
 };
 
 podsRouter.get(
