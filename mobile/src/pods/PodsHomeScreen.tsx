@@ -153,6 +153,21 @@ const PodsHomeScreen: React.FC<Props> = ({ navigation }) => {
         }}
         disabled={invites == undefined || invites.length <= 0}
       />
+      <Button
+        title="Refresh Invites"
+        onPress={() => {
+          fetchUsersInvites().then((invites) => {
+            setInvites(invites);
+          });
+        }}
+        style={{
+          position: "absolute",
+          bottom: 50,
+          left: 15,
+          right: 15,
+          width: "auto",
+        }}
+      />
       {modalVisible && (
         <PodInviteModal
           modalVisible={modalVisible}
