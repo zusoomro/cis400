@@ -11,8 +11,8 @@ type RoundedEvent = {
 };
 
 export type SuggestedTime = {
-  start: moment.Moment; // 0-24 for hour of the day
-  end: moment.Moment; // 1 if rounded event starts on half hour, 0 otherwise
+  start: Date; 
+  end: Date; 
 };
 
 /**
@@ -125,16 +125,16 @@ export const createNonConflictingTime = (
   const startsOnHalfHour = leftIndex % chunksInHour == 1 ? 1 : 0;
   const start = moment(date)
     .hour((leftIndex - startsOnHalfHour) / chunksInHour + startingHour)
-    .minute(startsOnHalfHour * 30);
+    .minute(startsOnHalfHour * 30).toDate();
 
   const endsOnHalfHour = (leftIndex + numChunks) % chunksInHour == 1 ? 1 : 0;
   const end = moment(date)
     .hour(
       (leftIndex + numChunks - endsOnHalfHour) / chunksInHour + startingHour
     )
-    .minute(endsOnHalfHour * 30);
+    .minute(endsOnHalfHour * 30).toDate();
 
-  return { start, end };
+  return { start, end};
 };
 
 export const findSuggestedTimes = async (
@@ -199,10 +199,7 @@ export const findSuggestedTimes = async (
           chunksInHour,
           startingHour
         );
-        nonConflictingTimes.push({
-          start: moment.tz(nonConflictingTime.start, "America/New_York").utc(),
-          end: moment.tz(nonConflictingTime.end, "America/New_York").utc()
-        });
+        nonConflictingTimes.push(nonConflictingTime);
       }
       leftIndex--;
     }
@@ -221,15 +218,13 @@ export const findSuggestedTimes = async (
           chunksInHour,
           startingHour
         );
-        nonConflictingTimes.push({
-          start: moment.tz(nonConflictingTime.start, "America/New_York").utc(),
-          end: moment.tz(nonConflictingTime.end, "America/New_York").utc()
-        });
+        nonConflictingTimes.push(nonConflictingTime);
       }
       rightIndex++;
     }
   }
 
+  console.log("nonConflictingTimes", nonConflictingTimes)
   return {
     nonConflictingTimes,
   };
