@@ -204,7 +204,7 @@ export const findSuggestedTimes = async (
     }
 
     if (
-      rightIndex + numChunks < endingHour &&
+      rightIndex + numChunks < busyTimes.length &&
       nonConflictingTimes.length < numTimesToReturn
     ) {
       let allFree = isIntervalFree(busyTimes, rightIndex, numChunks);
