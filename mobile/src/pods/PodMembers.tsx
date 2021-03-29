@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import { RootState } from "../configureStore";
 import sharedStyles from "../sharedStyles";
@@ -17,32 +17,34 @@ const PodMembers: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.section1}>
-        <Text style={styles.section1TextHeader}>Members</Text>
-        <Text style={styles.section1Text}>Manage the users in your pod.</Text>
-      </View>
-      <View>
+      <ScrollView>
+        <View style={styles.section1}>
+          <Text style={styles.section1TextHeader}>Members</Text>
+          <Text style={styles.section1Text}>Manage the users in your pod.</Text>
+        </View>
         <View>
-          <Button
-            title="Add New Members"
-            style={{ backgroundColor: "#3730A3", marginTop: 10 }}
-            onPress={() => {
-              navigation.navigate("InviteUsers", {
-                caller: "PodMembers",
-                pod: pod,
-              });
-              return;
-            }}
-          />
+          <View>
+            <Button
+              title="Add New Members"
+              style={{ backgroundColor: "#3730A3", marginTop: 10 }}
+              onPress={() => {
+                navigation.navigate("InviteUsers", {
+                  caller: "PodMembers",
+                  pod: pod,
+                });
+                return;
+              }}
+            />
+          </View>
+          <View style={styles.section2}>
+            {pod.members.map((member) => (
+              <View key={member.id} style={styles.userCard}>
+                <Text style={styles.email}>{member.email}</Text>
+              </View>
+            ))}
+          </View>
         </View>
-        <View style={styles.section2}>
-          {pod.members.map((member) => (
-            <View key={member.id} style={styles.userCard}>
-              <Text style={styles.email}>{member.email}</Text>
-            </View>
-          ))}
-        </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

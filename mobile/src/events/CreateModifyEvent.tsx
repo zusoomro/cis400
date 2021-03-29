@@ -10,7 +10,7 @@ import {
 import Button from "../shared/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import sharedStyles from "../sharedStyles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 
 /** Import Custom Components */
@@ -35,6 +35,7 @@ import {
   populatedFormEventValues,
   submitCreateModifyEventForm,
 } from "./createModifyEventHelpers";
+import { RootState } from "../configureStore";
 
 /***
  * CreateModifyEvent contains the component for the CreateModifyEvent page.
@@ -47,6 +48,7 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
 }) => {
   const event: Event | null = route?.params?.event;
   const pod: Pod = route?.params?.pod;
+  const user: User = useSelector((state: RootState) => state.auth.user);
 
   // Start time = current time
   const [start_time, setStartTime] = useState(
@@ -144,7 +146,12 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
             <GeneralEventInput
               inputTitle="Start Time"
               GeneralInputComponent={
-                <DatePicker name="start_time" date={start_time} />
+                <DatePicker
+                  name="start_time"
+                  date={start_time}
+                  startTimeChange={startTimeChange}
+                  endTimeChange={setEndTime}
+                />
               }
               error={
                 touched.start_time && errors.start_time
@@ -156,7 +163,12 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
             <GeneralEventInput
               inputTitle="End Time"
               GeneralInputComponent={
-                <DatePicker name="end_time" date={end_time} />
+                <DatePicker
+                  name="end_time"
+                  date={end_time}
+                  startTimeChange={startTimeChange}
+                  endTimeChange={setEndTime}
+                />
               }
               error={!!errors.end_time ? (errors.end_time as String) : ""}
             />
@@ -233,12 +245,14 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
               }
               error=""
             />
-            <Button
-              onPress={handleSubmit}
-              title="Save"
-              style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
-            />
-            {!!event && (
+            {(event == null || user.id == event.ownerId) && (
+              <Button
+                onPress={handleSubmit}
+                title="Save"
+                style={[{ margin: 0 }, !isValid && sharedStyles.disabledButton]}
+              />
+            )}
+            {!!event && user.id == event.ownerId && (
               <Button
                 onPress={() => setDeleteModalVisible(true)}
                 title="Delete"

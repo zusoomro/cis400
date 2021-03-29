@@ -24,10 +24,11 @@ export type SuggestedTime = {
  * @returns array where each event is rounded
  */
 export const getRoundedEvents = (eventsOfTheDay: Event[]): RoundedEvent[] => {
+  var moment = require("moment-timezone");
   // Round events to nearest half hour blocks
   const roundedEvents = eventsOfTheDay.map((event) => {
-    const start_time = moment(event.start_time);
-    const end_time = moment(event.end_time);
+    const start_time = moment(event.start_time).tz("America/New_York");
+    const end_time = moment(event.end_time).tz("America/New_York");
 
     // RIGHT NOW - the idea of the half hour is baked into the algorithm, but can
     // be changed in the future.
@@ -68,7 +69,7 @@ export const getBusyTimesArray = (
   chunksInHour: number,
   startingHour: number
 ): boolean[] => {
-  let busyTimes: boolean[] = [];
+  let busyTimes: boolean[] = Array.from({ length: 20 }, () => false);
   roundedEvents.forEach((e) => {
     const startIndex =
       (e.roundedStartHour - startingHour) * chunksInHour +
@@ -169,15 +170,17 @@ export const findSuggestedTimes = async (
     (roundedEvent.roundedStartHour - startingHour) * chunksInHour +
     additionToIndex;
 
-  let leftIndex = startingIndexOfProposedEvent - 1;
-  let rightIndex = startingIndexOfProposedEvent + 1;
-  let numChunks =
-    (roundedEvent.roundedEndHour - roundedEvent.roundedStartHour) *
-      chunksInHour -
-    (roundedEvent.startOnHalfHour ? 1 : 0) +
-    (roundedEvent.endOnHalfHour ? 1 : 0);
+  const eventLength = moment(proposedEvent.end_time).diff(
+    moment(proposedEvent.start_time),
+    "minutes"
+  );
 
-  // Starting from original index of event, move to the left
+  const numChunks =
+    eventLength % 30 == 0 ? eventLength / 30 : eventLength / 30 + 1;
+
+  let leftIndex = startingIndexOfProposedEvent - 1;
+  let rightIndex = startingIndexOfProposedEvent + (numChunks - 1);
+
   // and right to find free times until all chunks are found
   // or the numTimesToReturn is found
   while (
