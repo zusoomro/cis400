@@ -221,7 +221,10 @@ export const findSuggestedTimes = async (
           chunksInHour,
           startingHour
         );
-        nonConflictingTimes.push(nonConflictingTime);
+        nonConflictingTimes.push({
+          start: moment.tz(nonConflictingTime.start, "America/New_York").utc(),
+          end: moment.tz(nonConflictingTime.end, "America/New_York").utc()
+        });
       }
       rightIndex++;
     }
