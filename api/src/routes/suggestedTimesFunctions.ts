@@ -125,14 +125,14 @@ export const createNonConflictingTime = (
   const startsOnHalfHour = leftIndex % chunksInHour == 1 ? 1 : 0;
   const start = moment(date)
     .hour((leftIndex - startsOnHalfHour) / chunksInHour + startingHour)
-    .minute(startsOnHalfHour * 30).toDate();
+    .minute(startsOnHalfHour * 30).utc().toDate();
 
   const endsOnHalfHour = (leftIndex + numChunks) % chunksInHour == 1 ? 1 : 0;
   const end = moment(date)
     .hour(
       (leftIndex + numChunks - endsOnHalfHour) / chunksInHour + startingHour
     )
-    .minute(endsOnHalfHour * 30).toDate();
+    .minute(endsOnHalfHour * 30).utc().toDate();
 
   return { start, end};
 };
@@ -224,7 +224,7 @@ export const findSuggestedTimes = async (
     }
   }
 
-  console.log("nonConflictingTimes", nonConflictingTimes)
+  console.log("nonConflictingTimes", nonConflictingTimes);
   return {
     nonConflictingTimes,
   };
