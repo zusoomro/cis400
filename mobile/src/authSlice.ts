@@ -239,11 +239,12 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    [loadUser.rejected]: (state, action) => {
+    [loadUser.rejected]: async (state, action) => {
       state.authenticated = false;
       state.user = {};
       state.loading = false;
       state.error = action.payload;
+      await SecureStore.deleteItemAsync("wigo-auth-token");
     },
   },
 });
