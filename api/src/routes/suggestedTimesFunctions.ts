@@ -11,8 +11,8 @@ type RoundedEvent = {
 };
 
 export type SuggestedTime = {
-  start: Date; 
-  end: Date; 
+  start: string; 
+  end: string; 
 };
 
 /**
@@ -125,16 +125,16 @@ export const createNonConflictingTime = (
   const startsOnHalfHour = leftIndex % chunksInHour == 1 ? 1 : 0;
   const start = moment(date)
     .hour((leftIndex - startsOnHalfHour) / chunksInHour + startingHour)
-    .minute(startsOnHalfHour * 30).utc().toDate();
+    .minute(startsOnHalfHour * 30).toISOString();
 
   const endsOnHalfHour = (leftIndex + numChunks) % chunksInHour == 1 ? 1 : 0;
   const end = moment(date)
     .hour(
       (leftIndex + numChunks - endsOnHalfHour) / chunksInHour + startingHour
     )
-    .minute(endsOnHalfHour * 30).utc().toDate();
+    .minute(endsOnHalfHour * 30).toISOString();
 
-  return { start, end};
+  return {start, end} as SuggestedTime;
 };
 
 export const findSuggestedTimes = async (
