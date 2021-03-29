@@ -144,6 +144,7 @@ export const findSuggestedTimes = async (
 ): Promise<{
   nonConflictingTimes: SuggestedTime[];
 }> => {
+  var moment = require("moment-timezone");
   // nonConflictingTimes are ordered by closests to the proposed event
   // by  sliding a window to the left and right and adding events found first
   const nonConflictingTimes: SuggestedTime[] = [];
@@ -198,7 +199,10 @@ export const findSuggestedTimes = async (
           chunksInHour,
           startingHour
         );
-        nonConflictingTimes.push(nonConflictingTime);
+        nonConflictingTimes.push({
+          start: moment.tz(nonConflictingTime.start, "America/New_York").utc(),
+          end: moment.tz(nonConflictingTime.end, "America/New_York").utc()
+        });
       }
       leftIndex--;
     }
