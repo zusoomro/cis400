@@ -135,6 +135,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
 
   // If events change, process them into calendar events
   React.useEffect(() => {
+    setLoading(true);
     const PromiseArray = events.map(async (event) => {
       const email = await fetchUserEmail(event.ownerId);
       return {
@@ -157,6 +158,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
     Promise.all(PromiseArray).then((values) => {
       setProcessedEvents(values);
     });
+    setLoading(false);
   }, [events]);
 
   const dd = String(today.getDate()).padStart(2, "0");
@@ -193,7 +195,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
           <View style={styles.activityIndicator}>
             <ActivityIndicator />
           </View>
-        ) : (isToggledToUser ? events : events).length > 0 ? (
+        ) : events.length > 0 ? (
           <View>
             {processedEvents && processedEvents.length != 0 && (
               <Calendar
@@ -223,7 +225,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
             )}
           </View>
         ) : (
-          <View style={styles.emptyScheduleContainer}>
+          <View>
             <Text style={styles.emptyScheduleMessage}>
               You've got nothing scheduled today! Press the button below to add
               more events.
