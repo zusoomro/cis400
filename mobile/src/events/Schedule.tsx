@@ -80,7 +80,7 @@ const Schedule: React.FC<{}> = ({ navigation }) => {
     "#115E59",
   ];
   const podMemberIdToColor: { [key: number]: string } = {};
-  if (pod) {
+  if (pod && pod.members) {
     for (let i = 0; i < pod.members.length; i++) {
       podMemberIdToColor[pod.members[i].id] =
         calendarEventColors[i % calendarEventColors.length];
