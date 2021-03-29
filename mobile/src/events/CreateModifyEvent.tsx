@@ -162,8 +162,8 @@ const CreateModifyEvent: React.FC<CreateModifyEventProps> = ({
               inputTitle="End Time"
               GeneralInputComponent={
                 <DatePicker
-                  name="start_time"
-                  date={start_time}
+                  name="end_time"
+                  date={end_time}
                   startTimeChange={startTimeChange}
                   endTimeChange={setEndTime}
                 />
