@@ -218,6 +218,5 @@ export const findSuggestedTimes = (
     }
   }
 
-  console.log("nonConflictingTimes", nonConflictingTimes);
   return nonConflictingTimes;
 };

@@ -50,7 +50,6 @@ export const EventConflictModal: React.FC<Props> = ({
   conflicts,
   suggestedTimes,
 }) => {
-  console.log("suggestedTimes", suggestedTimes);
   const sortedSuggestedTimes = suggestedTimes.sort((time1, time2) => {
     return moment(time1.start).valueOf() - moment(time2.start).valueOf();
   });

@@ -92,7 +92,6 @@ export const getSuggestedTimes = async (
 
     // Determine if there are any immediately conflicting events
     const response = await res.json();
-    console.log("respone", response);
     let eventsOfTheDay: Event[] = response.eventsOfDay;
 
     // Filter out current event if it exists
