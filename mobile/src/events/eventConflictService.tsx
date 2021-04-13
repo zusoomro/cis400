@@ -1,6 +1,7 @@
 import Event from "../types/Event";
 import apiUrl from "../config";
 import * as SecureStore from "expo-secure-store";
+import { findSuggestedTimes } from "./suggestedTimes/suggestedTimesFunctions";
 
 export interface ConflictBuffer {
   otherEventId: number;
@@ -12,10 +13,6 @@ export interface ProposedEventConflicts {
   isConflicting: boolean;
   conflictingEvents: Event[];
   conflictingBuffers: ConflictBuffer[];
-}
-
-export interface SuggestedTimes {
-  nonConflictingTimes: SuggestedTime[];
 }
 
 export type SuggestedTime = {
@@ -70,6 +67,7 @@ export const proposeEvent = async (
   }
 };
 
+// Find alternative times for suggested event
 export const getSuggestedTimes = async (
   proposedEvent: Event,
   podId: number,
@@ -77,24 +75,11 @@ export const getSuggestedTimes = async (
 ): Promise<SuggestedTime[]> => {
   const data = {
     podId: podId,
-    event: {
-      id: existingEvent ? existingEvent.id : null,
-      name: proposedEvent.name,
-      formattedAddress: proposedEvent.formattedAddress,
-      lat: proposedEvent.lat,
-      lng: proposedEvent.lng,
-      startFormattedAddress: proposedEvent.startFormattedAddress,
-      startLat: proposedEvent.startLng,
-      startLng: proposedEvent.startLng,
-      start_time: proposedEvent.start_time,
-      end_time: proposedEvent.end_time,
-      repeat: proposedEvent.repeat,
-      notes: proposedEvent.notes,
-    },
+    date: proposedEvent.start_time,
   };
 
   try {
-    const res = await fetch(`${apiUrl}/events/getSuggestedTimes`, {
+    const res = await fetch(`${apiUrl}/pods/getPodEventsOfDay`, {
       method: "POST",
       headers: new Headers({
         "Content-Type": "application/json;charset=utf-8",
@@ -105,8 +90,24 @@ export const getSuggestedTimes = async (
       body: JSON.stringify(data),
     });
 
-    const suggestedTimes: SuggestedTimes = await res.json();
-    return suggestedTimes.nonConflictingTimes;
+    // Determine if there are any immediately conflicting events
+    const response = await res.json();
+    console.log("respone", response);
+    let eventsOfTheDay: Event[] = response.eventsOfDay;
+
+    // Filter out current event if it exists
+    if (existingEvent) {
+      eventsOfTheDay = eventsOfTheDay.filter(
+        (eventItem) => eventItem.id != existingEvent.id
+      );
+    }
+
+    const suggestedTimes: SuggestedTime[] = findSuggestedTimes(
+      proposedEvent,
+      eventsOfTheDay,
+      4
+    );
+    return suggestedTimes;
   } catch (error) {
     console.log("error with getting suggested times", error);
     return [];

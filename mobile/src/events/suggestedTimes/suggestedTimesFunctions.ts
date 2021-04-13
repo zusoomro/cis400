@@ -1,4 +1,5 @@
-import Event from "../../models/Event";
+import Event from "../../types/Event";
+import { SuggestedTime } from "../eventConflictService";
 import moment from "moment";
 
 type RoundedEvent = {
@@ -8,11 +9,6 @@ type RoundedEvent = {
   startOnHalfHour: boolean; // 1 if rounded event starts on half hour, 0 otherwise
   roundedEndHour: number; // 0-24 for hour of the day
   endOnHalfHour: boolean; // 0 if rounded event end on half hour
-};
-
-export type SuggestedTime = {
-  start: string; 
-  end: string; 
 };
 
 /**
@@ -125,25 +121,23 @@ export const createNonConflictingTime = (
   const startsOnHalfHour = leftIndex % chunksInHour == 1 ? 1 : 0;
   const start = moment(date)
     .hour((leftIndex - startsOnHalfHour) / chunksInHour + startingHour)
-    .minute(startsOnHalfHour * 30).toISOString();
+    .minute(startsOnHalfHour * 30);
 
   const endsOnHalfHour = (leftIndex + numChunks) % chunksInHour == 1 ? 1 : 0;
   const end = moment(date)
     .hour(
       (leftIndex + numChunks - endsOnHalfHour) / chunksInHour + startingHour
     )
-    .minute(endsOnHalfHour * 30).toISOString();
+    .minute(endsOnHalfHour * 30);
 
-  return {start, end} as SuggestedTime;
+  return { start, end } as SuggestedTime;
 };
 
-export const findSuggestedTimes = async (
+export const findSuggestedTimes = (
   proposedEvent: Event,
   eventsOfTheDay: Event[],
   numTimesToReturn: number
-): Promise<{
-  nonConflictingTimes: SuggestedTime[];
-}> => {
+): SuggestedTime[] => {
   var moment = require("moment-timezone");
   // nonConflictingTimes are ordered by closests to the proposed event
   // by  sliding a window to the left and right and adding events found first
@@ -225,7 +219,5 @@ export const findSuggestedTimes = async (
   }
 
   console.log("nonConflictingTimes", nonConflictingTimes);
-  return {
-    nonConflictingTimes,
-  };
+  return nonConflictingTimes;
 };
