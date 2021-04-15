@@ -109,30 +109,41 @@ export const getPodEvents = async (podId: number) => {
 };
 
 /** Returns pod events between 8am and 6pm of the day given  */
-export const getPodEventsOfDay = async (podId: number, date: Date) => {
-  const pod = await Pod.query()
-    .findOne({ "pods.id": podId })
-    .withGraphFetched("members");
+podsRouter.post(
+  "/getPodEventsOfDay",
+  [auth],
+  async (req: express.Request, res: express.Response) => {
+    const { podId, date } = req.body;
 
-  const allEvents: Event[] = await Event.query().whereIn(
-    "ownerId",
-    pod.members.map((m) => m.id)
-  );
+    try {
+      const pod = await Pod.query()
+        .findOne({ "pods.id": podId })
+        .withGraphFetched("members");
 
-  const eventsOfDay: Event[] = [];
+      const allEvents: Event[] = await Event.query().whereIn(
+        "ownerId",
+        pod.members.map((m) => m.id)
+      );
 
-  // Return events of same day as inputted date
-  allEvents.forEach((event) => {
-    if (
-      moment(event.start_time).isSame(date, "day") &&
-      moment(event.end_time).isSame(date, "day")
-    ) {
-      eventsOfDay.push(event);
+      const eventsOfDay: Event[] = [];
+
+      // Return events of same day as inputted date
+      allEvents.forEach((event) => {
+        if (
+          moment(event.start_time).isSame(date, "day") &&
+          moment(event.end_time).isSame(date, "day")
+        ) {
+          eventsOfDay.push(event);
+        }
+      });
+
+      res.json({ eventsOfDay: eventsOfDay });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Server Error getting eventsOfday");
     }
-  });
-
-  return eventsOfDay;
-};
+  }
+);
 
 podsRouter.get(
   "/:podId/conflictingEvents",

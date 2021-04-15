@@ -1,4 +1,5 @@
-import Event from "../../models/Event";
+import Event from "../../types/Event";
+import { SuggestedTime } from "../eventConflictService";
 import moment from "moment";
 
 type RoundedEvent = {
@@ -8,11 +9,6 @@ type RoundedEvent = {
   startOnHalfHour: boolean; // 1 if rounded event starts on half hour, 0 otherwise
   roundedEndHour: number; // 0-24 for hour of the day
   endOnHalfHour: boolean; // 0 if rounded event end on half hour
-};
-
-export type SuggestedTime = {
-  start: moment.Moment; // 0-24 for hour of the day
-  end: moment.Moment; // 1 if rounded event starts on half hour, 0 otherwise
 };
 
 /**
@@ -134,16 +130,14 @@ export const createNonConflictingTime = (
     )
     .minute(endsOnHalfHour * 30);
 
-  return { start, end };
+  return { start, end } as SuggestedTime;
 };
 
-export const findSuggestedTimes = async (
+export const findSuggestedTimes = (
   proposedEvent: Event,
   eventsOfTheDay: Event[],
   numTimesToReturn: number
-): Promise<{
-  nonConflictingTimes: SuggestedTime[];
-}> => {
+): SuggestedTime[] => {
   var moment = require("moment-timezone");
   // nonConflictingTimes are ordered by closests to the proposed event
   // by  sliding a window to the left and right and adding events found first
@@ -199,10 +193,7 @@ export const findSuggestedTimes = async (
           chunksInHour,
           startingHour
         );
-        nonConflictingTimes.push({
-          start: moment.tz(nonConflictingTime.start, "America/New_York").utc(),
-          end: moment.tz(nonConflictingTime.end, "America/New_York").utc()
-        });
+        nonConflictingTimes.push(nonConflictingTime);
       }
       leftIndex--;
     }
@@ -221,16 +212,11 @@ export const findSuggestedTimes = async (
           chunksInHour,
           startingHour
         );
-        nonConflictingTimes.push({
-          start: moment.tz(nonConflictingTime.start, "America/New_York").utc(),
-          end: moment.tz(nonConflictingTime.end, "America/New_York").utc()
-        });
+        nonConflictingTimes.push(nonConflictingTime);
       }
       rightIndex++;
     }
   }
 
-  return {
-    nonConflictingTimes,
-  };
+  return nonConflictingTimes;
 };
